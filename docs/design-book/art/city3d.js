@@ -355,6 +355,6 @@ SQ.city = function (host, CITY, opt = {}) {
   requestAnimationFrame(frame);
   /* debug: top-down picture of the whole island (used to check the layout) */
   host.__top = (px = 1400) => { const oc = new T.OrthographicCamera(-W[0] * .6, W[0] * .6, W[1] * .6, -W[1] * .6, 1, 1000); oc.position.set(0, 400, 0); oc.lookAt(0, 0, 0); oc.up.set(0, 0, -1); oc.lookAt(0, 0, 0); const ow = renderer.domElement.width, oh = renderer.domElement.height; renderer.setSize(px, px * W[1] / W[0], false); const f = scene.fog; scene.fog = null; renderer.render(scene, oc); const url = renderer.domElement.toDataURL('image/png'); scene.fog = f; renderer.setSize(ow / renderer.getPixelRatio(), oh / renderer.getPixelRatio(), false); return url; };
-  return { setState, flyTo, select, view, lim, bubble: id => (slots.find(q => q.id === id) || {}).tag, close: () => { card.hidden = true; }, host };
+  return { setState, flyTo, select, view, lim, bubble: id => (slots.find(q => q.id === id) || {}).tag, close: () => { card.hidden = true; }, host, world, slots };   // world + slots: read by tools/export_art
 };
 })();

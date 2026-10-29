@@ -25,11 +25,25 @@ SQ.boot(async function () {
     const ANIM_KEYS = ['type', 'ph', 'amp', 'sp', 'depth'];
     const noUvCache = new Map();   // one stripped copy per shared geometry, so reused parts stay reused in the file
     const noUv = g => { let c = noUvCache.get(g); if (!c) { c = g.clone(); c.deleteAttribute('uv'); noUvCache.set(g, c); } return c; };
+    const r3 = v => Math.round(v * 1000) / 1000;
     function clean(root) {
       const shells = []; root.traverse(o => { if (o.userData.outline) shells.push(o); });
       shells.forEach(o => o.parent.remove(o));
+      /* glTF (three r149) cannot hold instanced meshes: keep one copy of the mesh and list every instance's
+         transform (and colour) as tags; Godot's import step rebuilds them as one MultiMesh */
+      const inst = []; root.traverse(o => { if (o.isInstancedMesh) inst.push(o); });
+      inst.forEach(im => {
+        const m = new T.Mesh(im.geometry, im.material); m.name = im.name || 'instances'; m.position.copy(im.position); m.quaternion.copy(im.quaternion); m.scale.copy(im.scale);
+        const mats = [], cols = [], m4 = new T.Matrix4(), c = new T.Color();
+        for (let i = 0; i < im.count; i++) { im.getMatrixAt(i, m4); mats.push(...m4.elements.map(r3)); if (im.instanceColor) { im.getColorAt(i, c); cols.push(r3(c.r), r3(c.g), r3(c.b)); } }
+        m.userData = Object.assign({}, im.userData, { instances: mats }); if (cols.length) m.userData.instance_colors = cols;
+        im.parent.add(m); im.parent.remove(im);
+      });
       root.traverse(o => {
         const u = o.userData, keep = {};
+        if (u.instances) { keep.instances = u.instances; if (u.instance_colors) keep.instance_colors = u.instance_colors; }
+        if (u.sqWrap) keep.wrap = true;
+        if (u.clip) keep.clip_y = r3(u.clipY0 ?? -u.clip.constant);   // peeking squishies are hidden below this height (in the parent's space)
         if (u.anim) { keep.anim = {}; ANIM_KEYS.forEach(k => { if (u.anim[k] != null) keep.anim[k] = typeof u.anim[k] === 'number' ? Math.round(u.anim[k] * 1000) / 1000 : u.anim[k]; }); }
         if (u.sq) keep.squishy = u.sq;
         if (o.isMesh) {
@@ -57,13 +71,70 @@ SQ.boot(async function () {
       items.push({ kind: 'squishy', id, file: `models/squishies/squishy_${id}.glb` });
       items.push({ kind: 'portrait', id, file: `sprites/squishies/${id}.png` });
     });
+    /* map bubble icons of fun buildings (houses use a house shape + the family's emblem portrait, built in the game) */
+    SQ.CIVIC.forEach(id => { if (SQ.B[id].icon) items.push({ kind: 'badge', id, file: `sprites/badges/${id}.svg` }); });
+    /* the island (everything on the map except the buildings) and each squishy's life around its house */
+    items.push({ kind: 'island', id: 'island', file: 'models/island/island.glb' });
+    SQ.HOUSES.forEach(h => SQ.B[h].squishies.forEach(q => items.push({ kind: 'life', id: q.id, house: h, file: `models/life/life_${q.id}.glb` })));
     const exclusives = SQ.B.factory.exclusives || [];
     exclusives.forEach(q => {
       items.push({ kind: 'squishy', id: q.id, exclusive: true, file: `models/squishies/squishy_${q.id}.glb` });
       items.push({ kind: 'portrait', id: q.id, exclusive: true, file: `sprites/squishies/${q.id}.png` });
     });
 
+    /* buildings: fun buildings include their yard squishy (it depends on the level, not on what you own);
+       houses come without their family, who are exported one by one (life) and placed by the game.
+       The breathing body is named "Body" so the game can attach squishies that sit on the house to it. */
+    const SQSIZE = 2.1;   // CITY.squishySize: squishies on the map
+    function building(id, L) {
+      const keep = D.SIZE; D.SIZE = SQSIZE;
+      try {
+        const d = SQ.B[id], root = D.building(id, L, { life: d.type !== 'house' });
+        const breathe = root.children[1], body = breathe && breathe.children[0];
+        if (body && breathe.userData.anim && breathe.userData.anim.type === 'squish') body.name = 'Body';
+        return root;
+      } finally { D.SIZE = keep; }
+    }
+    /* one squishy's spot, props and idle loop around its house; its squishy wraps are named so the game can
+       apply the per-level heights in life.json */
+    function nameWraps(root) { const n = {}; root.traverse(o => { if (!o.userData.sqWrap) return; const sq = (o.children[0] && o.children[0].userData.sq) || 'x'; n[sq] = (n[sq] || 0) + 1; o.name = `wrap_${sq}_${n[sq]}`; }); return root; }
+    function life(house, sq) {
+      const keep = D.SIZE; D.SIZE = SQSIZE;
+      try { const q = SQ.SQ[sq], v = q.idle3 ? q.idle3(D, 10) : null, g = new T.Group(); if (v) g.add(v); g.name = `life_${sq}`; return nameWraps(g); } finally { D.SIZE = keep; }
+    }
+    /* heights of every squishy wrap at every house level, after the book settles them onto roofs and lids */
+    function lifeHeights() {
+      const out = {}, keep = D.SIZE; D.SIZE = SQSIZE;
+      try {
+        SQ.HOUSES.forEach(h => {
+          const d = SQ.B[h]; out[h] = {};
+          d.squishies.forEach(q => { out[h][q.id] = { on: !!q.on, wraps: {} }; });
+          for (let L = 1; L <= 10; L++) {
+            window.__seed(`life_${h}_${L}`);
+            const root = D.building(h, L, { life: true, owned: 6 });
+            const n = {};
+            root.traverse(o => { if (!o.userData.sqWrap) return; const sq = (o.children[0] && o.children[0].userData.sq) || 'x'; n[sq] = (n[sq] || 0) + 1;
+              const fam = d.squishies.find(q => q.id === sq); if (!fam) return;
+              const w = out[h][sq].wraps, key = `wrap_${sq}_${n[sq]}`; (w[key] = w[key] || []).push(r3(o.position.y)); });
+          }
+        });
+      } finally { D.SIZE = keep; }
+      return out;
+    }
+    /* the island: the book's own map engine builds it in a hidden box; only the static world is kept */
+    async function island() {
+      const idx = await (await fetch('../index.html')).text(), a = idx.indexOf('const CITY = '), z = idx.indexOf('\n};', a);
+      const CITY = (0, eval)('(' + idx.slice(a + 'const CITY = '.length, z + 2) + ')');
+      if (!SQ.city) await new Promise(res => { const s = document.createElement('script'); s.src = '../art/city3d.js'; s.onload = res; document.head.appendChild(s); });
+      const host = document.createElement('div'); host.style.cssText = 'position:fixed;left:0;top:0;width:360px;height:640px'; document.body.appendChild(host);
+      const city = SQ.city(host, CITY, {});
+      await D.ready();
+      const w = city.world; w.parent.remove(w); w.name = 'island';
+      return w;
+    }
+
     window.EXPORT = {
+      lifeHeights,
       list: () => items,
       one: async (it) => {
         const ex = it.exclusive && exclusives.find(q => q.id === it.id);
@@ -71,7 +142,10 @@ SQ.boot(async function () {
         window.__seed(it.file);
         try {
           if (it.kind === 'portrait') return { png: D.sprite(it.id, {}, 256).split(',')[1] };
-          const obj = it.kind === 'building' ? D.building(it.id, it.level, { life: false }) : D.squishy(it.id, 1);
+          if (it.kind === 'badge') return { svg: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="-16 -16 32 32" width="128" height="128">${SQ.B[it.id].icon(SQ.K, 0, 0, 1.05)}</svg>\n` };
+          if (it.kind === 'island') return { glb: b64(await glb(clean(await island()))) };
+          if (it.kind === 'life') return { glb: b64(await glb(clean(life(it.house, it.id)))) };
+          const obj = it.kind === 'building' ? building(it.id, it.level) : D.squishy(it.id, 1);
           await D.ready();
           obj.name = it.kind === 'building' ? `${it.id}_L${it.level}` : it.id;
           return { glb: b64(await glb(clean(obj))) };

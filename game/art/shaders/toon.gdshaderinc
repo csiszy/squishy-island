@@ -14,6 +14,12 @@ uniform float emission_energy = 0.0;
 // 0 = toon steps (buildings), 1 = smooth soft vinyl (squishies)
 uniform float softness = 0.0;
 
+// window peekers: everything below this world height is hidden (only peeking squishies get their own copy
+// of the material with this set: see BuildingSlot._clip_below)
+uniform float clip_below = -100000.0;
+varying float world_y;
+varying vec3 tint;
+
 // the book's light rig (D.lights), as sRGB colours × strength
 const vec3 SKY = vec3(1.0, 1.0, 1.0) * 0.42;
 const vec3 GROUND = vec3(0.725, 0.659, 0.847) * 0.42; // #B9A8D8
@@ -29,8 +35,17 @@ vec3 to_linear(vec3 c) {
 	return mix(c / 12.92, pow((c + 0.055) / 1.055, vec3(2.4)), step(vec3(0.04045), c));
 }
 
+void vertex() {
+	world_y = (MODEL_MATRIX * vec4(VERTEX, 1.0)).y;
+	// per-instance colour of instanced things (trees, bushes, flowers) travels in the custom data
+	tint = INSTANCE_CUSTOM.a > 0.5 ? INSTANCE_CUSTOM.rgb : vec3(1.0);
+}
+
 void fragment() {
-	vec4 c = albedo;
+	if (world_y < clip_below) {
+		discard;
+	}
+	vec4 c = albedo * vec4(tint, 1.0);
 	if (use_texture) {
 		c *= texture(albedo_texture, UV);
 	}

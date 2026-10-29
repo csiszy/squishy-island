@@ -7,8 +7,12 @@ render_mode unshaded, cull_front, shadows_disabled, depth_draw_opaque;
 uniform vec4 outline_color : source_color = vec4(0.227, 0.165, 0.290, 1.0);
 // line width in pixels at a 720-pixel-tall screen (scaled with the screen)
 uniform float width_px = 2.0;
+// same as the toon shader: hide the outline of the part of a window peeker below the sill
+uniform float clip_below = -100000.0;
+varying float world_y;
 
 void vertex() {
+	world_y = (MODEL_MATRIX * vec4(VERTEX, 1.0)).y;
 	vec3 n = COLOR.a > 0.5 ? COLOR.rgb * 2.0 - 1.0 : NORMAL;
 	vec4 clip = PROJECTION_MATRIX * (MODELVIEW_MATRIX * vec4(VERTEX, 1.0));
 	vec3 view_n = normalize((MODELVIEW_MATRIX * vec4(n, 0.0)).xyz);
@@ -22,5 +26,8 @@ void vertex() {
 }
 
 void fragment() {
+	if (world_y < clip_below) {
+		discard;
+	}
 	ALBEDO = outline_color.rgb;
 }

@@ -2,7 +2,9 @@
      node tools/export_art/export_art.js                 everything
      node tools/export_art/export_art.js dumpling bao    only items whose id matches
    Writes game/art/models/buildings/<id>/building_<id>_L07.glb, game/art/models/squishies/squishy_<id>.glb and
-   game/art/sprites/squishies/<id>.png, plus game/art/art_index.json (what was exported, sizes, triangle counts).
+   game/art/sprites/squishies/<id>.png, game/art/models/island/island.glb (the map without its buildings),
+   game/art/models/life/life_<id>.glb (each squishy's spot and idle loop around its house), game/art/life.json
+   (the height of each of those squishies at every house level), plus game/art/art_index.json (sizes, triangles).
    The models are built by the same code as the book's pictures (art/*.js). In Godot the import script
    (game/art/import/toon_import.gd) gives them the toon look, the outline and their idle animations.
    Hand-made art: put a file with the same name in game/art/overrides/ and the game uses that instead. */
@@ -29,12 +31,13 @@ function stats(buf) {
       const out = [];
       for (const it of items) {
         const r = await page.evaluate(x => window.EXPORT.one(x), it);
-        const buf = Buffer.from(r.glb || r.png, 'base64'), file = path.join(OUT, it.file);
+        const buf = r.svg ? Buffer.from(r.svg, 'utf8') : Buffer.from(r.glb || r.png, 'base64'), file = path.join(OUT, it.file);
         fs.mkdirSync(path.dirname(file), { recursive: true });
         fs.writeFileSync(file, buf);
         out.push(Object.assign({ file: it.file, kind: it.kind, id: it.id, level: it.level, bytes: buf.length }, r.glb ? stats(buf) : {}));
         process.stdout.write(`\r${out.length}/${items.length} ${it.file.padEnd(60)}`);
       }
+      if (!only.length) fs.writeFileSync(path.join(OUT, 'life.json'), JSON.stringify(await page.evaluate(() => window.EXPORT.lifeHeights()), null, 1) + '\n');
       return out;
     }
   });

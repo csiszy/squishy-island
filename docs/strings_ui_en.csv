@@ -13,3 +13,41 @@ ui.offline,"This needs the internet. The map and all the games still work, thoug
 save.too_new,"This town was saved by a newer version of Squishy Island. Please update the game to keep playing."
 save.cannot_upgrade,"Something went wrong opening your town. Nothing is lost: please update the game or ask a grown-up to contact us."
 minigame.napping,"This game is taking a nap, try another!"
+ui.yes,Yes
+ui.no,No
+ui.ok,OK
+ui.not_now,Not now
+ui.coming_soon,Coming soon!
+ui.coins,coins
+ui.stars,Stars
+ui.gems,Gems
+ui.zoom_in,Zoom in
+ui.zoom_out,Zoom out
+ui.show_island,Show the whole island
+ui.help,How to play
+ui.settings,Settings
+ui.music,Music
+ui.save_town,Save my town
+ui.gem_store,Gem store
+map.kind_house,Family house · {family}
+map.kind_factory,Squishy shop · Mystery Boxes
+map.kind_market,Squishy shop · trading
+map.kind_gemmine,Gem store · buy Gems
+map.kind_fun,Fun building · minigame
+map.level,Level {n}
+map.empty_plot,Empty plot
+map.locked,Locked
+map.unlock_house_level,Unlocks when the {house} reaches level {n}
+map.unlock_owned,Unlocks when you have {n} squishies
+map.open,Open
+map.open_house,Go inside
+map.build,Build it! ({coins} coins)
+map.upgrade,Upgrade ({coins} coins)
+map.play,Play
+map.need_goal,Next level needs: {goal}
+map.need_coins,You need {n} more coins
+map.max_level,Top level!
+map.gem_store,Open the Gem store
+map.built,Ta-da! The {name} is ready!
+map.upgraded,Ta-da! The {name} is now level {n}!
+map.collection,Collection book

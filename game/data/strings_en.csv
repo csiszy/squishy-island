@@ -564,6 +564,28 @@ family.ocean.name,Sea Squish
 family.pets.name,Pet Pals
 family.sky.name,Sky Puffs
 family.sweets.name,Sugar Squad
+map.build,Build it! ({coins} coins)
+map.built,Ta-da! The {name} is ready!
+map.collection,Collection book
+map.empty_plot,Empty plot
+map.gem_store,Open the Gem store
+map.kind_factory,Squishy shop · Mystery Boxes
+map.kind_fun,Fun building · minigame
+map.kind_gemmine,Gem store · buy Gems
+map.kind_house,Family house · {family}
+map.kind_market,Squishy shop · trading
+map.level,Level {n}
+map.locked,Locked
+map.max_level,Top level!
+map.need_coins,You need {n} more coins
+map.need_goal,Next level needs: {goal}
+map.open,Open
+map.open_house,Go inside
+map.play,Play
+map.unlock_house_level,Unlocks when the {house} reaches level {n}
+map.unlock_owned,Unlocks when you have {n} squishies
+map.upgrade,Upgrade ({coins} coins)
+map.upgraded,Ta-da! The {name} is now level {n}!
 minigame.napping,"This game is taking a nap, try another!"
 music.arcade.name,Brick Party
 music.bistro.name,Hot Bun Hustle
@@ -743,6 +765,22 @@ squishy.xlb.where,Pops up in the upstairs window to watch the street.
 ui.back,Back
 ui.back_to_town,Back to town
 ui.close,Close
+ui.coins,coins
 ui.coins_earned,+{n} coins
+ui.coming_soon,Coming soon!
+ui.gem_store,Gem store
+ui.gems,Gems
+ui.help,How to play
+ui.music,Music
+ui.no,No
 ui.not_enough_coins,You need {n} more coins
+ui.not_now,Not now
 ui.offline,"This needs the internet. The map and all the games still work, though!"
+ui.ok,OK
+ui.save_town,Save my town
+ui.settings,Settings
+ui.show_island,Show the whole island
+ui.stars,Stars
+ui.yes,Yes
+ui.zoom_in,Zoom in
+ui.zoom_out,Zoom out

@@ -6,7 +6,10 @@ extends EditorScenePostImportPlugin
 ##    texture and glow; "soft" (squishies) shades smoothly instead of in steps;
 ##  - adds the plum outline (art/shaders/outline.gdshader) unless the part says outline: false or is see-through,
 ##    storing smoothed normals in the vertex colour so the outline does not crack at hard corners;
-##  - anim {type, ph, amp, sp, depth}: adds an IdleMotion child (art/runtime/idle_motion.gd) that animates the part.
+##  - anim {type, ph, amp, sp, depth}: adds an IdleMotion child (art/runtime/idle_motion.gd) that animates the part;
+##  - instances [16 numbers each] (+ instance_colors): turns the part into one MultiMesh with a copy per instance
+##    (trees, bushes, flowers on the island), colours in the custom data the toon shader reads.
+## Other tags (wrap, clip_y, look, ...) stay on the node as meta "extras" for the game to read.
 ## Parts with no tags (hand-made models) get the toon look and outline.
 
 const TOON := preload("res://art/shaders/toon.gdshader")
@@ -32,6 +35,8 @@ func _walk(node: Node, root: Node) -> void:
 	var extras: Dictionary = node.get_meta(&"extras", {}) if node.has_meta(&"extras") else {}
 	if node is ImporterMeshInstance3D:
 		_restyle(node as ImporterMeshInstance3D, extras)
+		if extras.get("instances") is Array:
+			node = _to_multimesh(node as ImporterMeshInstance3D, extras)
 	if extras.has("anim") and extras["anim"] is Dictionary and node is Node3D:
 		_add_idle(node as Node3D, extras["anim"], root)
 	for child in node.get_children():
@@ -114,6 +119,38 @@ func _smoothed_normals(arrays: Array) -> PackedColorArray:
 			n = nrm[i] if i < nrm.size() else Vector3.UP
 		out[i] = Color(n.x * 0.5 + 0.5, n.y * 0.5 + 0.5, n.z * 0.5 + 0.5, 1.0)
 	return out
+
+
+## Swap an instanced part for a MultiMeshInstance3D with one copy per listed transform.
+func _to_multimesh(mi: ImporterMeshInstance3D, extras: Dictionary) -> Node:
+	var mats: Array = extras["instances"]
+	var cols: Array = extras.get("instance_colors", [])
+	var mm := MultiMesh.new()
+	mm.transform_format = MultiMesh.TRANSFORM_3D
+	mm.use_custom_data = true
+	mm.mesh = mi.mesh.get_mesh()
+	mm.instance_count = mats.size() / 16
+	for i in mm.instance_count:
+		var e: Array = mats.slice(i * 16, i * 16 + 16)
+		# three.js matrices are column-major: x axis, y axis, z axis, position
+		var t := Transform3D(Basis(Vector3(e[0], e[1], e[2]), Vector3(e[4], e[5], e[6]), Vector3(e[8], e[9], e[10])), Vector3(e[12], e[13], e[14]))
+		mm.set_instance_transform(i, t)
+		# like every book colour, these are sRGB values; the shader multiplies in linear light (alpha 1 = "use me")
+		if cols.size() >= (i + 1) * 3:
+			var c := Color(cols[i * 3], cols[i * 3 + 1], cols[i * 3 + 2]).srgb_to_linear()
+			mm.set_instance_custom_data(i, Color(c.r, c.g, c.b, 1.0))
+		else:
+			mm.set_instance_custom_data(i, Color(1, 1, 1, 0))
+	var mmi := MultiMeshInstance3D.new()
+	mmi.name = mi.name
+	mmi.multimesh = mm
+	mmi.transform = mi.transform
+	extras.erase("instances")
+	extras.erase("instance_colors")
+	mmi.set_meta(&"extras", extras)
+	mi.replace_by(mmi)
+	mi.free()
+	return mmi
 
 
 func _add_idle(node: Node3D, anim: Dictionary, root: Node) -> void:

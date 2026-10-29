@@ -5,6 +5,8 @@ extends RefCounted
 ##     ArtLibrary.building(&"dumpling", 7)   -> the Dumpling Steamhouse at level 7 (PackedScene)
 ##     ArtLibrary.squishy(&"bao")            -> Bao Bun, 1 unit tall, standing at the origin, facing +z
 ##     ArtLibrary.portrait(&"bao")           -> Bao Bun's 256 px picture (Texture2D)
+##     ArtLibrary.life(&"bao")               -> Bao's spot, props and idle loop next to the Steamhouse
+##     ArtLibrary.island()                   -> the map without its buildings
 
 const OVERRIDES := "res://art/overrides/"
 
@@ -19,6 +21,41 @@ static func squishy_path(id: StringName) -> String:
 
 static func portrait_path(id: StringName) -> String:
 	return _pick("res://art/sprites/squishies/%s.png" % id)
+
+
+static func life_path(id: StringName) -> String:
+	return _pick("res://art/models/life/life_%s.glb" % id)
+
+
+static func badge_path(id: StringName) -> String:
+	return _pick("res://art/sprites/badges/%s.svg" % id)
+
+
+static func island_path() -> String:
+	return _pick("res://art/models/island/island.glb")
+
+
+static func life(id: StringName) -> PackedScene:
+	return _load(life_path(id)) as PackedScene
+
+
+static func island() -> PackedScene:
+	return _load(island_path()) as PackedScene
+
+
+static func badge(id: StringName) -> Texture2D:
+	return _load(badge_path(id)) as Texture2D if ResourceLoader.exists(badge_path(id)) else null
+
+
+static var _life_heights: Dictionary = {}
+
+
+## art/life.json: for each house and squishy, {"on": sits on the house, "wraps": {wrap name: [height at level 1..10]}}.
+static func life_heights(house: StringName, id: StringName) -> Dictionary:
+	if _life_heights.is_empty():
+		var v: Variant = JSON.parse_string(FileAccess.get_file_as_string("res://art/life.json"))
+		_life_heights = v if v is Dictionary else {"_": {}}
+	return (_life_heights.get(String(house), {}) as Dictionary).get(String(id), {})
 
 
 static func building(id: StringName, level: int) -> PackedScene:
