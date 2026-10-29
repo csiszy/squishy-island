@@ -41,9 +41,9 @@ func _build(title: String, body: String, yes_text: String, no_text: String, art:
 	_card.add_child(col)
 	if art != null:
 		col.add_child(art)
-	col.add_child(Ui.label(title, "Heading", HORIZONTAL_ALIGNMENT_CENTER))
+	col.add_child(Ui.label(title, "Heading", HORIZONTAL_ALIGNMENT_CENTER, true))
 	if body != "":
-		col.add_child(Ui.label(body, "", HORIZONTAL_ALIGNMENT_CENTER))
+		col.add_child(Ui.label(body, "", HORIZONTAL_ALIGNMENT_CENTER, true))
 	var row := HBoxContainer.new()
 	row.alignment = BoxContainer.ALIGNMENT_CENTER
 	col.add_child(row)

@@ -73,7 +73,6 @@ func _build() -> void:
 	_chip.mouse_filter = MOUSE_FILTER_IGNORE
 	add_child(_chip)
 	_name = Ui.label(Text.t(StringName(info.get("name", ""))), "", HORIZONTAL_ALIGNMENT_CENTER)
-	_name.autowrap_mode = TextServer.AUTOWRAP_OFF
 	_name.add_theme_font_size_override("font_size", 24)
 	var pill := StyleBoxFlat.new()
 	pill.bg_color = Color.WHITE

@@ -34,7 +34,7 @@ func _ready() -> void:
 	words.add_theme_constant_override("separation", 2)
 	top.add_child(words)
 	_kind = Ui.label("", "Eyebrow")
-	_title = Ui.label("", "Heading")
+	_title = Ui.label("", "Heading", HORIZONTAL_ALIGNMENT_LEFT, true)
 	_level = Ui.label("", "Small")
 	words.add_child(_kind)
 	words.add_child(_title)
@@ -44,7 +44,7 @@ func _ready() -> void:
 	close.size_flags_vertical = SIZE_SHRINK_BEGIN
 	close.pressed.connect(close_card)
 	top.add_child(close)
-	_note = Ui.label("", "Hand")
+	_note = Ui.label("", "Hand", HORIZONTAL_ALIGNMENT_LEFT, true)
 	col.add_child(_note)
 	_buttons = HBoxContainer.new()
 	col.add_child(_buttons)

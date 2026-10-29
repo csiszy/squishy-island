@@ -21,6 +21,7 @@ static func show_text(text: String) -> void:
 	box.pad = Vector4(36, 18, 36, 18)
 	t.add_theme_stylebox_override("panel", box)
 	var l := Ui.label(text, "", HORIZONTAL_ALIGNMENT_CENTER)
+	l.custom_minimum_size.x = 0
 	l.add_theme_color_override("font_color", Color.WHITE)
 	t.add_child(l)
 	t.mouse_filter = MOUSE_FILTER_IGNORE

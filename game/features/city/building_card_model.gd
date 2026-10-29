@@ -20,10 +20,16 @@ static func for_building(id: StringName, town: TownService, collection: Collecti
 	out["level_text"] = Text.t(&"map.empty_plot") if level == 0 and not house else Text.t(&"map.level", {"n": maxi(1, level)})
 	if locked:
 		out["level_text"] = Text.t(&"map.locked")
-		out["note"] = unlock_text(id)
+		out["note"] = TownWords.unlock_text(id)
 		return out
 	if house:
 		actions.append({"id": &"open_house", "text": Text.t(&"map.open_house"), "enabled": true})
+		var hc := town.upgrade_check(id)
+		if hc["reason"] == &"max":
+			out["note"] = Text.t(&"map.max_level")
+			return out
+		actions.append({"id": &"upgrade", "text": Text.t(&"map.fix_up", {"coins": Ui.number(hc["coins"])}), "enabled": hc["can"]})
+		out["note"] = TownWords.renovate_note(hc, economy)
 		return out
 	var check := town.upgrade_check(id)
 	if level == 0:
@@ -62,18 +68,3 @@ static func kind_text(id: StringName) -> String:
 		&"gemmine":
 			return Text.t(&"map.kind_gemmine")
 	return Text.t(&"map.kind_fun")
-
-
-## "Unlocks when the Dumpling Steamhouse reaches level 3" / "... when you have 8 squishies".
-static func unlock_text(id: StringName) -> String:
-	for u: Dictionary in GameData.economy().get("unlocks", []):
-		var ids: Array = (u.get("houses", []) as Array) + (u.get("buildings", []) as Array)
-		if not String(id) in ids:
-			continue
-		var when: Variant = u.get("when")
-		if when is Dictionary and (when as Dictionary).has("house"):
-			var h := StringName((when as Dictionary)["house"])
-			return Text.t(&"map.unlock_house_level", {"house": Text.t(StringName(GameData.building(h).get("name", ""))), "n": int((when as Dictionary)["level"])})
-		if when is Dictionary and (when as Dictionary).has("owned"):
-			return Text.t(&"map.unlock_owned", {"n": int((when as Dictionary)["owned"])})
-	return ""

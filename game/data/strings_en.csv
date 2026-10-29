@@ -555,6 +555,10 @@ decor.sweets.6.what,Animated pouring chocolate. Unlocks a dipping idle.
 decor_style.candy.name,Candy Pop
 decor_style.classic.name,Classic
 decor_style.mint.name,Mint Breeze
+decor_style.short.candy,Candy
+decor_style.short.classic,Classic
+decor_style.short.mint,Mint
+decor_style.short.star,Starlight
 decor_style.star.name,Starlight
 family.dumpling.name,Dumpling Gang
 family.forest.name,Forest Folk
@@ -564,10 +568,26 @@ family.ocean.name,Sea Squish
 family.pets.name,Pet Pals
 family.sky.name,Sky Puffs
 family.sweets.name,Sugar Squad
+house.bought,The {item} is in your room!
+house.buy,Buy ({coins} coins)
+house.cozy_bonus,Cozy {cozy}: this family earns +{pct}% coins in minigames
+house.cozy_points,+{n} Cozy
+house.decor,Decor shop
+house.family,The family
+house.fixed,Ta-da! Level {n}!
+house.in_room,In your room
+house.level_cozy,Level {n} · Cozy {cozy}
+house.missing,Find me in a Mystery Box!
+house.needs_squishies,Needs {n} family squishies living here (you have {have})
+house.next_level,Next: level {n}
+house.owned,Yours
+house.top_level,Golden and complete!
+house.trying,Trying it on
 map.build,Build it! ({coins} coins)
 map.built,Ta-da! The {name} is ready!
 map.collection,Collection book
 map.empty_plot,Empty plot
+map.fix_up,Fix it up! ({coins} coins)
 map.gem_store,Open the Gem store
 map.kind_factory,Squishy shop · Mystery Boxes
 map.kind_fun,Fun building · minigame

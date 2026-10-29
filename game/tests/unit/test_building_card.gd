@@ -22,7 +22,16 @@ func test_a_house_you_can_enter() -> void:
 	assert_eq(c["title"], "Dumpling Steamhouse")
 	assert_eq(c["kind"], "Family house · Dumpling Gang")
 	assert_eq(c["level_text"], "Level 1")
-	assert_eq(_action_ids(c), [&"open_house"])
+	assert_eq(_action_ids(c), [&"open_house", &"upgrade"])
+	assert_eq(c["actions"][1]["text"], "Fix it up! (100 coins)")
+	assert_eq(c["note"], "You need 100 more coins")
+
+
+func test_a_house_that_needs_more_family() -> void:
+	w.economy.earn(100000, &"test")
+	for i in 3:
+		w.town.upgrade(&"dumpling")
+	assert_eq(_card(&"dumpling")["note"], "Needs 2 family squishies living here (you have 1)")
 
 
 func test_a_locked_house_says_what_unlocks_it() -> void:

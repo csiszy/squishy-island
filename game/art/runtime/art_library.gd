@@ -31,6 +31,14 @@ static func badge_path(id: StringName) -> String:
 	return _pick("res://art/sprites/badges/%s.svg" % id)
 
 
+static func room_path(house: StringName) -> String:
+	return _pick("res://art/models/rooms/%s/room_%s.glb" % [house, house])
+
+
+static func decor_path(house: StringName, item: int, style: StringName) -> String:
+	return _pick("res://art/models/rooms/%s/decor_%d_%s.glb" % [house, item, style])
+
+
 static func island_path() -> String:
 	return _pick("res://art/models/island/island.glb")
 

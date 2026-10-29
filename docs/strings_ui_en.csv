@@ -51,3 +51,23 @@ map.gem_store,Open the Gem store
 map.built,Ta-da! The {name} is ready!
 map.upgraded,Ta-da! The {name} is now level {n}!
 map.collection,Collection book
+map.fix_up,Fix it up! ({coins} coins)
+house.needs_squishies,Needs {n} family squishies living here (you have {have})
+house.level_cozy,Level {n} · Cozy {cozy}
+house.cozy_bonus,"Cozy {cozy}: this family earns +{pct}% coins in minigames"
+house.family,The family
+house.missing,Find me in a Mystery Box!
+house.decor,Decor shop
+house.cozy_points,+{n} Cozy
+house.buy,Buy ({coins} coins)
+house.in_room,In your room
+house.trying,Trying it on
+house.owned,Yours
+house.bought,The {item} is in your room!
+house.fixed,Ta-da! Level {n}!
+house.next_level,"Next: level {n}"
+house.top_level,Golden and complete!
+decor_style.short.classic,Classic
+decor_style.short.candy,Candy
+decor_style.short.mint,Mint
+decor_style.short.star,Starlight

@@ -1,7 +1,7 @@
 extends SceneTree
 ## Starts the real game, optionally does a few things, and saves a screenshot (for checking screens by eye).
 ##   xvfb-run godot --path game --rendering-driver opengl3 --resolution 540x960 -s res://tests/visual/shoot.gd -- out.png [steps...]
-## Steps: print  coins:N  select:<building>  go:<screen>[:id]  wait:<frames>  tap:x,y  zoom:<factor>
+## Steps: print  coins:N  call:Node:method:args  select:<building>  go:<screen>[:id]  wait:<frames>  tap:x,y  zoom:<factor>
 
 func _init() -> void:
 	var args := OS.get_cmdline_user_args()
@@ -33,9 +33,14 @@ func _init() -> void:
 				for i in int(parts[1]):
 					await process_frame
 			"call":
+				# call:NodeName:method[:arg,arg] (numbers become ints, words StringNames)
 				var node := root.find_child(parts[1], true, false)
+				var call_args: Array = []
+				if parts.size() > 3:
+					for a: String in parts[3].split(","):
+						call_args.append(int(a) if a.is_valid_int() else StringName(a))
 				if node:
-					node.call(parts[2])
+					await node.callv(parts[2], call_args)
 		await process_frame
 	for i in 40:
 		await process_frame

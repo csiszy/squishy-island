@@ -13,12 +13,15 @@ static func icon(icon_name: String) -> Texture2D:
 	return load(ICON_DIR % icon_name) as Texture2D
 
 
-static func label(text: String, variation := "", align := HORIZONTAL_ALIGNMENT_LEFT) -> Label:
+## wrap: break long sentences over several lines (it then needs a width from its container).
+static func label(text: String, variation := "", align := HORIZONTAL_ALIGNMENT_LEFT, wrap := false) -> Label:
 	var l := Label.new()
 	l.text = text
 	l.theme_type_variation = variation
 	l.horizontal_alignment = align
-	l.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	if wrap:
+		l.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+		l.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	return l
 
 

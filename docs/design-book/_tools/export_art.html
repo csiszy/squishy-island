@@ -71,6 +71,13 @@ SQ.boot(async function () {
       items.push({ kind: 'squishy', id, file: `models/squishies/squishy_${id}.glb` });
       items.push({ kind: 'portrait', id, file: `sprites/squishies/${id}.png` });
     });
+    /* house rooms: the shadow-box (back panel + frame + anything that is not shop decor), and every decor item in
+       each of its designs on its own, so the game shows only what the player owns, in the design they picked */
+    SQ.HOUSES.forEach(h => {
+      if (!SQ.B[h].interior) return;
+      items.push({ kind: 'room', id: h, file: `models/rooms/${h}/room_${h}.glb` });
+      roomParts(h).items.forEach(n => SQ.DECOR_STYLES.forEach(st => items.push({ kind: 'decor', id: h, item: n, style: st.id, file: `models/rooms/${h}/decor_${n}_${st.id}.glb` })));
+    });
     /* map bubble icons of fun buildings (houses use a house shape + the family's emblem portrait, built in the game) */
     SQ.CIVIC.forEach(id => { if (SQ.B[id].icon) items.push({ kind: 'badge', id, file: `sprites/badges/${id}.svg` }); });
     /* the island (everything on the map except the buildings) and each squishy's life around its house */
@@ -121,6 +128,35 @@ SQ.boot(async function () {
       } finally { D.SIZE = keep; }
       return out;
     }
+    /* rooms (D.room3 in art/kit3d.js, taken apart): the room drawing, its decor groups (data-item) and the rest */
+    function roomParts(h) {
+      const d = SQ.B[h], K = SQ.K; let roomSvg = ''; const orig = K.room, origTag = K.tag;
+      K.room = o => { roomSvg = orig(o); return ''; }; K.tag = () => '';
+      let items = ''; try { items = d.interior(K); } finally { K.room = orig; K.tag = origTag; }
+      const doc = new DOMParser().parseFromString(`<svg xmlns="http://www.w3.org/2000/svg">${items}</svg>`, 'image/svg+xml');
+      const defs = [...doc.documentElement.querySelectorAll('defs')].map(x => x.outerHTML).join('');
+      const nums = [...doc.documentElement.querySelectorAll('[data-item]')].map(g => +g.getAttribute('data-item'));
+      const rest = doc.documentElement.cloneNode(true); rest.querySelectorAll('[data-item]').forEach(g => g.remove());
+      return { roomSvg, itemsSvg: items, defs, items: nums, restSvg: rest.innerHTML };
+    }
+    const relief = (svg) => { const rel = D.inflate(svg, { noBody: true, back: true, puff: 1.7, rough: .55 }); rel.scale.set(.1, .1, .1); rel.position.set(-30, 34, .05); return rel; };
+    function roomBase(h) {
+      const P = roomParts(h), g = new T.Group(); g.name = `room_${h}`;
+      const tex = D.svgTex(P.roomSvg, '0 0 600 340', 1200);
+      const panel = new T.Mesh(new T.PlaneGeometry(60, 34), new T.MeshStandardMaterial({ map: tex, roughness: .95 })); panel.position.set(0, 17, 0); panel.userData.noOutline = true; g.add(panel);
+      const fr = '#FFF8EC', edge = SQ.dk(fr, .15), at = D.at;
+      g.add(at(D.box(63, 1.4, 9, '#C9A97A', .4), 0, -.7, 3.6), at(D.box(1.6, 36, 9, fr, .5), -31, 17, 3.6), at(D.box(1.6, 36, 9, fr, .5), 31, 17, 3.6), at(D.box(63.6, 1.6, 9, fr, .5), 0, 34.8, 3.6), at(D.box(66, 36, 1.2, edge, .4), 0, 17, -.7));
+      if (P.restSvg.replace(/<defs>.*?<\/defs>/g, '').trim()) g.add(relief(P.restSvg));
+      return D.finish(g);
+    }
+    function decorItem(h, n, style) {
+      const P = roomParts(h), styled = SQ.restyle(P.itemsSvg, { [n]: style });
+      const doc = new DOMParser().parseFromString(`<svg xmlns="http://www.w3.org/2000/svg">${styled}</svg>`, 'image/svg+xml');
+      const el = doc.documentElement.querySelector(`[data-item="${n}"]`);
+      const g = new T.Group(); g.name = `decor_${n}_${style}`; if (el) g.add(relief(P.defs + el.outerHTML));
+      return D.finish(g);
+    }
+
     /* the island: the book's own map engine builds it in a hidden box; only the static world is kept */
     async function island() {
       const idx = await (await fetch('../index.html')).text(), a = idx.indexOf('const CITY = '), z = idx.indexOf('\n};', a);
@@ -143,6 +179,8 @@ SQ.boot(async function () {
         try {
           if (it.kind === 'portrait') return { png: D.sprite(it.id, {}, 256).split(',')[1] };
           if (it.kind === 'badge') return { svg: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="-16 -16 32 32" width="128" height="128">${SQ.B[it.id].icon(SQ.K, 0, 0, 1.05)}</svg>\n` };
+          if (it.kind === 'room') { const g = roomBase(it.id); await D.ready(); return { glb: b64(await glb(clean(g))) }; }
+          if (it.kind === 'decor') { const g = decorItem(it.id, it.item, it.style); await D.ready(); return { glb: b64(await glb(clean(g))) }; }
           if (it.kind === 'island') return { glb: b64(await glb(clean(await island()))) };
           if (it.kind === 'life') return { glb: b64(await glb(clean(life(it.house, it.id)))) };
           const obj = it.kind === 'building' ? building(it.id, it.level) : D.squishy(it.id, 1);

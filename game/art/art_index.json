@@ -3112,6 +3112,2006 @@
    "bytes": 26137
   },
   {
+   "file": "models/rooms/dumpling/room_dumpling.glb",
+   "kind": "room",
+   "id": "dumpling",
+   "bytes": 309212,
+   "tris": 3558,
+   "meshes": 6,
+   "materials": 6,
+   "images": 1
+  },
+  {
+   "file": "models/rooms/dumpling/decor_6_classic.glb",
+   "kind": "decor",
+   "id": "dumpling",
+   "bytes": 65124,
+   "tris": 2348,
+   "meshes": 3,
+   "materials": 3,
+   "images": 0
+  },
+  {
+   "file": "models/rooms/dumpling/decor_6_candy.glb",
+   "kind": "decor",
+   "id": "dumpling",
+   "bytes": 65100,
+   "tris": 2348,
+   "meshes": 3,
+   "materials": 3,
+   "images": 0
+  },
+  {
+   "file": "models/rooms/dumpling/decor_6_mint.glb",
+   "kind": "decor",
+   "id": "dumpling",
+   "bytes": 65136,
+   "tris": 2348,
+   "meshes": 3,
+   "materials": 3,
+   "images": 0
+  },
+  {
+   "file": "models/rooms/dumpling/decor_6_star.glb",
+   "kind": "decor",
+   "id": "dumpling",
+   "bytes": 155032,
+   "tris": 3488,
+   "meshes": 4,
+   "materials": 4,
+   "images": 0
+  },
+  {
+   "file": "models/rooms/dumpling/decor_2_classic.glb",
+   "kind": "decor",
+   "id": "dumpling",
+   "bytes": 88648,
+   "tris": 2816,
+   "meshes": 4,
+   "materials": 4,
+   "images": 0
+  },
+  {
+   "file": "models/rooms/dumpling/decor_2_candy.glb",
+   "kind": "decor",
+   "id": "dumpling",
+   "bytes": 88624,
+   "tris": 2816,
+   "meshes": 4,
+   "materials": 4,
+   "images": 0
+  },
+  {
+   "file": "models/rooms/dumpling/decor_2_mint.glb",
+   "kind": "decor",
+   "id": "dumpling",
+   "bytes": 88660,
+   "tris": 2816,
+   "meshes": 4,
+   "materials": 4,
+   "images": 0
+  },
+  {
+   "file": "models/rooms/dumpling/decor_2_star.glb",
+   "kind": "decor",
+   "id": "dumpling",
+   "bytes": 178544,
+   "tris": 3956,
+   "meshes": 5,
+   "materials": 5,
+   "images": 0
+  },
+  {
+   "file": "models/rooms/dumpling/decor_1_classic.glb",
+   "kind": "decor",
+   "id": "dumpling",
+   "bytes": 147980,
+   "tris": 4760,
+   "meshes": 11,
+   "materials": 8,
+   "images": 0
+  },
+  {
+   "file": "models/rooms/dumpling/decor_1_candy.glb",
+   "kind": "decor",
+   "id": "dumpling",
+   "bytes": 147924,
+   "tris": 4760,
+   "meshes": 11,
+   "materials": 8,
+   "images": 0
+  },
+  {
+   "file": "models/rooms/dumpling/decor_1_mint.glb",
+   "kind": "decor",
+   "id": "dumpling",
+   "bytes": 147972,
+   "tris": 4760,
+   "meshes": 11,
+   "materials": 8,
+   "images": 0
+  },
+  {
+   "file": "models/rooms/dumpling/decor_1_star.glb",
+   "kind": "decor",
+   "id": "dumpling",
+   "bytes": 237924,
+   "tris": 5900,
+   "meshes": 12,
+   "materials": 9,
+   "images": 0
+  },
+  {
+   "file": "models/rooms/dumpling/decor_3_classic.glb",
+   "kind": "decor",
+   "id": "dumpling",
+   "bytes": 124192,
+   "tris": 2460,
+   "meshes": 6,
+   "materials": 5,
+   "images": 0
+  },
+  {
+   "file": "models/rooms/dumpling/decor_3_candy.glb",
+   "kind": "decor",
+   "id": "dumpling",
+   "bytes": 124136,
+   "tris": 2460,
+   "meshes": 6,
+   "materials": 5,
+   "images": 0
+  },
+  {
+   "file": "models/rooms/dumpling/decor_3_mint.glb",
+   "kind": "decor",
+   "id": "dumpling",
+   "bytes": 124156,
+   "tris": 2460,
+   "meshes": 6,
+   "materials": 5,
+   "images": 0
+  },
+  {
+   "file": "models/rooms/dumpling/decor_3_star.glb",
+   "kind": "decor",
+   "id": "dumpling",
+   "bytes": 214144,
+   "tris": 3600,
+   "meshes": 7,
+   "materials": 6,
+   "images": 0
+  },
+  {
+   "file": "models/rooms/dumpling/decor_4_classic.glb",
+   "kind": "decor",
+   "id": "dumpling",
+   "bytes": 229020,
+   "tris": 4280,
+   "meshes": 6,
+   "materials": 6,
+   "images": 0
+  },
+  {
+   "file": "models/rooms/dumpling/decor_4_candy.glb",
+   "kind": "decor",
+   "id": "dumpling",
+   "bytes": 228984,
+   "tris": 4280,
+   "meshes": 6,
+   "materials": 6,
+   "images": 0
+  },
+  {
+   "file": "models/rooms/dumpling/decor_4_mint.glb",
+   "kind": "decor",
+   "id": "dumpling",
+   "bytes": 229084,
+   "tris": 4280,
+   "meshes": 6,
+   "materials": 6,
+   "images": 0
+  },
+  {
+   "file": "models/rooms/dumpling/decor_4_star.glb",
+   "kind": "decor",
+   "id": "dumpling",
+   "bytes": 318956,
+   "tris": 5420,
+   "meshes": 7,
+   "materials": 7,
+   "images": 0
+  },
+  {
+   "file": "models/rooms/dumpling/decor_5_classic.glb",
+   "kind": "decor",
+   "id": "dumpling",
+   "bytes": 117468,
+   "tris": 4408,
+   "meshes": 13,
+   "materials": 9,
+   "images": 0
+  },
+  {
+   "file": "models/rooms/dumpling/decor_5_candy.glb",
+   "kind": "decor",
+   "id": "dumpling",
+   "bytes": 117432,
+   "tris": 4408,
+   "meshes": 13,
+   "materials": 9,
+   "images": 0
+  },
+  {
+   "file": "models/rooms/dumpling/decor_5_mint.glb",
+   "kind": "decor",
+   "id": "dumpling",
+   "bytes": 117464,
+   "tris": 4408,
+   "meshes": 13,
+   "materials": 9,
+   "images": 0
+  },
+  {
+   "file": "models/rooms/dumpling/decor_5_star.glb",
+   "kind": "decor",
+   "id": "dumpling",
+   "bytes": 207364,
+   "tris": 5548,
+   "meshes": 14,
+   "materials": 10,
+   "images": 0
+  },
+  {
+   "file": "models/rooms/kitchen/room_kitchen.glb",
+   "kind": "room",
+   "id": "kitchen",
+   "bytes": 238872,
+   "tris": 1262,
+   "meshes": 4,
+   "materials": 4,
+   "images": 1
+  },
+  {
+   "file": "models/rooms/kitchen/decor_4_classic.glb",
+   "kind": "decor",
+   "id": "kitchen",
+   "bytes": 125272,
+   "tris": 6024,
+   "meshes": 3,
+   "materials": 3,
+   "images": 0
+  },
+  {
+   "file": "models/rooms/kitchen/decor_4_candy.glb",
+   "kind": "decor",
+   "id": "kitchen",
+   "bytes": 125252,
+   "tris": 6024,
+   "meshes": 3,
+   "materials": 3,
+   "images": 0
+  },
+  {
+   "file": "models/rooms/kitchen/decor_4_mint.glb",
+   "kind": "decor",
+   "id": "kitchen",
+   "bytes": 125300,
+   "tris": 6024,
+   "meshes": 3,
+   "materials": 3,
+   "images": 0
+  },
+  {
+   "file": "models/rooms/kitchen/decor_4_star.glb",
+   "kind": "decor",
+   "id": "kitchen",
+   "bytes": 215172,
+   "tris": 7164,
+   "meshes": 4,
+   "materials": 4,
+   "images": 0
+  },
+  {
+   "file": "models/rooms/kitchen/decor_1_classic.glb",
+   "kind": "decor",
+   "id": "kitchen",
+   "bytes": 122280,
+   "tris": 3048,
+   "meshes": 4,
+   "materials": 4,
+   "images": 0
+  },
+  {
+   "file": "models/rooms/kitchen/decor_1_candy.glb",
+   "kind": "decor",
+   "id": "kitchen",
+   "bytes": 122276,
+   "tris": 3048,
+   "meshes": 4,
+   "materials": 4,
+   "images": 0
+  },
+  {
+   "file": "models/rooms/kitchen/decor_1_mint.glb",
+   "kind": "decor",
+   "id": "kitchen",
+   "bytes": 122308,
+   "tris": 3048,
+   "meshes": 4,
+   "materials": 4,
+   "images": 0
+  },
+  {
+   "file": "models/rooms/kitchen/decor_1_star.glb",
+   "kind": "decor",
+   "id": "kitchen",
+   "bytes": 212244,
+   "tris": 4188,
+   "meshes": 5,
+   "materials": 5,
+   "images": 0
+  },
+  {
+   "file": "models/rooms/kitchen/decor_2_classic.glb",
+   "kind": "decor",
+   "id": "kitchen",
+   "bytes": 235512,
+   "tris": 5500,
+   "meshes": 15,
+   "materials": 9,
+   "images": 0
+  },
+  {
+   "file": "models/rooms/kitchen/decor_2_candy.glb",
+   "kind": "decor",
+   "id": "kitchen",
+   "bytes": 235548,
+   "tris": 5500,
+   "meshes": 15,
+   "materials": 10,
+   "images": 0
+  },
+  {
+   "file": "models/rooms/kitchen/decor_2_mint.glb",
+   "kind": "decor",
+   "id": "kitchen",
+   "bytes": 235584,
+   "tris": 5500,
+   "meshes": 15,
+   "materials": 10,
+   "images": 0
+  },
+  {
+   "file": "models/rooms/kitchen/decor_2_star.glb",
+   "kind": "decor",
+   "id": "kitchen",
+   "bytes": 325532,
+   "tris": 6640,
+   "meshes": 16,
+   "materials": 11,
+   "images": 0
+  },
+  {
+   "file": "models/rooms/kitchen/decor_3_classic.glb",
+   "kind": "decor",
+   "id": "kitchen",
+   "bytes": 104916,
+   "tris": 2376,
+   "meshes": 5,
+   "materials": 5,
+   "images": 0
+  },
+  {
+   "file": "models/rooms/kitchen/decor_3_candy.glb",
+   "kind": "decor",
+   "id": "kitchen",
+   "bytes": 104864,
+   "tris": 2376,
+   "meshes": 5,
+   "materials": 5,
+   "images": 0
+  },
+  {
+   "file": "models/rooms/kitchen/decor_3_mint.glb",
+   "kind": "decor",
+   "id": "kitchen",
+   "bytes": 104948,
+   "tris": 2376,
+   "meshes": 5,
+   "materials": 5,
+   "images": 0
+  },
+  {
+   "file": "models/rooms/kitchen/decor_3_star.glb",
+   "kind": "decor",
+   "id": "kitchen",
+   "bytes": 194880,
+   "tris": 3516,
+   "meshes": 6,
+   "materials": 6,
+   "images": 0
+  },
+  {
+   "file": "models/rooms/kitchen/decor_5_classic.glb",
+   "kind": "decor",
+   "id": "kitchen",
+   "bytes": 76168,
+   "tris": 3764,
+   "meshes": 11,
+   "materials": 9,
+   "images": 0
+  },
+  {
+   "file": "models/rooms/kitchen/decor_5_candy.glb",
+   "kind": "decor",
+   "id": "kitchen",
+   "bytes": 76164,
+   "tris": 3764,
+   "meshes": 11,
+   "materials": 9,
+   "images": 0
+  },
+  {
+   "file": "models/rooms/kitchen/decor_5_mint.glb",
+   "kind": "decor",
+   "id": "kitchen",
+   "bytes": 76180,
+   "tris": 3764,
+   "meshes": 11,
+   "materials": 9,
+   "images": 0
+  },
+  {
+   "file": "models/rooms/kitchen/decor_5_star.glb",
+   "kind": "decor",
+   "id": "kitchen",
+   "bytes": 166120,
+   "tris": 4904,
+   "meshes": 12,
+   "materials": 10,
+   "images": 0
+  },
+  {
+   "file": "models/rooms/kitchen/decor_6_classic.glb",
+   "kind": "decor",
+   "id": "kitchen",
+   "bytes": 86808,
+   "tris": 2036,
+   "meshes": 4,
+   "materials": 4,
+   "images": 0
+  },
+  {
+   "file": "models/rooms/kitchen/decor_6_candy.glb",
+   "kind": "decor",
+   "id": "kitchen",
+   "bytes": 86772,
+   "tris": 2036,
+   "meshes": 4,
+   "materials": 4,
+   "images": 0
+  },
+  {
+   "file": "models/rooms/kitchen/decor_6_mint.glb",
+   "kind": "decor",
+   "id": "kitchen",
+   "bytes": 86836,
+   "tris": 2036,
+   "meshes": 4,
+   "materials": 4,
+   "images": 0
+  },
+  {
+   "file": "models/rooms/kitchen/decor_6_star.glb",
+   "kind": "decor",
+   "id": "kitchen",
+   "bytes": 176712,
+   "tris": 3176,
+   "meshes": 5,
+   "materials": 5,
+   "images": 0
+  },
+  {
+   "file": "models/rooms/pets/room_pets.glb",
+   "kind": "room",
+   "id": "pets",
+   "bytes": 230540,
+   "tris": 1262,
+   "meshes": 4,
+   "materials": 4,
+   "images": 1
+  },
+  {
+   "file": "models/rooms/pets/decor_1_classic.glb",
+   "kind": "decor",
+   "id": "pets",
+   "bytes": 198864,
+   "tris": 5044,
+   "meshes": 18,
+   "materials": 9,
+   "images": 0
+  },
+  {
+   "file": "models/rooms/pets/decor_1_candy.glb",
+   "kind": "decor",
+   "id": "pets",
+   "bytes": 198960,
+   "tris": 5044,
+   "meshes": 18,
+   "materials": 10,
+   "images": 0
+  },
+  {
+   "file": "models/rooms/pets/decor_1_mint.glb",
+   "kind": "decor",
+   "id": "pets",
+   "bytes": 199028,
+   "tris": 5044,
+   "meshes": 18,
+   "materials": 10,
+   "images": 0
+  },
+  {
+   "file": "models/rooms/pets/decor_1_star.glb",
+   "kind": "decor",
+   "id": "pets",
+   "bytes": 288920,
+   "tris": 6184,
+   "meshes": 19,
+   "materials": 11,
+   "images": 0
+  },
+  {
+   "file": "models/rooms/pets/decor_2_classic.glb",
+   "kind": "decor",
+   "id": "pets",
+   "bytes": 102976,
+   "tris": 3528,
+   "meshes": 11,
+   "materials": 7,
+   "images": 0
+  },
+  {
+   "file": "models/rooms/pets/decor_2_candy.glb",
+   "kind": "decor",
+   "id": "pets",
+   "bytes": 102936,
+   "tris": 3528,
+   "meshes": 11,
+   "materials": 7,
+   "images": 0
+  },
+  {
+   "file": "models/rooms/pets/decor_2_mint.glb",
+   "kind": "decor",
+   "id": "pets",
+   "bytes": 102968,
+   "tris": 3528,
+   "meshes": 11,
+   "materials": 7,
+   "images": 0
+  },
+  {
+   "file": "models/rooms/pets/decor_2_star.glb",
+   "kind": "decor",
+   "id": "pets",
+   "bytes": 192860,
+   "tris": 4668,
+   "meshes": 12,
+   "materials": 8,
+   "images": 0
+  },
+  {
+   "file": "models/rooms/pets/decor_3_classic.glb",
+   "kind": "decor",
+   "id": "pets",
+   "bytes": 134876,
+   "tris": 2244,
+   "meshes": 7,
+   "materials": 7,
+   "images": 0
+  },
+  {
+   "file": "models/rooms/pets/decor_3_candy.glb",
+   "kind": "decor",
+   "id": "pets",
+   "bytes": 134804,
+   "tris": 2244,
+   "meshes": 7,
+   "materials": 7,
+   "images": 0
+  },
+  {
+   "file": "models/rooms/pets/decor_3_mint.glb",
+   "kind": "decor",
+   "id": "pets",
+   "bytes": 134920,
+   "tris": 2244,
+   "meshes": 7,
+   "materials": 7,
+   "images": 0
+  },
+  {
+   "file": "models/rooms/pets/decor_3_star.glb",
+   "kind": "decor",
+   "id": "pets",
+   "bytes": 224776,
+   "tris": 3384,
+   "meshes": 8,
+   "materials": 8,
+   "images": 0
+  },
+  {
+   "file": "models/rooms/pets/decor_4_classic.glb",
+   "kind": "decor",
+   "id": "pets",
+   "bytes": 37696,
+   "tris": 1516,
+   "meshes": 4,
+   "materials": 4,
+   "images": 0
+  },
+  {
+   "file": "models/rooms/pets/decor_4_candy.glb",
+   "kind": "decor",
+   "id": "pets",
+   "bytes": 37676,
+   "tris": 1516,
+   "meshes": 4,
+   "materials": 4,
+   "images": 0
+  },
+  {
+   "file": "models/rooms/pets/decor_4_mint.glb",
+   "kind": "decor",
+   "id": "pets",
+   "bytes": 37724,
+   "tris": 1516,
+   "meshes": 4,
+   "materials": 4,
+   "images": 0
+  },
+  {
+   "file": "models/rooms/pets/decor_4_star.glb",
+   "kind": "decor",
+   "id": "pets",
+   "bytes": 127684,
+   "tris": 2656,
+   "meshes": 5,
+   "materials": 5,
+   "images": 0
+  },
+  {
+   "file": "models/rooms/pets/decor_5_classic.glb",
+   "kind": "decor",
+   "id": "pets",
+   "bytes": 101448,
+   "tris": 2016,
+   "meshes": 4,
+   "materials": 4,
+   "images": 0
+  },
+  {
+   "file": "models/rooms/pets/decor_5_candy.glb",
+   "kind": "decor",
+   "id": "pets",
+   "bytes": 101428,
+   "tris": 2016,
+   "meshes": 4,
+   "materials": 4,
+   "images": 0
+  },
+  {
+   "file": "models/rooms/pets/decor_5_mint.glb",
+   "kind": "decor",
+   "id": "pets",
+   "bytes": 101480,
+   "tris": 2016,
+   "meshes": 4,
+   "materials": 4,
+   "images": 0
+  },
+  {
+   "file": "models/rooms/pets/decor_5_star.glb",
+   "kind": "decor",
+   "id": "pets",
+   "bytes": 191396,
+   "tris": 3156,
+   "meshes": 5,
+   "materials": 5,
+   "images": 0
+  },
+  {
+   "file": "models/rooms/pets/decor_6_classic.glb",
+   "kind": "decor",
+   "id": "pets",
+   "bytes": 92952,
+   "tris": 5308,
+   "meshes": 9,
+   "materials": 8,
+   "images": 0
+  },
+  {
+   "file": "models/rooms/pets/decor_6_candy.glb",
+   "kind": "decor",
+   "id": "pets",
+   "bytes": 92932,
+   "tris": 5308,
+   "meshes": 9,
+   "materials": 8,
+   "images": 0
+  },
+  {
+   "file": "models/rooms/pets/decor_6_mint.glb",
+   "kind": "decor",
+   "id": "pets",
+   "bytes": 92968,
+   "tris": 5308,
+   "meshes": 9,
+   "materials": 8,
+   "images": 0
+  },
+  {
+   "file": "models/rooms/pets/decor_6_star.glb",
+   "kind": "decor",
+   "id": "pets",
+   "bytes": 182848,
+   "tris": 6448,
+   "meshes": 10,
+   "materials": 9,
+   "images": 0
+  },
+  {
+   "file": "models/rooms/sweets/room_sweets.glb",
+   "kind": "room",
+   "id": "sweets",
+   "bytes": 236884,
+   "tris": 1262,
+   "meshes": 4,
+   "materials": 4,
+   "images": 1
+  },
+  {
+   "file": "models/rooms/sweets/decor_4_classic.glb",
+   "kind": "decor",
+   "id": "sweets",
+   "bytes": 42704,
+   "tris": 1880,
+   "meshes": 4,
+   "materials": 4,
+   "images": 0
+  },
+  {
+   "file": "models/rooms/sweets/decor_4_candy.glb",
+   "kind": "decor",
+   "id": "sweets",
+   "bytes": 42684,
+   "tris": 1880,
+   "meshes": 4,
+   "materials": 4,
+   "images": 0
+  },
+  {
+   "file": "models/rooms/sweets/decor_4_mint.glb",
+   "kind": "decor",
+   "id": "sweets",
+   "bytes": 42720,
+   "tris": 1880,
+   "meshes": 4,
+   "materials": 4,
+   "images": 0
+  },
+  {
+   "file": "models/rooms/sweets/decor_4_star.glb",
+   "kind": "decor",
+   "id": "sweets",
+   "bytes": 132668,
+   "tris": 3020,
+   "meshes": 5,
+   "materials": 5,
+   "images": 0
+  },
+  {
+   "file": "models/rooms/sweets/decor_1_classic.glb",
+   "kind": "decor",
+   "id": "sweets",
+   "bytes": 284764,
+   "tris": 9468,
+   "meshes": 14,
+   "materials": 10,
+   "images": 0
+  },
+  {
+   "file": "models/rooms/sweets/decor_1_candy.glb",
+   "kind": "decor",
+   "id": "sweets",
+   "bytes": 284744,
+   "tris": 9468,
+   "meshes": 14,
+   "materials": 10,
+   "images": 0
+  },
+  {
+   "file": "models/rooms/sweets/decor_1_mint.glb",
+   "kind": "decor",
+   "id": "sweets",
+   "bytes": 284792,
+   "tris": 9468,
+   "meshes": 14,
+   "materials": 10,
+   "images": 0
+  },
+  {
+   "file": "models/rooms/sweets/decor_1_star.glb",
+   "kind": "decor",
+   "id": "sweets",
+   "bytes": 374552,
+   "tris": 10608,
+   "meshes": 15,
+   "materials": 10,
+   "images": 0
+  },
+  {
+   "file": "models/rooms/sweets/decor_2_classic.glb",
+   "kind": "decor",
+   "id": "sweets",
+   "bytes": 89212,
+   "tris": 2904,
+   "meshes": 3,
+   "materials": 3,
+   "images": 0
+  },
+  {
+   "file": "models/rooms/sweets/decor_2_candy.glb",
+   "kind": "decor",
+   "id": "sweets",
+   "bytes": 89196,
+   "tris": 2904,
+   "meshes": 3,
+   "materials": 3,
+   "images": 0
+  },
+  {
+   "file": "models/rooms/sweets/decor_2_mint.glb",
+   "kind": "decor",
+   "id": "sweets",
+   "bytes": 89244,
+   "tris": 2904,
+   "meshes": 3,
+   "materials": 3,
+   "images": 0
+  },
+  {
+   "file": "models/rooms/sweets/decor_2_star.glb",
+   "kind": "decor",
+   "id": "sweets",
+   "bytes": 179208,
+   "tris": 4044,
+   "meshes": 4,
+   "materials": 4,
+   "images": 0
+  },
+  {
+   "file": "models/rooms/sweets/decor_3_classic.glb",
+   "kind": "decor",
+   "id": "sweets",
+   "bytes": 341112,
+   "tris": 8836,
+   "meshes": 11,
+   "materials": 8,
+   "images": 0
+  },
+  {
+   "file": "models/rooms/sweets/decor_3_candy.glb",
+   "kind": "decor",
+   "id": "sweets",
+   "bytes": 341060,
+   "tris": 8836,
+   "meshes": 11,
+   "materials": 8,
+   "images": 0
+  },
+  {
+   "file": "models/rooms/sweets/decor_3_mint.glb",
+   "kind": "decor",
+   "id": "sweets",
+   "bytes": 341192,
+   "tris": 8836,
+   "meshes": 11,
+   "materials": 8,
+   "images": 0
+  },
+  {
+   "file": "models/rooms/sweets/decor_3_star.glb",
+   "kind": "decor",
+   "id": "sweets",
+   "bytes": 431012,
+   "tris": 9976,
+   "meshes": 12,
+   "materials": 9,
+   "images": 0
+  },
+  {
+   "file": "models/rooms/sweets/decor_5_classic.glb",
+   "kind": "decor",
+   "id": "sweets",
+   "bytes": 140132,
+   "tris": 6024,
+   "meshes": 12,
+   "materials": 10,
+   "images": 0
+  },
+  {
+   "file": "models/rooms/sweets/decor_5_candy.glb",
+   "kind": "decor",
+   "id": "sweets",
+   "bytes": 140264,
+   "tris": 6024,
+   "meshes": 12,
+   "materials": 11,
+   "images": 0
+  },
+  {
+   "file": "models/rooms/sweets/decor_5_mint.glb",
+   "kind": "decor",
+   "id": "sweets",
+   "bytes": 140348,
+   "tris": 6024,
+   "meshes": 12,
+   "materials": 11,
+   "images": 0
+  },
+  {
+   "file": "models/rooms/sweets/decor_5_star.glb",
+   "kind": "decor",
+   "id": "sweets",
+   "bytes": 230204,
+   "tris": 7164,
+   "meshes": 13,
+   "materials": 12,
+   "images": 0
+  },
+  {
+   "file": "models/rooms/sweets/decor_6_classic.glb",
+   "kind": "decor",
+   "id": "sweets",
+   "bytes": 84624,
+   "tris": 2712,
+   "meshes": 2,
+   "materials": 2,
+   "images": 0
+  },
+  {
+   "file": "models/rooms/sweets/decor_6_candy.glb",
+   "kind": "decor",
+   "id": "sweets",
+   "bytes": 84604,
+   "tris": 2712,
+   "meshes": 2,
+   "materials": 2,
+   "images": 0
+  },
+  {
+   "file": "models/rooms/sweets/decor_6_mint.glb",
+   "kind": "decor",
+   "id": "sweets",
+   "bytes": 84620,
+   "tris": 2712,
+   "meshes": 2,
+   "materials": 2,
+   "images": 0
+  },
+  {
+   "file": "models/rooms/sweets/decor_6_star.glb",
+   "kind": "decor",
+   "id": "sweets",
+   "bytes": 174496,
+   "tris": 3852,
+   "meshes": 3,
+   "materials": 3,
+   "images": 0
+  },
+  {
+   "file": "models/rooms/fruit/room_fruit.glb",
+   "kind": "room",
+   "id": "fruit",
+   "bytes": 278448,
+   "tris": 1262,
+   "meshes": 4,
+   "materials": 4,
+   "images": 1
+  },
+  {
+   "file": "models/rooms/fruit/decor_6_classic.glb",
+   "kind": "decor",
+   "id": "fruit",
+   "bytes": 279496,
+   "tris": 4652,
+   "meshes": 8,
+   "materials": 8,
+   "images": 0
+  },
+  {
+   "file": "models/rooms/fruit/decor_6_candy.glb",
+   "kind": "decor",
+   "id": "fruit",
+   "bytes": 279440,
+   "tris": 4652,
+   "meshes": 8,
+   "materials": 8,
+   "images": 0
+  },
+  {
+   "file": "models/rooms/fruit/decor_6_mint.glb",
+   "kind": "decor",
+   "id": "fruit",
+   "bytes": 279576,
+   "tris": 4652,
+   "meshes": 8,
+   "materials": 8,
+   "images": 0
+  },
+  {
+   "file": "models/rooms/fruit/decor_6_star.glb",
+   "kind": "decor",
+   "id": "fruit",
+   "bytes": 369464,
+   "tris": 5792,
+   "meshes": 9,
+   "materials": 9,
+   "images": 0
+  },
+  {
+   "file": "models/rooms/fruit/decor_1_classic.glb",
+   "kind": "decor",
+   "id": "fruit",
+   "bytes": 305824,
+   "tris": 8524,
+   "meshes": 16,
+   "materials": 11,
+   "images": 0
+  },
+  {
+   "file": "models/rooms/fruit/decor_1_candy.glb",
+   "kind": "decor",
+   "id": "fruit",
+   "bytes": 305800,
+   "tris": 8524,
+   "meshes": 16,
+   "materials": 11,
+   "images": 0
+  },
+  {
+   "file": "models/rooms/fruit/decor_1_mint.glb",
+   "kind": "decor",
+   "id": "fruit",
+   "bytes": 305832,
+   "tris": 8524,
+   "meshes": 16,
+   "materials": 11,
+   "images": 0
+  },
+  {
+   "file": "models/rooms/fruit/decor_1_star.glb",
+   "kind": "decor",
+   "id": "fruit",
+   "bytes": 395736,
+   "tris": 9664,
+   "meshes": 17,
+   "materials": 12,
+   "images": 0
+  },
+  {
+   "file": "models/rooms/fruit/decor_2_classic.glb",
+   "kind": "decor",
+   "id": "fruit",
+   "bytes": 120536,
+   "tris": 1608,
+   "meshes": 6,
+   "materials": 6,
+   "images": 0
+  },
+  {
+   "file": "models/rooms/fruit/decor_2_candy.glb",
+   "kind": "decor",
+   "id": "fruit",
+   "bytes": 120548,
+   "tris": 1608,
+   "meshes": 6,
+   "materials": 6,
+   "images": 0
+  },
+  {
+   "file": "models/rooms/fruit/decor_2_mint.glb",
+   "kind": "decor",
+   "id": "fruit",
+   "bytes": 120612,
+   "tris": 1608,
+   "meshes": 6,
+   "materials": 6,
+   "images": 0
+  },
+  {
+   "file": "models/rooms/fruit/decor_2_star.glb",
+   "kind": "decor",
+   "id": "fruit",
+   "bytes": 210560,
+   "tris": 2748,
+   "meshes": 7,
+   "materials": 7,
+   "images": 0
+  },
+  {
+   "file": "models/rooms/fruit/decor_3_classic.glb",
+   "kind": "decor",
+   "id": "fruit",
+   "bytes": 32416,
+   "tris": 1308,
+   "meshes": 3,
+   "materials": 3,
+   "images": 0
+  },
+  {
+   "file": "models/rooms/fruit/decor_3_candy.glb",
+   "kind": "decor",
+   "id": "fruit",
+   "bytes": 32392,
+   "tris": 1308,
+   "meshes": 3,
+   "materials": 3,
+   "images": 0
+  },
+  {
+   "file": "models/rooms/fruit/decor_3_mint.glb",
+   "kind": "decor",
+   "id": "fruit",
+   "bytes": 32428,
+   "tris": 1308,
+   "meshes": 3,
+   "materials": 3,
+   "images": 0
+  },
+  {
+   "file": "models/rooms/fruit/decor_3_star.glb",
+   "kind": "decor",
+   "id": "fruit",
+   "bytes": 122308,
+   "tris": 2448,
+   "meshes": 4,
+   "materials": 4,
+   "images": 0
+  },
+  {
+   "file": "models/rooms/fruit/decor_4_classic.glb",
+   "kind": "decor",
+   "id": "fruit",
+   "bytes": 139608,
+   "tris": 5132,
+   "meshes": 10,
+   "materials": 8,
+   "images": 0
+  },
+  {
+   "file": "models/rooms/fruit/decor_4_candy.glb",
+   "kind": "decor",
+   "id": "fruit",
+   "bytes": 139568,
+   "tris": 5132,
+   "meshes": 10,
+   "materials": 8,
+   "images": 0
+  },
+  {
+   "file": "models/rooms/fruit/decor_4_mint.glb",
+   "kind": "decor",
+   "id": "fruit",
+   "bytes": 139620,
+   "tris": 5132,
+   "meshes": 10,
+   "materials": 8,
+   "images": 0
+  },
+  {
+   "file": "models/rooms/fruit/decor_4_star.glb",
+   "kind": "decor",
+   "id": "fruit",
+   "bytes": 229520,
+   "tris": 6272,
+   "meshes": 11,
+   "materials": 9,
+   "images": 0
+  },
+  {
+   "file": "models/rooms/fruit/decor_5_classic.glb",
+   "kind": "decor",
+   "id": "fruit",
+   "bytes": 150488,
+   "tris": 5104,
+   "meshes": 9,
+   "materials": 8,
+   "images": 0
+  },
+  {
+   "file": "models/rooms/fruit/decor_5_candy.glb",
+   "kind": "decor",
+   "id": "fruit",
+   "bytes": 150448,
+   "tris": 5104,
+   "meshes": 9,
+   "materials": 8,
+   "images": 0
+  },
+  {
+   "file": "models/rooms/fruit/decor_5_mint.glb",
+   "kind": "decor",
+   "id": "fruit",
+   "bytes": 150480,
+   "tris": 5104,
+   "meshes": 9,
+   "materials": 8,
+   "images": 0
+  },
+  {
+   "file": "models/rooms/fruit/decor_5_star.glb",
+   "kind": "decor",
+   "id": "fruit",
+   "bytes": 240380,
+   "tris": 6244,
+   "meshes": 10,
+   "materials": 9,
+   "images": 0
+  },
+  {
+   "file": "models/rooms/ocean/room_ocean.glb",
+   "kind": "room",
+   "id": "ocean",
+   "bytes": 308448,
+   "tris": 1262,
+   "meshes": 4,
+   "materials": 4,
+   "images": 1
+  },
+  {
+   "file": "models/rooms/ocean/decor_2_classic.glb",
+   "kind": "decor",
+   "id": "ocean",
+   "bytes": 136404,
+   "tris": 5120,
+   "meshes": 6,
+   "materials": 6,
+   "images": 0
+  },
+  {
+   "file": "models/rooms/ocean/decor_2_candy.glb",
+   "kind": "decor",
+   "id": "ocean",
+   "bytes": 136364,
+   "tris": 5120,
+   "meshes": 6,
+   "materials": 6,
+   "images": 0
+  },
+  {
+   "file": "models/rooms/ocean/decor_2_mint.glb",
+   "kind": "decor",
+   "id": "ocean",
+   "bytes": 136444,
+   "tris": 5120,
+   "meshes": 6,
+   "materials": 6,
+   "images": 0
+  },
+  {
+   "file": "models/rooms/ocean/decor_2_star.glb",
+   "kind": "decor",
+   "id": "ocean",
+   "bytes": 226352,
+   "tris": 6260,
+   "meshes": 7,
+   "materials": 7,
+   "images": 0
+  },
+  {
+   "file": "models/rooms/ocean/decor_1_classic.glb",
+   "kind": "decor",
+   "id": "ocean",
+   "bytes": 147152,
+   "tris": 6032,
+   "meshes": 20,
+   "materials": 11,
+   "images": 0
+  },
+  {
+   "file": "models/rooms/ocean/decor_1_candy.glb",
+   "kind": "decor",
+   "id": "ocean",
+   "bytes": 147120,
+   "tris": 6032,
+   "meshes": 20,
+   "materials": 11,
+   "images": 0
+  },
+  {
+   "file": "models/rooms/ocean/decor_1_mint.glb",
+   "kind": "decor",
+   "id": "ocean",
+   "bytes": 147200,
+   "tris": 6032,
+   "meshes": 20,
+   "materials": 11,
+   "images": 0
+  },
+  {
+   "file": "models/rooms/ocean/decor_1_star.glb",
+   "kind": "decor",
+   "id": "ocean",
+   "bytes": 237072,
+   "tris": 7172,
+   "meshes": 21,
+   "materials": 12,
+   "images": 0
+  },
+  {
+   "file": "models/rooms/ocean/decor_3_classic.glb",
+   "kind": "decor",
+   "id": "ocean",
+   "bytes": 216684,
+   "tris": 9204,
+   "meshes": 12,
+   "materials": 8,
+   "images": 0
+  },
+  {
+   "file": "models/rooms/ocean/decor_3_candy.glb",
+   "kind": "decor",
+   "id": "ocean",
+   "bytes": 216668,
+   "tris": 9204,
+   "meshes": 12,
+   "materials": 8,
+   "images": 0
+  },
+  {
+   "file": "models/rooms/ocean/decor_3_mint.glb",
+   "kind": "decor",
+   "id": "ocean",
+   "bytes": 216716,
+   "tris": 9204,
+   "meshes": 12,
+   "materials": 8,
+   "images": 0
+  },
+  {
+   "file": "models/rooms/ocean/decor_3_star.glb",
+   "kind": "decor",
+   "id": "ocean",
+   "bytes": 306620,
+   "tris": 10344,
+   "meshes": 13,
+   "materials": 9,
+   "images": 0
+  },
+  {
+   "file": "models/rooms/ocean/decor_4_classic.glb",
+   "kind": "decor",
+   "id": "ocean",
+   "bytes": 132836,
+   "tris": 2320,
+   "meshes": 3,
+   "materials": 3,
+   "images": 0
+  },
+  {
+   "file": "models/rooms/ocean/decor_4_candy.glb",
+   "kind": "decor",
+   "id": "ocean",
+   "bytes": 132796,
+   "tris": 2320,
+   "meshes": 3,
+   "materials": 3,
+   "images": 0
+  },
+  {
+   "file": "models/rooms/ocean/decor_4_mint.glb",
+   "kind": "decor",
+   "id": "ocean",
+   "bytes": 132848,
+   "tris": 2320,
+   "meshes": 3,
+   "materials": 3,
+   "images": 0
+  },
+  {
+   "file": "models/rooms/ocean/decor_4_star.glb",
+   "kind": "decor",
+   "id": "ocean",
+   "bytes": 222732,
+   "tris": 3460,
+   "meshes": 4,
+   "materials": 4,
+   "images": 0
+  },
+  {
+   "file": "models/rooms/ocean/decor_5_classic.glb",
+   "kind": "decor",
+   "id": "ocean",
+   "bytes": 67196,
+   "tris": 2096,
+   "meshes": 4,
+   "materials": 4,
+   "images": 0
+  },
+  {
+   "file": "models/rooms/ocean/decor_5_candy.glb",
+   "kind": "decor",
+   "id": "ocean",
+   "bytes": 67176,
+   "tris": 2096,
+   "meshes": 4,
+   "materials": 4,
+   "images": 0
+  },
+  {
+   "file": "models/rooms/ocean/decor_5_mint.glb",
+   "kind": "decor",
+   "id": "ocean",
+   "bytes": 67228,
+   "tris": 2096,
+   "meshes": 4,
+   "materials": 4,
+   "images": 0
+  },
+  {
+   "file": "models/rooms/ocean/decor_5_star.glb",
+   "kind": "decor",
+   "id": "ocean",
+   "bytes": 157100,
+   "tris": 3236,
+   "meshes": 5,
+   "materials": 5,
+   "images": 0
+  },
+  {
+   "file": "models/rooms/ocean/decor_6_classic.glb",
+   "kind": "decor",
+   "id": "ocean",
+   "bytes": 60344,
+   "tris": 2880,
+   "meshes": 2,
+   "materials": 2,
+   "images": 0
+  },
+  {
+   "file": "models/rooms/ocean/decor_6_candy.glb",
+   "kind": "decor",
+   "id": "ocean",
+   "bytes": 60308,
+   "tris": 2880,
+   "meshes": 2,
+   "materials": 2,
+   "images": 0
+  },
+  {
+   "file": "models/rooms/ocean/decor_6_mint.glb",
+   "kind": "decor",
+   "id": "ocean",
+   "bytes": 60340,
+   "tris": 2880,
+   "meshes": 2,
+   "materials": 2,
+   "images": 0
+  },
+  {
+   "file": "models/rooms/ocean/decor_6_star.glb",
+   "kind": "decor",
+   "id": "ocean",
+   "bytes": 150236,
+   "tris": 4020,
+   "meshes": 3,
+   "materials": 3,
+   "images": 0
+  },
+  {
+   "file": "models/rooms/sky/room_sky.glb",
+   "kind": "room",
+   "id": "sky",
+   "bytes": 338912,
+   "tris": 7502,
+   "meshes": 6,
+   "materials": 6,
+   "images": 1
+  },
+  {
+   "file": "models/rooms/sky/decor_2_classic.glb",
+   "kind": "decor",
+   "id": "sky",
+   "bytes": 31684,
+   "tris": 608,
+   "meshes": 2,
+   "materials": 2,
+   "images": 0
+  },
+  {
+   "file": "models/rooms/sky/decor_2_candy.glb",
+   "kind": "decor",
+   "id": "sky",
+   "bytes": 31664,
+   "tris": 608,
+   "meshes": 2,
+   "materials": 2,
+   "images": 0
+  },
+  {
+   "file": "models/rooms/sky/decor_2_mint.glb",
+   "kind": "decor",
+   "id": "sky",
+   "bytes": 31700,
+   "tris": 608,
+   "meshes": 2,
+   "materials": 2,
+   "images": 0
+  },
+  {
+   "file": "models/rooms/sky/decor_2_star.glb",
+   "kind": "decor",
+   "id": "sky",
+   "bytes": 121576,
+   "tris": 1748,
+   "meshes": 3,
+   "materials": 3,
+   "images": 0
+  },
+  {
+   "file": "models/rooms/sky/decor_1_classic.glb",
+   "kind": "decor",
+   "id": "sky",
+   "bytes": 136704,
+   "tris": 6604,
+   "meshes": 9,
+   "materials": 5,
+   "images": 0
+  },
+  {
+   "file": "models/rooms/sky/decor_1_candy.glb",
+   "kind": "decor",
+   "id": "sky",
+   "bytes": 136904,
+   "tris": 6604,
+   "meshes": 9,
+   "materials": 7,
+   "images": 0
+  },
+  {
+   "file": "models/rooms/sky/decor_1_mint.glb",
+   "kind": "decor",
+   "id": "sky",
+   "bytes": 136940,
+   "tris": 6604,
+   "meshes": 9,
+   "materials": 7,
+   "images": 0
+  },
+  {
+   "file": "models/rooms/sky/decor_1_star.glb",
+   "kind": "decor",
+   "id": "sky",
+   "bytes": 226896,
+   "tris": 7744,
+   "meshes": 10,
+   "materials": 8,
+   "images": 0
+  },
+  {
+   "file": "models/rooms/sky/decor_3_classic.glb",
+   "kind": "decor",
+   "id": "sky",
+   "bytes": 220940,
+   "tris": 8388,
+   "meshes": 11,
+   "materials": 11,
+   "images": 0
+  },
+  {
+   "file": "models/rooms/sky/decor_3_candy.glb",
+   "kind": "decor",
+   "id": "sky",
+   "bytes": 220832,
+   "tris": 8388,
+   "meshes": 11,
+   "materials": 11,
+   "images": 0
+  },
+  {
+   "file": "models/rooms/sky/decor_3_mint.glb",
+   "kind": "decor",
+   "id": "sky",
+   "bytes": 221012,
+   "tris": 8388,
+   "meshes": 11,
+   "materials": 11,
+   "images": 0
+  },
+  {
+   "file": "models/rooms/sky/decor_3_star.glb",
+   "kind": "decor",
+   "id": "sky",
+   "bytes": 310948,
+   "tris": 9528,
+   "meshes": 12,
+   "materials": 12,
+   "images": 0
+  },
+  {
+   "file": "models/rooms/sky/decor_4_classic.glb",
+   "kind": "decor",
+   "id": "sky",
+   "bytes": 132140,
+   "tris": 3152,
+   "meshes": 2,
+   "materials": 2,
+   "images": 0
+  },
+  {
+   "file": "models/rooms/sky/decor_4_candy.glb",
+   "kind": "decor",
+   "id": "sky",
+   "bytes": 132120,
+   "tris": 3152,
+   "meshes": 2,
+   "materials": 2,
+   "images": 0
+  },
+  {
+   "file": "models/rooms/sky/decor_4_mint.glb",
+   "kind": "decor",
+   "id": "sky",
+   "bytes": 132156,
+   "tris": 3152,
+   "meshes": 2,
+   "materials": 2,
+   "images": 0
+  },
+  {
+   "file": "models/rooms/sky/decor_4_star.glb",
+   "kind": "decor",
+   "id": "sky",
+   "bytes": 222052,
+   "tris": 4292,
+   "meshes": 3,
+   "materials": 3,
+   "images": 0
+  },
+  {
+   "file": "models/rooms/sky/decor_5_classic.glb",
+   "kind": "decor",
+   "id": "sky",
+   "bytes": 58572,
+   "tris": 2388,
+   "meshes": 4,
+   "materials": 4,
+   "images": 0
+  },
+  {
+   "file": "models/rooms/sky/decor_5_candy.glb",
+   "kind": "decor",
+   "id": "sky",
+   "bytes": 58536,
+   "tris": 2388,
+   "meshes": 4,
+   "materials": 4,
+   "images": 0
+  },
+  {
+   "file": "models/rooms/sky/decor_5_mint.glb",
+   "kind": "decor",
+   "id": "sky",
+   "bytes": 58604,
+   "tris": 2388,
+   "meshes": 4,
+   "materials": 4,
+   "images": 0
+  },
+  {
+   "file": "models/rooms/sky/decor_5_star.glb",
+   "kind": "decor",
+   "id": "sky",
+   "bytes": 148548,
+   "tris": 3528,
+   "meshes": 5,
+   "materials": 5,
+   "images": 0
+  },
+  {
+   "file": "models/rooms/sky/decor_6_classic.glb",
+   "kind": "decor",
+   "id": "sky",
+   "bytes": 123168,
+   "tris": 4428,
+   "meshes": 8,
+   "materials": 7,
+   "images": 0
+  },
+  {
+   "file": "models/rooms/sky/decor_6_candy.glb",
+   "kind": "decor",
+   "id": "sky",
+   "bytes": 123132,
+   "tris": 4428,
+   "meshes": 8,
+   "materials": 7,
+   "images": 0
+  },
+  {
+   "file": "models/rooms/sky/decor_6_mint.glb",
+   "kind": "decor",
+   "id": "sky",
+   "bytes": 123180,
+   "tris": 4428,
+   "meshes": 8,
+   "materials": 7,
+   "images": 0
+  },
+  {
+   "file": "models/rooms/sky/decor_6_star.glb",
+   "kind": "decor",
+   "id": "sky",
+   "bytes": 213072,
+   "tris": 5568,
+   "meshes": 9,
+   "materials": 8,
+   "images": 0
+  },
+  {
+   "file": "models/rooms/forest/room_forest.glb",
+   "kind": "room",
+   "id": "forest",
+   "bytes": 227164,
+   "tris": 1262,
+   "meshes": 4,
+   "materials": 4,
+   "images": 1
+  },
+  {
+   "file": "models/rooms/forest/decor_6_classic.glb",
+   "kind": "decor",
+   "id": "forest",
+   "bytes": 184112,
+   "tris": 5260,
+   "meshes": 19,
+   "materials": 11,
+   "images": 0
+  },
+  {
+   "file": "models/rooms/forest/decor_6_candy.glb",
+   "kind": "decor",
+   "id": "forest",
+   "bytes": 184076,
+   "tris": 5260,
+   "meshes": 19,
+   "materials": 11,
+   "images": 0
+  },
+  {
+   "file": "models/rooms/forest/decor_6_mint.glb",
+   "kind": "decor",
+   "id": "forest",
+   "bytes": 184140,
+   "tris": 5260,
+   "meshes": 19,
+   "materials": 11,
+   "images": 0
+  },
+  {
+   "file": "models/rooms/forest/decor_6_star.glb",
+   "kind": "decor",
+   "id": "forest",
+   "bytes": 274016,
+   "tris": 6400,
+   "meshes": 20,
+   "materials": 12,
+   "images": 0
+  },
+  {
+   "file": "models/rooms/forest/decor_1_classic.glb",
+   "kind": "decor",
+   "id": "forest",
+   "bytes": 128980,
+   "tris": 4800,
+   "meshes": 9,
+   "materials": 5,
+   "images": 0
+  },
+  {
+   "file": "models/rooms/forest/decor_1_candy.glb",
+   "kind": "decor",
+   "id": "forest",
+   "bytes": 129220,
+   "tris": 4800,
+   "meshes": 9,
+   "materials": 7,
+   "images": 0
+  },
+  {
+   "file": "models/rooms/forest/decor_1_mint.glb",
+   "kind": "decor",
+   "id": "forest",
+   "bytes": 129272,
+   "tris": 4800,
+   "meshes": 9,
+   "materials": 7,
+   "images": 0
+  },
+  {
+   "file": "models/rooms/forest/decor_1_star.glb",
+   "kind": "decor",
+   "id": "forest",
+   "bytes": 219180,
+   "tris": 5940,
+   "meshes": 10,
+   "materials": 8,
+   "images": 0
+  },
+  {
+   "file": "models/rooms/forest/decor_2_classic.glb",
+   "kind": "decor",
+   "id": "forest",
+   "bytes": 191260,
+   "tris": 4760,
+   "meshes": 13,
+   "materials": 9,
+   "images": 0
+  },
+  {
+   "file": "models/rooms/forest/decor_2_candy.glb",
+   "kind": "decor",
+   "id": "forest",
+   "bytes": 191308,
+   "tris": 4760,
+   "meshes": 13,
+   "materials": 10,
+   "images": 0
+  },
+  {
+   "file": "models/rooms/forest/decor_2_mint.glb",
+   "kind": "decor",
+   "id": "forest",
+   "bytes": 191360,
+   "tris": 4760,
+   "meshes": 13,
+   "materials": 10,
+   "images": 0
+  },
+  {
+   "file": "models/rooms/forest/decor_2_star.glb",
+   "kind": "decor",
+   "id": "forest",
+   "bytes": 281312,
+   "tris": 5900,
+   "meshes": 14,
+   "materials": 11,
+   "images": 0
+  },
+  {
+   "file": "models/rooms/forest/decor_3_classic.glb",
+   "kind": "decor",
+   "id": "forest",
+   "bytes": 93972,
+   "tris": 3056,
+   "meshes": 4,
+   "materials": 4,
+   "images": 0
+  },
+  {
+   "file": "models/rooms/forest/decor_3_candy.glb",
+   "kind": "decor",
+   "id": "forest",
+   "bytes": 93932,
+   "tris": 3056,
+   "meshes": 4,
+   "materials": 4,
+   "images": 0
+  },
+  {
+   "file": "models/rooms/forest/decor_3_mint.glb",
+   "kind": "decor",
+   "id": "forest",
+   "bytes": 94016,
+   "tris": 3056,
+   "meshes": 4,
+   "materials": 4,
+   "images": 0
+  },
+  {
+   "file": "models/rooms/forest/decor_3_star.glb",
+   "kind": "decor",
+   "id": "forest",
+   "bytes": 183868,
+   "tris": 4196,
+   "meshes": 5,
+   "materials": 5,
+   "images": 0
+  },
+  {
+   "file": "models/rooms/forest/decor_4_classic.glb",
+   "kind": "decor",
+   "id": "forest",
+   "bytes": 78692,
+   "tris": 2268,
+   "meshes": 3,
+   "materials": 3,
+   "images": 0
+  },
+  {
+   "file": "models/rooms/forest/decor_4_candy.glb",
+   "kind": "decor",
+   "id": "forest",
+   "bytes": 78656,
+   "tris": 2268,
+   "meshes": 3,
+   "materials": 3,
+   "images": 0
+  },
+  {
+   "file": "models/rooms/forest/decor_4_mint.glb",
+   "kind": "decor",
+   "id": "forest",
+   "bytes": 78704,
+   "tris": 2268,
+   "meshes": 3,
+   "materials": 3,
+   "images": 0
+  },
+  {
+   "file": "models/rooms/forest/decor_4_star.glb",
+   "kind": "decor",
+   "id": "forest",
+   "bytes": 168588,
+   "tris": 3408,
+   "meshes": 4,
+   "materials": 4,
+   "images": 0
+  },
+  {
+   "file": "models/rooms/forest/decor_5_classic.glb",
+   "kind": "decor",
+   "id": "forest",
+   "bytes": 85860,
+   "tris": 1456,
+   "meshes": 2,
+   "materials": 2,
+   "images": 0
+  },
+  {
+   "file": "models/rooms/forest/decor_5_candy.glb",
+   "kind": "decor",
+   "id": "forest",
+   "bytes": 85820,
+   "tris": 1456,
+   "meshes": 2,
+   "materials": 2,
+   "images": 0
+  },
+  {
+   "file": "models/rooms/forest/decor_5_mint.glb",
+   "kind": "decor",
+   "id": "forest",
+   "bytes": 85856,
+   "tris": 1456,
+   "meshes": 2,
+   "materials": 2,
+   "images": 0
+  },
+  {
+   "file": "models/rooms/forest/decor_5_star.glb",
+   "kind": "decor",
+   "id": "forest",
+   "bytes": 175752,
+   "tris": 2596,
+   "meshes": 3,
+   "materials": 3,
+   "images": 0
+  },
+  {
    "file": "sprites/badges/restaurant.svg",
    "kind": "badge",
    "id": "restaurant",
