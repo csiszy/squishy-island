@@ -1,0 +1,85 @@
+<!doctype html>
+<meta charset="utf-8"><title>exporting</title>
+<!-- Used by tools/export_art/export_art.js: builds every building at every level and every squishy with the same code
+     as the rest of the book, and hands each one back as a glTF binary (.glb) or a PNG portrait. Nothing is shown here.
+     window.EXPORT.list() names everything; window.EXPORT.one(item) returns { glb | png } as base64. -->
+<script>
+/* the book uses Math.random (animation phases, scattered details): make it repeatable, so exporting twice gives the
+   same files and git only sees models that really changed. EXPORT.one() reseeds per file. */
+window.__seed = s => { let a = 0; for (const ch of String(s)) a = (a * 31 + ch.charCodeAt(0)) >>> 0; Math.random = () => { a = (a + 0x6D2B79F5) >>> 0; let t = a; t = Math.imul(t ^ (t >>> 15), t | 1); t ^= t + Math.imul(t ^ (t >>> 7), t | 61); return ((t ^ (t >>> 14)) >>> 0) / 4294967296; }; };
+window.__seed('squishy island');
+</script>
+<script src="../art/sound.js"></script>
+<script src="../art/kit.js"></script>
+<script>
+SQ.boot(async function () {
+  try {
+    /* GLTFExporter ships as an ES module that imports 'three'; point that import at the THREE the book already loaded */
+    const shim = URL.createObjectURL(new Blob([Object.keys(THREE).map(k => `export const ${k} = window.THREE[${JSON.stringify(k)}];`).join('\n')], { type: 'text/javascript' }));
+    const src = (await (await fetch('../_vendor/three/examples/jsm/exporters/GLTFExporter.js')).text()).replace(/from\s+['"]three['"]/g, `from '${shim}'`);
+    const { GLTFExporter } = await import(URL.createObjectURL(new Blob([src], { type: 'text/javascript' })));
+    const D = SQ.three, T = THREE;
+
+    /* what the game needs from each object: drop the book's outline shells (Godot draws its own outline),
+       keep only the tags Godot's import script understands, and say which material look each mesh has */
+    const ANIM_KEYS = ['type', 'ph', 'amp', 'sp', 'depth'];
+    const noUvCache = new Map();   // one stripped copy per shared geometry, so reused parts stay reused in the file
+    const noUv = g => { let c = noUvCache.get(g); if (!c) { c = g.clone(); c.deleteAttribute('uv'); noUvCache.set(g, c); } return c; };
+    function clean(root) {
+      const shells = []; root.traverse(o => { if (o.userData.outline) shells.push(o); });
+      shells.forEach(o => o.parent.remove(o));
+      root.traverse(o => {
+        const u = o.userData, keep = {};
+        if (u.anim) { keep.anim = {}; ANIM_KEYS.forEach(k => { if (u.anim[k] != null) keep.anim[k] = typeof u.anim[k] === 'number' ? Math.round(u.anim[k] * 1000) / 1000 : u.anim[k]; }); }
+        if (u.sq) keep.squishy = u.sq;
+        if (o.isMesh) {
+          const m = o.material;
+          if (!m.map && o.geometry.attributes.uv) o.geometry = noUv(o.geometry);   // no texture: no UVs needed
+          keep.look = m.isMeshToonMaterial ? 'toon' : (m.isMeshStandardMaterial ? 'soft' : 'flat');
+          if (u.noOutline || m.transparent || o.geometry.type === 'PlaneGeometry' || o.geometry.type === 'CircleGeometry') keep.outline = false;
+          if (m.emissive && m.emissiveIntensity > 0 && m.emissive.getHex() !== 0) keep.glow = Math.round(m.emissiveIntensity * 100) / 100;
+        }
+        o.userData = keep;
+      });
+      return root;
+    }
+    const exporter = new GLTFExporter();
+    const glb = root => new Promise((res, rej) => exporter.parse(root, buf => res(buf), rej, { binary: true, onlyVisible: true, maxTextureSize: 1024 }));
+    const b64 = buf => { const a = new Uint8Array(buf); let s = ''; for (let i = 0; i < a.length; i += 32768) s += String.fromCharCode.apply(null, a.subarray(i, i + 32768)); return btoa(s); };
+
+    const items = [];
+    SQ.MODULES.forEach(id => {
+      const d = SQ.B[id], civ = d.type !== 'house';
+      const levels = d.single ? [1] : (civ ? [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10] : [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]);
+      levels.forEach(L => items.push({ kind: 'building', id, level: L, file: `models/buildings/${id}/building_${id}_L${String(L).padStart(2, '0')}.glb` }));
+    });
+    Object.keys(SQ.SQ).sort().forEach(id => {
+      items.push({ kind: 'squishy', id, file: `models/squishies/squishy_${id}.glb` });
+      items.push({ kind: 'portrait', id, file: `sprites/squishies/${id}.png` });
+    });
+    const exclusives = SQ.B.factory.exclusives || [];
+    exclusives.forEach(q => {
+      items.push({ kind: 'squishy', id: q.id, exclusive: true, file: `models/squishies/squishy_${q.id}.glb` });
+      items.push({ kind: 'portrait', id: q.id, exclusive: true, file: `sprites/squishies/${q.id}.png` });
+    });
+
+    window.EXPORT = {
+      list: () => items,
+      one: async (it) => {
+        const ex = it.exclusive && exclusives.find(q => q.id === it.id);
+        if (ex) { ex.family = 'factory'; ex.i = 0; SQ.SQ[ex.id] = ex; }   // exclusives stay out of SQ.SQ (and boxes) except while drawn
+        window.__seed(it.file);
+        try {
+          if (it.kind === 'portrait') return { png: D.sprite(it.id, {}, 256).split(',')[1] };
+          const obj = it.kind === 'building' ? D.building(it.id, it.level, { life: false }) : D.squishy(it.id, 1);
+          await D.ready();
+          obj.name = it.kind === 'building' ? `${it.id}_L${it.level}` : it.id;
+          return { glb: b64(await glb(clean(obj))) };
+        } finally { if (ex) delete SQ.SQ[ex.id]; }
+      }
+    };
+    window.__out = { count: items.length };
+    document.title = 'done';
+  } catch (e) { document.title = 'ERR ' + e.message + ' ' + (e.stack || ''); }
+});
+</script>

@@ -43,9 +43,17 @@ AdMob (child-directed) · GUT tests + headless Godot in GitHub Actions · art/da
 
 ## Status and next step
 
-Design is complete (October 2026). **Next: Step 0 of the roadmap in `build.html`**: create the Godot project
-(`game/`), CI (tests + Android AAB build), core services with fakes, and the export tools
-(design book → glTF models, PNG sprites, JSON data).
+Design is complete (October 2026). **Step 0 of the roadmap is done**: the Godot project (`game/`), CI (walls,
+exported-data check, GUT tests, Android App Bundle), core services with fakes (events, save, settings, audio,
+haptics, text), and the export tools (data, sound, art) with the toon look in Godot. **Next: Step 1** (the town:
+city map from `game/data/city.json`, houses, factory boxes with a pretend server). Open decisions for the owner are
+listed at the end of `docs/decisions.md` §14 (package name, upload key).
+
+How the game is laid out: `game/core/` services are autoloads (`Events`, `Save`, `Settings`, `Text`, `Audio`,
+`Haptics`); each outside-world part sits behind a small base class with a fake (`Storage`/`MemoryStorage`,
+`DeviceInfo`/`FakeDevice`, `AudioOutput`/`FakeAudioOutput`, `Vibrator`/`FakeVibrator`). Player-facing words:
+`Text.t(&"key")`, keys in `game/data/strings_en.csv` (generated; hand-written UI words go in `docs/strings_ui_en.csv`).
+Models: `ArtLibrary.building(id, level)`, `ArtLibrary.squishy(id)`, `ArtLibrary.portrait(id)`.
 
 ## Useful commands
 
@@ -58,6 +66,16 @@ python3 prototypes/build.py            # all games
 python3 prototypes/build.py sky-bounce # one game
 python3 prototypes/docs.py             # refresh the minigame sections of the building pages
 
+# the game (Godot 4.6.3 on the PATH as "godot")
+game/run_tests.sh                      # every GUT test, headless
+godot --path game                      # run it on a computer
+python3 tools/check_boundaries.py      # the walls between minigames / features / core
+
+# design book -> game (setup once: cd tools && npm ci && npx playwright install chromium; see tools/README.md)
+node tools/export_data/export_data.js  # numbers + words -> game/data (CI runs it with --check)
+node tools/export_audio/export_audio.js
+node tools/export_art/export_art.js    # glTF models + portraits -> game/art
+
 # checks / tools (need: pip install playwright && playwright install chromium)
 python3 tools/fuzz_prototypes.py       # random-input smoke test of every prototype
 python3 tools/render_sprites.py        # re-render squishy portraits into prototypes/sprites.json
@@ -67,7 +85,9 @@ python3 tools/collection_sim.py        # collection pacing simulation
 
 ## Design-book code map (for edits to the spec site)
 
-- `art/kit.js`: page loader, squishy 2D drawing kit, rarity table, level-cost helpers, hero/level mounts.
+- `art/kit.js`: page loader, squishy 2D drawing kit, rarity table, level-cost helpers (`SQ.COSTS`), hero/level mounts.
+- `art/economy.js`: every box, collection, Gem, ad and unlock number (`SQ.ECONOMY`), read by the Factory page and the data export.
+- `_tools/export.html`, `_tools/export_art.html`: pages the export tools drive (not shown to anyone).
 - `art/kit3d.js`, `art/kit3d-build.js`: three.js toolkit: squishy "inflater", toon materials, outline, buildings.
 - `art/<building>.js`: one per building: 3D model per level, the family's squishies (houses), room, phone mock-up.
 - `art/city3d.js` + the `CITY` block in `index.html`: the island map (layout, roads, decorations), story and tour.

@@ -156,3 +156,15 @@ with credit; never "NC" licences or the YouTube Audio Library.
 - **Minigames are sealed folders** with a `manifest.json`, talking to the game only through `minigame_api` v1;
   a boundary check, contract tests (bots) and a per-game server off-switch keep them independent.
 - Roadmap: 8 steps, about 7 months to public release (Step 0: repo, CI, core services, export tools).
+- Step 0 details (done, October 2026): Godot pinned to **4.6.3** (bug-fix release of 4.6), tests with **GUT 9.6.1**;
+  static typing is enforced as an error. The export tools are Node scripts that drive the book in headless Chromium
+  (three.js is pinned to the book's 0.149.0 through `tools/package.json`, never loaded from a CDN).
+- Numbers the book only had in prose (box prices and odds, Rare guarantee, Sparkly chance, spare levels, Stars,
+  Gem prices and packs, daily quests, ads, Cozy, unlocks) now have **one machine-readable home: `art/economy.js`**.
+  The Factory page reads it; the game gets it as `game/data/economy.json`. No number changed.
+- Decor design prices are the Classic price × the design multiplier, **rounded to 10 coins** (like all prices).
+- Exported models are **committed** (about 128 MB raw, ~34 MB compressed in git; the export is repeatable, so
+  unchanged models never churn). Godot compresses them again on import and makes LODs for far-away buildings.
+- Android: App Bundle via Gradle, target API 36, arm64 + armv7, only the VIBRATE and INTERNET permissions.
+  **To decide before the first upload:** the package name (placeholder `com.squishyisland.game`; it can never change
+  once uploaded) and the upload key (CI signs with it once it is stored as GitHub secrets).

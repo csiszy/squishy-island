@@ -12,8 +12,9 @@ function serve(dir = BOOK) {
   return new Promise(resolve => {
     const srv = http.createServer((req, res) => {
       const rel = decodeURIComponent(req.url.split('?')[0]).replace(/^\/+/, '');
-      const file = path.join(dir, rel || 'index.html');
-      if (!file.startsWith(dir) || !fs.existsSync(file) || fs.statSync(file).isDirectory()) { res.writeHead(404); return res.end(); }
+      const vendor = rel.startsWith('_vendor/three/');   // the pinned three.js package (for its ES modules, e.g. GLTFExporter)
+      const base = vendor ? THREE_DIR : dir, file = path.join(base, vendor ? rel.slice('_vendor/three/'.length) : (rel || 'index.html'));
+      if (!file.startsWith(base) || !fs.existsSync(file) || fs.statSync(file).isDirectory()) { res.writeHead(404); return res.end(); }
       res.writeHead(200, { 'Content-Type': TYPES[path.extname(file)] || 'application/octet-stream' });
       fs.createReadStream(file).pipe(res);
     });
@@ -29,8 +30,9 @@ async function serveThree(route) {
   await route.fulfill({ path: path.join(THREE_DIR, m[2]) });
 }
 
-/* Opens a design-book page, waits until it sets document.title to 'done' (or 'ERR ...'), returns window.__out. */
-async function runPage(rel, { timeout = 600000, gl = false, onPage } = {}) {
+/* Opens a design-book page, waits until it sets document.title to 'done' (or 'ERR ...'), returns window.__out,
+   or, with work(page, out, errors), whatever work returns (the page stays open while it runs). */
+async function runPage(rel, { timeout = 600000, gl = false, onPage, work } = {}) {
   const { srv, url } = await serve();
   const args = gl ? ['--use-gl=angle', '--use-angle=swiftshader', '--enable-unsafe-swiftshader', '--ignore-gpu-blocklist'] : [];
   const browser = await chromium.launch({ args });
@@ -46,7 +48,8 @@ async function runPage(rel, { timeout = 600000, gl = false, onPage } = {}) {
     const title = await page.title();
     if (title !== 'done') throw new Error(`${rel}: ${title}`);
     if (errors.length) throw new Error(`${rel}: page errors:\n  ${errors.join('\n  ')}`);
-    return await page.evaluate(() => window.__out);
+    const out = await page.evaluate(() => window.__out);
+    return work ? await work(page, out, errors) : out;
   } finally { await browser.close(); srv.close(); }
 }
 
