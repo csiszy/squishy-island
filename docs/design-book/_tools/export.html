@@ -1,0 +1,104 @@
+<!doctype html>
+<meta charset="utf-8"><title>exporting</title>
+<!-- Used by tools/export_data/export_data.js: collects every number and every player-facing word in the design book
+     into plain JSON (window.__out). Nothing here is shown to anyone. -->
+<script src="../art/sound.js"></script>
+<script src="../art/kit.js"></script>
+<script>
+SQ.boot(async function () {
+  try {
+    const strings = {}, problems = [];
+    const say = (key, text) => { if (text == null || text === '') return; strings[key] = String(text).replace(/\s+/g, ' ').trim(); return key; };
+    const page = async name => new DOMParser().parseFromString(await (await fetch('../' + name)).text(), 'text/html');
+    const words = el => el ? el.textContent.replace(/\s+/g, ' ').trim() : '';
+    const C = SQ.COSTS, E = SQ.ECONOMY;
+    const coins = (v, m) => Math.round(v * (m || 1) / 10) * 10;
+
+    /* ---- squishies ---- */
+    const byFamily = (a, b) => SQ.MODULES.indexOf(a.family) - SQ.MODULES.indexOf(b.family) || a.i - b.i;   // stable order (art files load in any order)
+    const squishies = Object.values(SQ.SQ).sort(byFamily).map(q => ({
+      id: q.id, family: q.family, rarity: q.r, order: q.i,
+      name: say(`squishy.${q.id}.name`, q.name), bio: say(`squishy.${q.id}.bio`, q.bio), where: say(`squishy.${q.id}.where`, q.where)
+    }));
+    const exclusives = (SQ.B.factory.exclusives || []).map(q => {
+      if (q.gems !== E.gemShop.exclusive) problems.push(`${q.id}: factory.js says ${q.gems} Gems, economy.js says ${E.gemShop.exclusive}`);
+      return { id: q.id, gems: q.gems, tradable: false,
+        name: say(`squishy.${q.id}.name`, q.name), bio: say(`squishy.${q.id}.bio`, q.bio), home: say(`squishy.${q.id}.home`, q.home) };
+    });
+
+    /* ---- buildings: level costs (kit.js formula), goals, captions and decor (each building's page) ---- */
+    const GOALS = {
+      'Best score #': 'best_score', 'Best height #m': 'best_height', 'Beat level #': 'levels_beaten', 'Clear # tracks': 'tracks_cleared',
+      'Open # boxes': 'boxes_opened', 'Finish # trades': 'trades_done', 'Best: # flowers in one run': 'best_flowers',
+      'Best: # letters sorted': 'best_letters', 'Squish # times in the Lab': 'lab_squishes'
+    };
+    const buildings = [];
+    for (const id of SQ.MODULES) {
+      const d = SQ.B[id], house = d.type === 'house', doc = await page(id + '.html');
+      const b = { id, type: house ? 'house' : 'civic', name: say(`building.${id}.name`, d.name), mult: d.mult || 1, levels: [] };
+      if (house) { b.family = say(`family.${id}.name`, d.family); b.emblem = d.badge && d.badge.sq; }
+      b.color = (d.badge && d.badge.color) || d.roof || null;
+      b.description = say(`building.${id}.description`, words(doc.querySelector('.hero .lede')));
+      const caps = [...doc.querySelectorAll('ol[data-levels] > li')];
+      if (d.single) {
+        b.single = true; b.levels.push({ level: 1, coins: 0 });
+      } else if (house) {
+        for (let L = 1; L <= 10; L++) b.levels.push({ level: L, coins: L === 1 ? 0 : coins(C.houseCoins[L], d.mult), squishies: C.houseSquishies[L] });
+      } else {
+        if (!(d.goal in GOALS)) problems.push(`${id}: unknown goal wording "${d.goal}" (add it to GOALS in _tools/export.html)`);
+        b.goal = { stat: GOALS[d.goal], text: say(`building.${id}.goal`, (d.goal || '').replace('#', '{n}')) };
+        b.levels.push({ level: 0, coins: 0 });
+        b.levels.push({ level: 1, coins: coins(C.civicCoins[1], d.mult), target: 0 });
+        for (let L = 2; L <= 10; L++) b.levels.push({ level: L, coins: coins(C.civicCoins[L], d.mult), target: Math.max(1, Math.round(C.civicGoal[L] * (d.unit || 100))) });
+      }
+      caps.forEach((li, i) => {
+        const L = (d.single ? 1 : i + 1), lv = b.levels.find(x => x.level === L);
+        if (!lv) { problems.push(`${id}: caption for missing level ${L}`); return; }
+        const t = li.querySelector('b'); lv.title = say(`building.${id}.level.${L}.title`, words(t).replace(/\.$/, ''));
+        lv.caption = say(`building.${id}.level.${L}.caption`, words(li).slice(words(t).length).trim());
+      });
+      /* decor shop (houses): # · item · cozy · price per design */
+      const decor = [];
+      doc.querySelectorAll('[data-decor-room]').forEach(el => {
+        const tr = el.closest('tr'), n = +el.dataset.item, td = tr.querySelectorAll('td');
+        const prices = {}; el.querySelectorAll('button[data-style]').forEach(x => prices[x.dataset.style] = +words(x.querySelector('small')).replace(/[^0-9]/g, ''));
+        const base = prices.classic;
+        /* each design costs the Classic price × its multiplier, rounded to 10 coins (like every price) */
+        SQ.DECOR_STYLES.forEach(st => { if (prices[st.id] !== coins(base, st.mult)) problems.push(`${id} decor ${n}: ${st.id} costs ${prices[st.id]}, expected ${base} × ${st.mult} rounded to 10`); });
+        decor.push({ item: n, prices, cozy: +words(td[2]).replace(/[^0-9-]/g, ''),
+          name: say(`decor.${id}.${n}.name`, words(td[1].querySelector('b'))), what: say(`decor.${id}.${n}.what`, words(td[1].querySelector('.what'))) });
+      });
+      if (decor.length) b.decor = decor;
+      buildings.push(b);
+    }
+
+    /* ---- rarity, decor designs, economy ---- */
+    const rarity = Object.entries(SQ.RARITY).map(([k, r]) => ({ id: k, name: say(`rarity.${k}.name`, r.name), color: r.color, odds: r.odds, trade_value: r.value }));
+    Object.entries(E.boxes).forEach(([k, bx]) => { const sum = Object.values(bx.odds).reduce((a, b) => a + b, 0); if (Math.abs(sum - 100) > 1e-9) problems.push(`box ${k}: odds add up to ${sum}`); });
+    ['C', 'U', 'R', 'E', 'L'].forEach(k => { if (E.boxes.mystery.odds[k] !== SQ.RARITY[k].odds) problems.push(`rarity ${k}: kit.js odds ${SQ.RARITY[k].odds} vs economy.js ${E.boxes.mystery.odds[k]}`); });
+    const decor_styles = SQ.DECOR_STYLES.map(s => ({ id: s.id, name: say(`decor_style.${s.id}.name`, s.name), price_multiplier: s.mult }));
+
+    /* ---- the island map (CITY block in index.html) ---- */
+    const idx = await (await fetch('../index.html')).text(), a = idx.indexOf('const CITY = '), z = idx.indexOf('\n};', a);
+    const city = (0, eval)('(' + idx.slice(a + 'const CITY = '.length, z + 2) + ')');
+    city.roads.forEach((r, i) => { if (r.name) r.name = say(`road.${i}.name`, r.name); });
+
+    /* ---- sound catalogue ---- */
+    const audio = {
+      sfx: SQS.SFX_LIST.map(x => ({ id: x.id, what: x.what })),
+      music: Object.entries(SQS.TRACKS).map(([id, t]) => ({ id, name: say(`music.${id}.name`, t.name), where: t.where, bpm: t.bpm }))
+    };
+
+    window.__out = { problems, strings, files: {
+      'squishies.json': { squishies, exclusives },
+      'buildings.json': { buildings },
+      'rarity.json': { rarity },
+      'decor_styles.json': { decor_styles },
+      'economy.json': E,
+      'city.json': city,
+      'audio.json': audio
+    } };
+    document.title = 'done';
+  } catch (e) { document.title = 'ERR ' + e.message + ' ' + (e.stack || ''); }
+});
+</script>

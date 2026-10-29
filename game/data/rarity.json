@@ -1,0 +1,39 @@
+{
+ "rarity": [
+  {
+   "id": "C",
+   "name": "rarity.C.name",
+   "color": "#8E9BB0",
+   "odds": 55,
+   "trade_value": 1
+  },
+  {
+   "id": "U",
+   "name": "rarity.U.name",
+   "color": "#2FB673",
+   "odds": 25,
+   "trade_value": 3
+  },
+  {
+   "id": "R",
+   "name": "rarity.R.name",
+   "color": "#3B82F6",
+   "odds": 13,
+   "trade_value": 8
+  },
+  {
+   "id": "E",
+   "name": "rarity.E.name",
+   "color": "#9B5CF6",
+   "odds": 6,
+   "trade_value": 20
+  },
+  {
+   "id": "L",
+   "name": "rarity.L.name",
+   "color": "#F59E0B",
+   "odds": 1,
+   "trade_value": 60
+  }
+ ]
+}

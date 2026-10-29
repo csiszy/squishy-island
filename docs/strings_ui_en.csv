@@ -1,0 +1,15 @@
+keys,en
+# Words the game shows that are not on a design-book page (yet). One row per key; tools/export_data merges this
+# into game/data/strings_en.csv. Keys: area.what (lower case, dots). Use {name} for a value filled in by the game.
+app.title,Squishy Island
+app.subtitle,Collect & Play
+app.loading,Getting the island ready…
+ui.back,Back
+ui.back_to_town,Back to town
+ui.close,Close
+ui.coins_earned,+{n} coins
+ui.not_enough_coins,You need {n} more coins
+ui.offline,"This needs the internet. The map and all the games still work, though!"
+save.too_new,"This town was saved by a newer version of Squishy Island. Please update the game to keep playing."
+save.cannot_upgrade,"Something went wrong opening your town. Nothing is lost: please update the game or ask a grown-up to contact us."
+minigame.napping,"This game is taking a nap, try another!"

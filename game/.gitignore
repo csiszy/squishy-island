@@ -1,0 +1,11 @@
+# Godot's own cache (rebuilt on every computer)
+.godot/
+# Android build template (installed by CI / the editor)
+android/
+# exported builds
+/build/
+*.aab
+*.apk
+# test output
+/tests/results*.xml
+*.translation

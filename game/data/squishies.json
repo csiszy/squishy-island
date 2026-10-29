@@ -1,0 +1,454 @@
+{
+ "squishies": [
+  {
+   "id": "bao",
+   "family": "dumpling",
+   "rarity": "C",
+   "order": 0,
+   "name": "squishy.bao.name",
+   "bio": "squishy.bao.bio",
+   "where": "squishy.bao.where"
+  },
+  {
+   "id": "gyoza",
+   "family": "dumpling",
+   "rarity": "C",
+   "order": 1,
+   "name": "squishy.gyoza.name",
+   "bio": "squishy.gyoza.bio",
+   "where": "squishy.gyoza.where"
+  },
+  {
+   "id": "xlb",
+   "family": "dumpling",
+   "rarity": "U",
+   "order": 2,
+   "name": "squishy.xlb.name",
+   "bio": "squishy.xlb.bio",
+   "where": "squishy.xlb.where"
+  },
+  {
+   "id": "hargow",
+   "family": "dumpling",
+   "rarity": "R",
+   "order": 3,
+   "name": "squishy.hargow.name",
+   "bio": "squishy.hargow.bio",
+   "where": "squishy.hargow.where"
+  },
+  {
+   "id": "peachbun",
+   "family": "dumpling",
+   "rarity": "E",
+   "order": 4,
+   "name": "squishy.peachbun.name",
+   "bio": "squishy.peachbun.bio",
+   "where": "squishy.peachbun.where"
+  },
+  {
+   "id": "goldumpling",
+   "family": "dumpling",
+   "rarity": "L",
+   "order": 5,
+   "name": "squishy.goldumpling.name",
+   "bio": "squishy.goldumpling.bio",
+   "where": "squishy.goldumpling.where"
+  },
+  {
+   "id": "toast",
+   "family": "kitchen",
+   "rarity": "C",
+   "order": 0,
+   "name": "squishy.toast.name",
+   "bio": "squishy.toast.bio",
+   "where": "squishy.toast.where"
+  },
+  {
+   "id": "egg",
+   "family": "kitchen",
+   "rarity": "C",
+   "order": 1,
+   "name": "squishy.egg.name",
+   "bio": "squishy.egg.bio",
+   "where": "squishy.egg.where"
+  },
+  {
+   "id": "banana",
+   "family": "kitchen",
+   "rarity": "U",
+   "order": 2,
+   "name": "squishy.banana.name",
+   "bio": "squishy.banana.bio",
+   "where": "squishy.banana.where"
+  },
+  {
+   "id": "butter",
+   "family": "kitchen",
+   "rarity": "R",
+   "order": 3,
+   "name": "squishy.butter.name",
+   "bio": "squishy.butter.bio",
+   "where": "squishy.butter.where"
+  },
+  {
+   "id": "croissant",
+   "family": "kitchen",
+   "rarity": "E",
+   "order": 4,
+   "name": "squishy.croissant.name",
+   "bio": "squishy.croissant.bio",
+   "where": "squishy.croissant.where"
+  },
+  {
+   "id": "pancake",
+   "family": "kitchen",
+   "rarity": "L",
+   "order": 5,
+   "name": "squishy.pancake.name",
+   "bio": "squishy.pancake.bio",
+   "where": "squishy.pancake.where"
+  },
+  {
+   "id": "kitty",
+   "family": "pets",
+   "rarity": "C",
+   "order": 0,
+   "name": "squishy.kitty.name",
+   "bio": "squishy.kitty.bio",
+   "where": "squishy.kitty.where"
+  },
+  {
+   "id": "puppy",
+   "family": "pets",
+   "rarity": "C",
+   "order": 1,
+   "name": "squishy.puppy.name",
+   "bio": "squishy.puppy.bio",
+   "where": "squishy.puppy.where"
+  },
+  {
+   "id": "bunny",
+   "family": "pets",
+   "rarity": "U",
+   "order": 2,
+   "name": "squishy.bunny.name",
+   "bio": "squishy.bunny.bio",
+   "where": "squishy.bunny.where"
+  },
+  {
+   "id": "hamster",
+   "family": "pets",
+   "rarity": "R",
+   "order": 3,
+   "name": "squishy.hamster.name",
+   "bio": "squishy.hamster.bio",
+   "where": "squishy.hamster.where"
+  },
+  {
+   "id": "corgi",
+   "family": "pets",
+   "rarity": "E",
+   "order": 4,
+   "name": "squishy.corgi.name",
+   "bio": "squishy.corgi.bio",
+   "where": "squishy.corgi.where"
+  },
+  {
+   "id": "luckycat",
+   "family": "pets",
+   "rarity": "L",
+   "order": 5,
+   "name": "squishy.luckycat.name",
+   "bio": "squishy.luckycat.bio",
+   "where": "squishy.luckycat.where"
+  },
+  {
+   "id": "marshmallow",
+   "family": "sweets",
+   "rarity": "C",
+   "order": 0,
+   "name": "squishy.marshmallow.name",
+   "bio": "squishy.marshmallow.bio",
+   "where": "squishy.marshmallow.where"
+  },
+  {
+   "id": "macaron",
+   "family": "sweets",
+   "rarity": "C",
+   "order": 1,
+   "name": "squishy.macaron.name",
+   "bio": "squishy.macaron.bio",
+   "where": "squishy.macaron.where"
+  },
+  {
+   "id": "donut",
+   "family": "sweets",
+   "rarity": "U",
+   "order": 2,
+   "name": "squishy.donut.name",
+   "bio": "squishy.donut.bio",
+   "where": "squishy.donut.where"
+  },
+  {
+   "id": "icecream",
+   "family": "sweets",
+   "rarity": "R",
+   "order": 3,
+   "name": "squishy.icecream.name",
+   "bio": "squishy.icecream.bio",
+   "where": "squishy.icecream.where"
+  },
+  {
+   "id": "shortcake",
+   "family": "sweets",
+   "rarity": "E",
+   "order": 4,
+   "name": "squishy.shortcake.name",
+   "bio": "squishy.shortcake.bio",
+   "where": "squishy.shortcake.where"
+  },
+  {
+   "id": "gummy",
+   "family": "sweets",
+   "rarity": "L",
+   "order": 5,
+   "name": "squishy.gummy.name",
+   "bio": "squishy.gummy.bio",
+   "where": "squishy.gummy.where"
+  },
+  {
+   "id": "strawberry",
+   "family": "fruit",
+   "rarity": "C",
+   "order": 0,
+   "name": "squishy.strawberry.name",
+   "bio": "squishy.strawberry.bio",
+   "where": "squishy.strawberry.where"
+  },
+  {
+   "id": "peach",
+   "family": "fruit",
+   "rarity": "C",
+   "order": 1,
+   "name": "squishy.peach.name",
+   "bio": "squishy.peach.bio",
+   "where": "squishy.peach.where"
+  },
+  {
+   "id": "avocado",
+   "family": "fruit",
+   "rarity": "U",
+   "order": 2,
+   "name": "squishy.avocado.name",
+   "bio": "squishy.avocado.bio",
+   "where": "squishy.avocado.where"
+  },
+  {
+   "id": "watermelon",
+   "family": "fruit",
+   "rarity": "R",
+   "order": 3,
+   "name": "squishy.watermelon.name",
+   "bio": "squishy.watermelon.bio",
+   "where": "squishy.watermelon.where"
+  },
+  {
+   "id": "dragonfruit",
+   "family": "fruit",
+   "rarity": "E",
+   "order": 4,
+   "name": "squishy.dragonfruit.name",
+   "bio": "squishy.dragonfruit.bio",
+   "where": "squishy.dragonfruit.where"
+  },
+  {
+   "id": "goldapple",
+   "family": "fruit",
+   "rarity": "L",
+   "order": 5,
+   "name": "squishy.goldapple.name",
+   "bio": "squishy.goldapple.bio",
+   "where": "squishy.goldapple.where"
+  },
+  {
+   "id": "jelly",
+   "family": "ocean",
+   "rarity": "C",
+   "order": 0,
+   "name": "squishy.jelly.name",
+   "bio": "squishy.jelly.bio",
+   "where": "squishy.jelly.where"
+  },
+  {
+   "id": "puffer",
+   "family": "ocean",
+   "rarity": "C",
+   "order": 1,
+   "name": "squishy.puffer.name",
+   "bio": "squishy.puffer.bio",
+   "where": "squishy.puffer.where"
+  },
+  {
+   "id": "axolotl",
+   "family": "ocean",
+   "rarity": "U",
+   "order": 2,
+   "name": "squishy.axolotl.name",
+   "bio": "squishy.axolotl.bio",
+   "where": "squishy.axolotl.where"
+  },
+  {
+   "id": "octopus",
+   "family": "ocean",
+   "rarity": "R",
+   "order": 3,
+   "name": "squishy.octopus.name",
+   "bio": "squishy.octopus.bio",
+   "where": "squishy.octopus.where"
+  },
+  {
+   "id": "whale",
+   "family": "ocean",
+   "rarity": "E",
+   "order": 4,
+   "name": "squishy.whale.name",
+   "bio": "squishy.whale.bio",
+   "where": "squishy.whale.where"
+  },
+  {
+   "id": "turtle",
+   "family": "ocean",
+   "rarity": "L",
+   "order": 5,
+   "name": "squishy.turtle.name",
+   "bio": "squishy.turtle.bio",
+   "where": "squishy.turtle.where"
+  },
+  {
+   "id": "puff",
+   "family": "sky",
+   "rarity": "C",
+   "order": 0,
+   "name": "squishy.puff.name",
+   "bio": "squishy.puff.bio",
+   "where": "squishy.puff.where"
+  },
+  {
+   "id": "raindrop",
+   "family": "sky",
+   "rarity": "C",
+   "order": 1,
+   "name": "squishy.raindrop.name",
+   "bio": "squishy.raindrop.bio",
+   "where": "squishy.raindrop.where"
+  },
+  {
+   "id": "sunny",
+   "family": "sky",
+   "rarity": "U",
+   "order": 2,
+   "name": "squishy.sunny.name",
+   "bio": "squishy.sunny.bio",
+   "where": "squishy.sunny.where"
+  },
+  {
+   "id": "star",
+   "family": "sky",
+   "rarity": "R",
+   "order": 3,
+   "name": "squishy.star.name",
+   "bio": "squishy.star.bio",
+   "where": "squishy.star.where"
+  },
+  {
+   "id": "moon",
+   "family": "sky",
+   "rarity": "E",
+   "order": 4,
+   "name": "squishy.moon.name",
+   "bio": "squishy.moon.bio",
+   "where": "squishy.moon.where"
+  },
+  {
+   "id": "rainbow",
+   "family": "sky",
+   "rarity": "L",
+   "order": 5,
+   "name": "squishy.rainbow.name",
+   "bio": "squishy.rainbow.bio",
+   "where": "squishy.rainbow.where"
+  },
+  {
+   "id": "sprout",
+   "family": "forest",
+   "rarity": "C",
+   "order": 0,
+   "name": "squishy.sprout.name",
+   "bio": "squishy.sprout.bio",
+   "where": "squishy.sprout.where"
+  },
+  {
+   "id": "acorn",
+   "family": "forest",
+   "rarity": "C",
+   "order": 1,
+   "name": "squishy.acorn.name",
+   "bio": "squishy.acorn.bio",
+   "where": "squishy.acorn.where"
+  },
+  {
+   "id": "mossball",
+   "family": "forest",
+   "rarity": "U",
+   "order": 2,
+   "name": "squishy.mossball.name",
+   "bio": "squishy.mossball.bio",
+   "where": "squishy.mossball.where"
+  },
+  {
+   "id": "shroomy",
+   "family": "forest",
+   "rarity": "R",
+   "order": 3,
+   "name": "squishy.shroomy.name",
+   "bio": "squishy.shroomy.bio",
+   "where": "squishy.shroomy.where"
+  },
+  {
+   "id": "fluffle",
+   "family": "forest",
+   "rarity": "E",
+   "order": 4,
+   "name": "squishy.fluffle.name",
+   "bio": "squishy.fluffle.bio",
+   "where": "squishy.fluffle.where"
+  },
+  {
+   "id": "mossdragon",
+   "family": "forest",
+   "rarity": "L",
+   "order": 5,
+   "name": "squishy.mossdragon.name",
+   "bio": "squishy.mossdragon.bio",
+   "where": "squishy.mossdragon.where"
+  }
+ ],
+ "exclusives": [
+  {
+   "id": "prismmochi",
+   "gems": 500,
+   "tradable": false,
+   "name": "squishy.prismmochi.name",
+   "bio": "squishy.prismmochi.bio",
+   "home": "squishy.prismmochi.home"
+  },
+  {
+   "id": "starbun",
+   "gems": 500,
+   "tradable": false,
+   "name": "squishy.starbun.name",
+   "bio": "squishy.starbun.bio",
+   "home": "squishy.starbun.home"
+  }
+ ]
+}

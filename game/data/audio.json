@@ -1,0 +1,242 @@
+{
+ "sfx": [
+  {
+   "id": "tap",
+   "what": "Any button or bubble tapped: a soft \"pop\""
+  },
+  {
+   "id": "back",
+   "what": "Close / back: the pop in reverse"
+  },
+  {
+   "id": "open",
+   "what": "A panel or card slides open: a bubbly \"bloop\""
+  },
+  {
+   "id": "toggleOn",
+   "what": "A setting switched on: two notes up"
+  },
+  {
+   "id": "toggleOff",
+   "what": "A setting switched off: two notes down"
+  },
+  {
+   "id": "coin",
+   "what": "One coin picked up"
+  },
+  {
+   "id": "tick",
+   "what": "Results counter ticking up (pitch rises as it counts)"
+  },
+  {
+   "id": "countDone",
+   "what": "Counter reached its number: bright \"ding\""
+  },
+  {
+   "id": "coinsCount",
+   "what": "Coins counter: tiny coin clinks while counting"
+  },
+  {
+   "id": "jar",
+   "what": "Coins drop into the coin jar"
+  },
+  {
+   "id": "newBest",
+   "what": "New best score stamp: a happy fanfare"
+  },
+  {
+   "id": "buy",
+   "what": "Something bought with coins: \"ka-ching!\""
+  },
+  {
+   "id": "gemBuy",
+   "what": "Something bought with Gems: a sparkly rising chime"
+  },
+  {
+   "id": "gemAsk",
+   "what": "\"Are you sure?\" pop-up for Gems"
+  },
+  {
+   "id": "nope",
+   "what": "Can’t do that (not enough coins, locked): a soft \"uh-uh\""
+  },
+  {
+   "id": "boxShake",
+   "what": "Mystery Box wiggles on the conveyor: rattle"
+  },
+  {
+   "id": "boxPop",
+   "what": "Box bursts open: \"pop!\" plus a whoosh"
+  },
+  {
+   "id": "revealC",
+   "what": "Reveal: Common (2 friendly notes)"
+  },
+  {
+   "id": "revealU",
+   "what": "Reveal: Uncommon (3 notes)"
+  },
+  {
+   "id": "revealR",
+   "what": "Reveal: Rare (bells arpeggio)"
+  },
+  {
+   "id": "revealE",
+   "what": "Reveal: Epic (arpeggio + shimmer)"
+  },
+  {
+   "id": "revealL",
+   "what": "Reveal: Legendary (full fanfare)"
+  },
+  {
+   "id": "spare",
+   "what": "Duplicate goes to the Spare Shelf: \"boop-boop\""
+  },
+  {
+   "id": "sparkly",
+   "what": "A Sparkly pull: glitter on top of the reveal"
+  },
+  {
+   "id": "build",
+   "what": "Renovating a house: 3 hammer knocks…"
+  },
+  {
+   "id": "tada",
+   "what": "…and the \"ta-da!\" when it is done"
+  },
+  {
+   "id": "unlock",
+   "what": "Something new unlocked: magic chime up"
+  },
+  {
+   "id": "quest",
+   "what": "Quest finished: \"ding-dong\""
+  },
+  {
+   "id": "star",
+   "what": "A star earned"
+  },
+  {
+   "id": "heart",
+   "what": "A heart lost in a minigame"
+  },
+  {
+   "id": "squish",
+   "what": "Squishing a squishy: a soft squelch"
+  },
+  {
+   "id": "boing",
+   "what": "Squishy bounces back: \"boing\""
+  },
+  {
+   "id": "whoosh",
+   "what": "Camera flies to a building"
+  },
+  {
+   "id": "wind",
+   "what": "Story: the Big Grumble Wind"
+  },
+  {
+   "id": "thunder",
+   "what": "Story: a far-away rumble (never scary-loud)"
+  },
+  {
+   "id": "sparkle",
+   "what": "Magic sparkle (story, Gem Challenge done)"
+  },
+  {
+   "id": "adStart",
+   "what": "An ad the player chose is about to play"
+  },
+  {
+   "id": "hello",
+   "what": "Bao says hi (tutorial guide speaking)"
+  }
+ ],
+ "music": [
+  {
+   "id": "city",
+   "name": "music.city.name",
+   "where": "City map (home screen)",
+   "bpm": 96
+  },
+  {
+   "id": "shop",
+   "name": "music.shop.name",
+   "where": "Squishy Factory & Gem Shop",
+   "bpm": 112
+  },
+  {
+   "id": "market",
+   "name": "music.market.name",
+   "where": "Swap Meet Market",
+   "bpm": 104
+  },
+  {
+   "id": "story",
+   "name": "music.story.name",
+   "where": "Opening story",
+   "bpm": 74
+  },
+  {
+   "id": "house",
+   "name": "music.house.name",
+   "where": "Inside a house (decorating)",
+   "bpm": 84
+  },
+  {
+   "id": "lab",
+   "name": "music.lab.name",
+   "where": "Squishy Testing Facility",
+   "bpm": 80
+  },
+  {
+   "id": "bistro",
+   "name": "music.bistro.name",
+   "where": "Bistro Rush",
+   "bpm": 124
+  },
+  {
+   "id": "sky",
+   "name": "music.sky.name",
+   "where": "Sky Bounce",
+   "bpm": 128
+  },
+  {
+   "id": "detective",
+   "name": "music.detective.name",
+   "where": "Lost & Found",
+   "bpm": 100
+  },
+  {
+   "id": "salon",
+   "name": "music.salon.name",
+   "where": "Style Studio",
+   "bpm": 106
+  },
+  {
+   "id": "fire",
+   "name": "music.fire.name",
+   "where": "Bucket Brigade",
+   "bpm": 112
+  },
+  {
+   "id": "post",
+   "name": "music.post.name",
+   "where": "Sort-a-Lot",
+   "bpm": 118
+  },
+  {
+   "id": "garden",
+   "name": "music.garden.name",
+   "where": "Grow Grow Garden",
+   "bpm": 92
+  },
+  {
+   "id": "arcade",
+   "name": "music.arcade.name",
+   "where": "Squish Breaker",
+   "bpm": 126
+  }
+ ]
+}

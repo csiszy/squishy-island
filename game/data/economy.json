@@ -1,0 +1,304 @@
+{
+ "boxes": {
+  "mystery": {
+   "price": 200,
+   "odds": {
+    "C": 55,
+    "U": 25,
+    "R": 13,
+    "E": 6,
+    "L": 1
+   },
+   "factoryLevel": 1
+  },
+  "family": {
+   "price": 500,
+   "odds": {
+    "C": 55,
+    "U": 25,
+    "R": 13,
+    "E": 6,
+    "L": 1
+   },
+   "factoryLevel": 3,
+   "pickFamily": true
+  },
+  "golden": {
+   "price": 1000,
+   "odds": {
+    "C": 0,
+    "U": 50,
+    "R": 30,
+    "E": 16,
+    "L": 4
+   },
+   "factoryLevel": 6
+  },
+  "ad": {
+   "price": 0,
+   "odds": {
+    "C": 55,
+    "U": 25,
+    "R": 13,
+    "E": 6,
+    "L": 1
+   },
+   "factoryLevel": 1,
+   "perDay": 3
+  }
+ },
+ "rareGuaranteeAfter": 9,
+ "sparklyChance": 0.02,
+ "firstBox": "gyoza",
+ "spareLevels": {
+  "C": [
+   1,
+   2,
+   3,
+   4
+  ],
+  "U": [
+   1,
+   2,
+   3,
+   4
+  ],
+  "R": [
+   1,
+   1,
+   2,
+   2
+  ],
+  "E": [
+   1,
+   1,
+   2,
+   2
+  ],
+  "L": [
+   1,
+   1,
+   1,
+   1
+  ]
+ },
+ "maxSquishyLevel": 5,
+ "starsPerSpare": {
+  "C": 5,
+  "U": 15,
+  "R": 40,
+  "E": 100,
+  "L": 300
+ },
+ "gemShop": {
+  "legendary": 300,
+  "exclusive": 500
+ },
+ "gemsEarned": {
+  "dailyChallenge": 3,
+  "weeklyStreak": 15,
+  "weeklyStreakDays": 5,
+  "achievementMin": 10,
+  "achievementMax": 25
+ },
+ "gemPacks": [
+  {
+   "id": "gems_100",
+   "gems": 100
+  },
+  {
+   "id": "gems_300",
+   "gems": 300
+  },
+  {
+   "id": "gems_500",
+   "gems": 500
+  },
+  {
+   "id": "gems_1000",
+   "gems": 1000
+  }
+ ],
+ "gemPricePer100Eur": 0.99,
+ "cozy": {
+  "pointsPerStep": 5,
+  "coinBonusPerStep": 0.05
+ },
+ "daily": {
+  "coinQuests": 2,
+  "coinQuestReward": 40,
+  "firstRunMultiplier": 2,
+  "challengeOfBest": 0.9,
+  "visitorDays": 4
+ },
+ "minigames": {
+  "coinsPerMinuteTarget": 35,
+  "milestoneBonus": [
+   10,
+   25,
+   50
+  ],
+  "levelFirstClear": 30,
+  "levelReplay": 10,
+  "perStar": 15,
+  "everyTenthLevelMultiplier": 2,
+  "serverMaxCoinsPerMinute": 60
+ },
+ "ads": {
+  "closableAfterSeconds": 5,
+  "keepGoingPerRun": 1,
+  "freeBoxesPerDay": 3
+ },
+ "unlocks": [
+  {
+   "when": "start",
+   "houses": [
+    "dumpling"
+   ],
+   "buildings": [
+    "playground",
+    "factory",
+    "gemmine"
+   ],
+   "gift": "bao"
+  },
+  {
+   "when": {
+    "house": "dumpling",
+    "level": 3
+   },
+   "buildings": [
+    "restaurant"
+   ]
+  },
+  {
+   "when": {
+    "house": "dumpling",
+    "level": 4
+   },
+   "houses": [
+    "kitchen"
+   ]
+  },
+  {
+   "when": {
+    "owned": 8
+   },
+   "buildings": [
+    "market"
+   ]
+  },
+  {
+   "when": {
+    "house": "kitchen",
+    "level": 3
+   },
+   "buildings": [
+    "salon"
+   ]
+  },
+  {
+   "when": {
+    "house": "kitchen",
+    "level": 4
+   },
+   "houses": [
+    "pets"
+   ]
+  },
+  {
+   "when": {
+    "house": "pets",
+    "level": 3
+   },
+   "buildings": [
+    "post",
+    "testlab"
+   ]
+  },
+  {
+   "when": {
+    "house": "pets",
+    "level": 4
+   },
+   "houses": [
+    "sweets"
+   ]
+  },
+  {
+   "when": {
+    "house": "sweets",
+    "level": 3
+   },
+   "buildings": [
+    "police"
+   ]
+  },
+  {
+   "when": {
+    "house": "sweets",
+    "level": 4
+   },
+   "houses": [
+    "fruit"
+   ],
+   "buildings": [
+    "arcade"
+   ]
+  },
+  {
+   "when": {
+    "house": "fruit",
+    "level": 3
+   },
+   "buildings": [
+    "fire"
+   ]
+  },
+  {
+   "when": {
+    "house": "fruit",
+    "level": 4
+   },
+   "houses": [
+    "ocean"
+   ]
+  },
+  {
+   "when": {
+    "house": "ocean",
+    "level": 3
+   },
+   "buildings": [
+    "bandstand"
+   ]
+  },
+  {
+   "when": {
+    "house": "ocean",
+    "level": 4
+   },
+   "houses": [
+    "sky"
+   ]
+  },
+  {
+   "when": {
+    "house": "sky",
+    "level": 3
+   },
+   "buildings": [
+    "greenhouse"
+   ]
+  },
+  {
+   "when": {
+    "house": "sky",
+    "level": 4
+   },
+   "houses": [
+    "forest"
+   ]
+  }
+ ]
+}

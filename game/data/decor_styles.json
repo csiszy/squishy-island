@@ -1,0 +1,24 @@
+{
+ "decor_styles": [
+  {
+   "id": "classic",
+   "name": "decor_style.classic.name",
+   "price_multiplier": 1
+  },
+  {
+   "id": "candy",
+   "name": "decor_style.candy.name",
+   "price_multiplier": 1.2
+  },
+  {
+   "id": "mint",
+   "name": "decor_style.mint.name",
+   "price_multiplier": 1.2
+  },
+  {
+   "id": "star",
+   "name": "decor_style.star.name",
+   "price_multiplier": 1.6
+  }
+ ]
+}

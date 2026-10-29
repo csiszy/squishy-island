@@ -1,0 +1,748 @@
+keys,en
+app.loading,Getting the island ready…
+app.subtitle,Collect & Play
+app.title,Squishy Island
+building.arcade.description,"A bright arcade hall with a domed orange roof, full of blinking games. The star machine is Squish Breaker, where your own squishies are the bouncing balls. It grows from a little game stall into a neon arcade with a squishy bouncing on the roof."
+building.arcade.goal,Beat level {n}
+building.arcade.level.1.caption,A little striped stall with one blinking game.
+building.arcade.level.1.title,Game stall
+building.arcade.level.10.caption,"Glowing neon bricks, flags, star medal and sparkles."
+building.arcade.level.10.title,Neon Arcade
+building.arcade.level.2.caption,A board showing the best scores.
+building.arcade.level.2.title,Stall + prize board
+building.arcade.level.3.caption,A small hall with a round orange roof.
+building.arcade.level.3.title,Little arcade
+building.arcade.level.4.caption,A pile of numbered bricks by the door and awnings.
+building.arcade.level.4.title,Brick stack
+building.arcade.level.5.caption,Big windows full of blinking screens.
+building.arcade.level.5.title,Wider hall
+building.arcade.level.6.caption,An upstairs games room.
+building.arcade.level.6.title,Second floor
+building.arcade.level.7.caption,A giant squishy bounces on the roof.
+building.arcade.level.7.title,Bouncing squishy
+building.arcade.level.8.caption,"Bulbs, flowers and a fence."
+building.arcade.level.8.title,Lit sign & garden
+building.arcade.level.9.caption,A purple game cabinet out front.
+building.arcade.level.9.title,Arcade cabinet
+building.arcade.name,Squish Arcade
+building.bandstand.description,"The town’s music stage. It starts as two crates and a microphone, grows into a gazebo bandstand with curtains and spotlights, and ends as a big concert shell."
+building.bandstand.goal,Clear {n} tracks
+building.bandstand.level.1.caption,Two crates and a microphone.
+building.bandstand.level.1.title,Crate stage
+building.bandstand.level.10.caption,A big arched shell behind the stage and sparkles.
+building.bandstand.level.10.title,Concert Shell
+building.bandstand.level.2.caption,A speaker and party flags.
+building.bandstand.level.2.title,Speaker & bunting
+building.bandstand.level.3.caption,A proper wooden platform.
+building.bandstand.level.3.title,Wooden stage
+building.bandstand.level.4.caption,A purple striped awning on posts.
+building.bandstand.level.4.title,Awning
+building.bandstand.level.5.caption,A round bandstand roof on white posts.
+building.bandstand.level.5.title,Gazebo
+building.bandstand.level.6.caption,Lilac paint and railings; the octopus joins the band.
+building.bandstand.level.6.title,Painted & railed
+building.bandstand.level.7.caption,Big speakers on both sides.
+building.bandstand.level.7.title,Speakers
+building.bandstand.level.8.caption,"Red curtains, spotlights and a taller roof."
+building.bandstand.level.8.title,Curtains & spotlights
+building.bandstand.level.9.caption,A giant bouncing music note and fairy lights.
+building.bandstand.level.9.title,Music note sign
+building.bandstand.name,Squeak Stage
+building.dumpling.description,"A tower of bamboo steamer baskets with a lid for a roof. It is the first house every player fixes up, so it teaches how renovating works."
+building.dumpling.level.1.caption,"Lid knocked sideways, windows boarded up, weeds, cobwebs and an old tyre."
+building.dumpling.level.1.title,Abandoned
+building.dumpling.level.10.caption,"Golden knob, star medal and sparkles. Complete!"
+building.dumpling.level.10.title,Golden Steamhouse
+building.dumpling.level.2.caption,"Weeds pulled, a blue tarp over the hole in the lid, planks piled up."
+building.dumpling.level.2.title,Clean-up
+building.dumpling.level.3.caption,The steamer lid sits straight again and gets its red knob back.
+building.dumpling.level.3.title,New lid
+building.dumpling.level.4.caption,The walls are re-woven and turn golden again.
+building.dumpling.level.4.title,Fresh bamboo
+building.dumpling.level.5.caption,"Boards come off, curtains go up."
+building.dumpling.level.5.title,Glass windows
+building.dumpling.level.6.caption,"A shiny new door, welcome mat and step."
+building.dumpling.level.6.title,Red front door
+building.dumpling.level.7.caption,"Picket fence, flower boxes and a stepping-stone path."
+building.dumpling.level.7.title,Garden
+building.dumpling.level.8.caption,"Giant chopsticks frame the door, red lanterns on both sides."
+building.dumpling.level.8.title,Chopstick arch
+building.dumpling.level.9.caption,"Fairy lights on the lid, glowing windows, steam puffing from the vent."
+building.dumpling.level.9.title,Steamy nights
+building.dumpling.name,Dumpling Steamhouse
+building.factory.description,"The factory is where coins become squishies. Buy a Mystery Box, watch it ride the conveyor belt and pop open to reveal a random squishy. Rarer squishies are much harder to get. Next door is the Gem Shop, where the Legendaries and two shop-only squishies are sold directly (no luck involved) for Squish Gems."
+building.factory.goal,Open {n} boxes
+building.factory.level.1.caption,A tiny shed with one box on the step.
+building.factory.level.1.title,Workshop
+building.factory.level.10.caption,"Rainbow heart puffs, flags and medal."
+building.factory.level.10.title,Rainbow Factory
+building.factory.level.2.caption,Chimney puffs and a stack of boxes.
+building.factory.level.2.title,Loading dock
+building.factory.level.3.caption,A sawtooth roof and a big loading door. Family Boxes unlock.
+building.factory.level.3.title,Factory hall
+building.factory.level.4.caption,Boxes roll out on a conveyor belt.
+building.factory.level.4.title,Conveyor
+building.factory.level.5.caption,A giant squeezy squishy sign on the roof.
+building.factory.level.5.title,Squishy sign
+building.factory.level.6.caption,Bigger factory. Golden Boxes unlock.
+building.factory.level.6.title,Second floor
+building.factory.level.7.caption,A striped smokestack that puffs pink hearts.
+building.factory.level.7.title,Candy chimney
+building.factory.level.8.caption,Spinning gears in a side annex.
+building.factory.level.8.title,Gear room
+building.factory.level.9.caption,A golden box on the roof and fairy lights.
+building.factory.level.9.title,Golden box
+building.factory.name,Squishy Factory
+building.fire.description,"A fire station for the bravest squishies. There are no scary fires on Squishy Island: the firefighters spend their days getting the coloured water ready for the big Splash Parade, sorting every colour into its own bucket. It grows from a little hose cart into a big station with a fire truck and a hose tower."
+building.fire.goal,Beat level {n}
+building.fire.level.1.caption,A red cart with a flame sign.
+building.fire.level.1.title,Hose cart
+building.fire.level.10.caption,"Flags, star medal and sparkles."
+building.fire.level.10.title,Golden Station
+building.fire.level.2.caption,A chalkboard and plant.
+building.fire.level.2.title,Cart + board
+building.fire.level.3.caption,A garage door and red trim.
+building.fire.level.3.title,Little station
+building.fire.level.4.caption,Red awnings over the windows.
+building.fire.level.4.title,Awnings
+building.fire.level.5.caption,Big windows by the garage.
+building.fire.level.5.title,Wider station
+building.fire.level.6.caption,Bunk room upstairs.
+building.fire.level.6.title,Second floor
+building.fire.level.7.caption,A cute red truck with a ladder parks outside.
+building.fire.level.7.title,Fire truck
+building.fire.level.8.caption,"Bulbs, flowers and fence."
+building.fire.level.8.title,Lit sign & garden
+building.fire.level.9.caption,A tall red tower to dry the hoses.
+building.fire.level.9.title,Hose tower
+building.fire.name,Splash Squad Station
+building.forest.description,"A giant red toadstool on the edge of the woods. At level 1 the cap is droopy, mossy and full of holes. At level 10 it glows with fireflies and fairy lights."
+building.forest.level.1.caption,"A droopy, mossy cap with holes and boarded windows."
+building.forest.level.1.title,Rotting
+building.forest.level.10.caption,Star medal and sparkles. Complete!
+building.forest.level.10.title,Golden Hollow
+building.forest.level.2.caption,"A tarp over the hole, planks and cone."
+building.forest.level.2.title,Clean-up
+building.forest.level.3.caption,The cap is rebuilt round and sturdy.
+building.forest.level.3.title,Firm cap
+building.forest.level.4.caption,Bright red cap with white spots.
+building.forest.level.4.title,Red & spotty
+building.forest.level.5.caption,Glass windows with yellow curtains.
+building.forest.level.5.title,Windows
+building.forest.level.6.caption,A rounded door and mat.
+building.forest.level.6.title,Wooden door
+building.forest.level.7.caption,"A rustic fence, flowers and stepping stones."
+building.forest.level.7.title,Garden
+building.forest.level.8.caption,Tiny colourful mushrooms and two lanterns.
+building.forest.level.8.title,Mini mushrooms
+building.forest.level.9.caption,"Fireflies blink around the cap, fairy lights underneath."
+building.forest.level.9.title,Firefly night
+building.forest.name,Mushroom Hollow
+building.fruit.description,A giant pineapple house with a spiky leaf crown. At level 1 the leaves are brown and droopy; by level 10 it’s the juiciest house on the hill.
+building.fruit.level.1.caption,"Brown droopy leaves, faded skin, boarded windows."
+building.fruit.level.1.title,Wilted
+building.fruit.level.10.caption,Star medal and sparkles. Complete!
+building.fruit.level.10.title,Golden Pineapple
+building.fruit.level.2.caption,"Weeds cleared, planks and cone ready."
+building.fruit.level.2.title,Clean-up
+building.fruit.level.3.caption,Fresh green leaves sprout from the top.
+building.fruit.level.3.title,Green crown
+building.fruit.level.4.caption,Bright yellow skin with its pineapple pattern.
+building.fruit.level.4.title,Golden skin
+building.fruit.level.5.caption,Glass and red curtains.
+building.fruit.level.5.title,Round windows
+building.fruit.level.6.caption,A green arched door and mat.
+building.fruit.level.6.title,Green door
+building.fruit.level.7.caption,"Fence, flowers and a stone path."
+building.fruit.level.7.title,Garden
+building.fruit.level.8.caption,A crate of fruit and a watering can by the door.
+building.fruit.level.8.title,Fruit crate porch
+building.fruit.level.9.caption,Two lemon-shaped lanterns on a string.
+building.fruit.level.9.title,Lemon lanterns
+building.fruit.name,Pineapple Orchard
+building.gemmine.description,"A sparkly little mine dug into the rocks at the edge of town, glowing with crystals and with a cart full of Gems on its rails. It is the only place in the game where real money is spent: grown-ups buy Squish Gems here, and the Gems are then spent on squishies in the Factory’s Gem Shop."
+building.gemmine.name,Gem Mine
+building.greenhouse.description,A greenhouse that starts as a single flower pot on a table and grows into a glass crystal palace with a windmill.
+building.greenhouse.goal,Best: {n} flowers in one run
+building.greenhouse.level.1.caption,One flower pot on a wooden table.
+building.greenhouse.level.1.title,Potting table
+building.greenhouse.level.10.caption,A golden dome tip and sparkles.
+building.greenhouse.level.10.title,Crystal Palace
+building.greenhouse.level.2.caption,A seed tray and a watering can.
+building.greenhouse.level.2.title,Seed tray
+building.greenhouse.level.3.caption,A little glass box of seedlings.
+building.greenhouse.level.3.title,Cold frame
+building.greenhouse.level.4.caption,A small greenhouse with a pointed roof.
+building.greenhouse.level.4.title,Glass hut
+building.greenhouse.level.5.caption,Flower planters on each side.
+building.greenhouse.level.5.title,Planters
+building.greenhouse.level.6.caption,"Wider, taller, with climbing leaves."
+building.greenhouse.level.6.title,Bigger greenhouse
+building.greenhouse.level.7.caption,A domed roof on top.
+building.greenhouse.level.7.title,Glass dome
+building.greenhouse.level.8.caption,A little windmill turns beside it.
+building.greenhouse.level.8.title,Windmill
+building.greenhouse.level.9.caption,Flowering vines climb the glass.
+building.greenhouse.level.9.title,Vines & butterflies
+building.greenhouse.name,Sprout Club Greenhouse
+building.kitchen.description,"A giant butter-yellow teapot with polka dots, a spout that puffs steam and a handle that works as a garden arch. Home of the famous breakfast squishies."
+building.kitchen.level.1.caption,"Lid tipped over, spout snapped off, boarded windows."
+building.kitchen.level.1.title,Abandoned
+building.kitchen.level.10.caption,"Golden knob, star medal and sparkles. Complete!"
+building.kitchen.level.10.title,Golden Teapot
+building.kitchen.level.2.caption,"Tarp over the lid, cone and planks in the yard."
+building.kitchen.level.2.title,Clean-up
+building.kitchen.level.3.caption,The lid sits back on with a new orange knob.
+building.kitchen.level.3.title,Lid fixed
+building.kitchen.level.4.caption,"Fresh yellow paint, polka dots and a brand-new spout."
+building.kitchen.level.4.title,Painted & spout
+building.kitchen.level.5.caption,Round windows with mint curtains.
+building.kitchen.level.5.title,Glass windows
+building.kitchen.level.6.caption,"Arched door, welcome mat and step."
+building.kitchen.level.6.title,Orange door
+building.kitchen.level.7.caption,"Picket fence, flower boxes and a stone path."
+building.kitchen.level.7.title,Garden
+building.kitchen.level.8.caption,Striped awning over the door and a giant whisk & spoon fence post.
+building.kitchen.level.8.title,Café awning
+building.kitchen.level.9.caption,"The spout puffs steam, fairy lights wrap the teapot."
+building.kitchen.level.9.title,Steam & lights
+building.kitchen.name,Cozy Teapot Kitchen
+building.market.description,"The second way to get squishies. You are paired with a random player, you each put squishies on the table, and you haggle with three big buttons until you both accept. Only spares from your Spare Shelf can be traded, so the squishy living in your house never leaves."
+building.market.goal,Finish {n} trades
+building.market.level.1.caption,Two squishies trading on a blanket.
+building.market.level.1.title,Picnic swap
+building.market.level.10.caption,"Golden dome tip, flags and medal."
+building.market.level.10.title,Grand Bazaar
+building.market.level.2.caption,A crate counter under an umbrella.
+building.market.level.2.title,Crate stall
+building.market.level.3.caption,Striped market tents.
+building.market.level.3.title,Two tents
+building.market.level.4.caption,A third tent and bunting. Wishlist board unlocks.
+building.market.level.4.title,Three tents
+building.market.level.5.caption,A wooden frame goes up over the stalls.
+building.market.level.5.title,Market frame
+building.market.level.6.caption,A teal roof and SWAP MEET sign. Friends stall unlocks.
+building.market.level.6.title,Market hall
+building.market.level.7.caption,A clock tower rises behind the roof.
+building.market.level.7.title,Clock tower
+building.market.level.8.caption,"Lanterns, flowers and fence. Event stalls unlock."
+building.market.level.8.title,Lanterns
+building.market.level.9.caption,A glass dome tops the clock tower.
+building.market.level.9.title,Glass dome
+building.market.name,Swap Meet Market
+building.ocean.description,"A giant pink conch shell on the sand. When you find it, it’s bleached grey and covered in barnacles and tangled seaweed."
+building.ocean.level.1.caption,"Bleached grey shell, barnacles and tangled seaweed."
+building.ocean.level.1.title,Washed up
+building.ocean.level.10.caption,Star medal and sparkles. Complete!
+building.ocean.level.10.title,Golden Shell
+building.ocean.level.2.caption,"Seaweed cut away, planks and cone on the sand."
+building.ocean.level.2.title,Clean-up
+building.ocean.level.3.caption,Barnacles scraped off the shell.
+building.ocean.level.3.title,Scrubbed
+building.ocean.level.4.caption,The shell gets its pink stripes back.
+building.ocean.level.4.title,Coral pink
+building.ocean.level.5.caption,Round porthole windows with sea-blue curtains.
+building.ocean.level.5.title,Portholes
+building.ocean.level.6.caption,A new door inside the shell’s opening.
+building.ocean.level.6.title,Blue door
+building.ocean.level.7.caption,"Sand path, driftwood fence and flowers."
+building.ocean.level.7.title,Beach garden
+building.ocean.level.8.caption,A red-and-white beach umbrella and starfish on the sand.
+building.ocean.level.8.title,Beach day
+building.ocean.level.9.caption,Floating bubbles and fairy lights.
+building.ocean.level.9.title,Bubbles
+building.ocean.name,Coral Cove
+building.pets.description,"A giant dog kennel with a bone-shaped sign, a chimney and an attic window. The busiest, waggiest house in town."
+building.pets.level.1.caption,"Hole in the roof, bone sign hanging crooked, boarded windows."
+building.pets.level.1.title,Abandoned
+building.pets.level.10.caption,Star medal on the sign and sparkles. Complete!
+building.pets.level.10.title,Golden Paw Palace
+building.pets.level.2.caption,"Tarp on the roof hole, cone and planks out front."
+building.pets.level.2.title,Clean-up
+building.pets.level.3.caption,Red roof tiles and the bone sign back in place.
+building.pets.level.3.title,New roof
+building.pets.level.4.caption,Walls painted a warm biscuit colour.
+building.pets.level.4.title,Fresh planks
+building.pets.level.5.caption,"Windows with yellow curtains, attic window cleaned."
+building.pets.level.5.title,Glass windows
+building.pets.level.6.caption,A big arched door (big enough for the Corgi).
+building.pets.level.6.title,Blue door
+building.pets.level.7.caption,"Fence, flower boxes, stepping stones."
+building.pets.level.7.title,Garden
+building.pets.level.8.caption,Paw-print stepping stones and two lanterns by the roof.
+building.pets.level.8.title,Paw path
+building.pets.level.9.caption,String lights along both roof slopes.
+building.pets.level.9.title,Party roof
+building.pets.name,Paw Palace
+building.playground.description,"A playground that grows one piece of equipment at a time: a sandbox first, then a seesaw, slide, swings, a climbing dome, a castle tower, a trampoline, a zip line and finally a rainbow gate."
+building.playground.goal,Best height {n}m
+building.playground.level.1.caption,A sandbox with a bucket and spade.
+building.playground.level.1.title,Sandbox
+building.playground.level.10.caption,A giant rainbow gate and sparkles.
+building.playground.level.10.title,Rainbow Park
+building.playground.level.2.caption,A mint seesaw rocks up and down.
+building.playground.level.2.title,Seesaw
+building.playground.level.3.caption,A ladder and a pink slide.
+building.playground.level.3.title,Little slide
+building.playground.level.4.caption,"Two swings, one already in use."
+building.playground.level.4.title,Swing set
+building.playground.level.5.caption,A yellow duck on a spring.
+building.playground.level.5.title,Spring rider
+building.playground.level.6.caption,An orange climbing frame dome.
+building.playground.level.6.title,Climbing dome
+building.playground.level.7.caption,The slide becomes a castle tower with a flag.
+building.playground.level.7.title,Castle tower
+building.playground.level.8.caption,"Plus a garden, fence and lamps."
+building.playground.level.8.title,Trampoline
+building.playground.level.9.caption,A zip line from the tower top to a far pole.
+building.playground.level.9.title,Zip line
+building.playground.name,Bounce Park
+building.police.description,"A friendly police station that looks after Squishy Island’s Lost & Found. Squishies lose balloons, mittens and keys all the time, and the officers sort the jumbled lost-property box into neat matching rows. It grows from a kiosk into a station with a patrol car and a flashing siren."
+building.police.goal,Beat level {n}
+building.police.level.1.caption,A blue-and-white booth with a badge sign.
+building.police.level.1.title,Patrol kiosk
+building.police.level.10.caption,"Flags, star medal and sparkles."
+building.police.level.10.title,Golden Station
+building.police.level.2.caption,A notice board for missing-cookie posters.
+building.police.level.2.title,Kiosk + board
+building.police.level.3.caption,A one-room station with a mansard roof.
+building.police.level.3.title,Small station
+building.police.level.4.caption,Blue awnings over the windows.
+building.police.level.4.title,Awnings
+building.police.level.5.caption,Big windows and a sturdier front.
+building.police.level.5.title,Wider station
+building.police.level.6.caption,An upstairs office.
+building.police.level.6.title,Second floor
+building.police.level.7.caption,A cute patrol car parked outside.
+building.police.level.7.title,Patrol car
+building.police.level.8.caption,"Bulbs around the sign, flowers and fence."
+building.police.level.8.title,Lit sign & garden
+building.police.level.9.caption,A red and blue light flashes on the roof.
+building.police.level.9.title,Siren light
+building.police.name,Squish Patrol Station
+building.post.description,A cheerful yellow post office where all the letters in town get sorted. Har Gow (the letter-writing dumpling) is its biggest customer.
+building.post.goal,Best: {n} letters sorted
+building.post.level.1.caption,A teal-striped kiosk with an envelope sign.
+building.post.level.1.title,Mail kiosk
+building.post.level.10.caption,"Flags, star medal and sparkles."
+building.post.level.10.title,Golden Post
+building.post.level.2.caption,A board for parcels waiting.
+building.post.level.2.title,Kiosk + board
+building.post.level.3.caption,A yellow building with a gable roof.
+building.post.level.3.title,Little post office
+building.post.level.4.caption,A post box out front and awnings.
+building.post.level.4.title,Red post box
+building.post.level.5.caption,Big windows and a bench.
+building.post.level.5.title,Wider office
+building.post.level.6.caption,A sorting room upstairs.
+building.post.level.6.title,Second floor
+building.post.level.7.caption,A bike with a parcel crate and Har Gow.
+building.post.level.7.title,Delivery bike
+building.post.level.8.caption,"Bulbs, flowers and fence."
+building.post.level.8.title,Lit sign & garden
+building.post.level.9.caption,A paper-plane weather vane on the roof.
+building.post.level.9.title,Paper plane vane
+building.post.name,Squishy Post Office
+building.restaurant.description,A little restaurant where your squishies cook and serve hungry customers. It starts as a food cart and grows into a two-storey bistro with a terrace and a giant chef hat on the roof.
+building.restaurant.goal,Best score {n}
+building.restaurant.level.1.caption,A striped-awning cart with a chef-hat sign.
+building.restaurant.level.1.title,Food cart
+building.restaurant.level.10.caption,"Flags, star medal and sparkles."
+building.restaurant.level.10.title,Golden Bistro
+building.restaurant.level.2.caption,A chalkboard menu and a potted plant.
+building.restaurant.level.2.title,Cart + menu
+building.restaurant.level.3.caption,A small one-room restaurant with a red roof.
+building.restaurant.level.3.title,Little bistro
+building.restaurant.level.4.caption,Red-and-white awnings over the windows.
+building.restaurant.level.4.title,Awnings
+building.restaurant.level.5.caption,Big windows to watch the diners.
+building.restaurant.level.5.title,Wider dining room
+building.restaurant.level.6.caption,An upstairs dining room.
+building.restaurant.level.6.title,Second floor
+building.restaurant.level.7.caption,Outdoor tables with umbrellas and customers.
+building.restaurant.level.7.title,Terrace
+building.restaurant.level.8.caption,"Light bulbs around the BISTRO sign, garden out front."
+building.restaurant.level.8.title,Lit sign
+building.restaurant.level.9.caption,A giant chef hat sits on top and steam rises.
+building.restaurant.level.9.title,Chef hat roof
+building.restaurant.name,Squish Bistro
+building.salon.description,"A pink hair salon with a barber pole, where squishies come to get fluffy hairdos, colours and bows. It grows from a beauty cart to a domed salon with a hair-dryer on the roof."
+building.salon.goal,Best score {n}
+building.salon.level.1.caption,A pink striped cart with a scissors sign.
+building.salon.level.1.title,Beauty cart
+building.salon.level.10.caption,"Flags, star medal and sparkles."
+building.salon.level.10.title,Golden Salon
+building.salon.level.2.caption,A chalkboard price list.
+building.salon.level.2.title,Cart + mirror board
+building.salon.level.3.caption,A small pink salon with a domed roof.
+building.salon.level.3.title,Little salon
+building.salon.level.4.caption,A spinning red-and-blue pole and awnings.
+building.salon.level.4.title,Barber pole
+building.salon.level.5.caption,Big windows to show off styles.
+building.salon.level.5.title,Wider salon
+building.salon.level.6.caption,An upstairs styling room.
+building.salon.level.6.title,Second floor
+building.salon.level.7.caption,A sign by the door and a freshly styled guest outside.
+building.salon.level.7.title,Style sign
+building.salon.level.8.caption,"Bulbs, flowers and fence."
+building.salon.level.8.title,Lit sign & garden
+building.salon.level.9.caption,A giant pink hair dryer blows bubbles.
+building.salon.level.9.title,Hair-dryer roof
+building.salon.name,Fluff & Puff Salon
+building.sky.description,"A made-up family’s home: a fluffy cloud on a stilt. At level 1 it’s a grey, deflated rain cloud dripping on the grass. From level 6 the whole house gently floats."
+building.sky.level.1.caption,"A grey, droopy rain cloud with boarded windows."
+building.sky.level.1.title,Deflated
+building.sky.level.10.caption,Star medal and sparkles. Complete!
+building.sky.level.10.title,Golden Cloud
+building.sky.level.2.caption,"A tarp patch, ladder and planks."
+building.sky.level.2.title,Clean-up
+building.sky.level.3.caption,The cloud is still grey but the leaks are fixed.
+building.sky.level.3.title,Dripping less
+building.sky.level.4.caption,The cloud fluffs up big and white.
+building.sky.level.4.title,Puffed up!
+building.sky.level.5.caption,Glass windows and a rope ladder to the door.
+building.sky.level.5.title,Rope ladder
+building.sky.level.6.caption,Three balloons tied on. The house starts to float.
+building.sky.level.6.title,Balloons
+building.sky.level.7.caption,"Fence, flowers and a stone path."
+building.sky.level.7.title,Garden
+building.sky.level.8.caption,A rainbow arcs down from the cloud with cloud puffs at its feet.
+building.sky.level.8.title,Rainbow slide
+building.sky.level.9.caption,Fairy lights and twinkling stars.
+building.sky.level.9.title,Starlight
+building.sky.name,Cloud Nine
+building.sweets.description,"A cupcake house with a striped wrapper, a frosting roof and a cherry on top. When it’s broken, the frosting has melted into a sad grey puddle."
+building.sweets.level.1.caption,"The frosting has slumped and gone grey, windows boarded."
+building.sweets.level.1.title,Melted
+building.sweets.level.10.caption,Star medal and sparkles. Complete!
+building.sweets.level.10.title,Golden Cupcake
+building.sweets.level.2.caption,"Sticky mess scraped off, planks and cone out front."
+building.sweets.level.2.title,Clean-up
+building.sweets.level.3.caption,A big fluffy swirl of pink frosting is piped back on.
+building.sweets.level.3.title,New frosting
+building.sweets.level.4.caption,"Wrapper painted blue, sprinkles all over the roof."
+building.sweets.level.4.title,Sprinkles!
+building.sweets.level.5.caption,The cherry chimney is back and the windows get glass.
+building.sweets.level.5.title,Cherry & windows
+building.sweets.level.6.caption,A pink arched door and mat.
+building.sweets.level.6.title,Pink door
+building.sweets.level.7.caption,"White fence, flower boxes and a stone path."
+building.sweets.level.7.title,Garden
+building.sweets.level.8.caption,Two giant lollipops guard the yard.
+building.sweets.level.8.title,Lollipop trees
+building.sweets.level.9.caption,Fairy lights loop around the frosting edge.
+building.sweets.level.9.title,Sweet lights
+building.sweets.name,Sweet Shoppe
+building.testlab.description,"A shiny white lab where scientists test how squishy every squishy is. There is no score and no coins here: it is a place to squish, stretch, drop and press your squishies just because it feels good. It grows from a single test bench into a lab with a giant press on the roof."
+building.testlab.goal,Squish {n} times in the Lab
+building.testlab.level.1.caption,A little bench with a measuring board. Tools: Hand and Drop.
+building.testlab.level.1.title,Test bench
+building.testlab.level.10.caption,"Flags, star medal and sparkles."
+building.testlab.level.10.title,Golden Lab
+building.testlab.level.2.caption,A wall chart of squish scores. Tool: Ball.
+building.testlab.level.2.title,Bench + chart
+building.testlab.level.3.caption,A small white lab with a blue roof and a mini press out front. Tool: Press.
+building.testlab.level.3.title,Little lab
+building.testlab.level.4.caption,Blue awnings over the windows. Tool: Roller.
+building.testlab.level.4.title,Awnings
+building.testlab.level.5.caption,Big windows and a satellite dish on the roof. Tool: Squeeze.
+building.testlab.level.5.title,Wider lab
+building.testlab.level.6.caption,An upstairs test room. Lets you test two squishies at once.
+building.testlab.level.6.title,Second floor
+building.testlab.level.7.caption,A bubbling glass tank with a jelly floating inside.
+building.testlab.level.7.title,Bubble tank
+building.testlab.level.8.caption,"Bulbs, flowers and a fence. New table: trampoline."
+building.testlab.level.8.title,Lit sign & garden
+building.testlab.level.9.caption,A giant press squishes a giant marshmallow on the roof.
+building.testlab.level.9.title,Giant press
+building.testlab.name,Squishy Testing Facility
+decor.dumpling.1.name,Steamer Bed
+decor.dumpling.1.what,A bamboo basket bed with the lid as a blanket. Bao naps here.
+decor.dumpling.2.name,Paper Lantern
+decor.dumpling.2.what,Glows at night. The house windows glow warmer on the map.
+decor.dumpling.3.name,Low Tea Table
+decor.dumpling.3.what,Tea set for four. Unlocks a tea-party idle for two squishies.
+decor.dumpling.4.name,Chopstick Bookshelf
+decor.dumpling.4.what,Holds the Dumpling Gang’s letters from Har Gow.
+decor.dumpling.5.name,Soy-Fish Bean Bag
+decor.dumpling.5.what,Shaped like a sushi soy-sauce fish. Gyoza’s favourite seat.
+decor.dumpling.6.name,Lucky Knot
+decor.dumpling.6.what,"A red wall charm. Small, cheap, the first item the tutorial asks you to buy."
+decor.forest.1.name,Leaf Hammock
+decor.forest.1.what,Moss Ball naps here.
+decor.forest.2.name,Toadstool Table
+decor.forest.2.what,A table and two stools. Unlocks a tea-time idle.
+decor.forest.3.name,Firefly Jar Lamp
+decor.forest.3.what,Fireflies blink inside.
+decor.forest.4.name,Acorn Cupboard
+decor.forest.4.what,Where Acorn hides pebbles.
+decor.forest.5.name,Pinecone Rug
+decor.forest.5.what,Crunchy but cosy.
+decor.forest.6.name,Tree-Stump Fireplace
+decor.forest.6.what,A real stump with a crackling fire.
+decor.fruit.1.name,Fruit Crate Bunks
+decor.fruit.1.what,Two stacked crates labelled FRESH. Two sleepers.
+decor.fruit.2.name,Juice Bar
+decor.fruit.2.what,Blends a new juice each day; unlocks a slurping idle.
+decor.fruit.3.name,Watering-Can Lamp
+decor.fruit.3.what,Hangs from the ceiling and glows warm.
+decor.fruit.4.name,Melon Rind Hammock
+decor.fruit.4.what,Strawberry swings in it.
+decor.fruit.5.name,Basket Chair
+decor.fruit.5.what,A woven chair for Avocado.
+decor.fruit.6.name,Vine Bookshelf
+decor.fruit.6.what,Climbing vines grow a little each day you log in.
+decor.kitchen.1.name,Oven Fireplace
+decor.kitchen.1.what,A crackly warm oven. Squishies warm their toes in winter events.
+decor.kitchen.2.name,Toaster Bunk Bed
+decor.kitchen.2.what,"Two slots, two sleepers. Toast and Sunny Egg nap here."
+decor.kitchen.3.name,Fridge Wardrobe
+decor.kitchen.3.what,Opens to show tiny outfits (cosmetic hats for the family).
+decor.kitchen.4.name,Whisk Chandelier
+decor.kitchen.4.what,Two warm bulbs inside a giant whisk.
+decor.kitchen.5.name,Plate Rug
+decor.kitchen.5.what,A dinner plate rug. Butter’s favourite melting spot.
+decor.kitchen.6.name,Cookie-Jar Lamp
+decor.kitchen.6.what,Glows with cookie shapes. Unlocks a midnight snack idle.
+decor.ocean.1.name,Clam Shell Bed
+decor.ocean.1.what,Opens and closes slowly as the squishy breathes.
+decor.ocean.2.name,Porthole Aquarium
+decor.ocean.2.what,Fish swim past and bubbles float up.
+decor.ocean.3.name,Coral Lamp
+decor.ocean.3.what,A pink coral branch that glows.
+decor.ocean.4.name,Treasure Chest
+decor.ocean.4.what,Stores your trophies. Sparkles when you get a new one.
+decor.ocean.5.name,Anchor Shelf
+decor.ocean.5.what,Holds a starfish and a shell.
+decor.ocean.6.name,Seaweed Curtains
+decor.ocean.6.what,Sway gently all day.
+decor.pets.1.name,Cat Tree Tower
+decor.pets.1.what,Three platforms and a dangling toy. Kitty sleeps on top.
+decor.pets.2.name,Donut Dog Bed
+decor.pets.2.what,Soft ring bed. The Corgi Loaf never leaves it.
+decor.pets.3.name,Fish Tank
+decor.pets.3.what,Two goldfish swim in a loop. Cats stare at it in an idle.
+decor.pets.4.name,Yarn Ball Basket
+decor.pets.4.what,Unlocks a yarn-chasing idle for Kitty.
+decor.pets.5.name,Bone Shelf
+decor.pets.5.what,Displays toys and trophies from minigames.
+decor.pets.6.name,Hamster Tube Wall
+decor.pets.6.what,Hamster scurries through it in a loop.
+decor.sky.1.name,Cloud Bed
+decor.sky.1.what,Squishes down when a squishy lies on it.
+decor.sky.2.name,Moon Lamp
+decor.sky.2.what,Glows brighter at night in real time.
+decor.sky.3.name,Rainbow Bookshelf
+decor.sky.3.what,A rainbow that holds books.
+decor.sky.4.name,Raindrop Chandelier
+decor.sky.4.what,Little raindrops that sway.
+decor.sky.5.name,Kite Wall Art
+decor.sky.5.what,A pink kite with a bow tail.
+decor.sky.6.name,Telescope
+decor.sky.6.what,Unlocks a star-gazing idle at night.
+decor.sweets.1.name,Cupcake Sofa
+decor.sweets.1.what,Seats three squishies. Frosting cushions squish when they sit.
+decor.sweets.2.name,Lollipop Lamps
+decor.sweets.2.what,A pair of swirly floor lamps.
+decor.sweets.3.name,Candy Jar Shelf
+decor.sweets.3.what,Jars fill up as you collect more Sugar Squad members.
+decor.sweets.4.name,Gingerbread Clock
+decor.sweets.4.what,Shows the real time; chimes on the hour in-game.
+decor.sweets.5.name,Jelly Bean Rug
+decor.sweets.5.what,Macaron’s favourite spot.
+decor.sweets.6.name,Chocolate Fountain
+decor.sweets.6.what,Animated pouring chocolate. Unlocks a dipping idle.
+decor_style.candy.name,Candy Pop
+decor_style.classic.name,Classic
+decor_style.mint.name,Mint Breeze
+decor_style.star.name,Starlight
+family.dumpling.name,Dumpling Gang
+family.forest.name,Forest Folk
+family.fruit.name,Fresh Fruits
+family.kitchen.name,Pantry Pals
+family.ocean.name,Sea Squish
+family.pets.name,Pet Pals
+family.sky.name,Sky Puffs
+family.sweets.name,Sugar Squad
+minigame.napping,"This game is taking a nap, try another!"
+music.arcade.name,Brick Party
+music.bistro.name,Hot Bun Hustle
+music.city.name,Squishy Island Sunshine
+music.detective.name,Lost Sock Mystery
+music.fire.name,Splash Splash Hooray
+music.garden.name,Sprout Song
+music.house.name,Cosy Corner
+music.lab.name,Bubble Lab
+music.market.name,Swap Meet Shuffle
+music.post.name,Special Delivery
+music.salon.name,Fluff & Puff
+music.shop.name,Factory Bounce
+music.sky.name,Up Up and Away
+music.story.name,Once Upon a Squish
+rarity.C.name,Common
+rarity.E.name,Epic
+rarity.L.name,Legendary
+rarity.R.name,Rare
+rarity.U.name,Uncommon
+road.0.name,Cloudberry Hill
+road.1.name,Butter Boulevard
+road.2.name,Mochi Lane
+road.3.name,Squeeze Street
+save.cannot_upgrade,Something went wrong opening your town. Nothing is lost: please update the game or ask a grown-up to contact us.
+save.too_new,This town was saved by a newer version of Squishy Island. Please update the game to keep playing.
+squishy.acorn.bio,"A round acorn wearing a cosy textured cap. Collects shiny pebbles and hides them ""somewhere safe""."
+squishy.acorn.name,Acorn
+squishy.acorn.where,Peeks out of the left stem window.
+squishy.avocado.bio,A chill avocado who treats his pit like a round tummy. Takes life one sunbathe at a time.
+squishy.avocado.name,Avocado
+squishy.avocado.where,Relaxes on a sunbed with sunglasses on.
+squishy.axolotl.bio,A pink axolotl with frilly gills and a permanent smile. Can regrow a squish if you squeeze too hard.
+squishy.axolotl.name,Axolotl
+squishy.axolotl.where,Paddles in a little tide pool by the shell.
+squishy.banana.bio,"The famous squishy banana. Bendy, bouncy, and always in a-peel-ingly good spirits."
+squishy.banana.name,Banana
+squishy.banana.where,Pushes the lawnmower back and forth across the front lawn.
+squishy.bao.bio,"A fluffy steamed bun who squishes flat when you hug it and slowly puffs back up. Always warm, always smiling."
+squishy.bao.name,Bao Bun
+squishy.bao.where,"Cannonballs into the soup-bowl pool, hops out, and does it again."
+squishy.bunny.bio,A snow-white bunny with pink ears. Keeps the lawn perfectly trimmed (and nibbles a little of it too).
+squishy.bunny.name,Bunny
+squishy.bunny.where,Pushes the lawnmower across the grass.
+squishy.butter.bio,The viral butter block! Melts hearts (and sometimes himself). Lives for a warm slice of toast.
+squishy.butter.name,Butter
+squishy.butter.where,"Lounges on a toast sunbed on the porch, slowly melting with happiness."
+squishy.corgi.bio,A corgi shaped exactly like a loaf of bread. Has never once been seen standing up.
+squishy.corgi.name,Corgi Loaf
+squishy.corgi.where,Snores on the doormat right in front of the door.
+squishy.croissant.bio,"A flaky French croissant with perfect manners. Says ""bonjour"" to every squishy who walks by."
+squishy.croissant.name,Croissant
+squishy.croissant.where,Waves from the round window on the right.
+squishy.donut.bio,A pink-frosted donut covered in sprinkles. Doubles as a pool ring on hot days.
+squishy.donut.name,Donut
+squishy.donut.where,Floats around a milk paddling pool like a pool ring.
+squishy.dragonfruit.bio,"A magenta dragon fruit with flame-shaped leaves. Pretends to be fierce, is actually a big softie."
+squishy.dragonfruit.name,Dragon Fruit
+squishy.dragonfruit.where,"Sits in the leafy crown, swaying in the breeze."
+squishy.egg.bio,A sunny-side-up egg who loves sunbathing. Gets a little runny when nervous.
+squishy.egg.name,Sunny Egg
+squishy.egg.where,"Floats in a frying-pan paddling pool, soaking up the sun."
+squishy.fluffle.bio,"A made-up fluffball critter with two bobbly antennae. Nobody knows where Fluffles come from, and they won’t say."
+squishy.fluffle.name,Fluffle
+squishy.fluffle.where,Peeks out of the round window in the cap.
+squishy.goldapple.bio,A shimmering golden apple from the very top of the oldest tree. Said to grant one tiny wish a day.
+squishy.goldapple.name,Golden Apple
+squishy.goldapple.where,"Hovers on the front step, glittering."
+squishy.goldumpling.bio,A shining gold-ingot dumpling. Legend says it only appears to squishy keepers with kind hearts.
+squishy.goldumpling.name,Golden Lucky Dumpling
+squishy.goldumpling.where,"Floats above the lid knob, sparkling like a tiny sun."
+squishy.gummy.bio,A see-through gummy bear that glows every colour of the rainbow. Leaves a sweet sparkle wherever it goes.
+squishy.gummy.name,Rainbow Gummy Bear
+squishy.gummy.where,"Bounces on the front step, glittering."
+squishy.gyoza.bio,A crescent dumpling with a crispy golden bottom. Loves lazy afternoons and the smell of sesame oil.
+squishy.gyoza.name,Gyoza
+squishy.gyoza.where,"Naps on a striped sunbed in the side yard, softly breathing in and out."
+squishy.hamster.bio,"A round little hamster whose cheeks are always stuffed with sunflower seeds ""for later""."
+squishy.hamster.name,Hamster
+squishy.hamster.where,"Pops in and out of the round attic window, cheeks full."
+squishy.hargow.bio,A see-through shrimp dumpling that blushes pink. Writes letters to every dumpling in town.
+squishy.hargow.name,Har Gow
+squishy.hargow.where,Stands on the front step reading the day’s mail.
+squishy.icecream.bio,A strawberry scoop on a crunchy waffle cone. Melts a little drip of joy when she laughs.
+squishy.icecream.name,Ice Cream Cone
+squishy.icecream.where,Waves from the round window in the frosting roof.
+squishy.jelly.bio,A wobbly lilac jellyfish who floats instead of walks. Glows softly at night like a nightlight.
+squishy.jelly.name,Jellyfish
+squishy.jelly.where,Floats lazily in the air beside the shell tip.
+squishy.kitty.bio,An orange tabby who naps in every sunbeam. Purrs so hard she vibrates when you squeeze her.
+squishy.kitty.name,Kitty
+squishy.kitty.where,Sleeps stretched out on the warm roof.
+squishy.luckycat.bio,A golden-belled beckoning cat who waves good luck to the whole town. Never stops waving. Ever.
+squishy.luckycat.name,Lucky Cat
+squishy.luckycat.where,"Sits on the very top of the roof, waving to everyone."
+squishy.macaron.bio,"A minty macaron with a creamy middle. Very polite, a tiny bit fancy."
+squishy.macaron.name,Macaron
+squishy.macaron.where,Peeks out of the left window.
+squishy.marshmallow.bio,The squishiest of all squishies. Gets toasty-brown on top when embarrassed.
+squishy.marshmallow.name,Marshmallow
+squishy.marshmallow.where,Bounces on a jelly trampoline in the side yard.
+squishy.moon.bio,"A sleepy crescent moon made of soft mochi. Wears a nightcap all day ""just in case""."
+squishy.moon.name,Moon Mochi
+squishy.moon.where,Dozes on a sunbed with a nightcap on.
+squishy.mossball.bio,A fuzzy green ball of moss. Rolls everywhere instead of walking and is always a little bit damp.
+squishy.mossball.name,Moss Ball
+squishy.mossball.where,Rolls back and forth across the side lawn.
+squishy.mossdragon.bio,A baby dragon with leafy spikes who breathes warm puffs of flower petals instead of fire.
+squishy.mossdragon.name,Moss Dragon
+squishy.mossdragon.where,"Curls up on the edge of the cap, puffing petals."
+squishy.octopus.bio,A coral-red octopus who can wave eight hellos at once. Excellent at hugs. Very excellent.
+squishy.octopus.name,Octopus
+squishy.octopus.where,Waves from the right porthole with two arms at once.
+squishy.pancake.bio,"A royal stack of fluffy pancakes wearing a butter crown, with maple syrup dripping down like a cape."
+squishy.pancake.name,Pancake Tower
+squishy.pancake.where,"Perches on the tip of the spout, glittering in the steam."
+squishy.peach.bio,"A fuzzy, blushing peach. The softest squish in the orchard, and the first to give a hug."
+squishy.peach.name,Peach
+squishy.peach.where,Peeks out of the left window.
+squishy.peachbun.bio,A sweet longevity bun shaped like a peach. Rumour says hugging her makes your birthday come faster.
+squishy.peachbun.name,Peach Bun
+squishy.peachbun.where,"Sits on the steamer lid, swaying to music only she can hear."
+squishy.prismmochi.bio,"A see-through mochi that splits sunlight into little rainbows on the floor. Very calm, very shiny."
+squishy.prismmochi.home,Visits any house you pick
+squishy.prismmochi.name,Prism Mochi
+squishy.puff.bio,A tiny runaway cloud who drifts wherever the wind goes. Makes the best pillow in town.
+squishy.puff.name,Puff Cloud
+squishy.puff.where,Drifts in the sky above the house.
+squishy.puffer.bio,"A spiky-but-soft pufferfish. Puffs up round when surprised, which is about every five minutes."
+squishy.puffer.name,Pufferfish
+squishy.puffer.where,Peeks out of the left porthole.
+squishy.puppy.bio,A golden puppy with floppy ears. Fetches the mail every morning and wags so hard his whole body wiggles.
+squishy.puppy.name,Puppy
+squishy.puppy.where,Waits by the mailbox with a letter in his mouth.
+squishy.rainbow.bio,A cloud with a rainbow for a tail. Only appears after the happiest rainstorms of the year.
+squishy.rainbow.name,Rainbow Puff
+squishy.rainbow.where,"Glides back and forth over the rooftop, leaving sparkles."
+squishy.raindrop.bio,A bouncy raindrop who loves jumping in puddles. Every splash makes a tiny rainbow.
+squishy.raindrop.name,Raindrop
+squishy.raindrop.where,Jumps in and out of a puddle in the yard.
+squishy.shortcake.bio,A slice of strawberry shortcake with fluffy cream layers. Always the life of every party.
+squishy.shortcake.name,Strawberry Shortcake
+squishy.shortcake.where,Dances on top of the frosting swirl next to the cherry.
+squishy.shroomy.bio,A little purple mushroom who dances whenever it rains. Leaves a ring of tiny flowers where it stood.
+squishy.shroomy.name,Shroomy
+squishy.shroomy.where,Dances on top of the big red cap.
+squishy.sprout.bio,A tiny seed who just sprouted two leaves. Waters itself every morning and grows a millimetre a day.
+squishy.sprout.name,Sprout
+squishy.sprout.where,Waters itself with a little watering can in the yard.
+squishy.star.bio,A fallen star who never wanted to go back up. Glows brighter the happier everyone around her is.
+squishy.star.name,Star Blob
+squishy.star.where,Peeks out of the left cloud window.
+squishy.starbun.bio,A night-time bun with a golden star on top. Glows softly at bedtime so nobody is scared of the dark.
+squishy.starbun.home,Visits any house you pick
+squishy.starbun.name,Starlight Bun
+squishy.strawberry.bio,A sweet little strawberry with a leafy hat. Loves swinging so high she can see the whole town.
+squishy.strawberry.name,Strawberry
+squishy.strawberry.where,Swings on a tire swing under the yard tree.
+squishy.sunny.bio,"A cheerful little sun with spinning rays. Wakes everyone up a bit too early, but nobody minds."
+squishy.sunny.name,Sunny
+squishy.sunny.where,"Sits on top of the cloud, rays slowly spinning."
+squishy.toast.bio,"A golden slice of toast with a crunchy crust and a soft heart. Early riser, first to say good morning."
+squishy.toast.name,Toast
+squishy.toast.where,Peeks out of the round window on the left.
+squishy.turtle.bio,An ancient sea turtle carrying a glowing pearl on her shell. She has seen every sunset since the ocean began.
+squishy.turtle.name,Pearl Turtle
+squishy.turtle.where,"Rests at the shell door, her pearl glowing."
+squishy.watermelon.bio,A juicy watermelon slice with a big grin full of seeds. Splashes everyone at summer parties.
+squishy.watermelon.name,Watermelon
+squishy.watermelon.where,"Pops into the right window, grinning."
+squishy.whale.bio,A big blue whale who is the gentlest squishy on Squishy Island. Sneezes tiny rainbows from her spout.
+squishy.whale.name,Whale
+squishy.whale.where,"Sunbathes on a beach towel, spouting a little fountain."
+squishy.xlb.bio,"A soup dumpling with a twisty top-knot. Very curious. Secretly full of warm soup, so please squeeze gently."
+squishy.xlb.name,Xiao Long Bao
+squishy.xlb.where,Pops up in the upstairs window to watch the street.
+ui.back,Back
+ui.back_to_town,Back to town
+ui.close,Close
+ui.coins_earned,+{n} coins
+ui.not_enough_coins,You need {n} more coins
+ui.offline,"This needs the internet. The map and all the games still work, though!"
