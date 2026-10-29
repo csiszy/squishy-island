@@ -6,6 +6,21 @@ extends Node
 ## here when a new kind of announcement is needed, with typed arguments and a line
 ## saying who sends it.
 
+## A box was opened (the server's answer, see GameServer.open_box). Sent by Collection.
+signal box_opened(answer: Dictionary)
+
+## A squishy you did not have moved into its house. Sent by Collection.
+signal squishy_moved_in(id: StringName)
+
+## A building was fixed up / built to a new level. Sent by Town.
+signal building_upgraded(id: StringName, level: int)
+
+## Buildings that just became unlocked (each announced once). Sent by Town.
+signal buildings_unlocked(ids: Array[StringName])
+
+## A house's decor changed (bought or switched design). Sent by Town.
+signal decor_changed(house: StringName)
+
 ## The game is going to the background (home button, incoming call). Sent by Events itself.
 signal app_paused
 
