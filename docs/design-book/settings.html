@@ -1,0 +1,225 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Squishy Island Settings</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bagel+Fat+One&amp;family=Nunito:wght@400;600;800;900&amp;family=Patrick+Hand&amp;display=swap">
+<link rel="stylesheet" href="art/style.css">
+<style>
+.setwrap{display:grid;grid-template-columns:minmax(0,400px) minmax(0,1fr);gap:24px;align-items:start}
+@media (max-width:880px){.setwrap{grid-template-columns:1fr}}
+.sp{background:#F1EDFF;border:3px solid var(--line);border-radius:32px;box-shadow:6px 6px 0 var(--line);overflow:hidden;position:sticky;top:76px}
+@media (max-width:880px){.sp{position:static}}
+.sp-head{display:flex;align-items:center;gap:10px;background:var(--pink);color:#fff;padding:12px 16px;border-bottom:3px solid var(--line)}
+.sp-head b{font-family:var(--f-display);font-weight:400;font-size:24px;-webkit-text-stroke:1px var(--line);paint-order:stroke fill}
+.sp-head span{margin-left:auto;width:34px;height:34px;border-radius:50%;background:#fff;color:var(--ink);border:2.5px solid var(--line);display:grid;place-items:center;font-weight:900}
+.sp-body{max-height:min(74vh,720px);overflow:auto;padding:12px;display:grid;gap:12px}
+.grp{background:#fff;border:2.5px solid var(--line);border-radius:18px;padding:4px 12px}
+.grp > h3{font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink2);margin:8px 0 2px}
+.row{display:grid;grid-template-columns:28px minmax(0,1fr) auto;gap:10px;align-items:center;padding:9px 0;border-top:1.5px dashed #E3DEEF}
+.row:first-of-type{border-top:0}
+.row .ic{font-size:20px;text-align:center}
+.row b{display:block;font-size:15px}
+.row small{display:block;color:var(--ink2);font-weight:700;font-size:12.5px;line-height:1.3}
+.sw{all:unset;cursor:pointer;width:50px;height:28px;border-radius:999px;background:#E3DEEF;border:2.5px solid var(--line);position:relative;box-sizing:border-box;flex:none}
+.sw::after{content:"";position:absolute;top:2px;left:2px;width:19px;height:19px;border-radius:50%;background:#fff;border:2px solid var(--line);transition:left .15s}
+.sw[aria-checked="true"]{background:#7ED3B2}.sw[aria-checked="true"]::after{left:23px}
+.sw:focus-visible,.seg button:focus-visible,.lnk:focus-visible{outline:3px solid var(--pink);outline-offset:2px}
+.vol{grid-column:2 / span 2;width:100%;accent-color:var(--pink);margin:-2px 0 2px}
+.seg{display:flex;flex-wrap:wrap;gap:4px;grid-column:2 / span 2}
+.seg button{all:unset;cursor:pointer;font-weight:900;font-size:13px;padding:5px 11px;border:2px solid var(--line);border-radius:999px;background:#fff}
+.seg button[aria-pressed="true"]{background:var(--sun)}
+.lnk{all:unset;cursor:pointer;font-weight:900;font-size:13px;padding:5px 12px;border:2px solid var(--line);border-radius:999px;background:#E9F6FF;white-space:nowrap}
+.lock{display:grid;gap:8px;justify-items:center;padding:10px 0 12px;text-align:center}
+.lock p{margin:0;font-weight:700;font-size:13.5px;color:var(--ink2)}
+.detect{font-weight:800;font-size:12.5px;color:#2F7A5C;grid-column:2 / span 2}
+.toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%);background:var(--ink);color:#fff;font-weight:800;padding:10px 16px;border-radius:999px;z-index:50;max-width:90vw;text-align:center}
+.tiers td:first-child{white-space:nowrap}
+</style>
+</head>
+<body style="--theme:#FF6FA3;--theme2:#FFE3EF">
+<header class="topbar"><div class="topbar-in">
+  <a class="brand" href="index.html"><i></i>Squishy Island</a>
+  <nav><a class="pill" href="index.html">&larr; City map</a><a class="pill" href="guide.html">Game guide</a><a class="pill" href="account.html">Accounts</a><a class="pill" href="sound.html">Sound</a></nav>
+</div></header>
+<main class="wrap">
+
+<section class="hero" style="grid-template-columns:1fr">
+  <div class="hero-text">
+    <p class="eyebrow">Settings</p>
+    <h1>Settings</h1>
+    <p class="lede">The gear button in the top-right corner of the city map opens Settings. Kids can change the everyday things (sound, music, vibration, graphics). Anything to do with money, ads, trading, notifications, play time or deleting the account sits behind the <b>grown-up gate</b>.</p>
+    <p class="note"><b>These switches really work</b>The phone below saves to this browser, and every prototype reads it: switch off music and the minigames go quiet, pick Low graphics and they draw at a lower resolution, turn off Gem pop-ups (grown-ups only) and the Factory’s Gem Shop stops asking.</p>
+  </div>
+</section>
+
+<section class="setwrap">
+  <div class="sp" aria-label="Settings screen mock-up">
+    <div class="sp-head"><b>Settings</b><span aria-hidden="true">&times;</span></div>
+    <div class="sp-body" id="sp"></div>
+  </div>
+  <div class="prose" style="display:grid;gap:18px">
+    <div class="card prose">
+      <h3>How the screen behaves</h3>
+      <ul>
+        <li>One scrolling list with big rows, an icon on every row (for kids who can’t read yet) and a short line under each name.</li>
+        <li>Every change saves at once; there is no Save button. Switches make a little two-note sound up or down.</li>
+        <li>Volume sliders play a test sound (effects) or keep the music playing (music) so you hear the level while you drag.</li>
+        <li>The <b>×</b> (or the phone’s back button) goes back to wherever Settings was opened from.</li>
+        <li>Settings is also reachable from the pause button in every minigame (Sound and Graphics sections only).</li>
+      </ul>
+    </div>
+    <div class="card prose">
+      <h3>The grown-up gate</h3>
+      <p>A sum written in words (“fourteen minus six”), answered on a number pad. Easy for an adult, hard for a 5–8-year-old, and it doesn’t ask for any personal data such as a birth year. Three wrong answers lock it for 30 seconds. One correct answer opens the grown-up area until Settings is closed. Try it: tap <b>Open grown-up settings</b> in the phone.</p>
+      <p>The same gate appears before buying Gems, before opening any link that leaves the app (help page, privacy policy, store page), before linking an email, and before deleting the account.</p>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="sec-head"><p class="eyebrow">Every setting</p><h2>Defaults and what each one changes</h2></div>
+  <div class="tbl-wrap"><table>
+    <thead><tr><th>Setting</th><th>Default</th><th>What it does</th></tr></thead>
+    <tbody>
+      <tr><td colspan="3"><b>Sound</b></td></tr>
+      <tr><td>Sound effects (on/off + volume)</td><td>On, 80%</td><td>All effects, including Squeak Beat’s music (its music is the game).</td></tr>
+      <tr><td>Music (on/off + volume)</td><td>On, 50%</td><td>Background songs everywhere. Off also stops the music engine to save battery.</td></tr>
+      <tr><td>Vibration</td><td>On</td><td>Short buzzes for hits, rewards and mistakes. Hidden on devices that can’t vibrate.</td></tr>
+      <tr><td colspan="3"><b>Graphics and battery</b></td></tr>
+      <tr><td>Graphics quality: Auto / Low / Medium / High</td><td>Auto</td><td>See the tier table below. Auto shows which tier it picked, for example “Auto (Medium for this phone)”.</td></tr>
+      <tr><td>Frame rate: 30 / 60</td><td>Set by the tier (Low 30, others 60)</td><td>30 fps roughly halves the drawing work and battery use.</td></tr>
+      <tr><td>Battery saver</td><td>Off</td><td>Forces Low graphics and 30 fps, and pauses idle animations on the map after 20 seconds without touching. The game offers it once (a small toast) when the phone is in low-power mode or below 20% battery.</td></tr>
+      <tr><td>Animations: Full / Reduced</td><td>Follows the phone’s “reduce motion” setting</td><td>Reduced: no screen shake, fewer particles, gentle fades instead of camera swoops, results numbers appear without counting.</td></tr>
+      <tr><td colspan="3"><b>Playing</b></td></tr>
+      <tr><td>Ask before spending Gems</td><td>On</td><td>A “Buy Prism Mochi for 500 Gems?” pop-up before every Gem purchase. Turning it <b>off</b> needs the grown-up gate; turning it on doesn’t.</td></tr>
+      <tr><td>Hints</td><td>On</td><td>Bao’s little tips (hand pointer after 10 seconds without a move, first-time tips on new screens).</td></tr>
+      <tr><td>Left-handed</td><td>Off</td><td>Mirrors the on-screen controls that sit on one side (Bistro Rush cook buttons, pause button).</td></tr>
+      <tr><td>Colour helpers</td><td>Off</td><td>Adds a shape or pattern to every colour that matters in a game (Bucket Brigade liquids, Style Studio, match-3 pieces), for colour-blind players.</td></tr>
+      <tr><td>Text size: Normal / Large</td><td>Follows the phone</td><td>Larger text on cards and buttons.</td></tr>
+      <tr><td>Language</td><td>&ndash;</td><td>Not shown at launch: the game is English only. The row appears once a second language ships (text, Bao’s voice and the name word lists are all translated together).</td></tr>
+      <tr><td colspan="3"><b>Account</b> (see <a href="account.html">Accounts &amp; saving</a>)</td></tr>
+      <tr><td>Player name</td><td>Picked in the tutorial</td><td>Change any time, from the same word lists.</td></tr>
+      <tr><td>Save my town</td><td>Not saved</td><td>Opens the grown-up gate, then email or Apple/Google sign-in. Shows “Saved ✓” once linked.</td></tr>
+      <tr><td>Moving to a new phone?</td><td>&ndash;</td><td>Shows a one-time transfer code (works without an email).</td></tr>
+      <tr><td colspan="3"><b>Grown-ups</b> (behind the gate)</td></tr>
+      <tr><td>Purchases</td><td>Allowed (each one behind the gate)</td><td>Allowed / Off. Off hides every real-money button.</td></tr>
+      <tr><td>Monthly spending limit</td><td>None</td><td>None / €5 / €10 / €20. Gem packs above the limit are greyed out until next month.</td></tr>
+      <tr><td>Rewarded ads</td><td>On</td><td>Off removes every “watch an ad” button (so no free boxes or ad continues).</td></tr>
+      <tr><td>Trading at the Market</td><td>On</td><td>Off closes the Market for this player.</td></tr>
+      <tr><td>Play-time reminder</td><td>Off</td><td>Off / 30 / 45 / 60 / 90 minutes a day. Bao yawns and suggests a break; a grown-up can make it a stop until tomorrow.</td></tr>
+      <tr><td>Notifications</td><td>Off</td><td>“The visitor is waiting”, “New Gem Challenge”. At most one a day, never between 8 pm and 8 am.</td></tr>
+      <tr><td>Privacy</td><td>&ndash;</td><td>What we store, download my data, delete account (30-day grace, then gone for good).</td></tr>
+      <tr><td colspan="3"><b>Help</b></td></tr>
+      <tr><td>How to play</td><td>&ndash;</td><td>The same help topics as the <b>i</b> button on the map.</td></tr>
+      <tr><td>Watch the story again</td><td>&ndash;</td><td>Replays the opening story.</td></tr>
+      <tr><td>Help &amp; contact, Restore purchases, Privacy policy, Terms, Credits</td><td>&ndash;</td><td>Links leave the app, so they go through the grown-up gate. Restore purchases does not need the gate.</td></tr>
+      <tr><td>Version and Player ID</td><td>&ndash;</td><td>Shown at the bottom (“v1.0.3 · ID 7KQ-4M2”) so support can find the account.</td></tr>
+    </tbody>
+  </table></div>
+</section>
+
+<section id="auto">
+  <div class="sec-head"><p class="eyebrow">Graphics</p><h2>Picking the right quality automatically</h2></div>
+  <div class="two">
+    <div class="card prose">
+      <h3>First start-up</h3>
+      <ol>
+        <li><b>Known devices:</b> look the phone model up in a list shipped with the game (all iPhones and iPads, plus the ~300 most common Android phones) and use its tier.</li>
+        <li><b>Unknown device:</b> score it. Memory under 3 GB = Low; 3–5 GB = Medium; 6 GB or more = High. Fewer than 6 CPU cores caps it at Medium. Old GPUs on a block list are always Low. A very high-resolution screen on a Medium phone renders at 80% resolution.</li>
+        <li><b>Check it:</b> while the logo and the first story scene play, measure frame times for 3 seconds. If 1 frame in 10 takes longer than 33 ms, drop one tier. If a Low phone is easily fast enough (under 14 ms), raise it to Medium.</li>
+        <li>Save the result. The player never sees any of this, just a game that runs smoothly.</li>
+      </ol>
+    </div>
+    <div class="card prose">
+      <h3>While playing</h3>
+      <ul>
+        <li>If the city map stays under 25 fps for 15 seconds, drop one tier (once per session) and show a small toast: “We made the graphics lighter so things run smoother. You can change this in Settings.”</li>
+        <li>Never raise the tier by itself, so it can’t flip back and forth.</li>
+        <li>If the phone reports it is getting hot, switch to Low at 30 fps until it cools down.</li>
+        <li>A choice the player makes by hand always wins. Choosing <b>Auto</b> again turns all of this back on.</li>
+      </ul>
+      <p class="detect" id="det"></p>
+    </div>
+  </div>
+  <div class="tbl-wrap tiers"><table>
+    <thead><tr><th>What changes</th><th>Low</th><th>Medium</th><th>High</th></tr></thead>
+    <tbody>
+      <tr><td>Resolution</td><td>70%</td><td>85–100%</td><td>100%</td></tr>
+      <tr><td>Frame rate</td><td>30</td><td>60</td><td>60</td></tr>
+      <tr><td>Shadows</td><td>Blob shadows only</td><td>Hard, low-res</td><td>Soft</td></tr>
+      <tr><td>Outlines</td><td>On (thinner)</td><td>On</td><td>On</td></tr>
+      <tr><td>Squishies idling on the map</td><td>Only near the camera</td><td>On screen</td><td>All</td></tr>
+      <tr><td>Particles (confetti, sparkles, steam)</td><td>25%</td><td>60%</td><td>100%</td></tr>
+      <tr><td>Water shimmer, clouds, glow</td><td>Off</td><td>Simple</td><td>Full</td></tr>
+      <tr><td>Small town details (filler houses, parked cars, flowers)</td><td>Half</td><td>Most</td><td>All</td></tr>
+      <tr><td>Texture size</td><td>512</td><td>1024</td><td>2048</td></tr>
+      <tr><td>Anti-aliasing</td><td>Off</td><td>2×</td><td>4×</td></tr>
+    </tbody>
+  </table></div>
+</section>
+
+<footer class="foot">
+  <span>Words on this page: <code>settings.html</code></span>
+  <span>Saved settings + sounds: <code>art/sound.js</code> · gate: <code>art/ui.js</code></span>
+</footer>
+</main>
+<script src="art/sound.js"></script>
+<script src="art/ui.js"></script>
+<script>
+(function () {
+  const S = SQS.settings, sp = document.getElementById('sp'), det = SQS.detect();
+  let grown = false;
+  const toast = t => { const d = document.createElement('div'); d.className = 'toast'; d.textContent = t; document.body.appendChild(d); setTimeout(() => d.remove(), 2600); };
+  const sw = (k, label, sub, ic, o = {}) => `<div class="row"><span class="ic" aria-hidden="true">${ic}</span><span><b id="l-${k}">${label}</b><small>${sub}</small></span><button class="sw" type="button" role="switch" aria-labelledby="l-${k}" aria-checked="${!!S[k]}" data-k="${k}"${o.gate ? ' data-gate="off"' : ''}></button>${o.vol ? `<input class="vol" type="range" min="0" max="100" value="${Math.round(S[o.vol] * 100)}" data-v="${o.vol}" aria-label="${label} volume">` : ''}</div>`;
+  const seg = (k, label, sub, ic, opts) => `<div class="row"><span class="ic" aria-hidden="true">${ic}</span><span><b>${label}</b><small>${sub}</small></span><span></span><div class="seg" role="group" aria-label="${label}">${opts.map(([v, t]) => `<button type="button" data-seg="${k}" data-val="${v}" aria-pressed="${String(S[k]) === String(v)}">${t}</button>`).join('')}</div>${k === 'quality' ? `<span class="detect" id="autoNote"></span>` : ''}</div>`;
+  const link = (label, sub, ic, act, btn = 'Open') => `<div class="row"><span class="ic" aria-hidden="true">${ic}</span><span><b>${label}</b><small>${sub}</small></span><button class="lnk" type="button" data-act="${act}">${btn}</button></div>`;
+  function render() {
+    sp.innerHTML = `
+    <div class="grp"><h3>Sound</h3>${sw('sfx', 'Sound effects', 'Taps, squishes, rewards', '&#128264;', { vol: 'sfxVol' })}${sw('music', 'Music', 'Songs in town and games', '&#127925;', { vol: 'musicVol' })}${sw('vibration', 'Vibration', 'Little buzzes', '&#128243;')}</div>
+    <div class="grp"><h3>Graphics &amp; battery</h3>${seg('quality', 'Graphics', 'Lower = faster and saves battery', '&#10024;', [['auto', 'Auto'], ['low', 'Low'], ['medium', 'Medium'], ['high', 'High']])}${seg('fps', 'Frame rate', 'Frames per second', '&#9201;', [[30, '30'], [60, '60']])}${sw('battery', 'Battery saver', 'Low graphics, 30 fps, calmer map', '&#128267;')}${seg('motion', 'Animations', 'Less shaking and sparkles', '&#127744;', [['full', 'Full'], ['reduced', 'Reduced']])}</div>
+    <div class="grp"><h3>Playing</h3>${sw('gemConfirm', 'Ask before spending Gems', 'A pop-up before every Gem buy', '&#128142;', { gate: true })}${sw('hints', 'Hints', 'Bao’s little tips', '&#128161;')}${sw('lefty', 'Left-handed', 'Buttons on the other side', '&#9995;')}${sw('colour', 'Colour helpers', 'Shapes on colours', '&#127912;')}${seg('textSize', 'Text size', '', '&#128292;', [['normal', 'Normal'], ['large', 'Large']])}</div>
+    <div class="grp"><h3>Account</h3>${link('Save my town', 'Not saved yet: ask a grown-up', '&#9729;&#65039;', 'account', 'Save')}${link('Moving to a new phone?', 'Get a transfer code', '&#128241;', 'transfer', 'Code')}</div>
+    <div class="grp"><h3>Grown-ups</h3>${grown ? `
+      ${seg('purchases', 'Purchases', 'Real-money Gem packs', '&#128179;', [['gate', 'Allowed'], ['off', 'Off']])}
+      ${seg('spend', 'Monthly limit', 'Gem packs above it are greyed out', '&#128176;', [['0', 'None'], ['5', '€5'], ['10', '€10'], ['20', '€20']])}
+      ${sw('ads', 'Rewarded ads', 'Off removes every “watch an ad” button', '&#127916;')}
+      ${sw('trading', 'Trading at the Market', 'Swap spares with other players', '&#129309;')}
+      ${seg('playLimit', 'Play-time reminder', 'Bao suggests a break', '&#9200;', [[0, 'Off'], [30, '30m'], [45, '45m'], [60, '1h'], [90, '1.5h']])}
+      ${sw('notif', 'Notifications', 'Max 1 a day, never at night', '&#128276;')}
+      ${link('Privacy &amp; data', 'What we store · download · delete', '&#128274;', 'privacy')}` : `<div class="lock"><p>Purchases, ads, trading, play time, notifications and privacy.</p><button class="lnk" type="button" data-act="grown">&#128274; Open grown-up settings</button></div>`}</div>
+    <div class="grp"><h3>Help</h3>${link('How to play', 'Bao shows you again', '&#8505;&#65039;', 'help')}${link('Watch the story again', 'The Squishy Island story', '&#128214;', 'story', 'Watch')}${link('Help &amp; contact', 'Questions? We’ll help', '&#128172;', 'out')}${link('Restore purchases', '', '&#8635;', 'restore', 'Restore')}${link('Privacy policy · Terms · Credits', '', '&#128196;', 'out')}<p style="text-align:center;font-size:12px;font-weight:800;color:var(--ink2);margin:6px 0 8px">Squishy Island v1.0.0 · Player ID 7KQ-4M2</p></div>`;
+    const auto = document.getElementById('autoNote'); if (auto) auto.textContent = S.quality === 'auto' ? `Auto picked ${SQS.tier()} for this device` : S.battery ? 'Battery saver is on, so Low is used' : '';
+  }
+  if (S.spend == null) S.spend = '0'; if (S.ads == null) S.ads = !S.adsOff;
+  render();
+  document.getElementById('det').textContent = `This device: ${det.cores} CPU cores, memory ${det.mem}, screen ×${det.dpr} → Auto picks ${det.tier}.`;
+  sp.addEventListener('click', e => {
+    const b = e.target.closest('button'); if (!b) return;
+    if (b.dataset.k) {
+      const k = b.dataset.k, on = !S[k];
+      const go = () => { const p = { [k]: on }; if (k === 'ads') p.adsOff = !on; SQS.set(p); SQS.play(on ? 'toggleOn' : 'toggleOff'); if (k === 'vibration' && on) SQS.buzz(40); render(); };
+      if (b.dataset.gate && !on && !grown) return SQU.gate(() => { grown = true; go(); }, 'Turning off the Gem pop-up is a grown-up choice.');
+      return go();
+    }
+    if (b.dataset.seg) { const k = b.dataset.seg, v = b.dataset.val, val = (k === 'fps' || k === 'playLimit') ? +v : v; SQS.set({ [k]: val }); SQS.play('tap'); render(); return; }
+    const a = b.dataset.act; SQS.play('tap');
+    if (a === 'grown') return SQU.gate(() => { grown = true; render(); }, 'These settings are for grown-ups.');
+    if (a === 'account') location.href = 'account.html#demo';
+    else if (a === 'help') location.href = 'index.html?help=1';
+    else if (a === 'story') location.href = 'index.html?intro=1';
+    else if (a === 'transfer') toast('Transfer code: 4F7Q-KX2M · PIN 3816 (works once, for 24 hours)');
+    else if (a === 'restore') toast('Purchases restored (prototype)');
+    else if (a === 'out' || a === 'privacy') SQU.gate(() => toast('In the real app this opens the page in the browser'), 'This opens a page outside the game.');
+  });
+  sp.addEventListener('change', e => { const r = e.target.closest('[data-v]'); if (!r) return; SQS.set({ [r.dataset.v]: r.value / 100 }); if (r.dataset.v === 'sfxVol') SQS.play('coin'); });
+  sp.addEventListener('input', e => { const r = e.target.closest('[data-v]'); if (r && r.dataset.v === 'musicVol') { SQS.set({ musicVol: r.value / 100 }); if (!SQS.musicNow() && S.music) SQS.music('city'); } });
+  window.addEventListener('pagehide', () => SQS.music(null));
+})();
+</script>
+</body>
+</html>

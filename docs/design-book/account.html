@@ -1,0 +1,182 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Squishy Island Accounts</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bagel+Fat+One&amp;family=Nunito:wght@400;600;800;900&amp;family=Patrick+Hand&amp;display=swap">
+<link rel="stylesheet" href="art/style.css">
+<style>
+.flowwrap{display:grid;grid-template-columns:minmax(0,380px) minmax(0,1fr);gap:24px;align-items:start}
+@media (max-width:860px){.flowwrap{grid-template-columns:1fr}}
+.ph{background:linear-gradient(#CDEBFF,#F1EDFF);border:3px solid var(--line);border-radius:32px;box-shadow:6px 6px 0 var(--line);min-height:520px;padding:18px;display:grid;align-content:center;position:relative;overflow:hidden}
+.st{background:#fff;border:3px solid var(--line);border-radius:22px;box-shadow:4px 4px 0 var(--line);padding:16px;display:grid;gap:10px;text-align:center}
+.st h3{font-family:var(--f-display);font-weight:400;font-size:24px;margin:0;line-height:1.1}
+.st p{margin:0;font-weight:700;line-height:1.35}
+.st small{color:var(--ink2);font-weight:700;font-size:12.5px;line-height:1.35}
+.st .bao{width:96px;height:96px;justify-self:center}
+.btn{all:unset;box-sizing:border-box;cursor:pointer;text-align:center;font-weight:900;font-size:16px;padding:11px 16px;border:2.5px solid var(--line);border-radius:999px;background:#fff;box-shadow:3px 3px 0 var(--line)}
+.btn.main{background:var(--pink);color:#fff;font-family:var(--f-display);font-weight:400;font-size:20px}
+.btn.apple{background:#111;color:#fff}
+.btn:active{transform:translate(2px,2px);box-shadow:1px 1px 0 var(--line)}
+.btn:focus-visible,.ph input:focus-visible{outline:3px solid var(--pink);outline-offset:2px}
+.ph input[type=email]{font:inherit;font-weight:800;font-size:16px;padding:10px 12px;border:2.5px solid var(--line);border-radius:14px;width:100%;box-sizing:border-box}
+.code{display:flex;gap:6px;justify-content:center}
+.code input{width:38px;height:46px;text-align:center;font:900 22px var(--f-body);border:2.5px solid var(--line);border-radius:12px}
+.err{color:#E5484D;font-weight:900;min-height:1.2em;font-size:14px}
+.towns{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.town{border:2.5px solid var(--line);border-radius:16px;padding:10px;background:#fff;display:grid;gap:3px;font-size:13px;font-weight:700;text-align:left}
+.town b{font-size:15px}
+.town.pick{background:#FFF3B0}
+.mocks{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,250px),1fr));gap:14px}
+.mocks .st{box-shadow:3px 3px 0 var(--line)}
+.dot{display:inline-block;width:12px;height:12px;border-radius:50%;background:#FF9F43;border:2px solid var(--line);vertical-align:-1px}
+</style>
+</head>
+<body style="--theme:#4A9BFF;--theme2:#DFF3FF">
+<header class="topbar"><div class="topbar-in">
+  <a class="brand" href="index.html"><i></i>Squishy Island</a>
+  <nav><a class="pill" href="index.html">&larr; City map</a><a class="pill" href="guide.html">Game guide</a><a class="pill" href="settings.html">Settings</a></nav>
+</div></header>
+<main class="wrap">
+
+<section class="hero" style="grid-template-columns:1fr">
+  <div class="hero-text">
+    <p class="eyebrow">Accounts &amp; saving</p>
+    <h1>Play now, save later</h1>
+    <p class="lede">Nobody has to sign up to play. The moment the game is first opened it quietly creates a <b>guest account</b> and saves the town to the cloud. Later, at moments when the town clearly matters to the child, Bao asks them to get a grown-up to <b>save the town</b> with an email address (or Apple / Google sign-in). That is the Hay Day / Supercell ID pattern, adjusted for a kids’ game: the grown-up does the linking, never the child.</p>
+  </div>
+</section>
+
+<section>
+  <div class="sec-head"><p class="eyebrow">Recommendation</p><h2>How the account works</h2></div>
+  <div class="two">
+    <div class="card prose">
+      <h3>1 · Guest account from the first second</h3>
+      <ul>
+        <li>On first launch the game creates an anonymous account: a random player ID plus a secret key kept in the phone’s secure storage (iOS Keychain, Android Keystore with Block Store backup). No screens, no questions.</li>
+        <li>Progress saves to the server a few seconds after every change and when the app goes to the background, with a copy on the phone for offline play.</li>
+        <li>On iPhone the Keychain usually survives deleting and reinstalling the app, so even a guest often gets their town back on the same phone.</li>
+        <li>What a guest can lose: the town, if the phone is lost, broken or reset. That is exactly the story the save prompts tell.</li>
+      </ul>
+    </div>
+    <div class="card prose">
+      <h3>2 · Linking (“Save my town”)</h3>
+      <ul>
+        <li>Always starts with the <a href="settings.html">grown-up gate</a>.</li>
+        <li><b>Email with a 6-digit code</b> (no password to forget): works on every phone, and is the main option.</li>
+        <li><b>Sign in with Apple</b> on iPhone/iPad and <b>Google</b> on Android as quick extras. If Google sign-in is offered on iPhone too, Apple also requires Sign in with Apple (or a similar privacy-friendly option).</li>
+        <li>The email belongs to the <b>parent</b>, is used only to send codes and bring the town back, and never for marketing. A confirmation email tells the parent what is stored and how to delete it.</li>
+        <li>Linked accounts show “Saved ✓” in Settings and the cloud icon on the map turns green.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section id="demo">
+  <div class="sec-head"><p class="eyebrow">Try it</p><h2>The save flow</h2></div>
+  <div class="flowwrap">
+    <div class="ph" id="ph" aria-live="polite"></div>
+    <div class="prose" style="display:grid;gap:16px">
+      <div class="card prose">
+        <h3>When Bao asks</h3>
+        <p>A small orange dot <span class="dot" aria-hidden="true"></span> sits on the cloud icon (top bar of the map) until the town is saved. The full “Keep your town safe!” card appears only at moments that matter:</p>
+        <ul>
+          <li>the first house reaches level 3 (usually day 1–2)</li>
+          <li>the first Epic or Legendary squishy</li>
+          <li>the 3rd day the game is opened</li>
+          <li><b>right after any purchase</b> (always: bought things must never be lost)</li>
+          <li>a player with 20+ squishies who still isn’t saved: once a week</li>
+        </ul>
+        <p>At most one card a day. After the child taps “Later” five times, only the dot stays. Never during a minigame, never in the first 10 minutes of the first day.</p>
+      </div>
+      <div class="card prose">
+        <h3>Thank-you gift</h3>
+        <p>Saving gives the town a <b>Safety Cloud</b> weathervane for the roof of the Steamhouse. Decoration only: no Gems or coins, so nobody feels pushed to hand over an email for currency.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="sec-head"><p class="eyebrow">Other screens</p><h2>New phone, two towns, deleting</h2></div>
+  <div class="mocks">
+    <div class="st"><small class="eyebrow">Title screen</small><h3>Squishy Island</h3><button class="btn main" type="button" tabindex="-1">Play</button><small><u>I already have a town</u></small><small>The second line is small on purpose: new players just tap Play. It leads to the grown-up gate, then email code / Apple / Google, then the saved town loads.</small></div>
+    <div class="st"><small class="eyebrow">Two towns found</small><h3>Which town?</h3><div class="towns"><div class="town pick"><b>On this phone</b>12 squishies<br>Steamhouse Lv 4<br>Today</div><div class="town"><b>Saved town</b>31 squishies<br>Steamhouse Lv 9<br>3 days ago</div></div><small>Shown when a phone that already has a guest town signs in to a saved account. The town with more squishies is suggested. The other one is kept on the server for 30 days, just in case.</small></div>
+    <div class="st"><small class="eyebrow">No email?</small><h3>Transfer code</h3><p style="font:900 22px var(--f-body);letter-spacing:.08em">4F7Q-KX2M</p><small>Settings → “Moving to a new phone?” shows a one-time code plus a PIN, valid for 24 hours. Type it on the new phone under “I already have a town”. For families who don’t want to give an email.</small></div>
+    <div class="st"><small class="eyebrow">Grown-ups → Privacy</small><h3>Delete account</h3><small>Required by both Apple and Google: in the app (behind the gate) and on a web page. Shows what will be lost, asks once more, then the account is deleted after a 30-day grace period (signing in during that time cancels it). Purchases are lost too, and the screen says so.</small></div>
+  </div>
+</section>
+
+<section>
+  <div class="sec-head"><p class="eyebrow">Kids, privacy and the law</p><h2>Keep the data tiny</h2></div>
+  <div class="two">
+    <div class="card prose">
+      <h3>What the game stores</h3>
+      <ul>
+        <li>A random player ID, the town (squishies, levels, coins, Gems), settings, purchase receipts.</li>
+        <li><b>Player names come from word lists</b> (“Bouncy Bao 482”): no free typing anywhere, so no real names and nothing to moderate.</li>
+        <li>No chat, no photos, no location, no contacts, no advertising ID.</li>
+        <li>The parent’s email only if they link it.</li>
+        <li>Play statistics only first-party and grouped (how many players finish level 10), never sold or shared.</li>
+      </ul>
+    </div>
+    <div class="card prose">
+      <h3>Rules to check with a lawyer</h3>
+      <ul>
+        <li><b>US (COPPA):</b> collecting personal information (an email counts) from children under 13 needs verifiable parental consent, with a few narrow exceptions. Treat every player as a child.</li>
+        <li><b>EU/UK (GDPR):</b> parental consent below the national age of digital consent (16 in Hungary, 13–16 elsewhere). A plain-language privacy policy written for parents <i>and</i> a kid-friendly version.</li>
+        <li><b>Apple and Google</b> require in-app account deletion, and Google also a deletion web page.</li>
+        <li><b>Store programmes:</b> Apple’s Kids Category and Google’s Designed for Families limit third-party SDKs (analytics, ads, sign-in). Pick every SDK from their approved lists.</li>
+      </ul>
+      <p style="font-size:13px;color:var(--ink2)">This is a design recommendation, not legal advice.</p>
+    </div>
+  </div>
+  <div class="card prose" style="margin-top:18px">
+    <h3>For the builder</h3>
+    <ul>
+      <li>The chosen backend is <b>Nakama</b> on an EU server (see the <a href="build.html">build plan</a>): it has guest accounts, account linking, cloud saves, wallets and Google purchase checking built in.</li>
+      <li>Keep coins, Gems and purchases on the <b>server</b>. The server checks that minigame earnings are believable (no more than about 60 coins per minute of reported play), so a hacked phone can’t mint Gems.</li>
+      <li>Offline play is fine: earnings sync when the phone is back online, within the same limits.</li>
+      <li>Purchases are also restorable from the App Store / Play account (“Restore purchases” in Settings).</li>
+    </ul>
+  </div>
+</section>
+
+<footer class="foot">
+  <span>Words on this page: <code>account.html</code></span>
+  <span>Gate &amp; pop-ups: <code>art/ui.js</code></span>
+</footer>
+</main>
+<script src="art/sound.js"></script>
+<script src="art/ui.js"></script>
+<script src="art/kit.js"></script>
+<script>
+SQ.boot(function () {
+  const ph = document.getElementById('ph'), D = SQ.three, bao = `<img class="bao" src="${D.sprite('bao', { eyes: 'happy' })}" alt="Bao Bun" width="96" height="96">`;
+  const STEPS = {
+    ask: () => `<div class="st">${bao}<h3>Keep your town safe!</h3><p>If this phone gets lost, a grown-up can bring your island back.</p><button class="btn main" type="button" data-go="gate">Ask a grown-up</button><button class="btn" type="button" data-go="later">Later</button></div>`,
+    later: () => `<div class="st">${bao}<h3>Okay!</h3><p>I’ll ask again another day.</p><small>The orange dot stays on the cloud icon.</small><button class="btn" type="button" data-go="ask">Start again</button></div>`,
+    how: () => `<div class="st"><small class="eyebrow">For grown-ups</small><h3>Save this town</h3><p>We only use this to bring the town back and send you login codes. No ads, no newsletters.</p><button class="btn main" type="button" data-go="email">Continue with email</button><button class="btn apple" type="button" data-go="done">&#63743; Sign in with Apple</button><button class="btn" type="button" data-go="done">Sign in with Google</button><small>Apple on iPhone, Google on Android. Prototype: these skip straight to “saved”.</small></div>`,
+    email: () => `<div class="st"><small class="eyebrow">For grown-ups</small><h3>Your email</h3><input type="email" id="em" placeholder="parent@example.com" autocomplete="email" aria-label="Email address"><p class="err" id="er"></p><button class="btn main" type="button" data-go="code">Send code</button><button class="btn" type="button" data-go="how">Back</button></div>`,
+    code: () => `<div class="st"><small class="eyebrow">For grown-ups</small><h3>Check your email</h3><p>We sent a 6-digit code to <b>${mask}</b>.</p><div class="code">${[0, 1, 2, 3, 4, 5].map(i => `<input inputmode="numeric" maxlength="1" aria-label="Digit ${i + 1}">`).join('')}</div><p class="err" id="er"></p><small>Prototype: the code is <b>${code}</b>. Real codes expire after 10 minutes.</small><button class="btn" type="button" data-go="email">Use a different email</button></div>`,
+    done: () => `<div class="st">${bao}<h3>Town saved! &#9729;&#65039;</h3><p>Your squishies are safe, even on a new phone.</p><small>A Safety Cloud weathervane is now on the Steamhouse roof.</small><button class="btn" type="button" data-go="ask">Start again</button></div>`
+  };
+  let mask = '', code = '';
+  const show = k => {
+    if (k === 'gate') return SQU.gate(() => show('how'), 'Saving the town needs a grown-up.');
+    if (k === 'code') { const v = (document.getElementById('em') || {}).value || ''; if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(v)) { SQS.play('nope'); document.getElementById('er').textContent = 'That doesn’t look like an email address.'; return; } mask = v[0] + '***@' + v.split('@')[1]; code = String(100000 + Math.floor(Math.random() * 900000)); }
+    ph.innerHTML = STEPS[k](); SQS.play(k === 'done' ? 'tada' : k === 'later' ? 'back' : 'open'); if (k === 'ask') SQS.play('hello');
+    if (k === 'email') document.getElementById('em').focus();
+    if (k === 'code') { const ins = [...ph.querySelectorAll('.code input')]; ins[0].focus();
+      ins.forEach((inp, i) => inp.addEventListener('input', () => { inp.value = inp.value.replace(/\D/g, ''); if (inp.value && ins[i + 1]) ins[i + 1].focus(); SQS.play('tap'); const all = ins.map(x => x.value).join(''); if (all.length === 6) { if (all === code) show('done'); else { SQS.play('nope'); document.getElementById('er').textContent = 'That code isn’t right. Try again.'; ins.forEach(x => x.value = ''); ins[0].focus(); } } })); }
+  };
+  ph.addEventListener('click', e => { const b = e.target.closest('[data-go]'); if (b) { SQS.play('tap'); show(b.dataset.go); } });
+  show('ask');
+});
+</script>
+</body>
+</html>

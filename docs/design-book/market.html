@@ -1,0 +1,197 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Swap Meet Market</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bagel+Fat+One&amp;family=Nunito:wght@400;600;800;900&amp;family=Patrick+Hand&amp;display=swap">
+<link rel="stylesheet" href="art/style.css">
+<style>
+.trade{display:grid;gap:14px}
+.offer{display:grid;gap:8px;padding:14px;border:2.5px solid var(--oc);border-radius:20px;background:#fff;box-shadow:4px 4px 0 var(--oc)}
+.offer h3{font-size:13px;letter-spacing:.12em;text-transform:uppercase;color:var(--oc)}
+.slots{display:flex;flex-wrap:wrap;gap:8px;min-height:92px}
+.chip{all:unset;box-sizing:border-box;cursor:pointer;width:84px;display:grid;justify-items:center;gap:2px;padding:6px 4px;border:2px solid var(--rc);border-radius:14px;background:color-mix(in srgb,var(--rc) 12%,#fff);font-size:11.5px;font-weight:800;text-align:center;line-height:1.15}
+.chip img{width:56px;height:56px}
+.chip.static{cursor:default}
+.chip:focus-visible{outline:3px solid var(--pink);outline-offset:2px}
+.chip[aria-pressed="true"]{box-shadow:0 0 0 3px var(--ink)}
+.empty{font-size:14px;color:var(--ink2);align-self:center}
+.acts{display:flex;justify-content:center;gap:22px}
+.act{all:unset;cursor:pointer;display:grid;justify-items:center;gap:4px;font-weight:800;font-size:13px}
+.act span{width:62px;height:62px;border-radius:50%;border:3px solid var(--line);display:grid;place-items:center;box-shadow:3px 3px 0 var(--line)}
+.act:active span{transform:translate(2px,2px);box-shadow:1px 1px 0 var(--line)}
+.act:focus-visible span{outline:3px solid var(--pink);outline-offset:3px}
+.bubble{font-family:var(--f-hand);font-size:20px;background:#fff;border:2px solid var(--line);border-radius:14px;padding:4px 12px;justify-self:start}
+.warn{border:3px solid #E5484D;background:#FFF1F1;border-radius:20px;padding:14px;display:grid;gap:10px;box-shadow:4px 4px 0 #E5484D}
+.warn h3{color:#C93A3A}
+.warn .btns,.done .btns{display:flex;gap:10px;flex-wrap:wrap}
+.done{border:3px solid var(--mint);background:#ECFFF6;border-radius:20px;padding:14px;display:grid;gap:8px}
+.btn{all:unset;cursor:pointer;font-weight:900;padding:8px 16px;border:2.5px solid var(--line);border-radius:999px;background:#fff;box-shadow:3px 3px 0 var(--line)}
+.btn.red{background:#FF6F7D;color:#fff}
+.btn:focus-visible{outline:3px solid var(--pink);outline-offset:2px}
+.demo{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,1fr);gap:20px;align-items:start}
+@media (max-width:860px){.demo{grid-template-columns:1fr}}
+</style>
+</head>
+<body style="--theme:#3BA7A0;--theme2:#DDF5F2">
+<header class="topbar"><div class="topbar-in">
+  <a class="brand" href="index.html"><i></i>Squishy Island</a>
+  <nav><a class="pill" href="index.html">&larr; City map</a><a class="pill" href="guide.html">Game guide</a></nav>
+</div></header>
+<main class="wrap">
+
+<section class="hero">
+  <div class="hero-text">
+    <p class="eyebrow">Squishy shop · trade with other players</p>
+    <h1>Swap Meet Market</h1>
+    <p class="lede">The second way to get squishies. You are paired with a random player, you each put squishies on the table, and you haggle with three big buttons until you both accept. Only <b>spares</b> from your <a href="guide.html#collection">Spare Shelf</a> can be traded, so the squishy living in your house never leaves.</p>
+    <ul class="facts"><li><b>Address:</b> 4 Squeeze Street</li><li><b>Unlocks:</b> when you own 8 squishies</li><li><b>Trade size:</b> up to 4 squishies per side</li><li><b>Levels:</b> grow with trades finished</li></ul>
+    <p class="note"><b>Try it</b>The demo below runs the real trade check. Try offering your Whale for one Common and press the tick.</p>
+  </div>
+  <div class="hero-art" data-hero="market" data-level="10"></div>
+</section>
+
+<section>
+  <div class="sec-head"><p class="eyebrow">How trading works</p><h2>Plus, cross, tick</h2></div>
+  <div class="prose">
+    <ol>
+      <li><b>Find a partner.</b> Tap <i>Trade now</i> and the game pairs you with a random player who is also looking to trade. You see their name, their town flag and their squishy collection.</li>
+      <li><b>Build your offers.</b> Tap squishies in your collection to put them on the table. Your partner does the same. Both offers update live.</li>
+      <li><b>Haggle with three buttons:</b>
+        <ul>
+          <li><b>&#43; Ask for more</b> sends a bouncing "a bit more please?" bubble. Your partner can add something or reply with a "that’s my best" emote.</li>
+          <li><b>&#10005; Decline</b> ends the trade politely and you can look for a new partner.</li>
+          <li><b>&#10003; Accept</b> locks your side. When both players have accepted, a 3-second countdown starts (either player can still cancel), then the squishies swap.</li>
+        </ul></li>
+      <li><b>Moving day.</b> The spares you traded away wave goodbye from the shelf. The new ones arrive in a little moving truck: a squishy you didn’t have moves into its house, one you already had goes onto your Spare Shelf.</li>
+    </ol>
+    <h3>The unfair-trade alert</h3>
+    <p>Every squishy has a hidden trade value based on rarity (Common 1, Uncommon 3, Rare 8, Epic 20, Legendary 60). The trade screen does not show any fairness meter while you haggle: players judge the offers themselves.</p>
+    <p>Only if you press the tick on a trade that is <b>significantly unfair to you, meaning you give more than twice the value you receive</b>, a big red alert pops up: <i>"Whoa! This trade is much better for them than for you."</i> It shows both totals and asks you to tap <i>Go back</i> or <i>Trade anyway</i>. The alert only protects the player who is losing out; it never blocks a trade.</p>
+  </div>
+</section>
+
+<section>
+  <div class="sec-head"><p class="eyebrow">Interactive demo</p><h2>Trade with a pretend player</h2></div>
+  <div class="demo">
+    <div class="trade">
+      <div class="offer" style="--oc:#FF6FA3"><h3 id="pname">Mila offers</h3><div class="slots" id="them"></div><p class="bubble" id="say" hidden></p></div>
+      <div class="offer" style="--oc:#3BA7A0"><h3>You offer</h3><div class="slots" id="you"></div></div>
+      <div class="acts">
+        <button class="act" type="button" id="more"><span style="background:#FFC94D"><svg width="28" height="28" viewBox="0 0 28 28"><path d="M4 14H24M14 4V24" stroke="#fff" stroke-width="5" stroke-linecap="round"/></svg></span>Ask for more</button>
+        <button class="act" type="button" id="no"><span style="background:#FF6F7D"><svg width="26" height="26" viewBox="0 0 26 26"><path d="M5 5L21 21M21 5L5 21" stroke="#fff" stroke-width="5" stroke-linecap="round"/></svg></span>Decline</button>
+        <button class="act" type="button" id="yes"><span style="background:#4FCFA0"><svg width="28" height="28" viewBox="0 0 28 28"><path d="M4 15L11 22L24 6" stroke="#fff" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg></span>Accept</button>
+      </div>
+      <div id="result" aria-live="polite"></div>
+    </div>
+    <div class="card prose">
+      <h3>Your collection</h3>
+      <p style="font-size:14px">Tap a squishy to put it on the table or take it back (up to 4).</p>
+      <div class="slots" id="inv"></div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="sec-head"><p class="eyebrow">Keeping it safe for kids</p><h2>Trading rules</h2></div>
+  <div class="prose"><ul>
+    <li><b>No chat.</b> Players can only use the three buttons and a small set of friendly emotes (wave, heart, thinking, "best offer").</li>
+    <li><b>No coins or real money in trades.</b> Only squishies can be swapped, so nobody can be pressured into paying.</li>
+    <li><b>Undo window:</b> a finished trade can be reversed within 10 minutes if both players agree.</li>
+    <li><b>Daily limit</b> of 10 trades, and the last squishy of each family in your city can’t be traded away (so a house never becomes empty by accident).</li>
+    <li><b>Parent switch:</b> trading can be turned off or set to "friends only" in parental settings.</li>
+  </ul></div>
+</section>
+
+<section>
+  <div class="sec-head"><p class="eyebrow">What the player sees</p><h2>The trade screen</h2></div>
+  <div class="game">
+    <div class="prose">
+      <p>The trade screen keeps everything big and visual: the partner’s offer on top, yours at the bottom, and the three round buttons along the bottom edge where thumbs reach. Each squishy tile has a rarity stripe so kids can compare at a glance without reading.</p>
+      <h3>How the market levels up</h3>
+      <p>The market grows with the number of trades you finish. Higher levels add more stalls, a clock tower and lanterns, and unlock extras: a wishlist board (level 4), a "trade with friends" stall (level 6) and seasonal event stalls (level 8).</p>
+    </div>
+    <figure class="phone" data-mock="market" style="margin:0"></figure>
+  </div>
+</section>
+
+<section>
+  <div class="sec-head"><p class="eyebrow">Building levels</p><h2>From picnic blanket to grand bazaar</h2></div>
+  <ol data-levels="market">
+    <li><b>Picnic swap.</b> Two squishies trading on a blanket.</li>
+    <li><b>Crate stall.</b> A crate counter under an umbrella.</li>
+    <li><b>Two tents.</b> Striped market tents.</li>
+    <li><b>Three tents.</b> A third tent and bunting. Wishlist board unlocks.</li>
+    <li><b>Market frame.</b> A wooden frame goes up over the stalls.</li>
+    <li><b>Market hall.</b> A teal roof and SWAP MEET sign. Friends stall unlocks.</li>
+    <li><b>Clock tower.</b> A clock tower rises behind the roof.</li>
+    <li><b>Lanterns.</b> Lanterns, flowers and fence. Event stalls unlock.</li>
+    <li><b>Glass dome.</b> A glass dome tops the clock tower.</li>
+    <li><b>Grand Bazaar.</b> Golden dome tip, flags and medal.</li>
+  </ol>
+</section>
+
+<footer class="foot">
+  <span>Words on this page: <code>market.html</code></span>
+  <span>Pictures &amp; squishy list: <code>art/market.js</code></span>
+</footer>
+</main>
+<script src="art/kit.js"></script>
+<script>
+SQ.boot(function () {
+  const R = SQ.RARITY, $ = id => document.getElementById(id);
+  let inv = ['banana', 'whale', 'toast', 'egg', 'kitty', 'bao', 'puffer', 'icecream', 'peach', 'jelly'];
+  let you = ['banana'], them = ['macaron', 'strawberry'], asks = 0, partner = 'Mila';
+  const names = ['Mila', 'Noah', 'Zoe', 'Leo', 'Ava', 'Bence', 'Lili', 'Sam'];
+  const val = arr => arr.reduce((a, id) => a + R[SQ.SQ[id].r].value, 0);
+  const chip = (id, cls, tag) => { const q = SQ.SQ[id]; return `<${tag} class="chip ${cls}" ${tag === 'button' ? `type="button" data-id="${id}" aria-pressed="${you.includes(id)}"` : ''} style="--rc:${R[q.r].color}"><img src="${SQ.three.sprite(id)}" alt="" width="56" height="56"><span>${q.name}</span></${tag}>`; };
+  function render() {
+    $('pname').textContent = partner + ' offers';
+    $('them').innerHTML = them.length ? them.map(id => chip(id, 'static', 'div')).join('') : '<span class="empty">Nothing yet</span>';
+    $('you').innerHTML = you.length ? you.map(id => chip(id, 'static', 'div')).join('') : '<span class="empty">Tap squishies in your collection</span>';
+    $('inv').innerHTML = inv.map(id => chip(id, '', 'button')).join('');
+    $('inv').querySelectorAll('button').forEach(b => b.addEventListener('click', () => {
+      const id = b.dataset.id; you = you.includes(id) ? you.filter(x => x !== id) : you.length < 4 ? you.concat(id) : you; $('result').innerHTML = ''; render();
+    }));
+  }
+  function say(t) { $('say').hidden = false; $('say').textContent = t; }
+  function newPartner() {
+    partner = names[Math.floor(Math.random() * names.length)];
+    const pool = Object.values(SQ.SQ).filter(q => !inv.includes(q.id) && (q.r === 'C' || q.r === 'U' || (q.r === 'R' && Math.random() < .5)));
+    them = []; const n = 1 + Math.floor(Math.random() * 2);
+    while (them.length < n) { const q = pool[Math.floor(Math.random() * pool.length)]; if (!them.includes(q.id)) them.push(q.id); }
+    asks = 0; $('say').hidden = true; $('result').innerHTML = ''; render();
+  }
+  $('more').addEventListener('click', () => {
+    asks++; $('result').innerHTML = '';
+    if (asks <= 2 && them.length < 4) {
+      const pool = Object.values(SQ.SQ).filter(q => (q.r === 'C' || q.r === 'U') && !them.includes(q.id) && !inv.includes(q.id));
+      them.push(pool[Math.floor(Math.random() * pool.length)].id); say(partner + ': "Okay, I’ll add one more!"');
+    } else say(partner + ': "That’s my best offer!"');
+    render();
+  });
+  $('no').addEventListener('click', () => { $('result').innerHTML = `<div class="done"><b>You declined.</b> A new partner is on the way&hellip;</div>`; setTimeout(newPartner, 900); });
+  function finish() {
+    inv = inv.filter(id => !you.includes(id)).concat(them);
+    const got = them.map(id => SQ.SQ[id].name).join(', ');
+    $('result').innerHTML = `<div class="done"><h3>Trade done!</h3><p>${got} moved into your city. The squishies you gave waved goodbye.</p><div class="btns"><button class="btn" type="button" id="again">Find a new partner</button></div></div>`;
+    you = []; them = []; render(); $('again').addEventListener('click', newPartner);
+  }
+  $('yes').addEventListener('click', () => {
+    const a = val(you), b = val(them);
+    if (!you.length || !them.length) { $('result').innerHTML = '<div class="done">Both sides need at least one squishy on the table.</div>'; return; }
+    if (a > 2 * b) {
+      $('result').innerHTML = `<div class="warn"><h3>Whoa! This trade is much better for ${partner} than for you.</h3><p>You give <b>${a}</b> value and get <b>${b}</b>. Are you sure?</p><div class="btns"><button class="btn" type="button" id="back">Go back</button><button class="btn red" type="button" id="anyway">Trade anyway</button></div></div>`;
+      $('back').addEventListener('click', () => $('result').innerHTML = '');
+      $('anyway').addEventListener('click', finish);
+    } else finish();
+  });
+  render();
+});
+</script>
+</body>
+</html>

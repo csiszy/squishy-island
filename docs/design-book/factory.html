@@ -1,0 +1,265 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Squishy Factory</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bagel+Fat+One&amp;family=Nunito:wght@400;600;800;900&amp;family=Patrick+Hand&amp;display=swap">
+<link rel="stylesheet" href="art/style.css">
+<style>
+.opener{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.2fr);gap:20px;align-items:start}
+@media (max-width:820px){.opener{grid-template-columns:1fr}}
+.boxbtns{display:flex;flex-wrap:wrap;gap:10px}
+.boxbtn{all:unset;box-sizing:border-box;cursor:pointer;display:grid;justify-items:center;gap:2px;width:108px;padding:10px 6px;border:2.5px solid var(--line);border-radius:16px;background:#fff;box-shadow:3px 3px 0 var(--line);font-weight:900;font-size:13px;text-align:center}
+.boxbtn img{width:56px;height:56px}
+.boxbtn small{font-weight:800;color:var(--ink2)}
+.boxbtn[aria-pressed="true"]{background:#FFF3B0}
+.boxbtn:focus-visible{outline:3px solid var(--pink);outline-offset:2px}
+.reveal{min-height:280px;display:grid;place-items:center;text-align:center;gap:6px;background:radial-gradient(circle at 50% 45%,#F1EDFF 0 40%,#fff 41%);border-radius:18px;padding:12px}
+
+.reveal .big{font-family:var(--f-display);font-size:24px}
+.openbtn{all:unset;cursor:pointer;font-family:var(--f-display);font-size:24px;color:#fff;background:var(--pink);border:3px solid var(--line);border-radius:999px;padding:10px 34px;box-shadow:4px 4px 0 var(--line);text-align:center}
+.openbtn:active{transform:translate(2px,2px);box-shadow:2px 2px 0 var(--line)}
+.shake{animation:shake .5s}
+@keyframes shake{0%,100%{transform:rotate(0)}25%{transform:rotate(-8deg)}75%{transform:rotate(8deg)}}
+.history{display:flex;flex-wrap:wrap;gap:6px}
+.history span{width:46px;height:46px;border-radius:12px;border:2px solid var(--rc);background:color-mix(in srgb,var(--rc) 14%,#fff)}
+
+.ctl-row{display:flex;flex-wrap:wrap;gap:10px;align-items:center;font-weight:800;font-size:14px}
+select{font:inherit;padding:6px 10px;border:2px solid var(--line);border-radius:10px;background:#fff}
+.pity{height:12px;border-radius:6px;background:#F2EFFA;border:2px solid var(--line);overflow:hidden}
+.pity i{display:block;height:100%;background:var(--sky);transition:width .3s}
+.tourbar{display:flex;align-items:center;gap:12px;background:#FFF8E8;border:3px solid var(--line);border-radius:20px;box-shadow:4px 4px 0 var(--line);padding:10px 14px;margin-bottom:14px}
+.tourbar p{margin:0;font-weight:800;font-size:16px;flex:1}
+.tourbar a{font-weight:900;text-decoration:none;background:var(--pink);color:#fff;border:2.5px solid var(--line);border-radius:999px;padding:8px 16px;white-space:nowrap}
+.gemgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:12px}
+.gem{background:#fff;border:2.5px solid var(--line);border-radius:16px;box-shadow:3px 3px 0 var(--line);padding:10px;display:grid;justify-items:center;gap:4px;text-align:center}
+.gem img{width:96px;height:96px}
+.gem b{font-size:14px;line-height:1.2}
+.gem button{all:unset;cursor:pointer;font-weight:900;font-size:13px;background:#E9F6FF;border:2px solid var(--line);border-radius:999px;padding:4px 12px}
+.gem button:disabled{cursor:default;opacity:.55}
+.gem button:focus-visible{outline:3px solid var(--pink);outline-offset:2px}
+.gem.x{background:linear-gradient(160deg,#FFF0F7,#EEF0FF)}
+.gemtag{font-size:11px;font-weight:900;color:var(--ink2)}
+.adbox{display:grid;gap:8px;justify-items:center;padding:10px}
+.adbox .bar{width:200px;height:10px;border:2px solid var(--line);border-radius:6px;overflow:hidden;background:#F2EFFA}
+.adbox .bar i{display:block;height:100%;width:0;background:var(--pink);transition:width 2s linear}
+</style>
+</head>
+<body style="--theme:#FF6FA3;--theme2:#FFE3EF">
+<header class="topbar"><div class="topbar-in">
+  <a class="brand" href="index.html"><i></i>Squishy Island</a>
+  <nav><a class="pill" href="index.html">&larr; City map</a><a class="pill" href="guide.html">Game guide</a></nav>
+</div></header>
+<main class="wrap">
+
+<section class="hero">
+  <div class="hero-text">
+    <p class="eyebrow">Squishy shop · get new squishies</p>
+    <h1>Squishy Factory</h1>
+    <p class="lede">The factory is where coins become squishies. Buy a Mystery Box, watch it ride the conveyor belt and pop open to reveal a random squishy. Rarer squishies are much harder to get. Next door is the <b>Gem Shop</b>, where the Legendaries and two shop-only squishies are sold directly (no luck involved) for Squish Gems.</p>
+    <ul class="facts"><li><b>Address:</b> 4 Cloudberry Hill</li><li><b>Unlocks:</b> Free from the start</li><li><b>Pays with:</b> coins (boxes), Squish Gems (Gem Shop), or a short ad (up to 3 free boxes a day)</li><li><b>Levels:</b> grow with boxes opened</li></ul>
+    <p class="note"><b>Try it</b>Open a few boxes in the demo below. It uses the real drop rates and the real squishy list.</p>
+  </div>
+  <div class="hero-art" data-hero="factory" data-level="10"></div>
+</section>
+
+<section>
+  <div class="sec-head"><p class="eyebrow">The boxes</p><h2>Three kinds of Mystery Box, plus 3 free ones a day</h2></div>
+  <div class="tbl-wrap"><table>
+    <thead><tr><th>Box</th><th>Price</th><th>What can be inside</th><th>Unlocks at</th></tr></thead>
+    <tbody>
+      <tr><td><b>Mystery Box</b></td><td class="num">200 coins</td><td>Any squishy from any family, normal odds.</td><td>Factory level 1</td></tr>
+      <tr><td><b>Family Box</b></td><td class="num">500 coins</td><td>You choose the family. Normal odds, but only that family’s 6 squishies. Great for finishing a house.</td><td>Factory level 3</td></tr>
+      <tr><td><b>Golden Box</b><br><small>the best coin box</small></td><td class="num">1,000 coins</td><td>Any family, much better odds (no Commons).</td><td>Factory level 6</td></tr>
+      <tr><td><b>Free Box</b><br><small>watch an ad</small></td><td class="num">1 short ad</td><td>A normal Mystery Box. One box per ad, <b>at most 3 a day</b>. Always the player’s choice: a button on the box screen, never a pop-up. The ad can be closed after 5 seconds (closing early gives no box).</td><td>Factory level 1</td></tr>
+    </tbody>
+  </table></div>
+  <div class="tbl-wrap"><table>
+    <thead><tr><th>Rarity</th><th>Mystery &amp; Family Box</th><th>Golden Box</th><th>Per family</th><th>Trade value</th></tr></thead>
+    <tbody>
+      <tr><td><span class="rar" style="--rc:#8E9BB0;background:#8E9BB0">Common</span></td><td class="num">55%</td><td class="num">0%</td><td class="num">2</td><td class="num">1</td></tr>
+      <tr><td><span class="rar" style="background:#2FB673">Uncommon</span></td><td class="num">25%</td><td class="num">50%</td><td class="num">1</td><td class="num">3</td></tr>
+      <tr><td><span class="rar" style="background:#3B82F6">Rare</span></td><td class="num">13%</td><td class="num">30%</td><td class="num">1</td><td class="num">8</td></tr>
+      <tr><td><span class="rar" style="background:#9B5CF6">Epic</span></td><td class="num">6%</td><td class="num">16%</td><td class="num">1</td><td class="num">20</td></tr>
+      <tr><td><span class="rar" style="background:#F59E0B">Legendary</span></td><td class="num">1%</td><td class="num">4%</td><td class="num">1</td><td class="num">60</td></tr>
+    </tbody>
+  </table></div>
+  <div class="prose">
+    <h3>Kind rules so it never feels unfair</h3>
+    <ul>
+      <li><b>Rare guarantee:</b> if 9 boxes in a row give nothing Rare or better, the 10th box is always Rare or better. The bar at the top of the box screen shows how close you are.</li>
+      <li><b>Every box wins something.</b> A new squishy moves into its house. A squishy you already have goes onto your <b>Spare Shelf</b> (see the <a href="guide.html#collection">guide</a>): use it to <b>level up</b> that squishy, <b>trade</b> it at the Market, or swap it for <b>Squish Stars</b> (Common 5, Uncommon 15, Rare 40, Epic 100, Legendary 300).</li>
+      <li><b>Sparkly pulls:</b> 1 box in 50 gives a <b>Sparkly</b> version of the squishy (same squishy, shimmering coat and its own fanfare). Sparklies fill a second page of the collection book.</li>
+      <li><b>Star Shop:</b> spend Stars to pick any Common or Uncommon you are missing, or special decor.</li>
+      <li><b>Boxes are never sold for Squish Gems or real money.</b> They cost coins (which only come from playing) or a short, optional ad. The odds above are shown on the box screen before every box, including the free one.</li>
+      <li><b>Pacing:</b> every minigame pays about 35 coins per minute of good play, so a Mystery Box is about 6 minutes of play and a Golden Box about half an hour. The exact coin rule for every minigame is in the <a href="guide.html#economy">guide</a>.</li>
+    </ul>
+  </div>
+</section>
+
+<section id="gemshop">
+  <div class="sec-head"><p class="eyebrow">Premium currency</p><h2>The Gem Shop</h2></div>
+  <p>A counter on the factory’s ground floor sells single squishies for <b>Squish Gems</b>. You always know exactly what you get: nothing in the Gem Shop is random. It sells every Legendary plus two <b>Gem Shop exclusives</b> that are never inside any box. How Gems are earned is in the <a href="guide.html#gems">guide</a>; a player who does the daily Gem Challenge most days can afford a Legendary about every 2–3 months without paying.</p>
+  <div class="gemgrid" id="gemgrid"></div>
+  <div class="ctl-row" style="margin-top:12px"><span>Demo wallet: <b id="gemwallet">650</b> Gems · <a href="gemmine.html#store">get more in the Gem Mine</a></span><span id="gemmsg" aria-live="polite"></span></div>
+  <div class="prose">
+    <h3>Gem Shop rules</h3>
+    <ul>
+      <li><b>Legendaries cost 300 Gems, exclusives 500.</b> A Legendary bought here is the same squishy as one from a box: it moves into its family house and counts for house levels.</li>
+      <li><b>Exclusives</b> (Prism Mochi, Starlight Bun) have their own rarity colour, are not part of the 48-squishy box collection, and choose which house to visit. They <b>can’t be traded</b>, so they never put a real-money price on the Market.</li>
+      <li><b>One of each.</b> Each shop squishy can be bought once. Buying a Legendary you already own is blocked (the button says “You have it”).</li>
+      <li><b>“Are you sure?”</b> Every Gem purchase shows a pop-up with the squishy, the price and the Gems left. Switching it off is a <a href="settings.html">grown-up setting</a>. Try it on the cards above.</li>
+      <li>One Legendary a week is <b>on the front shelf</b> at 250 Gems, so there is a reason to peek in.</li>
+      <li>Gems are bought with real money only in the <a href="gemmine.html">Gem Mine</a>, always through a <b>grown-up gate</b>, and every Gem pack shows its price in real money. In the shop, each item also shows what it would cost in money (for example “300 Gems ≈ €2.99”, whatever the final prices are).</li>
+    </ul>
+  </div>
+</section>
+
+<section id="demo">
+  <div class="sec-head"><p class="eyebrow">Interactive demo</p><h2>Open a box</h2></div>
+  <div class="tourbar" id="tourbar" hidden></div>
+  <div class="opener">
+    <div class="card prose">
+      <div class="boxbtns" role="group" aria-label="Box type">
+        <button class="boxbtn" type="button" data-box="mystery" aria-pressed="true"><span data-boxart="#FF6FA3"></span>Mystery<small>200 coins</small></button>
+        <button class="boxbtn" type="button" data-box="family" aria-pressed="false"><span data-boxart="#7ED3B2"></span>Family<small>500 coins</small></button>
+        <button class="boxbtn" type="button" data-box="golden" aria-pressed="false"><span data-boxart="#FFD54A"></span>Golden<small>1,000 coins</small></button>
+        <button class="boxbtn" type="button" data-box="ad" aria-pressed="false"><span data-boxart="#8CCBFF"></span>Free box<small id="adleft">&#9654; ad · 3 left</small></button>
+      </div>
+      <div class="ctl-row" id="famrow" hidden><label for="fam">Family:</label><select id="fam"></select></div>
+      <div class="ctl-row"><span>Coins spent: <b id="spent">0</b></span><span>On the Spare Shelf: <b id="stars">0</b></span><span>Owned: <b id="owned">0</b> / 48</span></div>
+      <div><div class="ctl-row" style="margin-bottom:4px">Rare guarantee in <b id="pityn">10</b> boxes</div><div class="pity"><i id="pityb" style="width:0%"></i></div></div>
+      <div class="history" id="hist" aria-label="Recent pulls"></div>
+    </div>
+    <div class="card" style="display:grid;gap:14px;justify-items:center">
+      <div class="reveal" id="reveal" aria-live="polite"><div><div id="bigbox"></div><p>Press <b>Open!</b> to open your first box.</p></div></div>
+      <button class="openbtn" id="open" type="button">Open!</button>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="sec-head"><p class="eyebrow">What the player sees</p><h2>The box screen</h2></div>
+  <div class="game">
+    <div class="prose">
+      <p>Tapping the factory on the map opens the box screen. The player picks a box, taps <b>Open!</b>, and the box rides along the conveyor belt, wiggles, and bursts open with light rays in the rarity colour. Epic and Legendary pulls get a longer, sparklier reveal and a little fanfare.</p>
+      <p>Right after the reveal, the new squishy waves goodbye and the camera flies to its house on the city map so the player sees it move in and start its idle animation.</p>
+      <h3>How the factory levels up</h3>
+      <p>The factory grows as you open more boxes in total (it is not a minigame building). New levels unlock new box types and make the reveal fancier: level 3 adds Family Boxes, level 6 Golden Boxes, level 9 a golden box sits on the roof, and level 10 makes the chimney puff rainbow hearts.</p>
+    </div>
+    <figure class="phone" data-mock="factory" style="margin:0"></figure>
+  </div>
+</section>
+
+<section>
+  <div class="sec-head"><p class="eyebrow">Building levels</p><h2>From little workshop to candy factory</h2></div>
+  <ol data-levels="factory">
+    <li><b>Workshop.</b> A tiny shed with one box on the step.</li>
+    <li><b>Loading dock.</b> Chimney puffs and a stack of boxes.</li>
+    <li><b>Factory hall.</b> A sawtooth roof and a big loading door. Family Boxes unlock.</li>
+    <li><b>Conveyor.</b> Boxes roll out on a conveyor belt.</li>
+    <li><b>Squishy sign.</b> A giant squeezy squishy sign on the roof.</li>
+    <li><b>Second floor.</b> Bigger factory. Golden Boxes unlock.</li>
+    <li><b>Candy chimney.</b> A striped smokestack that puffs pink hearts.</li>
+    <li><b>Gear room.</b> Spinning gears in a side annex.</li>
+    <li><b>Golden box.</b> A golden box on the roof and fairy lights.</li>
+    <li><b>Rainbow Factory.</b> Rainbow heart puffs, flags and medal.</li>
+  </ol>
+</section>
+
+<footer class="foot">
+  <span>Words on this page: <code>factory.html</code></span>
+  <span>Pictures &amp; squishy list: <code>art/factory.js</code></span>
+</footer>
+</main>
+<script src="art/sound.js"></script>
+<script src="art/ui.js"></script>
+<script src="art/kit.js"></script>
+<script>
+SQ.boot(function () {
+  const K = SQ.K, F = SQ.B.factory, R = SQ.RARITY;
+  const D = SQ.three, boxImg = (col, px) => D.snap(F.box3(D, col, 1), { w: px, h: px, yaw: .6, pitch: .45, pad: .95 });
+  document.querySelectorAll('[data-boxart]').forEach(el => el.innerHTML = `<img src="${boxImg(el.dataset.boxart, 112)}" alt="" width="56" height="56">`);
+  const ODDS = { mystery: { C: 55, U: 25, R: 13, E: 6, L: 1 }, ad: { C: 55, U: 25, R: 13, E: 6, L: 1 }, family: { C: 55, U: 25, R: 13, E: 6, L: 1 }, golden: { C: 0, U: 50, R: 30, E: 16, L: 4 } };
+  const PRICE = { mystery: 200, family: 500, golden: 1000, ad: 0 }, STARS = { C: 5, U: 15, R: 40, E: 100, L: 300 };
+  SQS.music('shop');
+  if (SQS.settings.adsOff) { const ab = document.querySelector('[data-box="ad"]'); ab.disabled = true; ab.querySelector('small').textContent = 'ads off (grown-up setting)'; }
+  const famSel = document.getElementById('fam');
+  SQ.HOUSES.forEach(h => famSel.insertAdjacentHTML('beforeend', `<option value="${h}">${SQ.B[h].family}</option>`));
+  let box = 'mystery', spent = 0, stars = 0, pity = 0; const owned = new Set();
+  const colors = { mystery: '#FF6FA3', family: '#7ED3B2', golden: '#FFD54A', ad: '#8CCBFF' };
+  let adsLeft = 3, spares = 0;
+  const bigCache = {}; const bigbox = () => `<img src="${bigCache[box] || (bigCache[box] = boxImg(colors[box], 240))}" alt="" width="120" height="120">`;
+  document.getElementById('bigbox').innerHTML = bigbox();
+  document.querySelectorAll('.boxbtn').forEach(b => b.addEventListener('click', () => {
+    SQS.play('tap'); box = b.dataset.box; document.querySelectorAll('.boxbtn').forEach(x => x.setAttribute('aria-pressed', x === b));
+    document.getElementById('famrow').hidden = box !== 'family';
+  }));
+  /* first tour: the player arrives from the map with ?tour=box; the first box is free and is always Gyoza */
+  let tourBox = new URLSearchParams(location.search).get('tour') === 'box';
+  const tb = document.getElementById('tourbar'), baoT = `<img src="${D.sprite('bao', { eyes: 'happy' })}" alt="" width="64" height="64">`;
+  if (tourBox) { tb.hidden = false; tb.innerHTML = `${baoT}<p>This box is free! Tap <b>Open!</b></p>`; document.querySelector('[data-box="mystery"] small').textContent = 'FREE'; setTimeout(() => document.getElementById('demo').scrollIntoView({ behavior: 'smooth' }), 300); }
+  function roll() {
+    if (tourBox) return SQ.SQ.gyoza;
+    const o = ODDS[box]; let r = Math.random() * 100, rar = 'C';
+    for (const k of ['L', 'E', 'R', 'U', 'C']) { if (r < o[k]) { rar = k; break; } r -= o[k]; }
+    if (pity >= 9 && (rar === 'C' || rar === 'U')) rar = 'R';
+    pity = (rar === 'C' || rar === 'U') ? pity + 1 : 0;
+    let pool = Object.values(SQ.SQ).filter(q => q.r === rar);
+    if (box === 'family') pool = pool.filter(q => q.family === famSel.value);
+    return pool[Math.floor(Math.random() * pool.length)];
+  }
+  const rev = document.getElementById('reveal'), btn = document.getElementById('open');
+  const reveal = () => {
+    rev.innerHTML = `<div class="shake">${bigbox()}</div>`; SQS.play('boxShake');
+    setTimeout(() => {
+      const q = roll(), r = R[q.r], dup = owned.has(q.id), sparkly = Math.random() < 1 / 50;
+      const wasTour = tourBox; if (tourBox) { tourBox = false; document.querySelector('[data-box="mystery"] small').textContent = '200 coins'; } else spent += PRICE[box]; owned.add(q.id); if (dup) spares++;
+      if (wasTour) setTimeout(() => { tb.innerHTML = `${baoT}<p><b>Gyoza</b> is moving into my Dumpling Steamhouse! Let’s go back to town.</p><a href="index.html">Back to town &#9654;</a>`; try { const t = JSON.parse(localStorage.getItem('sqv-tour')) || { t: 'first', i: 4 }; t.box = true; localStorage.setItem('sqv-tour', JSON.stringify(t)); } catch (e) {} SQS.play('quest'); }, 900);
+      SQS.play('boxPop'); SQS.buzz(q.r === 'E' || q.r === 'L' ? [30, 40, 60] : 30); setTimeout(() => { SQS.play(dup ? 'spare' : 'reveal' + q.r); if (sparkly) SQS.play('sparkly'); }, 120);
+      rev.style.setProperty('--rc', r.color);
+      rev.innerHTML = `<div style="display:grid;justify-items:center;gap:4px"><img src="${D.sprite(q.id)}" alt="" width="150" height="150"${sparkly ? ' style="filter:drop-shadow(0 0 8px #FFD54A) saturate(1.3)"' : ''}><span class="rar" style="background:${r.color}">${sparkly ? 'Sparkly ' : ''}${r.name}</span><span class="big">${q.name}</span><span>${SQ.B[q.family].family}${dup ? ' · a spare! Onto the Spare Shelf: level it up, trade it, or swap for ' + STARS[q.r] + ' Squish Stars' : ' · new! Moves into ' + SQ.B[q.family].name}</span></div>`;
+      document.getElementById('spent').textContent = spent.toLocaleString('en-US');
+      document.getElementById('stars').textContent = spares;
+      document.getElementById('owned').textContent = owned.size;
+      document.getElementById('pityn').textContent = 10 - pity;
+      document.getElementById('pityb').style.width = (pity * 10) + '%';
+      const h = document.getElementById('hist');
+      h.insertAdjacentHTML('afterbegin', `<span style="--rc:${r.color}" title="${q.name}"><img src="${D.sprite(q.id)}" alt="" style="width:100%"></span>`);
+      while (h.children.length > 14) h.lastChild.remove();
+      btn.disabled = false;
+    }, 550);
+  };
+  btn.addEventListener('click', () => {
+    btn.disabled = true;
+    if (box !== 'ad') return reveal();
+    if (adsLeft <= 0) { SQS.play('nope'); rev.innerHTML = '<p><b>That’s all 3 free boxes for today.</b><br>New ones tomorrow!</p>'; btn.disabled = false; return; }
+    SQS.play('adStart'); SQS.duck(true); setTimeout(() => SQS.duck(false), 2100);
+    rev.innerHTML = '<div class="adbox"><p class="eyebrow">Advertisement</p><b>Your kid-safe ad plays here</b><div class="bar"><i id="adbar"></i></div><small>In the real app the player chose to watch this. No ad ever starts by itself.</small></div>';
+    requestAnimationFrame(() => requestAnimationFrame(() => { document.getElementById('adbar').style.width = '100%'; }));
+    setTimeout(() => { adsLeft--; document.getElementById('adleft').innerHTML = `&#9654; ad · ${adsLeft} left`; reveal(); }, 2100);
+  });
+  /* Gem Shop */
+  const XR = { name: 'Exclusive', color: '#E25BB0' };
+  (F.exclusives || []).forEach(q => { q.family = 'factory'; q.i = 0; });   // exclusives stay out of SQ.SQ so boxes never roll them
+  const legs = Object.values(SQ.SQ).filter(q => q.r === 'L'), shop = legs.map(q => ({ q, gems: 300 })).concat((F.exclusives || []).map(q => ({ q, gems: q.gems })));
+  let gems = 650; try { gems = +(localStorage.getItem('sqv-gems') ?? 650); } catch (e) {}   /* shared with the Gem Mine demo */ const bought = new Set(); const grid = document.getElementById('gemgrid');
+  const drawShop = () => {
+    grid.innerHTML = shop.map(({ q, gems: g }) => { const x = q.r === 'X', rc = x ? XR : R.L, have = bought.has(q.id);
+      return `<div class="gem${x ? ' x' : ''}"><img data-gsp="${q.id}" alt=""><span class="rar" style="background:${rc.color}">${rc.name}</span><b>${q.name}</b><span class="gemtag">${x ? 'Gem Shop only · can’t be traded' : SQ.B[q.family].family}</span><button type="button" data-buy="${q.id}" data-g="${g}"${have || gems < g ? ' disabled' : ''}>${have ? 'You have it' : '&#128142; ' + g}</button></div>`; }).join('');
+    grid.querySelectorAll('[data-gsp]').forEach(img => { const id = img.dataset.gsp, ex = (F.exclusives || []).find(e => e.id === id); if (ex) { SQ.SQ[id] = ex; img.src = D.sprite(id); delete SQ.SQ[id]; } else img.src = D.sprite(id); });
+    grid.querySelectorAll('[data-buy]').forEach(b => b.addEventListener('click', () => { const g = +b.dataset.g, id = b.dataset.buy, it = shop.find(x => x.q.id === id); if (gems < g) return SQS.play('nope');
+      const doBuy = () => { gems -= g; try { localStorage.setItem('sqv-gems', String(gems)); } catch (e) {} bought.add(id); SQS.play('gemBuy'); setTimeout(() => SQS.play('revealL'), 350); SQS.buzz([30, 40, 60]); document.getElementById('gemwallet').textContent = gems; document.getElementById('gemmsg').textContent = `${it.q.name} is yours! It moves in today.`; drawShop(); };
+      // "Ask before spending Gems" (Settings, on by default; only a grown-up can turn it off)
+      if (SQS.settings.gemConfirm) SQU.ask(`<p class="squ-tag">Gem Shop</p><img src="${grid.querySelector(`[data-gsp="${id}"]`).src}" alt="" width="110" height="110" style="justify-self:center"><h3>Buy ${it.q.name}?</h3><p>It costs <b>&#128142; ${g} Gems</b>. You have ${gems}.</p>`, doBuy, null, ['Yes, buy it', 'No']);
+      else doBuy(); }));
+  };
+  document.getElementById("gemwallet").textContent = gems; drawShop();
+});
+</script>
+</body>
+</html>

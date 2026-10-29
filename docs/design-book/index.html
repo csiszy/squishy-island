@@ -1,0 +1,494 @@
+<meta charset="utf-8">
+<title>Squishy Island Design Book</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bagel+Fat+One&amp;family=Nunito:wght@400;600;800;900&amp;family=Patrick+Hand&amp;display=swap">
+<link rel="stylesheet" href="art/style.css">
+<style>
+/* City map page. Layout: wordmark intro, then the full-width map card, then a building directory. */
+.city-head{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:18px;align-items:end}
+@media (max-width:760px){.city-head{grid-template-columns:1fr}}
+.city-head h1{font-size:clamp(44px,8vw,84px);color:var(--pink);-webkit-text-stroke:2px var(--ink);paint-order:stroke fill;text-shadow:4px 4px 0 var(--ink)}
+.toggle{display:flex;flex-wrap:wrap;gap:6px;background:var(--paper);border:2.5px solid var(--line);border-radius:999px;padding:5px;box-shadow:3px 3px 0 var(--line)}
+.toggle button{all:unset;cursor:pointer;font-weight:900;font-size:14px;padding:7px 14px;border-radius:999px}
+.toggle button[aria-pressed="true"]{background:var(--sun);box-shadow:inset 0 0 0 2px var(--line)}
+.toggle button:focus-visible{outline:3px solid var(--pink);outline-offset:2px}
+.map-card{border:3px solid var(--line);border-radius:26px;box-shadow:6px 6px 0 var(--line);overflow:hidden;background:#BFE6FF;position:relative}
+.map-stage{position:relative;height:min(76vh,760px);min-height:440px;overflow:hidden}
+.map-labels{position:absolute;inset:0;pointer-events:none}
+.map-bub{all:unset;pointer-events:auto;cursor:pointer;position:absolute;left:0;top:0;display:grid;justify-items:center;gap:3px;transform-origin:50% 100%;--bc:#FF6FA3}
+.map-bub .bb{position:relative;width:48px;height:48px;border-radius:50%;background:#fff;border:3px solid var(--bc);box-shadow:0 0 0 2.5px var(--ink),3px 4px 0 2px rgba(43,33,65,.35);display:grid;place-items:center;order:1}
+.map-bub .bb::after{content:"";position:absolute;left:50%;bottom:-11px;width:14px;height:14px;background:#fff;border-right:3px solid var(--bc);border-bottom:3px solid var(--bc);transform:translateX(-50%) rotate(45deg);border-bottom-right-radius:3px;box-shadow:2.5px 2.5px 0 0 var(--ink)}
+.map-bub .bb svg{position:relative;z-index:1}
+.bb-icon{width:32px;height:32px}
+.bb-house{width:38px;height:38px;margin-top:-2px}
+.bb-emb{position:absolute;z-index:2;width:29px;height:29px;left:50%;top:52%;transform:translate(-50%,-30%)}
+.bb-chip{position:absolute;z-index:3;right:-9px;top:-7px;min-width:20px;height:20px;padding:0 4px;box-sizing:border-box;border-radius:999px;background:var(--pink);color:#fff;font:900 11.5px/16px var(--f-body);font-style:normal;text-align:center;border:2px solid var(--ink)}
+.bb-chip.lock{background:#EEEAF5;font-size:10px}
+.bb-chip.plus{background:var(--sun);color:var(--ink);font-size:15px}
+.map-bub.locked .bb{background:#EEEAF5;filter:grayscale(.7)}
+.map-bub.empty .bb{border-style:dashed}
+.map-bub .bn{order:0;display:none;white-space:nowrap;font:900 12.5px/1 var(--f-body);color:var(--ink);background:#fff;border:2px solid var(--ink);border-radius:999px;padding:5px 10px;box-shadow:2px 2px 0 var(--ink)}
+.map-bub .bn small{font-weight:800;color:var(--pink);margin-left:2px}
+.map-labels.names .map-bub .bn,.map-bub:hover .bn,.map-bub:focus-visible .bn{display:block}
+.map-bub:hover .bb,.map-bub:focus-visible .bb{background:#FFF7C2}
+.map-bub:focus-visible{outline:none}
+.map-bub:focus-visible .bb{box-shadow:0 0 0 2.5px var(--ink),0 0 0 6px var(--pink)}
+.map-ui{position:absolute;right:max(12px,env(safe-area-inset-right,0px));top:12px;display:grid;gap:8px}
+.map-ui button{all:unset;cursor:pointer;width:42px;height:42px;display:grid;place-items:center;font:900 22px/1 var(--f-body);background:#fff;border:2.5px solid var(--line);border-radius:14px;box-shadow:3px 3px 0 var(--line)}
+.map-ui button:focus-visible{outline:3px solid var(--pink);outline-offset:2px}
+.map-card-pop{position:absolute;left:max(12px,env(safe-area-inset-left,0px));bottom:12px;width:min(320px,calc(100% - 24px));background:#fff;border:3px solid var(--line);border-radius:20px;box-shadow:5px 5px 0 var(--line);padding:14px 16px;display:grid;gap:4px}
+.map-card-pop h3{font-family:var(--f-display);font-weight:400;font-size:24px}
+.mc-lv{font-weight:800;color:var(--ink2);font-size:14px}
+.mc-go{justify-self:start;margin-top:6px;font-weight:900;text-decoration:none;background:var(--pink);color:#fff;border:2.5px solid var(--line);border-radius:999px;padding:8px 16px;box-shadow:3px 3px 0 var(--line)}
+.mc-x{all:unset;cursor:pointer;position:absolute;top:8px;right:10px;width:30px;height:30px;border-radius:50%;display:grid;place-items:center;border:2px solid var(--line);background:var(--sun);font-weight:900}
+.map-loading{position:absolute;inset:0;display:grid;place-items:center;font:900 18px var(--f-body);color:var(--ink2)}
+.map-hint{display:flex;flex-wrap:wrap;gap:6px 16px;justify-content:space-between;font-size:13.5px;font-weight:800;color:var(--ink2);padding:10px 16px;background:var(--paper);border-top:3px solid var(--line)}
+.dir{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,200px),1fr));gap:14px}
+.dcard{display:grid;grid-template-rows:auto auto 1fr;gap:4px;text-decoration:none;background:var(--paper);border:2.5px solid var(--line);border-radius:18px;box-shadow:3px 3px 0 var(--line);padding:10px;transition:transform .12s,box-shadow .12s}
+.dcard:hover{transform:translate(-2px,-2px);box-shadow:5px 5px 0 var(--line)}
+.dcard .th{background:linear-gradient(#E7F4FF,#F7FBFF 70%);border-radius:12px}
+.dcard .th img{display:block;width:100%;height:auto}
+.dcard b{font-size:16px;font-weight:900}
+.dcard span{font-size:13px;color:var(--ink2);line-height:1.35}
+.games{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,240px),1fr));gap:14px}
+.gcard{display:grid;grid-template-columns:56px minmax(0,1fr);gap:4px 12px;align-items:center;text-decoration:none;background:var(--paper);border:2.5px solid var(--line);border-radius:18px;box-shadow:3px 3px 0 var(--line);padding:12px 14px}
+.gcard:hover{transform:translate(-2px,-2px);box-shadow:5px 5px 0 var(--line)}
+.gcard .gi{grid-row:span 2;width:56px;height:56px;border-radius:50%;border:3px solid var(--bc);box-shadow:0 0 0 2.5px var(--ink);display:grid;place-items:center;position:relative;background:#fff}
+.gcard .gi svg{width:36px;height:36px}
+.gcard b{font-family:var(--f-display);font-weight:400;font-size:20px;line-height:1.1}
+.gcard span{font-size:13px;color:var(--ink2);line-height:1.35}
+.guide-card{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:16px;align-items:center;background:var(--sun);border:3px solid var(--line);border-radius:22px;box-shadow:5px 5px 0 var(--line);padding:18px 20px}
+@media (max-width:640px){.guide-card{grid-template-columns:1fr}}
+.guide-card .pill{background:#fff;font-size:15px}
+/* ---- map HUD, Bao coach, help menu, opening story ---- */
+.map-hud{position:absolute;left:max(12px,env(safe-area-inset-left,0px));top:12px;display:grid;gap:8px;z-index:200000}
+.map-hud button,.map-hud a{all:unset;cursor:pointer;position:relative;width:42px;height:42px;display:grid;place-items:center;font:900 20px/1 var(--f-body);background:#fff;border:2.5px solid var(--line);border-radius:14px;box-shadow:3px 3px 0 var(--line);box-sizing:border-box;text-decoration:none}
+.map-hud [data-h="help"] b{font-family:Georgia,serif;font-style:italic;font-size:22px;color:#4A9BFF}
+.map-hud s{text-decoration:none;opacity:.35}
+.map-hud .cloud i{position:absolute;right:-4px;top:-4px;width:12px;height:12px;border-radius:50%;background:#FF9F43;border:2px solid var(--line)}
+.map-hud button:focus-visible,.map-hud a:focus-visible{outline:3px solid var(--pink);outline-offset:2px}
+.coach{position:absolute;left:50%;bottom:12px;transform:translateX(-50%);width:min(520px,calc(100% - 24px));display:grid;grid-template-columns:72px minmax(0,1fr);gap:8px;align-items:end;z-index:250000}
+.coach.in{animation:cIn .3s cubic-bezier(.2,1.5,.4,1)}
+@keyframes cIn{from{transform:translate(-50%,30px);opacity:0}}
+.coach img{filter:drop-shadow(2px 3px 0 rgba(43,33,65,.35))}
+.coach .cb{background:#fff;border:3px solid var(--line);border-radius:20px 20px 20px 6px;box-shadow:4px 4px 0 var(--line);padding:10px 14px;display:grid;gap:6px}
+.coach .ct{margin:0;font-size:11px;font-weight:900;letter-spacing:.12em;text-transform:uppercase;color:var(--ink2)}
+.coach .cs{margin:0;font-weight:800;font-size:16px;line-height:1.35}
+.cbtn{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.qb{display:grid;gap:4px}.qb span{display:flex;justify-content:space-between;gap:8px;font-size:13px;background:#FAF8FF;border:2px solid var(--line);border-radius:10px;padding:5px 8px}.qb i{font-style:normal;font-weight:900;color:#C98A12;white-space:nowrap}.qb .gemq{background:#EEF6FF}.qb .gemq i{color:#4A7BD0}
+.cbtn button,.cbtn a{all:unset;cursor:pointer;font-weight:900;font-size:14px;padding:6px 14px;border:2.5px solid var(--line);border-radius:999px;background:#fff;text-decoration:none}
+.cbtn .cn{background:var(--pink);color:#fff}
+.cbtn .cl{background:#E9F6FF}
+.cbtn .cx{margin-left:auto;border-color:transparent;color:var(--ink2);font-size:13px}
+.cbtn .cw{font-weight:900;color:#4A9BFF;font-size:14px;animation:cw 1.2s ease-in-out infinite}
+@keyframes cw{50%{opacity:.45}}
+.cbtn button:focus-visible,.cbtn a:focus-visible{outline:3px solid var(--pink);outline-offset:2px}
+.map-bub.tut-ring .bb{animation:tring 1s ease-in-out infinite}
+.map-bub.tut-ring::before{content:"\1F447";position:absolute;left:50%;top:-36px;transform:translateX(-50%);font-size:26px;animation:thand .8s ease-in-out infinite}
+@keyframes tring{50%{box-shadow:0 0 0 2.5px var(--ink),0 0 0 10px rgba(255,111,163,.55)}}
+@keyframes thand{50%{transform:translate(-50%,6px)}}
+.map-hud .tut-ring,.map-ui.tut-ring button{animation:tring2 1s ease-in-out infinite}
+@keyframes tring2{50%{box-shadow:3px 3px 0 var(--line),0 0 0 7px rgba(255,111,163,.6)}}
+.helpm{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:min(440px,calc(100% - 24px));background:#fff;border:3px solid var(--line);border-radius:24px;box-shadow:6px 6px 0 var(--line);padding:12px 14px 14px;z-index:300000;display:grid;gap:10px}
+.hm-head{display:flex;align-items:center;gap:10px}.hm-head b{font-family:var(--f-display);font-weight:400;font-size:21px;line-height:1.1}
+.hm-x{all:unset;cursor:pointer;margin-left:auto;width:32px;height:32px;border-radius:50%;display:grid;place-items:center;border:2px solid var(--line);background:var(--sun);font-weight:900;flex:none}
+.hm-grid{display:grid;grid-template-columns:1fr 1fr;gap:7px}
+.hm-grid button{all:unset;cursor:pointer;display:flex;gap:8px;align-items:center;font-weight:900;font-size:14px;padding:9px 10px;border:2.5px solid var(--line);border-radius:14px;background:#FAF8FF;box-shadow:2px 2px 0 var(--line)}
+.hm-grid button span{font-size:19px}
+.hm-grid button:focus-visible,.hm-x:focus-visible{outline:3px solid var(--pink);outline-offset:2px}
+.map-card.cine .map-labels,.map-card.cine .map-ui,.map-card.cine .map-hud,.map-card.cine .map-card-pop{opacity:0;pointer-events:none;transition:opacity .4s}
+.story{position:absolute;inset:0;z-index:400000;cursor:pointer}
+.story::before,.story::after{content:"";position:absolute;left:0;right:0;height:7%;background:#2B2141;z-index:1}
+.story::before{top:0}.story::after{bottom:0}
+.storm{position:absolute;inset:0;opacity:0;transition:opacity 1.2s;background:repeating-linear-gradient(105deg,transparent 0 22px,rgba(255,255,255,.2) 22px 24px,transparent 24px 60px),linear-gradient(rgba(38,28,80,.62),rgba(38,28,80,.4));background-size:300px 300px,100% 100%;animation:rain .5s linear infinite}
+.story.stormy .storm{opacity:1}
+@keyframes rain{to{background-position:-120px 300px,0 0}}
+.flash{position:absolute;inset:0;background:#fff;opacity:0;pointer-events:none}
+.story.flashing .flash{animation:flash .9s ease-out}
+@keyframes flash{10%{opacity:.95}100%{opacity:0}}
+.skip{all:unset;cursor:pointer;position:absolute;right:14px;top:calc(7% + 10px);z-index:2;font-weight:900;font-size:14px;color:#fff;background:rgba(43,33,65,.6);border:2px solid #fff;border-radius:999px;padding:6px 14px}
+.cap{position:absolute;left:50%;bottom:calc(7% + 12px);transform:translateX(-50%);width:min(600px,calc(100% - 24px));z-index:2;background:#FFF8E8;border:3px solid var(--line);border-radius:20px;box-shadow:5px 5px 0 var(--line);padding:12px 18px 10px;display:grid;gap:8px;cursor:default}
+.ctext{margin:0;font-family:var(--f-hand);font-size:clamp(19px,2.6vw,25px);line-height:1.3;min-height:2.6em}
+.cdots{display:flex;gap:5px;justify-content:center}.cdots i{width:8px;height:8px;border-radius:50%;background:#E3DEEF;border:1.5px solid var(--line)}.cdots i.on{background:var(--pink)}
+.cgo{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
+.cgo button{all:unset;cursor:pointer;font-weight:900;padding:8px 18px;border:2.5px solid var(--line);border-radius:999px;background:#fff;box-shadow:3px 3px 0 var(--line)}
+.cgo .go1{background:var(--pink);color:#fff;font-family:var(--f-display);font-weight:400;font-size:20px}
+.skip:focus-visible,.cgo button:focus-visible{outline:3px solid var(--sun);outline-offset:2px}
+@media (prefers-reduced-motion:reduce){.storm{animation:none}.coach.in,.map-bub.tut-ring .bb,.map-bub.tut-ring::before,.cbtn .cw{animation:none}}
+</style>
+
+<header class="topbar"><div class="topbar-in">
+  <a class="brand" href="index.html"><i></i>Squishy Island</a>
+  <nav><a class="pill on" href="index.html">City map</a><a class="pill" href="guide.html">Game guide</a><a class="pill" href="factory.html">Factory</a><a class="pill" href="market.html">Market</a><a class="pill" href="start.html">First launch</a><a class="pill" href="settings.html">Settings</a><a class="pill" href="legal.html">Legal</a><a class="pill" href="build.html">Build plan</a></nav>
+</div></header>
+
+<main class="wrap" style="gap:28px">
+  <section class="city-head">
+    <div class="hero-text">
+      <p class="eyebrow">Game design book · mobile game for kids</p>
+      <h1>Squishy Island</h1>
+      <p class="lede">Collect squishies, fix up a tumbledown little town one house at a time, and play minigames in its shops. This map is the game’s home screen. Drag to explore, zoom in to see the squishies living there, and <b>tap any building</b> to open its design page. Every building, road and tree has a fixed place.</p>
+    </div>
+    <div style="display:grid;gap:6px;justify-items:start">
+      <span class="eyebrow">Preview the city on</span>
+      <div class="toggle" role="group" aria-label="City progress preview">
+        <button type="button" data-state="day1" aria-pressed="false">Day 1</button>
+        <button type="button" data-state="mid" aria-pressed="true">A few weeks in</button>
+        <button type="button" data-state="full" aria-pressed="false">Fully built</button>
+      </div>
+    </div>
+  </section>
+
+  <section class="map-card" aria-label="City map">
+    <div class="map-stage" id="mapStage"><div class="map-loading" id="mapLoading">Building the town&hellip;</div></div>
+    <div class="map-hint"><span id="stateNote"></span><span>Drag to move · scroll or pinch to zoom · tap a bubble or building · <b>i</b> = how to play</span></div>
+  </section>
+
+  <section>
+    <div class="sec-head"><p class="eyebrow">Family houses</p><h2>Where the squishies live</h2></div>
+    <div class="dir" id="dirHouses"></div>
+  </section>
+  <section>
+    <div class="sec-head"><p class="eyebrow">Fun buildings</p><h2>Minigames and squishy shops</h2></div>
+    <div class="dir" id="dirCivic"></div>
+  </section>
+  <section>
+    <div class="sec-head"><p class="eyebrow">Playable prototypes</p><h2>Try the minigames</h2></div>
+    <p>Each minigame is a small playable version you can open on a phone or a computer. Five are endless: the longer you last, the harder they get, so there is always a better score to chase. Three are level-based (two puzzles and the ball breaker) with 1–3 stars per level and new levels forever, and Squeak Beat has 30 songs to unlock. The Squish Lab is a toy with no coins. Every game shows the coins you earned, the time played and your coin jar total at the end, and they all pay about the same per minute.</p>
+    <div class="games" id="games"></div>
+  </section>
+  <section class="guide-card">
+    <div class="prose"><h2>New here? Start with the game guide</h2><p>The core loop, coins, rarities, unlock order, animation rules, art style, and which file to edit when you want to change something.</p></div>
+    <a class="pill" href="guide.html">Open the game guide &rarr;</a>
+  </section>
+  <footer class="foot"><span>City map layout: <code>index.html</code></span><span>Each building: <code>&lt;id&gt;.html</code> (words) + <code>art/&lt;id&gt;.js</code> (pictures)</span></footer>
+</main>
+
+<script src="art/sound.js"></script>
+<script src="art/ui.js"></script>
+<script src="art/kit.js"></script>
+<script>
+/* ======================= CITY LAYOUT =======================
+   Everything on the map has a fixed place. Units ≈ metres, x = east, z = south.
+   Change a number here to move a building, bend a road or grow a forest.
+   Every building faces the camera (turn: a small extra twist) and gets a little driveway to the street.
+   fillers = the little background houses that make it feel like a town (not clickable).
+   More little houses, avenue trees and parked cars are added automatically along the streets. */
+const CITY = {
+  seed: 7, size: [356, 270], yaw: -0.28, start: [-24, 6, 150], maxZoom: 270, squishySize: 2.1, buildingScale: 1.2,
+  buildings: [
+    { id: 'forest', x: -122, z: -90.2, turn: -0.02 },
+    { id: 'kitchen', x: -58, z: -90.6, turn: 0.03 },
+    { id: 'sky', x: 4, z: -89.2, turn: 0.19 },
+    { id: 'greenhouse', x: 70, z: -75.0, turn: -0.02 },
+    { id: 'pets', x: -134, z: -37.4, turn: 0.0 },
+    { id: 'bandstand', x: -64, z: -33.5, turn: 0.04 },
+    { id: 'restaurant', x: -14, z: -18.0, turn: -0.14 },
+    { id: 'police', x: 44, z: -32.2, turn: 0.01 },
+    { id: 'factory', x: 112, z: -39.3, turn: 0.06 },
+    { id: 'dumpling', x: -42, z: 25.0, turn: 0.13 },
+    { id: 'market', x: 8, z: 14.7, turn: -0.18 },
+    { id: 'fruit', x: 70, z: 19.0, turn: -0.09 },
+    { id: 'ocean', x: 136, z: 30.9, turn: -0.18 },
+    { id: 'playground', x: -128, z: 74.1, turn: 0.14 },
+    { id: 'sweets', x: -58, z: 72.8, turn: 0.09 },
+    { id: 'salon', x: -6, z: 67.3, turn: -0.2 },
+    { id: 'post', x: 50, z: 71.1, turn: 0.21 },
+    { id: 'fire', x: 106, z: 86.1, turn: 0.2 },
+    { id: 'testlab', x: -138, z: 25.0, turn: 0.08 },
+    { id: 'arcade', x: 78, z: -35.5, turn: -0.06 },
+    { id: 'gemmine', x: -140, z: -1, turn: 0.1 }
+  ],
+  fillers: [
+    { kind: 'cottage', x: -151.0, z: -85.7, w: 10 },
+    { kind: 'cottage', x: -101.0, z: -96.3, w: 12 },
+    { kind: 'cottage', x: -91.9, z: -93.2, w: 9 },
+    { kind: 'cottage', x: -81.7, z: -96.8, w: 9 },
+    { kind: 'cottage', x: -37.5, z: -95.6, w: 11 },
+    { kind: 'shop', x: -26.2, z: -95.9, w: 10 },
+    { kind: 'shop', x: 24.0, z: -84.5, w: 10 },
+    { kind: 'cottage', x: 35.5, z: -83.7, w: 11 },
+    { kind: 'cottage', x: 47.8, z: -80.2, w: 12 },
+    { kind: 'cottage', x: 91.0, z: -78.7, w: 12 },
+    { kind: 'cottage', x: 102.1, z: -79.8, w: 9 },
+    { kind: 'tower', x: 112.8, z: -79.3, w: 10 },
+    { kind: 'cottage', x: 124.8, z: -80.3, w: 12 },
+    { kind: 'cottage', x: 135.9, z: -85.3, w: 11 },
+    { kind: 'shop', x: 144.7, z: -84.0, w: 9 },
+    { kind: 'cottage', x: -150.0, z: -41.8, w: 12 },
+    { kind: 'tower', x: -56.0, z: -25.7, w: 10 },
+    { kind: 'cottage', x: -45.0, z: -24.0, w: 10 },
+    { kind: 'cottage', x: 5.5, z: -23.0, w: 9 },
+    { kind: 'shop', x: 132.0, z: -40.0, w: 10 },
+    { kind: 'cottage', x: 142.5, z: -40.6, w: 11 },
+    { kind: 'cottage', x: -78.5, z: 24.3, w: 9 },
+    { kind: 'cottage', x: -40.0, z: 22.4, w: 12 },
+    { kind: 'cottage', x: -26.4, z: 24.1, w: 12 },
+    { kind: 'cottage', x: -14.8, z: 22.1, w: 12 },
+    { kind: 'cottage', x: 28.0, z: 16.6, w: 10 },
+    { kind: 'shop', x: 36.5, z: 13.2, w: 9 },
+    { kind: 'cottage', x: 90.0, z: 17.3, w: 10 },
+    { kind: 'shop', x: -151.0, z: 81.7, w: 10 },
+    { kind: 'tower', x: -139.0, z: 83.9, w: 12 },
+    { kind: 'tower', x: -97.5, z: 77.4, w: 11 },
+    { kind: 'shop', x: -85.7, z: 74.1, w: 9 },
+    { kind: 'cottage', x: -42.5, z: 69.3, w: 9 },
+    { kind: 'tower', x: 15.0, z: 70.2, w: 12 },
+    { kind: 'cottage', x: 25.1, z: 68.6, w: 9 },
+    { kind: 'cottage', x: 126.5, z: 87.0, w: 11 },
+    { kind: 'cottage', x: 138.3, z: 80.7, w: 9 },
+    { kind: 'cottage', x: 148.0, z: 83.1, w: 12 }
+  ],
+  roads: [
+    { name: 'Cloudberry Hill', w: 4.8, pts: [[-164, -64.5], [-150, -65.6], [-136, -66.6], [-122, -67.7], [-108, -69.4], [-94, -71.6], [-80, -73.9], [-66, -72.1], [-52, -72.1], [-38, -72.1], [-24, -73.1], [-10, -69.2], [4, -64.7], [18, -60.5], [32, -57.3], [46, -55.7], [60, -55.8], [74, -56.5], [88, -56.5], [102, -61.7], [116, -63.6], [130, -65.0], [144, -66.0], [158, -66.9]] },
+    { name: 'Butter Boulevard', w: 4.8, pts: [[-164, -20.6], [-150, -19.2], [-136, -17.7], [-122, -16.6], [-108, -15.6], [-94, -13.0], [-80, -12.9], [-66, -10.5], [-52, -7.5], [-38, -4.2], [-24, 0.5], [-10, 0.5], [4, 0.5], [18, -1.9], [32, -5.5], [46, -10.1], [60, -13.7], [74, -18.5], [88, -21.0], [102, -20.8], [116, -20.8], [130, -20.1], [144, -18.6], [158, -17.3]] },
+    { name: 'Mochi Lane', w: 4.8, pts: [[-164, 46.0], [-150, 47.5], [-136, 47.9], [-122, 47.7], [-108, 48.5], [-94, 48.5], [-80, 48.5], [-66, 47.3], [-52, 47.3], [-38, 46.6], [-24, 44.7], [-10, 41.8], [4, 38.3], [18, 34.8], [32, 32.1], [46, 31.0], [60, 37.5], [74, 37.5], [88, 37.5], [102, 41.2], [116, 49.4], [130, 49.4], [144, 49.4], [158, 47.9]] },
+    { name: 'Squeeze Street', w: 4.8, pts: [[-164, 105.3], [-150, 103.2], [-136, 100.9], [-122, 98.8], [-108, 97.6], [-94, 96.2], [-80, 95.3], [-66, 94.1], [-52, 93.3], [-38, 90.2], [-24, 87.9], [-10, 86.2], [4, 85.8], [18, 86.6], [32, 89.6], [46, 93.2], [60, 97.8], [74, 101.9], [88, 105.0], [102, 106.4], [116, 106.1], [130, 104.6], [144, 102.4], [158, 100.1]] },
+    { w: 4, pts: [[-35.2, -72.3], [-26, -46], [-42.2, -5.3]] },
+    { w: 4, pts: [[16.6, -60.9], [12, -44], [23.6, -3.2]] },
+    { w: 4, pts: [[-80, -12.9], [-80, 16], [-76, 48.5]] },
+    { w: 4, pts: [[40.4, -8.3], [54, 16], [33.4, 31.9]] },
+    { w: 4, pts: [[-33.8, 46.1], [-30, 70], [-42.2, 91.1]] },
+    { w: 4, pts: [[83.8, 37.2], [74, 72], [86.6, 104.8]] },
+    { w: 4, pts: [[97.8, -20.9], [108, 14], [100.6, 40.6]] }
+  ],
+  roundabouts: [{ x: -76, z: 48, r: 9, center: 'fountain', snap: true }, { x: 40, z: -10, r: 7, center: 'statue', snap: true }],
+  river: { w: 8, lake: 10, pts: [[-92, -98], [-94, -82], [-97, -70], [-101, -45], [-104, -14], [-102, 16], [-100, 48], [-97, 76], [-96, 96], [-97, 114], [-99, 132], [-100, 150]] },
+  parks: [{ x: 36, z: -38, r: 10, benches: 3 }, { x: 108, z: 64, r: 10, benches: 3 }, { x: -20, z: 116, r: 10, benches: 2 }],
+  ponds: [{ x: -22, z: -108, r: 6 }, { x: 122, z: -78, r: 6 }],
+  fields: [{ x: 112, z: -96, w: 18, d: 10, rows: 4 }, { x: 40, z: -108, w: 14, d: 8, rows: 3, crop: '#FFB833' }],
+  forests: [{ x: -96, z: -122, r: 26, n: 70, pine: .6 }, { x: 10, z: -126, r: 24, n: 60, pine: .7 }, { x: 132, z: -70, r: 12, n: 22, pine: .4 }, { x: -60, z: 122, r: 22, n: 46 }, { x: 70, z: 124, r: 20, n: 40 }, { x: -172, z: 40, r: 12, n: 18, pine: .5 }],
+  hills: [],
+  scatter: 700,
+  deco: [
+    { type: 'lighthouse', x: 170, z: -10, r: 4, coast: true }, { type: 'boat', x: 220, y: -1.2, z: 60, ry: .6, sea: true }, { type: 'boat', x: -150, y: -1.2, z: 140, ry: -.4, sea: true },
+    { type: 'umbrella', x: 160, z: 34, color: '#FF6F7D' }, { type: 'umbrella', x: 164, z: 60, color: '#8CCBFF' },
+    { type: 'balloon', x: 30, y: 30, z: -60 }, { type: 'windmill', x: 150, z: -112, r: 5 }, { type: 'kite', x: -70, y: 24, z: -12 },
+    { type: 'bus', x: -10, z: 60, ry: -.28, r: 6 }, { type: 'statue', x: -112, z: 24, who: 'luckycat', r: 3 }, { type: 'picnic', x: 30, z: -40, r: 3 }, { type: 'picnic', x: 104, z: 60, r: 3 }
+  ]
+};
+
+/* progress previews: building level + how many family squishies are owned */
+const STATES = {
+  day1: { note: 'Day 1: every house is broken, only the Dumpling Steamhouse has a resident (Bao Bun), and only the Factory and Playground are built.',
+    lvl: { dumpling: 1, kitchen: 1, pets: 1, sweets: 1, fruit: 1, ocean: 1, sky: 1, forest: 1, factory: 1, playground: 1 }, own: { dumpling: 1 },
+    locked: ['kitchen', 'pets', 'sweets', 'fruit', 'ocean', 'sky', 'forest'] },
+  mid: { note: 'A few weeks in: the first houses are fixed up, some fun buildings are built, the rest are still empty plots.',
+    lvl: { dumpling: 9, kitchen: 7, pets: 6, sweets: 5, fruit: 4, ocean: 3, sky: 2, forest: 1, factory: 6, playground: 7, restaurant: 5, market: 4, salon: 3, post: 3, police: 2, fire: 1, testlab: 3, arcade: 2 },
+    own: { dumpling: 6, kitchen: 5, pets: 4, sweets: 4, fruit: 3, ocean: 2, sky: 1 }, locked: ['forest'] },
+  full: { note: 'Fully built: every house is golden, every family is complete and every fun building is at level 10.', lvl: 'all10', own: 'all6', locked: [] }
+};
+
+SQ.boot(async function () {
+  await new Promise(res => { const s = document.createElement('script'); s.src = 'art/city3d.js'; s.onload = res; document.head.appendChild(s); });
+  const stage = document.getElementById('mapStage');
+  const city = SQ.city(stage, CITY, { onPan: v => hook('pan', v), onZoom: v => hook('zoom', v), onSelect: id => hook('select', id) });
+  document.getElementById('mapLoading').remove();
+  const asState = k => { const st = STATES[k]; return { level: id => id === 'gemmine' ? 10 : st.lvl === 'all10' ? 10 : (st.lvl[id] || 0), owned: id => st.own === 'all6' ? 6 : (st.own[id] || 0), locked: id => st.locked.includes(id) }; };
+  let state = 'mid';
+  try { const v = localStorage.getItem('sqv-state'); if (v && STATES[v]) state = v; } catch (e) {}
+  const btns = document.querySelectorAll('.toggle button');
+  const set = k => { state = k; btns.forEach(b => b.setAttribute('aria-pressed', b.dataset.state === k)); document.getElementById('stateNote').textContent = STATES[k].note; city.setState(asState(k)); try { localStorage.setItem('sqv-state', k); } catch (e) {} };
+  btns.forEach(b => b.addEventListener('click', () => set(b.dataset.state)));
+  set(state);
+  /* ================= MAP HUD, OPENING STORY, TUTORIAL =================
+     Top-left buttons: i (how to play), settings, music, save-my-town.
+     The opening story plays the first time this page is opened (or with ?intro=1),
+     using the real map as the stage. The i button replays any help topic. */
+  const card3 = document.querySelector('.map-card'), D3 = SQ.three;
+  const baoImg = D3.sprite('bao', { eyes: 'happy' });
+  const hud = document.createElement('div'); hud.className = 'map-hud';
+  hud.innerHTML = `<button type="button" data-h="help" aria-label="How to play" title="How to play"><b>i</b></button><a href="settings.html" aria-label="Settings" title="Settings">&#9881;&#65039;</a><button type="button" data-h="music" aria-label="Music on or off" title="Music"></button><a href="account.html#demo" aria-label="Save my town" title="Save my town" class="cloud">&#9729;&#65039;<i></i></a><a href="gemmine.html#store" aria-label="Gem store" title="Gem store" class="gem">&#128142;</a>`;
+  stage.appendChild(hud);
+  const musBtn = hud.querySelector('[data-h="music"]');
+  const musIcon = () => { musBtn.innerHTML = SQS.settings.music ? '&#127925;' : '<s>&#127925;</s>'; musBtn.setAttribute('aria-pressed', SQS.settings.music); };
+  musIcon(); SQS.onChange(musIcon);
+  SQS.music('city');
+  hud.addEventListener('click', e => { const b = e.target.closest('button'); if (!b) return;
+    if (b.dataset.h === 'music') { const on = !SQS.settings.music; SQS.set({ music: on }); SQS.play(on ? 'toggleOn' : 'toggleOff'); if (on) SQS.music('city'); }
+    if (b.dataset.h === 'help') { SQS.play('open'); helpMenu(); } });
+  const pos = id => CITY.buildings.find(b => b.id === id);
+
+  /* ---------- coach (Bao's speech bubble) ---------- */
+  let tour = null;
+  const coach = document.createElement('div'); coach.className = 'coach'; coach.hidden = true; stage.appendChild(coach);
+  const ring = el => { stage.querySelectorAll('.tut-ring').forEach(x => x.classList.remove('tut-ring')); if (el) el.classList.add('tut-ring'); };
+  const hook = (kind, v) => { if (!tour) return; const st = tour.steps[tour.i]; if (!st || !st.wait) return;
+    if (kind === 'pan' && st.wait === 'pan') { tour.acc = (tour.acc || 0) + v; if (tour.acc > 22) advance(); }
+    if (kind === 'zoom' && st.wait === 'zoom') { if (v < tour.z0 * .78) advance(); }
+    if (kind === 'select' && (st.wait === 'select:' + v || st.wait === 'select:any')) { setTimeout(() => city.close(), 30); advance(); } };
+  /* the first tour plays on a Day-1 town; it leaves the map for the Factory and Sky Bounce and comes back.
+     Its progress is kept in localStorage 'sqv-tour' so the other pages know where to send the player back. */
+  const saveTour = () => { try { if (tour && tour.keep) localStorage.setItem('sqv-tour', JSON.stringify({ t: tour.id, i: tour.i, box: !!tour.box, fixed: !!tour.fixed })); else localStorage.removeItem('sqv-tour'); } catch (e) {} };
+  const tourTown = () => { const st = asState('day1'); return { level: id => id === 'dumpling' ? (tour.fixed ? 2 : 1) : st.level(id), owned: id => id === 'dumpling' ? (tour.box ? 2 : 1) : st.owned(id), locked: st.locked }; };
+  function showStep() {
+    const st = tour.steps[tour.i]; if (!st) return endTour(true);
+    tour.acc = 0; tour.z0 = city.view.dist; saveTour();
+    if (st.fly) { const p = typeof st.fly === 'string' ? pos(st.fly) : st.fly; city.flyTo(p.x, p.z + 4, st.dist || 140, 900); SQS.play('whoosh'); }
+    const target = st.ring === 'help' ? hud.querySelector('[data-h="help"]') : st.ring === 'zoom' ? stage.querySelector('.map-ui') : st.ring === 'gear' ? hud.querySelector('a[href="settings.html"]') : st.ring === 'cloud' ? hud.querySelector('.cloud') : st.ring === 'gem' ? hud.querySelector('.gem') : st.ring ? city.bubble(st.ring) : null;
+    setTimeout(() => ring(target), st.fly ? 700 : 0);
+    const n = tour.steps.length, last = tour.i === n - 1;
+    const main = st.wait ? `<span class="cw">${st.hint || ''}</span>` : st.go ? `<a class="cn" href="${st.go[0]}">${st.go[1]}</a>` : st.fix ? `<button type="button" class="cn">${st.btn}</button>` : `<button type="button" class="cn">${last ? (st.done || 'Done!') : 'Next'}</button>`;
+    const board = st.quests ? `<div class="qb"><span><b>&#9989; Play any minigame</b><i>+40 coins</i></span><span><b>Harvest 30 flowers</b><i>+40 coins</i></span><span class="gemq"><b>&#128142; Gem Challenge: Sky Bounce 900 m</b><i>+3 Gems</i></span></div>` : '';
+    coach.innerHTML = `<img src="${baoImg}" alt="" width="72" height="72"><div class="cb"><p class="ct">${tour.title} · ${tour.i + 1}/${n}</p><p class="cs">${st.say}</p>${board}<div class="cbtn">${main}${st.link ? `<a class="cl" href="${st.link[0]}">${st.link[1]}</a>` : ''}<button type="button" class="cx">${last ? 'Close' : tour.keep ? 'Skip tour' : 'Skip'}</button></div></div>`;
+    coach.hidden = false; coach.classList.remove('in'); void coach.offsetWidth; coach.classList.add('in'); SQS.play('hello');
+    const nb = coach.querySelector('.cn');
+    if (nb && st.go) nb.onclick = () => { SQS.play('open'); tour.i++; saveTour(); };       // the page we go to sends the player back here
+    else if (nb && st.fix) nb.onclick = () => { nb.disabled = true; SQS.play('buy'); setTimeout(() => SQS.play('build'), 250); setTimeout(() => { tour.fixed = true; city.setState(tourTown()); SQS.play('tada'); SQS.buzz(40); advance(); }, 1100); };
+    else if (nb) nb.onclick = () => { SQS.play('tap'); advance(); };
+    coach.querySelector('.cx').onclick = () => { SQS.play('back'); endTour(false); };
+  }
+  function advance() { if (!tour) return; const st = tour.steps[tour.i]; if (st && st.wait) SQS.play('star'); tour.i++; if (tour.i >= tour.steps.length) return endTour(true); setTimeout(showStep, st && st.wait ? 350 : 0); }
+  function startTour(t, at) {
+    closeMenu(); city.close();
+    tour = { ...TOURS[t], id: t, i: at ? at.i : 0, box: at ? at.box : false, fixed: at ? at.fixed : false };
+    if (tour.keep) { if (!tourPrev) tourPrev = state; city.setState(tourTown()); }
+    showStep();
+  }
+  let tourPrev = null;
+  function endTour(done) { const t = tour; ring(null); coach.hidden = true; if (done) SQS.play('tada'); tour = null; try { localStorage.removeItem('sqv-tour'); } catch (e) {} if (t && t.keep) { set(tourPrev || state); tourPrev = null; } }
+  const TOURS = {
+    first: { title: 'Welcome', keep: true, steps: [
+      { say: 'Hi, I’m Bao! This is Squishy Island. <b>Drag the map</b> with your finger to look around.', wait: 'pan', hint: 'Drag the map…' },
+      { say: 'Now <b>zoom in</b>: pinch with two fingers (or scroll the mouse wheel, or tap +).', wait: 'zoom', hint: 'Zoom in…', ring: 'zoom' },
+      { say: 'The wind blew my friends away… but the <b>Squishy Factory</b> can bring them back! Tap it.', fly: 'factory', ring: 'factory', wait: 'select:factory', hint: 'Tap the Factory' },
+      { say: 'Your first <b>Mystery Box</b> is free. Let’s open it!', go: ['factory.html?tour=box#demo', 'Open my free box &#9654;'] },
+      { say: '<b>Gyoza</b> moved into my house! Boxes cost coins, so let’s earn some. Tap the <b>Bounce Park</b>.', fly: 'playground', ring: 'playground', wait: 'select:playground', hint: 'Tap the Bounce Park' },
+      { say: 'Play one round of <b>Sky Bounce</b>. Bounce as high as you can!', go: ['play/sky-bounce.html?tour=game', 'Play Sky Bounce &#9654;'] },
+      { say: 'Great bouncing! Now let’s fix up my house. Tap the <b>Dumpling Steamhouse</b>.', fly: 'dumpling', ring: 'dumpling', wait: 'select:dumpling', hint: 'Tap the Steamhouse', dist: 110 },
+      { say: 'It’s all broken! Fixing it up costs <b>100 coins</b>.', fix: 'dumpling', btn: 'Fix it up! (100 coins)' },
+      { say: 'Ta-da! Every day there are 3 <b>quests</b>. Two give coins, and the <b>Gem Challenge</b> gives shiny Gems!', quests: true },
+      { say: 'Forgot something? Tap the <b>i</b> up here any time and I’ll show you again. Have fun!', ring: 'help', done: 'Let’s play!' }
+    ] },
+    move: { title: 'Moving around', steps: [
+      { say: '<b>Drag</b> the map to move around town.', wait: 'pan', hint: 'Drag the map…' },
+      { say: '<b>Pinch</b> to zoom in and out (mouse: scroll wheel; or the + and − buttons).', wait: 'zoom', hint: 'Zoom in…', ring: 'zoom' },
+      { say: 'Every building has a bubble. <b>Tap any bubble</b> to see what it is.', wait: 'select:any', hint: 'Tap a bubble' },
+      { say: 'The house button over the zoom buttons shows the whole island at once.', ring: 'zoom' }
+    ] },
+    houses: { title: 'Houses', steps: [
+      { say: 'Each of the 8 houses belongs to one squishy family. Tap my Steamhouse!', fly: 'dumpling', ring: 'dumpling', wait: 'select:dumpling', hint: 'Tap the Steamhouse' },
+      { say: 'Houses start broken. Spend <b>coins</b> to fix them up to level 10, one level at a time.' },
+      { say: 'Some levels also need family squishies living there. New squishies move in by themselves.' },
+      { say: 'Inside each house you can buy <b>decor</b>. Decor makes the family earn a little more in minigames.', link: ['dumpling.html', 'See the Steamhouse'] }
+    ] },
+    games: { title: 'Minigames & coins', steps: [
+      { say: 'Fun buildings have minigames. Tap the Squish Bistro.', fly: 'restaurant', ring: 'restaurant', wait: 'select:restaurant', hint: 'Tap the Bistro' },
+      { say: 'Every game pays about the same coins per minute, so play the ones you like best!' },
+      { say: 'Out of hearts? You can watch a short ad <b>once</b> to keep going, or just stop. Your choice.' },
+      { say: 'Play better and the building gets fancier too.', link: ['play/bistro-rush.html', 'Play Bistro Rush'] }
+    ] },
+    boxes: { title: 'Mystery Boxes', steps: [
+      { say: 'Mystery Boxes are opened at the Factory. Tap it.', fly: 'factory', ring: 'factory', wait: 'select:factory', hint: 'Tap the Factory' },
+      { say: 'Every box has a squishy. Rarer ones are harder to get: Common, Uncommon, Rare, Epic, Legendary.' },
+      { say: 'Got one you already have? It goes on your <b>Spare Shelf</b>: level up your squishy, trade it, or swap it for Squish Stars.' },
+      { say: 'You can get 3 free boxes every day by watching a short ad.', link: ['factory.html', 'Open a box'] }
+    ] },
+    gems: { title: 'Gems', steps: [
+      { say: '<b>Gems</b> are the rare shiny money. You win a few every day in the Gem Challenge.', fly: 'factory', ring: 'factory' },
+      { say: 'Save them up to buy a Legendary squishy, or a special one from the Gem Shop. No luck needed!' },
+      { say: 'Before you spend Gems, I always ask “Are you sure?”', link: ['factory.html#gemshop', 'See the Gem Shop'] },
+      { say: 'Grown-ups can buy Gems at the <b>Gem Mine</b>. The &#128142; button here goes there too.', fly: 'gemmine', ring: 'gem', link: ['gemmine.html', 'Visit the Gem Mine'] }
+    ] },
+    quests: { title: 'Quests & visitor', steps: [
+      { say: 'Every day there are 3 <b>quests</b>. Two give coins, and the <b>Gem Challenge</b> gives Gems.' },
+      { say: 'Each week a <b>visitor</b> camps in the park. Say hi on 4 different days and it moves in!', fly: { x: 36, z: -38 }, dist: 70 },
+      { say: 'No stress: if you miss a day, nothing bad happens.', link: ['guide.html#daily', 'Read more'] }
+    ] },
+    market: { title: 'Trading', steps: [
+      { say: 'Swap spare squishies with other players at the Swap Meet Market. Tap it.', fly: 'market', ring: 'market', wait: 'select:market', hint: 'Tap the Market' },
+      { say: 'Only spares can be traded, so the squishy living in your house never leaves.', link: ['market.html', 'See the Market'] }
+    ] },
+    settings: { title: 'Settings & saving', steps: [
+      { say: 'The gear opens <b>Settings</b>: sound, music, graphics and more.', ring: 'gear', link: ['settings.html', 'Open Settings'] },
+      { say: 'The cloud means <b>save your town</b>. Ask a grown-up to help, so your squishies are safe even on a new phone.', ring: 'cloud', link: ['account.html#demo', 'Save my town'] },
+      { say: 'You can watch the story again any time.', done: 'Watch the story', after: 'story' }
+    ] }
+  };
+  /* ---------- help menu (the i button) ---------- */
+  const menu = document.createElement('div'); menu.className = 'helpm'; menu.hidden = true; stage.appendChild(menu);
+  const TOPICS = [['first', '&#11088;', 'The full tour'], ['move', '&#9995;', 'Moving around'], ['houses', '&#127968;', 'Houses'], ['games', '&#127918;', 'Minigames & coins'], ['boxes', '&#127873;', 'Mystery Boxes'], ['gems', '&#128142;', 'Gems'], ['quests', '&#128203;', 'Quests & visitor'], ['market', '&#129309;', 'Trading'], ['settings', '&#9881;&#65039;', 'Settings & saving'], ['story', '&#128214;', 'Watch the story']];
+  function helpMenu() { endTour(false); menu.innerHTML = `<div class="hm-head"><img src="${baoImg}" alt="" width="54" height="54"><b>What should I show you?</b><button type="button" class="hm-x" aria-label="Close">&times;</button></div><div class="hm-grid">${TOPICS.map(([k, ic, t]) => `<button type="button" data-t="${k}"><span aria-hidden="true">${ic}</span>${t}</button>`).join('')}</div>`; menu.hidden = false; SQS.play('hello');
+    menu.querySelector('.hm-x').onclick = () => { SQS.play('back'); closeMenu(); }; }
+  function closeMenu() { menu.hidden = true; }
+  menu.addEventListener('click', e => { const b = e.target.closest('[data-t]'); if (!b) return; SQS.play('tap'); const t = b.dataset.t; if (t === 'story') { closeMenu(); playStory(); } else startTour(t); });
+
+  /* ---------- the opening story ---------- */
+  const SCENES = [
+    { state: 'full', fly: { x: 0, z: 10 }, dist: 300, ms: 5500, say: 'Once upon a time, far out in a fizzy lemonade sea, lay a little place called Squishy Island.' },
+    { fly: 'dumpling', dist: 62, ms: 2600, say: 'Every house was home to a family of squishies. They bounced, napped and played all day long.' },
+    { storm: 1, fly: { x: -20, z: 10 }, dist: 200, ms: 2400, sfx: 'wind', later: ['thunder', 1500], say: 'Then one night, the Big Grumble Wind came huffing and puffing… <i>WHOOOSH!</i>' },
+    { state: 'day1', flash: 1, storm: 0, say: 'The squishies were blown far, far away, and every house fell to pieces.' },
+    { fly: 'dumpling', dist: 52, ms: 2400, say: 'Only Bao Bun held on tight, hiding in the soup pot.' },
+    { fly: 'factory', dist: 66, ms: 2400, sfx: 'sparkle', say: 'But the old Squishy Factory still worked! Every box it makes can find a lost squishy and bring it home.' },
+    { fly: { x: 0, z: 10 }, dist: 230, ms: 3000, say: 'Will you help Bao fix up Squishy Island and bring every squishy home?', last: true }
+  ];
+  const story = document.createElement('div'); story.className = 'story'; story.hidden = true;
+  story.innerHTML = '<div class="storm"></div><div class="flash"></div><button type="button" class="skip">Skip &#9654;&#9654;</button><div class="cap" aria-live="polite"><p class="ctext"></p><div class="cdots"></div><div class="cgo" hidden><button type="button" class="go1">Let’s go!</button></div></div>';
+  stage.appendChild(story);
+  let sc = -1, typing = null, autoT = null, prevState = null;
+  const ctext = story.querySelector('.ctext');
+  function typeLine(html, done) {
+    clearInterval(typing); const plain = html.replace(/<[^>]+>/g, ''); let n = 0; const calm = SQS.reduced();
+    if (calm) { ctext.innerHTML = html; return done(); }
+    typing = setInterval(() => { n += 1; ctext.textContent = plain.slice(0, n); if (n >= plain.length) { clearInterval(typing); typing = null; ctext.innerHTML = html; done(); } }, 30);
+  }
+  function scene(i) {
+    sc = i; clearTimeout(autoT); const s = SCENES[i]; if (!s) return endStory(false);
+    if (s.state) city.setState(asState(s.state));
+    if (s.fly) { const p = typeof s.fly === 'string' ? pos(s.fly) : s.fly; city.flyTo(p.x, p.z + 4, s.dist, SQS.reduced() ? 10 : s.ms); }
+    if (s.storm != null) story.classList.toggle('stormy', !!s.storm);
+    if (s.flash && !SQS.reduced()) { story.classList.remove('flashing'); void story.offsetWidth; story.classList.add('flashing'); SQS.play('boxPop'); }
+    if (s.sfx) SQS.play(s.sfx); if (s.later) setTimeout(() => { if (sc === i) SQS.play(s.later[0]); }, s.later[1]);
+    story.querySelector('.cdots').innerHTML = SCENES.map((_, k) => `<i class="${k === i ? 'on' : ''}"></i>`).join('');
+    story.querySelector('.cgo').hidden = true;
+    typeLine(s.say, () => { if (s.last) { story.querySelector('.cgo').hidden = false; story.querySelector('.go1').focus({ preventScroll: true }); } else autoT = setTimeout(() => scene(i + 1), 2600); });
+  }
+  let firstRun = false;
+  function playStory(first) {
+    firstRun = !!first; endTour(false); closeMenu(); city.close(); prevState = state; story.hidden = false; card3.classList.add('cine'); SQS.music('story');
+    city.view.x = 0; city.view.z = 10; city.view.dist = 380; scene(0);
+  }
+  function endStory(go) {
+    clearTimeout(autoT); clearInterval(typing); story.hidden = true; story.classList.remove('stormy'); card3.classList.remove('cine'); sc = -1;
+    try { localStorage.setItem('sqv-story-seen', '1'); } catch (e) {}
+    SQS.music('city');
+    // very first launch: the tour always follows the story, even after Skip
+    if (firstRun) { firstRun = false; startTour('first'); } else set(prevState || state);
+  }
+  story.addEventListener('click', e => {
+    if (e.target.closest('.skip')) { SQS.play('back'); return endStory(false); }
+    if (e.target.closest('.go1')) { SQS.play('open'); return endStory(true); }
+    if (typing) { clearInterval(typing); typing = null; ctext.innerHTML = SCENES[sc].say; if (SCENES[sc].last) story.querySelector('.cgo').hidden = false; else autoT = setTimeout(() => scene(sc + 1), 2600); return; }
+    if (sc >= 0 && !SCENES[sc].last) scene(sc + 1);
+  });
+  // the "settings & saving" topic ends by offering the story
+  const _end = endTour; endTour = function (done) { const t = tour; _end(done); if (done && t && t.steps[t.steps.length - 1].after === 'story') playStory(); };
+  // first visit: play the story (only when this browser can remember it was seen)
+  const q = new URLSearchParams(location.search);
+  let seen = '1'; try { seen = localStorage.getItem('sqv-story-seen'); } catch (e) {}
+  let back = null; try { back = JSON.parse(localStorage.getItem('sqv-tour')); } catch (e) {}
+  if (back && TOURS[back.t] && !q.has('intro')) setTimeout(() => startTour(back.t, back), 400);   // coming back from the Factory or Sky Bounce
+  else if (q.has('intro')) setTimeout(() => playStory(q.get('intro') === 'first'), 400);
+  else if (!seen) setTimeout(() => playStory(true), 400);
+  else if (q.has('help')) setTimeout(helpMenu, 400);
+  // building directory (3D thumbnails)
+  const blurb = {
+    dumpling: 'Bamboo steamer house · Dumpling Gang', kitchen: 'Teapot house · Pantry Pals', pets: 'Dog-kennel house · Pet Pals', sweets: 'Cupcake house · Sugar Squad',
+    fruit: 'Pineapple house · Fresh Fruits', ocean: 'Conch shell house · Sea Squish', sky: 'Floating cloud house · Sky Puffs', forest: 'Toadstool house · Forest Folk',
+    restaurant: 'Minigame: Bistro Rush (serve orders)', playground: 'Minigame: Sky Bounce (jumper)', police: 'Minigame: Lost & Found (match-3 levels)', salon: 'Minigame: Style Studio (copy the look)',
+    fire: 'Minigame: Bucket Brigade (colour-sort levels)', post: 'Minigame: Sort-a-Lot (swipe sorting)', bandstand: 'Minigame: Squeak Beat (piano-tiles songs)', greenhouse: 'Minigame: Grow Grow Garden (care & harvest)', arcade: 'Minigame: Squish Breaker (balls vs bricks)', testlab: 'Toy: Squish Lab (squish, stretch, press)',
+    factory: 'Open Mystery Boxes for new squishies', market: 'Trade squishies with other players', gemmine: 'Gem store: buy Squish Gems (grown-ups)'
+  };
+  const card = id => `<a class="dcard" href="${id}.html"><span class="th" data-thumb="${id}" data-level="10"></span><b>${SQ.B[id].name}</b><span>${blurb[id]}</span></a>`;
+  const dh = document.getElementById('dirHouses'), dc = document.getElementById('dirCivic');
+  dh.innerHTML = SQ.HOUSES.map(card).join('');
+  dc.innerHTML = ['factory', 'gemmine', 'market'].concat(SQ.CIVIC.filter(x => !['factory', 'market', 'gemmine'].includes(x))).map(card).join('');
+  const GAMES = [['restaurant', 'bistro-rush', 'Bistro Rush', 'Cook and serve hungry squishies'], ['playground', 'sky-bounce', 'Sky Bounce', 'Bounce up through the clouds'], ['police', 'lost-and-found', 'Lost & Found', 'Match-3 puzzle levels with stars'], ['salon', 'style-studio', 'Style Studio', 'Copy the hairdo: 6 things to match'], ['fire', 'bucket-brigade', 'Bucket Brigade', 'Pour and sort the colours, level by level'], ['post', 'sort-a-lot', 'Sort-a-Lot', 'Swipe letters into the right bag'], ['bandstand', 'squeak-beat', 'Squeak Beat', 'Tap the squishies to play 30 songs'], ['greenhouse', 'grow-grow-garden', 'Grow Grow Garden', 'Keep up with a garden that grows itself'], ['arcade', 'squish-breaker', 'Squish Breaker', 'Your squishies are the balls'], ['testlab', 'squish-lab', 'Squish Lab', 'Squish, stretch and press (no coins, just fun)']];
+  document.getElementById('games').innerHTML = GAMES.map(([b, f, n, d]) => `<a class="gcard" href="play/${f}.html" style="--bc:${SQ.B[b].badge.color}"><span class="gi">${SQ.badgeHTML(b)}</span><b>${n}</b><span>${d} · at the ${SQ.B[b].name}</span></a>`).join('');
+  const io = new IntersectionObserver(es => es.forEach(e => { if (!e.isIntersecting) return; io.unobserve(e.target); SQ.snapBuilding(e.target.dataset.thumb, 10, false, { w: 400, h: 340 }).then(u => { e.target.innerHTML = `<img src="${u}" alt="">`; }); }), { rootMargin: '200px' });
+  document.querySelectorAll('[data-thumb]').forEach(el => { el.removeAttribute('data-thumb-done'); io.observe(el); });
+});
+</script>

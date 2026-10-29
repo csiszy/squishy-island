@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Squishy Post Office</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bagel+Fat+One&amp;family=Nunito:wght@400;600;800;900&amp;family=Patrick+Hand&amp;display=swap">
+<link rel="stylesheet" href="art/style.css">
+</head>
+<body style="--theme:#3BA7A0;--theme2:#DDF5F2">
+<header class="topbar"><div class="topbar-in">
+  <a class="brand" href="index.html"><i></i>Squishy Island</a>
+  <nav><a class="pill" href="index.html">&larr; City map</a><a class="pill" href="guide.html">Game guide</a></nav>
+</div></header>
+<main class="wrap">
+
+<section class="hero">
+  <div class="hero-text">
+    <p class="eyebrow">Fun building · minigame</p>
+    <h1>Squishy Post Office</h1>
+    <p class="lede">A cheerful yellow post office where all the letters in town get sorted. Har Gow (the letter-writing dumpling) is its biggest customer.</p>
+    <ul class="facts"><li><b>Address:</b> 3 Butter Boulevard</li><li><b>Unlocks:</b> Paw Palace reaches level 3</li><li><b>Minigame:</b> Sort-a-Lot</li><li><b>Play time:</b> Endless (3 hearts)</li></ul>
+    <p class="note"><b>Try it</b>Drag the slider to see the building at every level. Level 0 is the empty plot it starts as.</p>
+  </div>
+  <div class="hero-art" data-hero="post" data-level="10"></div>
+</section>
+
+<section>
+  <div class="sec-head"><p class="eyebrow">The minigame</p><h2>Sort-a-Lot</h2></div>
+  <p class="playbar"><a class="play-btn" href="play/sort-a-lot.html">&#9654; Play the prototype</a><span>Works on phone and computer. Each minigame is one file you can open on its own: <code>play/sort-a-lot.html</code></span></p>
+  <div class="game">
+    <div class="prose">
+      <p class="lede">A quick swipe-sorting game. Letters ride along a conveyor belt. Each has a coloured stamp that matches one of the family mail bags. Swipe each letter into the right bag before it falls off the end of the belt.</p>
+      <h3>How it plays</h3><ol><li>Letters roll along the conveyor belt from left to right.</li><li>Each letter has a coloured stamp matching one of the mail bags (each bag has a family squishy on it).</li><li>Swipe or drag a letter down into the bag with the same stamp. A quick flick toward a bag is enough.</li><li>A letter in the wrong bag, or one that falls off the end of the belt, costs a heart.</li><li>3 hearts and the post office closes. Otherwise the letters never stop.</li></ol>
+      <h3>Controls</h3><p>Swipe. That’s it. Great for the youngest players. PC: drag with the mouse, or press 1-6 to send the front letter to that bag.</p>
+      <h3>Scoring</h3><ul><li>+10 per letter, × your streak multiplier (sort 5 in a row for ×2, up to ×5).</li><li>Your best score is saved.</li></ul>
+      <h3>It never ends, it just gets harder</h3><ul><li>Every 7 letters the belt speeds up and letters come closer together.</li><li>A new bag opens every couple of levels, up to 6 bags.</li><li>Later, some stamps get white spots: a spotty pink stamp goes in the spotty pink bag, not the plain one.</li></ul>
+      <h3>Squishy helpers</h3><p>You always play with squishies you own. Some families are extra good at this game:</p><ul><li><b>Dumpling Gang</b> sorters slow the belt down by 15%.</li><li><b>Pet Pals</b> sorters auto-sort one letter every 10 seconds (they fetch it!).</li></ul>
+      <h3>Rewards</h3><p>Coins equal to the points ÷ 55 (no milestone bonus). About 35 coins per minute for a good player. Sorted letters sometimes contain a decor item for a house.</p><h3>Keep going (optional ad)</h3><p>When the run ends, the player can choose to watch a short ad once per run: carry on with 1 heart, and the letters past the middle are cleared away. “No thanks” ends the run as normal. See the <a href="guide.html#ads">ad rules</a>.</p>
+    </div>
+    <figure class="phone" data-mock="post" style="margin:0"></figure>
+  </div>
+</section>
+
+<section>
+  <div class="sec-head"><p class="eyebrow">Building levels</p><h2>From empty plot to level 10</h2></div>
+  <p>The plot is fixed on the map and shows a &ldquo;Build me!&rdquo; sign until you pay to build level 1. After that, each upgrade unlocks when your best score in Sort-a-Lot is high enough, and then costs coins. Better results in the minigame = a fancier building. Tap any level to see it bigger.</p>
+  <ol data-levels="post">
+  <li><b>Mail kiosk.</b> A teal-striped kiosk with an envelope sign.</li>
+  <li><b>Kiosk + board.</b> A board for parcels waiting.</li>
+  <li><b>Little post office.</b> A yellow building with a gable roof.</li>
+  <li><b>Red post box.</b> A post box out front and awnings.</li>
+  <li><b>Wider office.</b> Big windows and a bench.</li>
+  <li><b>Second floor.</b> A sorting room upstairs.</li>
+  <li><b>Delivery bike.</b> A bike with a parcel crate and Har Gow.</li>
+  <li><b>Lit sign & garden.</b> Bulbs, flowers and fence.</li>
+  <li><b>Paper plane vane.</b> A paper-plane weather vane on the roof.</li>
+  <li><b>Golden Post.</b> Flags, star medal and sparkles.</li>
+</ol>
+</section>
+
+<footer class="foot">
+  <span>Words on this page: <code>post.html</code></span>
+  <span>Pictures &amp; squishy list: <code>art/post.js</code></span>
+</footer>
+</main>
+<script src="art/kit.js"></script>
+<script>SQ.boot();</script>
+</body>
+</html>

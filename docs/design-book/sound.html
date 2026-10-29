@@ -1,0 +1,199 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Squishy Island Sound & Music</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bagel+Fat+One&amp;family=Nunito:wght@400;600;800;900&amp;family=Patrick+Hand&amp;display=swap">
+<link rel="stylesheet" href="art/style.css">
+<style>
+.board{display:grid;gap:18px}
+.grp h3{margin:0 0 8px}
+.sfx{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,230px),1fr));gap:8px}
+.sb{all:unset;box-sizing:border-box;cursor:pointer;display:grid;grid-template-columns:34px minmax(0,1fr);gap:2px 10px;align-items:center;background:#fff;border:2.5px solid var(--line);border-radius:14px;box-shadow:3px 3px 0 var(--line);padding:8px 10px}
+.sb i{grid-row:span 2;width:34px;height:34px;border-radius:50%;background:var(--sun);border:2px solid var(--line);display:grid;place-items:center;font-style:normal;font-size:13px}
+.sb b{font-size:14px}
+.sb span{font-size:12.5px;color:var(--ink2);line-height:1.3}
+.sb:active{transform:translate(2px,2px);box-shadow:1px 1px 0 var(--line)}
+.sb.on i{background:var(--pink);color:#fff}
+.sb:focus-visible{outline:3px solid var(--pink);outline-offset:2px}
+.tracks{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,260px),1fr));gap:10px}
+.tr{all:unset;box-sizing:border-box;cursor:pointer;display:grid;grid-template-columns:40px minmax(0,1fr);gap:2px 12px;align-items:center;background:#fff;border:2.5px solid var(--line);border-radius:16px;box-shadow:3px 3px 0 var(--line);padding:10px 12px}
+.tr i{grid-row:span 3;width:40px;height:40px;border-radius:50%;background:#E9F6FF;border:2px solid var(--line);display:grid;place-items:center;font-style:normal}
+.tr.on{background:#FFF3B0}.tr.on i{background:var(--pink);color:#fff}
+.tr b{font-family:var(--f-display);font-weight:400;font-size:19px;line-height:1.1}
+.tr span{font-size:12.5px;color:var(--ink2)}
+.tr:focus-visible{outline:3px solid var(--pink);outline-offset:2px}
+.timeline{display:grid;gap:6px;margin:0;padding:0;list-style:none}
+.timeline li{display:grid;grid-template-columns:110px minmax(0,1fr);gap:12px;align-items:start;background:#fff;border:2px solid var(--line);border-radius:12px;padding:8px 12px;font-size:14.5px}
+.timeline li b{font-variant-numeric:tabular-nums}
+.demo-count{display:flex;gap:18px;align-items:center;flex-wrap:wrap;background:#fff;border:2.5px solid var(--line);border-radius:18px;box-shadow:3px 3px 0 var(--line);padding:14px 18px}
+.demo-count .n{font-family:var(--f-display);font-size:40px;color:var(--pink);font-variant-numeric:tabular-nums;min-width:4.2ch;display:inline-block}
+.demo-count .c{font-family:var(--f-display);font-size:28px;color:#C98A12;font-variant-numeric:tabular-nums}
+.demo-count .pop{animation:cpop .28s ease-out}
+@keyframes cpop{40%{transform:scale(1.22)}}
+.mute-note{font-weight:800;color:var(--ink2);font-size:14px}
+</style>
+</head>
+<body style="--theme:#9B5CF6;--theme2:#F1EAFF">
+<header class="topbar"><div class="topbar-in">
+  <a class="brand" href="index.html"><i></i>Squishy Island</a>
+  <nav><a class="pill" href="index.html">&larr; City map</a><a class="pill" href="guide.html">Game guide</a><a class="pill" href="settings.html">Settings</a></nav>
+</div></header>
+<main class="wrap">
+
+<section class="hero" style="grid-template-columns:1fr">
+  <div class="hero-text">
+    <p class="eyebrow">Sound &amp; music</p>
+    <h1>Everything squeaks</h1>
+    <p class="lede">Every tap gets a soft answer, every reward has its own little tune, and each place in town has its own background song. The sound should feel like a toy box: round, bouncy and friendly. Nothing is harsh, nothing is scary, and nothing is loud enough to startle a child or a parent sitting next to them.</p>
+    <ul class="facts"><li><b>Sound effects:</b> 38 (all playable below)</li><li><b>Music:</b> 14 looping tracks</li><li><b>Settings:</b> effects, music and vibration each switch off separately (<a href="settings.html">Settings</a>)</li></ul>
+    <p class="note"><b>In this design book</b>Every sound here is made live in the browser, so you can hear it right now and the prototypes stay single files. The real game should use produced versions of the same ideas: real squishy-toy recordings for the squelches, and a composer’s versions of the tunes.</p>
+  </div>
+</section>
+
+<section>
+  <div class="sec-head"><p class="eyebrow">Try them</p><h2>The sound effects</h2></div>
+  <p class="mute-note" id="muteNote" hidden>Sound effects are switched off in <a href="settings.html">Settings</a>, so these buttons are silent.</p>
+  <div class="board" id="board"></div>
+</section>
+
+<section>
+  <div class="sec-head"><p class="eyebrow">Results screens</p><h2>Counters that count</h2></div>
+  <p>Numbers on a results screen never just appear. Each one runs up from 0 to its value in <b>half a second</b> (fast at first, slowing at the end), with a tick for every step whose pitch rises as it climbs, and a bright <b>ding</b> when it lands. Coins clink instead of tick. Tapping the screen while it counts jumps straight to the end, so impatient players never wait. With <i>Reduced animations</i> on, numbers appear at once with a single ding.</p>
+  <div class="demo-count"><span><span class="n" id="dScore">0</span><br><small>points</small></span><span class="c">+<span id="dCoins">0</span> coins</span><span>Jar: <b id="dJar">1,240</b></span><button class="play-btn" type="button" id="dGo" style="border:0;cursor:pointer;font:inherit">&#9654; Play the results</button></div>
+  <ol class="timeline" style="margin-top:14px">
+    <li><b>0.00 s</b><span>Results card pops up (soft “bloop”). Music ducks to 35%.</span></li>
+    <li><b>0.15–0.65 s</b><span>Score counts up with rising ticks, then <b>ding</b> and a little bounce of the number.</span></li>
+    <li><b>0.75–1.25 s</b><span>Coins earned count up with coin clinks, then the coins drop into the jar (“clink-clink”).</span></li>
+    <li><b>1.35–1.85 s</b><span>Coin jar counts from the old total to the new one.</span></li>
+    <li><b>1.9 s</b><span>“New best score!” stamps in with a happy fanfare and a short vibration (only when it really is a new best).</span></li>
+  </ol>
+  <p>All 10 prototypes do this now: play any of them and finish a run.</p>
+</section>
+
+<section>
+  <div class="sec-head"><p class="eyebrow">Background music</p><h2>A song for every place</h2></div>
+  <p>Each place has its own looping song. They all share the same cheerful sound (plucks, bells, soft drums) so the town feels like one world, but each has its own tempo and mood. Tap one to listen; tap again to stop. Songs fade in and out over about a second when you move between places.</p>
+  <div class="tracks" id="tracks"></div>
+  <div class="two" style="margin-top:16px">
+    <div class="card prose">
+      <h3>Music rules</h3>
+      <ul>
+        <li>Music starts at <b>50%</b> volume, effects at <b>80%</b>. Music always sits under the effects.</li>
+        <li>Music <b>ducks</b> (gets quieter) during results screens, ads, the story narration and Bao’s voice lines, then comes back.</li>
+        <li>If the player is already listening to their own music or a podcast, the game music stays off and only effects play (iOS “ambient” audio, Android audio focus).</li>
+        <li>The iPhone silent switch mutes the game.</li>
+        <li>Squeak Beat is the exception: its music <i>is</i> the game, so it follows the <b>sound effects</b> switch and plays no background track.</li>
+        <li>Real game: each song is a 1–2 minute seamless loop, and the city theme’s melody reappears in other tracks so the music feels like one family.</li>
+      </ul>
+    </div>
+    <div class="card prose">
+      <h3>Effect rules</h3>
+      <ul>
+        <li>Every tap on anything tappable makes a sound. A tap that can’t do anything (locked, not enough coins) gets the soft “uh-uh”, never silence.</li>
+        <li>The same sound never plays twice within 40 ms, and frequent sounds (taps, coins) shift pitch a little each time so they never get tiring.</li>
+        <li>At most 8 sounds at once; the quietest is dropped first.</li>
+        <li>Nothing peaks louder than the Legendary fanfare. Thunder in the story is a far-away rumble, never a crack.</li>
+        <li>The rarer the box reveal, the longer and fancier its tune, so kids can hear what they got before they see it.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="sec-head"><p class="eyebrow">Where sounds play</p><h2>Event list for the builder</h2></div>
+  <div class="tbl-wrap"><table>
+    <thead><tr><th>Moment</th><th>Sound</th><th>Vibration</th></tr></thead>
+    <tbody>
+      <tr><td>Any button, bubble or building tapped</td><td>tap · close: back</td><td>light tick (10 ms), buttons only</td></tr>
+      <tr><td>A panel opens / closes</td><td>open / back</td><td>&ndash;</td></tr>
+      <tr><td>Camera flies to a building</td><td>whoosh (quiet)</td><td>&ndash;</td></tr>
+      <tr><td>Renovating a house or building a fun building</td><td>build (3 knocks) then tada</td><td>medium on the ta-da</td></tr>
+      <tr><td>Decor placed in a room</td><td>tap + squish</td><td>light</td></tr>
+      <tr><td>Something unlocks (new building, track, level)</td><td>unlock</td><td>light</td></tr>
+      <tr><td>Coins spent</td><td>buy</td><td>light</td></tr>
+      <tr><td>Gems spent</td><td>gemAsk (the “are you sure?” pop-up), then gemBuy</td><td>medium</td></tr>
+      <tr><td>Not enough coins / locked</td><td>nope</td><td>&ndash;</td></tr>
+      <tr><td>Mystery Box opened</td><td>boxShake (on the belt) → boxPop → reveal for its rarity (+ sparkly for a Sparkly) or spare for a duplicate</td><td>medium on the pop; Epic/Legendary: a 3-pulse pattern</td></tr>
+      <tr><td>Watch-an-ad button chosen</td><td>adStart (the ad’s own sound is the ad network’s; game music pauses)</td><td>&ndash;</td></tr>
+      <tr><td>Quest done / Gem Challenge done</td><td>quest / sparkle</td><td>light</td></tr>
+      <tr><td>Minigame: start, points, combo</td><td>open, then each game’s own sounds</td><td>per game</td></tr>
+      <tr><td>Minigame: heart lost / run over</td><td>heart / a soft “wah-wah”</td><td>80 ms / 120 ms</td></tr>
+      <tr><td>Minigame results</td><td>tick → countDone, coinsCount → jar, newBest</td><td>light on new best</td></tr>
+      <tr><td>Squish Lab</td><td>squish (wet or soft, louder the harder you squeeze), boing for bouncy squishies, air hiss while squeezing, pop</td><td>light while squeezing</td></tr>
+      <tr><td>Opening story</td><td>story music, wind, thunder (far away), sparkle</td><td>&ndash;</td></tr>
+      <tr><td>Bao speaks (tutorial)</td><td>hello chirp + recorded voice line</td><td>&ndash;</td></tr>
+      <tr><td>Settings switches</td><td>toggleOn / toggleOff; volume sliders play a test sound when you let go</td><td>vibration switch buzzes once when turned on</td></tr>
+    </tbody>
+  </table></div>
+  <p class="note"><b>Production note</b>About 60 effects and 14 music loops for launch. Effects preloaded, music streamed as compressed audio. Target loudness: music about −18 LUFS, effects peaking around −6 dBFS.</p>
+</section>
+
+<section id="licence">
+  <div class="sec-head"><p class="eyebrow">Free to use</p><h2>Who owns these sounds</h2></div>
+  <div class="two">
+    <div class="card prose">
+      <h3>These are yours</h3>
+      <p>Every effect and song on this page is <b>made by code written for this game</b> (<code>art/sound.js</code>): no samples, recordings or someone else’s music. So there is nothing to license and nothing to pay. They can be used, changed and sold in the game freely, with no credit needed.</p>
+      <p>They also exist as ready audio files for the real game (WAV effects and seamless Ogg music loops, rendered straight from this code), so the real game just plays the files.</p>
+    </div>
+    <div class="card prose">
+      <h3>If you add free sounds from elsewhere</h3>
+      <ul>
+        <li><b>OK for a game with ads and purchases:</b> CC0 / public domain (for example Kenney’s game audio packs, CC0 sounds on Freesound or OpenGameArt), the Pixabay Content Licence, and CC BY (only with a credit in Settings → Credits, e.g. Kevin MacLeod’s music).</li>
+        <li><b>Not OK:</b> anything marked NC (“non-commercial”): the game earns money. Also not the YouTube Audio Library (licensed for YouTube videos only) or music ripped from videos or games.</li>
+        <li>Keep a small list of where every outside sound came from and its licence, in case a store or a lawyer asks.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<footer class="foot">
+  <span>Words on this page: <code>sound.html</code></span>
+  <span>The sounds and songs: <code>art/sound.js</code></span>
+</footer>
+</main>
+<script src="art/sound.js"></script>
+<script>
+(function () {
+  const GROUPS = [
+    ['Tapping around', ['tap', 'back', 'open', 'toggleOn', 'toggleOff', 'nope', 'whoosh']],
+    ['Coins, shopping and Gems', ['coin', 'buy', 'gemAsk', 'gemBuy', 'jar']],
+    ['Mystery Boxes', ['boxShake', 'boxPop', 'revealC', 'revealU', 'revealR', 'revealE', 'revealL', 'sparkly', 'spare']],
+    ['City and houses', ['build', 'tada', 'unlock', 'quest', 'star']],
+    ['Minigames and results', ['tick', 'countDone', 'coinsCount', 'newBest', 'heart', 'adStart']],
+    ['Squish Lab', ['squish', 'boing']],
+    ['Story and tutorial', ['wind', 'thunder', 'sparkle', 'hello']]
+  ];
+  const what = Object.fromEntries(SQS.SFX_LIST.map(x => [x.id, x.what]));
+  document.getElementById('board').innerHTML = GROUPS.map(([g, ids]) => `<div class="grp"><h3>${g}</h3><div class="sfx">${ids.map(id => `<button class="sb" type="button" data-s="${id}"><i aria-hidden="true">&#9654;</i><b>${id}</b><span>${what[id] || ''}</span></button>`).join('')}</div></div>`).join('');
+  document.getElementById('board').addEventListener('click', e => { const b = e.target.closest('[data-s]'); if (!b) return; const id = b.dataset.s;
+    if (id === 'tick' || id === 'coinsCount') { for (let i = 0; i < 10; i++) setTimeout(() => SQS.play(id, i / 10), i * 45); } else SQS.play(id);
+    b.classList.add('on'); setTimeout(() => b.classList.remove('on'), 400); });
+  const note = () => { document.getElementById('muteNote').hidden = SQS.settings.sfx; }; note(); SQS.onChange(note);
+  // music
+  const tr = document.getElementById('tracks');
+  tr.innerHTML = Object.entries(SQS.TRACKS).map(([id, t]) => `<button class="tr" type="button" data-t="${id}" aria-pressed="false"><i aria-hidden="true">&#9654;</i><b>${t.name}</b><span>${t.where}</span><span>${t.bpm} BPM · ${t.mode === 'min' ? 'minor, mysterious' : t.mode === 'pent' ? 'floaty, dreamy' : 'major, sunny'} · lead: ${{ pluck: 'ukulele pluck', bell: 'music-box bells', flute: 'soft flute', chip: 'arcade chip' }[t.lead]}</span></button>`).join('');
+  const mark = () => tr.querySelectorAll('.tr').forEach(b => { const on = SQS.musicNow() === b.dataset.t; b.classList.toggle('on', on); b.setAttribute('aria-pressed', on); b.querySelector('i').innerHTML = on ? '&#9632;' : '&#9654;'; });
+  tr.addEventListener('click', e => { const b = e.target.closest('[data-t]'); if (!b) return; SQS.ctx();
+    if (!SQS.settings.music) { SQS.play('nope'); b.querySelector('span').textContent = 'Music is switched off in Settings'; return; }
+    SQS.music(SQS.musicNow() === b.dataset.t ? null : b.dataset.t); setTimeout(mark, 30); });
+  // results counter demo
+  const fmt = n => Math.round(n).toLocaleString('en-US');
+  const run = (el, a, b, coins) => new Promise(res => { const t0 = performance.now(); let tk = 0;
+    const st = now => { const u = Math.min(1, (now - t0) / 500), e = 1 - Math.pow(1 - u, 3); el.textContent = fmt(a + (b - a) * e);
+      if (u < 1) { if (now - tk > 42) { tk = now; SQS.play(coins ? 'coinsCount' : 'tick', u); } requestAnimationFrame(st); }
+      else { el.classList.remove('pop'); void el.offsetWidth; el.classList.add('pop'); SQS.play(coins ? 'jar' : 'countDone'); setTimeout(res, 110); } };
+    requestAnimationFrame(st); });
+  let busy = false, jar = 1240;
+  document.getElementById('dGo').addEventListener('click', async () => { if (busy) return; busy = true; SQS.play('open');
+    const s = document.getElementById('dScore'), c = document.getElementById('dCoins'), j = document.getElementById('dJar'); s.textContent = '0'; c.textContent = '0';
+    await new Promise(r => setTimeout(r, 150)); await run(s, 0, 23450); await run(c, 0, 66, true); await run(j, jar, jar + 66, true); jar += 66; SQS.play('newBest'); busy = false; });
+})();
+</script>
+</body>
+</html>

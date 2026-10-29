@@ -1,0 +1,377 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Squishy Island Build Plan</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bagel+Fat+One&amp;family=Nunito:wght@400;600;800;900&amp;family=Patrick+Hand&amp;display=swap">
+<link rel="stylesheet" href="art/style.css">
+<style>
+.two>*,.split>*{min-width:0}
+pre.code{max-width:100%;background:#2B2141;color:#F1EDFF;border-radius:16px;padding:14px 16px;overflow:auto;font-size:13px;line-height:1.5;margin:0}
+pre.code .c{color:#A99BD8}
+.layers{display:grid;gap:10px}
+.layer{border:2.5px solid var(--line);border-radius:18px;box-shadow:3px 3px 0 var(--line);padding:10px 12px;display:grid;gap:8px}
+.layer > b{font-size:12px;letter-spacing:.12em;text-transform:uppercase}
+.layer .boxes{display:flex;flex-wrap:wrap;gap:6px}
+.layer .boxes span{background:#fff;border:2px solid var(--line);border-radius:10px;padding:4px 9px;font-weight:800;font-size:13px}
+.l1{background:#FFE3EF}.l2{background:#FFF3B0}.l3{background:#DFF3FF}.l4{background:#E9FFF6}.l5{background:#F1EAFF}
+.arrow{text-align:center;font-weight:900;color:var(--ink2);font-size:13px}
+.split{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,1fr);gap:12px;align-items:stretch}
+@media (max-width:760px){.split{grid-template-columns:1fr}}
+.wall{border:3px dashed var(--line);border-radius:18px;padding:10px;display:grid;gap:8px;background:#fff;align-content:start}
+.wall .gm span{align-self:start}
+.wall .gm{display:flex;flex-wrap:wrap;gap:6px}
+.wall .gm span{background:#F1EAFF;border:2px solid var(--line);border-radius:10px;padding:4px 9px;font-weight:800;font-size:13px}
+.phase{display:grid;grid-template-columns:120px minmax(0,1fr);gap:12px;background:#fff;border:2.5px solid var(--line);border-radius:16px;padding:12px 14px;box-shadow:3px 3px 0 var(--line)}
+.phase .w{font-family:var(--f-display);font-size:20px;color:var(--pink);line-height:1.1}
+.phase .w small{display:block;font-family:var(--f-body);font-size:12.5px;font-weight:800;color:var(--ink2)}
+.phase h3{margin:0 0 4px}
+.phase ul{margin:0}
+@media (max-width:620px){.phase{grid-template-columns:1fr}}
+.phases{display:grid;gap:10px}
+</style>
+</head>
+<body style="--theme:#4A9BFF;--theme2:#DFF3FF">
+<header class="topbar"><div class="topbar-in">
+  <a class="brand" href="index.html"><i></i>Squishy Island</a>
+  <nav><a class="pill" href="index.html">&larr; City map</a><a class="pill" href="guide.html">Game guide</a><a class="pill" href="legal.html">Legal</a></nav>
+</div></header>
+<main class="wrap">
+
+<section class="hero" style="grid-template-columns:1fr">
+  <div class="hero-text">
+    <p class="eyebrow">For the builder · build plan</p>
+    <h1>How the real game gets built</h1>
+    <p class="lede">The game is built in <b>Godot 4</b> for Android first, with a small <b>Nakama</b> game server in the EU. The 3D models, sounds and numbers come straight out of this design book, so the book stays the single source of truth. Every minigame is a <b>sealed folder</b> that only talks to the game through one small, versioned contract, so any minigame can be changed, replaced or switched off without touching anything else.</p>
+    <ul class="facts"><li><b>Engine:</b> Godot 4.6 (free, open source)</li><li><b>Language:</b> typed GDScript</li><li><b>Server:</b> Nakama + PostgreSQL on an EU server</li><li><b>Store:</b> Google Play first</li><li><b>Running cost:</b> about €5–15 a month at launch</li></ul>
+  </div>
+</section>
+
+<section>
+  <div class="sec-head"><p class="eyebrow">Engine choice</p><h2>Why Godot (and not Unity after all)</h2></div>
+  <div class="two">
+    <div class="card prose">
+      <h3>Why it fits this project</h3>
+      <ul>
+        <li><b>Free with no strings:</b> MIT licence, no fees, no revenue limits, no account or licence activation to build.</li>
+        <li><b>Everything is a text file:</b> scenes, materials, themes and scripts are all readable text. I can write, review and test every part of the game in code, and every change shows up clearly in version history.</li>
+        <li><b>Builds from the command line:</b> tests and Android builds run automatically on every change, without anyone clicking through an editor.</li>
+        <li>Small download size, quick start-up, good 2D tools for the minigames and UI, and enough 3D for the soft toon look of the city.</li>
+      </ul>
+    </div>
+    <div class="card prose">
+      <h3>The trade-offs, and how we handle them</h3>
+      <ul>
+        <li><b>Fewer ready-made store plugins than Unity.</b> Billing and ads sit behind our own small interfaces. We use the existing Godot plugins where they are up to date, and otherwise write a thin Kotlin plugin of a few hundred lines ourselves.</li>
+        <li><b>Older and cheaper phones:</b> Godot’s Mobile renderer, with the Compatibility renderer (OpenGL ES 3) as a fallback, plus the Low graphics tier.</li>
+        <li><b>Fewer Godot developers to hire</b> than Unity developers. Clear structure, tests and this book make the project easy to hand over.</li>
+        <li>The earlier Unity recommendation on the Testing Facility page is replaced by this plan. The physics advice there still applies, in GDScript instead of C#.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="sec-head"><p class="eyebrow">Tech stack</p><h2>Every piece and what it costs</h2></div>
+  <div class="tbl-wrap"><table>
+    <thead><tr><th>Part</th><th>Choice</th><th>Why</th><th>Cost</th></tr></thead>
+    <tbody>
+      <tr><td><b>Game engine</b></td><td>Godot 4.6, Mobile renderer, Compatibility fallback</td><td>See above</td><td>Free</td></tr>
+      <tr><td><b>Code</b></td><td>GDScript with static types everywhere; C++ (GDExtension) only if profiling ever demands it</td><td>Fast to write and read; typed code catches mistakes early</td><td>Free</td></tr>
+      <tr><td><b>3D art</b></td><td>glTF files exported automatically from this design book; a Godot import script adds the toon material, outline and idle animation</td><td>The models already exist here as code; no remodelling needed. A hand-made model can later replace any file with the same name.</td><td>Free</td></tr>
+      <tr><td><b>2D art and UI</b></td><td>Godot UI nodes with one shared Theme; icons and squishy pictures exported from the book; fonts Bagel Fat One, Nunito, Patrick Hand (open licence)</td><td>One theme = one place to change the look</td><td>Free</td></tr>
+      <tr><td><b>Sound</b></td><td>The rendered pack (38 WAV effects, 14 Ogg loops); Squeak Beat songs rendered as backing tracks plus melody notes</td><td>Already made and owned by you</td><td>Free</td></tr>
+      <tr><td><b>Game server</b></td><td>Nakama (open source) + PostgreSQL, in Docker, on a small EU server (e.g. Hetzner, Germany or Finland), logic written in TypeScript</td><td>Built for games: guest accounts, account linking, cloud saves, wallets, Google purchase checking with refund notices, and an official Godot client</td><td>~€5–10 / month</td></tr>
+      <tr><td><b>Login codes by email</b></td><td>An EU email service on its free tier (e.g. Brevo)</td><td>For “save my town” codes only</td><td>Free at this scale</td></tr>
+      <tr><td><b>Purchases</b></td><td>Google Play Billing Library 8 through a Godot Android plugin, checked on the server by Nakama</td><td>Required by Google for Gems</td><td>Google’s store fee on sales</td></tr>
+      <tr><td><b>Ads</b></td><td>Google AdMob (on Google’s Families self-certified list), rewarded ads only, child-directed, content rating G</td><td>Allowed in kids’ apps, simplest set-up</td><td>Earns money</td></tr>
+      <tr><td><b>Crashes and speed</b></td><td>Google Play Console’s Android vitals; Godot’s own logs sent to our server (no personal data)</td><td>No extra third-party code in a kids’ app</td><td>Free</td></tr>
+      <tr><td><b>Play statistics</b></td><td>Our own small event log in Nakama, grouped numbers only (e.g. “how many finish level 10”)</td><td>No third-party analytics in a kids’ app</td><td>Free</td></tr>
+      <tr><td><b>Tests</b></td><td>GUT (Godot Unit Test), headless Godot, bot players for every minigame</td><td>Catches breakage before a build reaches a phone</td><td>Free</td></tr>
+      <tr><td><b>Code hosting and automation</b></td><td>Private GitHub repository + GitHub Actions</td><td>Every change is tested and built automatically, then uploaded to Google Play’s internal testing track</td><td>Free tier</td></tr>
+      <tr><td><b>One-off costs</b></td><td>Google Play developer account $25; a domain (~€10/year) for the privacy policy and deletion pages</td><td>&ndash;</td><td>~€35</td></tr>
+    </tbody>
+  </table></div>
+</section>
+
+<section>
+  <div class="sec-head"><p class="eyebrow">Architecture</p><h2>Layers, and the wall around the minigames</h2></div>
+  <div class="split">
+    <div class="layers">
+      <div class="layer l1"><b>App shell</b><div class="boxes"><span>Boot &amp; loading</span><span>Router (screen changes)</span><span>Grown-up gate</span><span>Pop-ups &amp; toasts</span></div></div>
+      <div class="arrow">uses &darr;</div>
+      <div class="layer l2"><b>Features</b> (one folder each, independent of each other)<div class="boxes"><span>City map</span><span>House rooms &amp; decor</span><span>Factory &amp; boxes</span><span>Gem Shop</span><span>Gem Mine</span><span>Market</span><span>Quests &amp; visitor</span><span>Collection &amp; Spare Shelf</span><span>Story &amp; tutorial</span><span>Settings</span><span>Account</span><span>Minigame host</span></div></div>
+      <div class="arrow">uses &darr;</div>
+      <div class="layer l3"><b>Core services</b> (shared, each behind an interface with a fake for tests)<div class="boxes"><span>Events</span><span>Save &amp; cloud sync</span><span>Economy</span><span>Collection</span><span>Settings</span><span>Audio</span><span>Haptics</span><span>Ads</span><span>Billing</span><span>Server</span><span>Remote config</span><span>Stats</span><span>Text (strings)</span></div></div>
+      <div class="arrow">reads &darr;</div>
+      <div class="layer l4"><b>Data</b> (no code: generated from this book, tuned from the server)<div class="boxes"><span>squishies</span><span>buildings &amp; levels</span><span>decor</span><span>odds &amp; prices</span><span>quests</span><span>story &amp; tutorial lines</span><span>city layout</span><span>strings_en</span></div></div>
+    </div>
+    <div class="wall">
+      <b style="font-size:12px;letter-spacing:.12em;text-transform:uppercase">The minigame wall</b>
+      <p style="margin:0;font-weight:700;font-size:14px">The <b>minigame host</b> (a feature) is the only thing that touches a minigame, and only through the contract in <code>minigame_api/</code>:</p>
+      <div class="layer l5"><b>minigame_api v1</b><div class="boxes"><span>Minigame (base class)</span><span>Context (what a game may use)</span><span>Result (what it gives back)</span><span>Manifest (its description)</span></div></div>
+      <div class="arrow">&uarr; implemented by &uarr;</div>
+      <div class="gm"><span>bistro_rush</span><span>sky_bounce</span><span>lost_and_found</span><span>style_studio</span><span>bucket_brigade</span><span>sort_a_lot</span><span>squeak_beat</span><span>grow_grow_garden</span><span>squish_breaker</span><span>squish_lab</span></div>
+      <p style="margin:0;font-size:13.5px;color:var(--ink2);font-weight:700">Minigames can’t see coins, saves, ads, billing, the server, other minigames or each other’s files. They play, then report a Result.</p>
+    </div>
+  </div>
+  <div class="two" style="margin-top:18px">
+    <div class="card prose">
+      <h3>Rules that keep it modular</h3>
+      <ul>
+        <li><b>Dependencies only point down.</b> Features never use other features directly; they talk through Events (“box_opened”, “house_upgraded”) and core services.</li>
+        <li><b>No hard-coded numbers in code.</b> Prices, odds, coin rules, level costs and quest targets live in data files, and the server can override them without an app update.</li>
+        <li><b>Every outside service has a fake.</b> Billing, ads, server and haptics all have a pretend version, so the whole game runs on a computer and in tests with no phone, no store and no internet.</li>
+        <li><b>Save files have a version number</b> and a migration step for every change, so an update never breaks an old town.</li>
+        <li>An automatic check on every change enforces the rules (see “Guard rails” below), so they can’t slowly erode.</li>
+      </ul>
+    </div>
+    <div class="card prose">
+      <h3>What lives where</h3>
+      <ul>
+        <li><b>On the server (it decides):</b> Gems, purchases, box rolls, the Spare Shelf, trades, quests, the Gem Challenge target, the weekly visitor, account linking and deletion.</li>
+        <li><b>On the phone, checked by the server:</b> coins earned in minigames. The server refuses impossible amounts (more than about 60 coins per minute of reported play).</li>
+        <li><b>Only on the phone:</b> settings, best scores, minigame level progress (backed up with the cloud save).</li>
+        <li><b>Offline:</b> the map and all minigames work. Boxes, trades, Gems and quests need a connection and say so kindly.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="sec-head"><p class="eyebrow">Repository</p><h2>Folder structure</h2></div>
+<pre class="code">squishy-island/
+├── game/                          <span class="c"># the Godot project</span>
+│   ├── project.godot
+│   ├── app/                       <span class="c"># shell: boot, router, gate, pop-ups</span>
+│   ├── core/                      <span class="c"># services (autoloads), each: interface + real + fake</span>
+│   │   ├── save/  economy/  collection/  settings/  audio/  haptics/
+│   │   ├── ads/  billing/  server/  remote_config/  stats/  text/  events/
+│   ├── features/                  <span class="c"># one folder per feature: scenes, scripts, tests, README</span>
+│   │   ├── city/  houses/  factory/  gem_shop/  gem_mine/  market/
+│   │   ├── quests/  collection/  story/  tutorial/  settings/  account/
+│   │   └── minigame_host/         <span class="c"># menus, pause, keep-going ad, results, payout</span>
+│   ├── minigame_api/              <span class="c"># THE CONTRACT (v1): base class, Context, Result, manifest schema</span>
+│   ├── minigame_kit/v1/           <span class="c"># optional helpers for games (hearts HUD, floating text, seeded random)</span>
+│   ├── minigames/                 <span class="c"># sealed: each folder stands alone</span>
+│   │   ├── _template/             <span class="c"># copy this to start a new game</span>
+│   │   ├── sky_bounce/
+│   │   │   ├── manifest.json
+│   │   │   ├── sky_bounce.tscn  sky_bounce.gd
+│   │   │   ├── assets/            <span class="c"># its own sprites, sounds, music</span>
+│   │   │   ├── harness.tscn       <span class="c"># run it alone, with a pretend host</span>
+│   │   │   ├── bot.gd             <span class="c"># a robot player for tests and balancing</span>
+│   │   │   └── tests/
+│   │   └── bistro_rush/  sort_a_lot/  squeak_beat/  …
+│   ├── shared_ui/                 <span class="c"># theme, fonts, buttons, cards, counters, Bao coach bubble</span>
+│   ├── data/                      <span class="c"># generated JSON + strings_en.csv (never edited by hand)</span>
+│   ├── art/                       <span class="c"># generated glTF models + PNG sprites (replaceable by hand-made ones)</span>
+│   ├── audio/                     <span class="c"># the rendered sound pack</span>
+│   └── tests/                     <span class="c"># whole-game tests: save migrations, economy, contract tests</span>
+├── server/                        <span class="c"># Nakama: TypeScript modules, config, tests</span>
+│   ├── modules/  boxes.ts  economy.ts  purchases.ts  quests.ts  trades.ts  account.ts
+│   └── docker-compose.yml         <span class="c"># Nakama + PostgreSQL + nightly backups</span>
+├── android/                       <span class="c"># our thin Kotlin plugins (billing / ads) if the public ones fall behind</span>
+├── docs/
+│   ├── decisions.md               <span class="c"># every decision, short, with reasons</span>
+│   └── design-book/               <span class="c"># this website: still the spec (prototypes in play/)</span>
+├── prototypes/                    <span class="c"># source of the HTML minigame prototypes</span>
+├── assets/audio/                  <span class="c"># the sound pack</span>
+├── CLAUDE.md                      <span class="c"># context for Claude Code</span>
+├── tools/
+│   ├── export_art/                <span class="c"># book → glTF models + PNG sprites</span>
+│   ├── export_data/               <span class="c"># book → data/*.json</span>
+│   ├── export_audio/              <span class="c"># book → WAV / Ogg</span>
+│   ├── check_boundaries.py        <span class="c"># fails the build if a module crosses a wall</span>
+│   └── balance/                   <span class="c"># coin-per-minute and collection-pace simulations</span>
+└── .github/workflows/             <span class="c"># test → build AAB → upload to Play internal testing</span></pre>
+</section>
+
+<section id="minigames">
+  <div class="sec-head"><p class="eyebrow">The minigame contract</p><h2>How a minigame plugs in</h2></div>
+  <p>A minigame is a folder. The game finds every <code>minigames/*/manifest.json</code> at start-up, so adding, removing or replacing a game never means editing anything outside its folder. The host handles everything around the gameplay; the game handles only the gameplay.</p>
+  <div class="two">
+    <div>
+      <h3 style="margin:0 0 8px">manifest.json <small style="font-weight:700;color:var(--ink2)">(comments only explain it here)</small></h3>
+<pre class="code">{
+  "id": "sky_bounce",
+  "api": 1,                        <span class="c">// contract version it was built for</span>
+  "version": "1.3.0",
+  "title": "Sky Bounce",
+  "building": "playground",
+  "kind": "endless",               <span class="c">// endless | levels | songs | toy</span>
+  "scene": "sky_bounce.tscn",
+  "music": "audio/up_up_and_away.ogg",
+  "how_to": ["Tilt or tap left/right…", "…"],
+  "coins": { "from": "coins_collected",
+             "milestones": [600, 1200, 2000],
+             "unit": "m high" },
+  "revive": { "allowed": true,
+              "gift": "float back up with a balloon" },
+  "perks": [{ "family": "sky", "effect": "float_longer" }],
+  "enabled": true                  <span class="c">// the server can switch it off</span>
+}</pre>
+    </div>
+    <div>
+      <h3 style="margin:0 0 8px">The contract (minigame_api v1)</h3>
+<pre class="code"><span class="c"># what every minigame extends</span>
+class_name Minigame extends Node
+
+signal finished(result: MinigameResult)
+signal score_changed(score: int)
+
+func setup(ctx: MinigameContext) -> void: pass
+func start(level: int = 0) -> void: pass
+func pause() -> void: pass
+func resume() -> void: pass
+func can_revive() -> bool: return false
+func revive() -> void: pass
+
+<span class="c"># MinigameContext: the ONLY things a game can use</span>
+<span class="c">#   squad            squishies the player brought (+ models)</span>
+<span class="c">#   settings         sound, vibration, quality tier,</span>
+<span class="c">#                    reduced motion, left-handed, colour helpers</span>
+<span class="c">#   sfx(id) buzz(ms) rng(seed)</span>
+<span class="c">#   store            this game's own little save box</span>
+<span class="c">#   request_revive() asks the host (the host shows the ad)</span>
+
+<span class="c"># MinigameResult: what it gives back</span>
+<span class="c">#   score, metric, won, level, stars, seconds_played</span></pre>
+    </div>
+  </div>
+  <div class="two" style="margin-top:18px">
+    <div class="card prose">
+      <h3>The host does, so games never have to</h3>
+      <ul>
+        <li>The start card (title, how to play, best score, levels or tracks) from the manifest.</li>
+        <li>Pause, the in-game Settings panel, leaving.</li>
+        <li>“Keep going?” with the ad (closable after 5 s); then calls <code>revive()</code>.</li>
+        <li>The results screen with the half-second count-up, coins from the manifest’s coin rule, milestone bonus, best score, “back to town” during the tour.</li>
+        <li>Music from the manifest, ducking, the graphics tier, squishy perks.</li>
+        <li>Sending the run to the server and paying out.</li>
+      </ul>
+      <p>So re-balancing coins, changing the ad rules or restyling the results screen never touches a minigame.</p>
+    </div>
+    <div class="card prose">
+      <h3>Why a broken game can’t break the rest</h3>
+      <ul>
+        <li><b>Boundary check:</b> a script fails the build if a minigame loads any file outside its own folder, <code>minigame_api/</code> or <code>minigame_kit/v1/</code>.</li>
+        <li><b>Frozen helpers:</b> <code>minigame_kit/v1</code> only gets bug fixes. New helpers go into <code>v2</code>, so a game that works today keeps working.</li>
+        <li><b>Own save box:</b> each game saves only under its own name; it can’t touch coins or other games’ data.</li>
+        <li><b>Contract test:</b> on every change, every minigame is started headless and played by its bot (or random taps) for two minutes. The test fails on any error, a missing Result, a score that goes backwards or leaking memory.</li>
+        <li><b>Safe host:</b> if a game doesn’t start within 5 seconds or reports an error, the host closes it, says “This game is taking a nap, try another!” and logs it.</li>
+        <li><b>Off switch:</b> the server can disable a single game version for everyone, without an update.</li>
+      </ul>
+    </div>
+  </div>
+  <div class="card prose" style="margin-top:18px">
+    <h3>Changing, adding or removing a minigame</h3>
+    <ul>
+      <li><b>Change one:</b> edit only its folder, run its <code>harness.tscn</code> on a computer (it fakes the host, like today’s prototypes), and its bot and contract test confirm nothing broke. Bump its version.</li>
+      <li><b>Add one:</b> copy <code>_template</code>, fill in the manifest (which building it belongs to), write the gameplay. It appears in the game automatically.</li>
+      <li><b>Remove one:</b> delete the folder, or set <code>"enabled": false</code>. Its building simply shows “coming soon”.</li>
+      <li><b>Port from the prototypes:</b> each game in <code>play/</code> already follows this shape (the host-side parts live in its shared engine), so porting is mostly translating its game file.</li>
+    </ul>
+  </div>
+</section>
+
+<section>
+  <div class="sec-head"><p class="eyebrow">Pipelines</p><h2>From the design book into the game</h2></div>
+  <div class="tbl-wrap"><table>
+    <thead><tr><th>What</th><th>How</th></tr></thead>
+    <tbody>
+      <tr><td><b>3D models</b></td><td>A script opens the design book in a headless browser, builds every building at every level (and the Gem Mine), every squishy, the decor and the room sets, and saves each as a glTF file (<code>building_dumpling_L07.glb</code>, <code>squishy_bao.glb</code>). The squishies’ idle animations travel along as tags, and Godot’s import script turns them into a small reusable “idle” component.</td></tr>
+      <tr><td><b>Look</b></td><td>One toon shader and one outline shader in Godot reproduce the book’s look. The import script swaps every material for them, so changing the look later is one file.</td></tr>
+      <tr><td><b>Pictures</b></td><td>Squishy portraits, icons and badges rendered to PNG from the same scripts.</td></tr>
+      <tr><td><b>Numbers and text</b></td><td>Squishies (names, bios, rarities), buildings, level costs, decor, odds, prices, quests, the city layout (the CITY block), story and tutorial lines: exported to JSON, with all player-facing text in <code>strings_en.csv</code> from day one, so adding a language later is just translation.</td></tr>
+      <tr><td><b>Sound</b></td><td>The rendered pack. Squeak Beat: each song becomes a backing track plus a note chart and one melody note per pitch, so taps still play the tune with no lag from live synthesis.</td></tr>
+      <tr><td><b>Replacing with hand-made art</b></td><td>Drop a file with the same name into <code>art/overrides/</code>. Nothing else changes.</td></tr>
+    </tbody>
+  </table></div>
+</section>
+
+<section>
+  <div class="sec-head"><p class="eyebrow">Quality</p><h2>Speed, tests and safety nets</h2></div>
+  <div class="two">
+    <div class="card prose">
+      <h3>Speed targets</h3>
+      <ul>
+        <li>60 fps on mid-range phones, steady 30 fps on Low; start-up to the map under 6 s.</li>
+        <li>Download under 150 MB; memory under 400 MB on a 3 GB phone.</li>
+        <li>The map: buildings far from the camera use simpler versions; squishies idle only when near; shadows by tier (see <a href="settings.html#auto">graphics tiers</a>).</li>
+        <li>Auto graphics tier: phone memory and cores, plus a 3-second check during the story, as specified in Settings.</li>
+        <li>Squeak Beat gets a tap-timing calibration screen, because audio delay differs between Android phones.</li>
+      </ul>
+    </div>
+    <div class="card prose">
+      <h3>Tests</h3>
+      <ul>
+        <li><b>Unit tests</b> for the economy, box odds and pity, Spare Shelf levels, quests, save migrations.</li>
+        <li><b>Contract tests</b> for every minigame (above), and <b>balance tests</b>: bots play each game and check the coins per minute stay near 35.</li>
+        <li><b>Server tests</b>: purchases can’t be granted twice, refunds take Gems back, impossible coin amounts are refused, trades can’t duplicate squishies.</li>
+        <li><b>Screenshot tests</b> of key screens on small and large phones.</li>
+        <li><b>Real phones:</b> your phone plus one cheap Android, through Google Play’s internal testing track, then the 12-tester closed test.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="sec-head"><p class="eyebrow">Roadmap</p><h2>The order I’d build it in</h2></div>
+  <p>Each step ends with an installable build on your phone through Google Play’s internal testing track. Weeks are rough estimates for me writing the code with you testing and deciding as we go.</p>
+  <div class="phases">
+    <div class="phase"><div class="w">Step 0<small>~2 weeks</small></div><div><h3>Foundations</h3><ul><li>Repository, Godot project, automatic tests and Android builds.</li><li>Core services with fakes: save, settings, audio, haptics, events, text.</li><li>The three export tools (art, data, sound) and the toon look.</li></ul></div></div>
+    <div class="phase"><div class="w">Step 1<small>~4 weeks</small></div><div><h3>The town</h3><ul><li>City map from the CITY layout: drag, pinch, bubbles, building cards.</li><li>Houses: renovating, rooms and decor; squishies idling around town.</li><li>Factory boxes, Spare Shelf and collection book (with a pretend server).</li></ul></div></div>
+    <div class="phase"><div class="w">Step 2<small>~3 weeks</small></div><div><h3>Minigame host + first 3 games</h3><ul><li>The contract, host, results screen, payout, template, boundary check, contract tests.</li><li>Port Sky Bounce, Bistro Rush and Sort-a-Lot. The core loop is now playable end to end.</li></ul></div></div>
+    <div class="phase"><div class="w">Step 3<small>~5 weeks</small></div><div><h3>The other minigames</h3><ul><li>Style Studio, Grow Grow Garden, Lost &amp; Found, Bucket Brigade, Squish Breaker.</li><li>Squeak Beat (songs, charts, calibration) and the Squish Lab (soft body with the 3D squishy).</li><li>These can be built in any order, one at a time, because they’re independent.</li></ul></div></div>
+    <div class="phase"><div class="w">Step 4<small>~4 weeks</small></div><div><h3>Server</h3><ul><li>Nakama on an EU server: guest accounts, cloud save, “save my town” codes, transfer codes, deletion.</li><li>Server-side boxes, coins checks, quests, Gem Challenge, the weekly visitor, the Market and trading.</li></ul></div></div>
+    <div class="phase"><div class="w">Step 5<small>~3 weeks</small></div><div><h3>Gems, ads and grown-ups</h3><ul><li>Gem Mine with Google Play Billing (tested with Google’s test cards), Gem Shop, refunds.</li><li>Rewarded ads (keep going, free boxes) with the kids’ settings.</li><li>Grown-up gate, spending limit, purchases and ads switches.</li></ul></div></div>
+    <div class="phase"><div class="w">Step 6<small>~3 weeks</small></div><div><h3>First five minutes and polish</h3><ul><li>Opening story, name picking, the first tour, the <b>i</b> help topics.</li><li>Settings screen, graphics tiers, battery saver, accessibility, every sound in place.</li></ul></div></div>
+    <div class="phase"><div class="w">Step 7<small>~4 weeks</small></div><div><h3>Launch</h3><ul><li>Privacy policy, terms, Data safety, ratings (see <a href="legal.html">Legal</a>), store page.</li><li>Closed test: 12+ testers for 14 days, kid playtests, fixes.</li><li>Soft launch in a few EU countries, check the numbers, then wider release.</li></ul></div></div>
+  </div>
+  <p style="margin-top:12px"><b>Total: roughly 7 months</b> to a public release. Steps 3 and 4 can overlap, and a smaller first version (fewer minigames at launch, the rest added in updates) could launch about two months sooner.</p>
+</section>
+
+<section>
+  <div class="sec-head"><p class="eyebrow">Working together</p><h2>Who does what</h2></div>
+  <div class="two">
+    <div class="card prose">
+      <h3>Me</h3>
+      <ul>
+        <li>Write the game, server, tools and tests in the repository, as small reviewable changes with a plain-language summary each time.</li>
+        <li>Keep this design book in step with the game: when a rule changes, the page changes in the same piece of work.</li>
+        <li>Run the bots and balance checks and report the numbers.</li>
+      </ul>
+    </div>
+    <div class="card prose">
+      <h3>You</h3>
+      <ul>
+        <li>Accounts in your name: Google Play Console, GitHub, the server host, a domain. Keep the app-signing key with Google (Play App Signing) so it can’t be lost.</li>
+        <li>Play every build on your phone (and a cheap Android), and say what feels wrong. Find kid playtesters and the 12 closed testers.</li>
+        <li>The decisions: the final name, prices, which minigames are in the first release, and the lawyer review.</li>
+      </ul>
+    </div>
+  </div>
+  <div class="card prose" style="margin-top:18px">
+    <h3>Biggest risks and what we do about them</h3>
+    <ul>
+      <li><b>Store plugins lag behind Google’s requirements:</b> keep them behind our interfaces and own a thin Kotlin plugin if needed.</li>
+      <li><b>The 3D city is too heavy for cheap phones:</b> test on a cheap phone from Step 1, simpler far-away buildings, Low tier.</li>
+      <li><b>Rules change (EU Digital Fairness Act):</b> Gems, ads, boxes and trading each sit behind a server switch and remote config.</li>
+      <li><b>Server trouble:</b> nightly off-site backups, uptime alerts, and the game still plays offline.</li>
+      <li><b>Scope creep:</b> launch with the core loop and a few minigames, then add the rest; the sealed minigames make updates low-risk.</li>
+    </ul>
+  </div>
+</section>
+
+<footer class="foot">
+  <span>Words on this page: <code>build.html</code></span>
+  <span>Engine notes for the Lab: <code>testlab.html</code></span>
+</footer>
+</main>
+</body>
+</html>

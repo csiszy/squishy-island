@@ -1,0 +1,698 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
+<title>Sky Bounce</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bagel+Fat+One&amp;family=Nunito:wght@600;800;900&amp;display=swap">
+<style>
+/* Sky Bounce — playable prototype of a Squishy Island minigame. One file, works on phone and PC. */
+:root{--ink:#3A2A4A;--accent:#4A9BFF;--bg1:#D9CCFF;--bg2:#DFF3FF;color-scheme:light}
+*{box-sizing:border-box}
+html,body{margin:0;height:100%;overflow:hidden;background:linear-gradient(160deg,var(--bg1),var(--bg2));font-family:Nunito,system-ui,sans-serif;color:var(--ink);-webkit-tap-highlight-color:transparent;user-select:none;-webkit-user-select:none}
+#app{position:fixed;inset:env(safe-area-inset-top,0px) env(safe-area-inset-right,0px) env(safe-area-inset-bottom,0px) env(safe-area-inset-left,0px)}
+canvas{position:absolute;display:block;touch-action:none;border-radius:calc(var(--s,1) * 0px);box-shadow:0 10px 40px rgba(43,33,65,.25)}
+.ui{position:absolute;pointer-events:none;display:grid;place-items:center}
+.card{pointer-events:auto;width:86%;max-height:92%;overflow:auto;background:#fff;border:3px solid var(--ink);border-radius:26px;box-shadow:6px 6px 0 var(--ink);padding:20px 20px 18px;text-align:center;font-size:calc(var(--s) * 15px)}
+.card h1{font-family:"Bagel Fat One","Arial Rounded MT Bold",system-ui,sans-serif;font-weight:400;font-size:2.4em;line-height:1;margin:.15em 0 .1em;color:var(--accent);-webkit-text-stroke:1.5px var(--ink);paint-order:stroke fill}
+.eyebrow{margin:0;font-weight:900;font-size:.72em;letter-spacing:.14em;text-transform:uppercase;color:#6E6688}
+.sub{margin:.2em 0 .8em;font-weight:800;color:#6E6688}
+.card ul{text-align:left;margin:0 0 .8em;padding-left:1.2em;display:grid;gap:.35em;font-weight:700;line-height:1.35}
+.best{margin:.2em 0 .6em;font-weight:800}
+.nb{margin:.2em 0 .6em;font-weight:900;color:#E5484D;font-size:1.15em}
+.go{font:inherit;font-family:"Bagel Fat One",system-ui,sans-serif;font-size:1.6em;color:#fff;background:var(--accent);border:3px solid var(--ink);border-radius:999px;padding:.35em 1.6em;box-shadow:4px 4px 0 var(--ink);cursor:pointer}
+.go:active{transform:translate(2px,2px);box-shadow:2px 2px 0 var(--ink)}
+.go:focus-visible{outline:3px solid #FFD54A;outline-offset:3px}
+.keys{margin:.8em 0 0;font-size:.8em;font-weight:800;color:#8C84A3}
+/* coins */
+.ci{display:inline-block;width:1em;height:1em;border-radius:50%;background:radial-gradient(circle at 35% 35%,#FFF3B0 0 22%,#FFD54A 24%);border:2px solid #C98A12;vertical-align:-.15em;margin-right:.3em}
+.rw{margin:.2em 0 .7em;font-weight:900;font-size:.92em}.rw span{font-weight:800;color:#6E6688;font-size:.92em}
+.pay{background:#FFF7D6;border:2.5px solid var(--ink);border-radius:16px;padding:.5em .6em;margin:.3em 0 .5em}
+.pay-big{margin:0;font-family:"Bagel Fat One",system-ui,sans-serif;font-size:1.5em;color:#C98A12;-webkit-text-stroke:1px var(--ink);paint-order:stroke fill}
+.pay-sm{margin:.15em 0 0;font-weight:800;font-size:.85em;color:#6E6688}.pay-sm b{color:var(--ink)}
+.wallet{margin:.1em 0 .7em;font-weight:800;font-size:.75em;color:#8C84A3}.wallet b{color:var(--ink)}
+/* level games */
+.stars{display:inline-flex;gap:2px;vertical-align:middle}.stars i{width:.9em;height:.9em;background:#E3DEEF;clip-path:polygon(50% 0,61% 35%,98% 35%,68% 57%,79% 91%,50% 70%,21% 91%,32% 57%,2% 35%,39% 35%)}.stars i.on{background:#FFC93C}
+.stars.big{font-size:2.2em;gap:6px;margin:.1em 0}.stars.big i{filter:drop-shadow(0 2px 0 var(--ink))}
+.lvgrid{display:grid;grid-template-columns:repeat(4,1fr);gap:.45em;margin:.9em 0 0}
+.lv{font:inherit;font-weight:900;font-size:1.05em;display:grid;justify-items:center;gap:.1em;padding:.35em 0 .3em;border:2.5px solid var(--ink);border-radius:14px;background:#fff;color:var(--ink);cursor:pointer;box-shadow:2px 2px 0 var(--ink)}
+.lv .stars{font-size:.62em}.lv.cur{background:#FFF3B0}.lv.boss{background:#FFE3EF}.lv.lock{opacity:.4;cursor:default;box-shadow:none;border-style:dashed}
+.lv:focus-visible,.ghost:focus-visible{outline:3px solid #FFD54A;outline-offset:2px}
+.how{margin:0 0 .4em;text-align:left}.how summary{cursor:pointer;font-weight:900;color:var(--accent);text-align:center;margin-bottom:.4em}
+.trks{display:grid;gap:.4em;margin:.8em 0 0;max-height:40vh;overflow:auto;padding:2px}
+.trk{font:inherit;text-align:left;display:grid;grid-template-columns:1fr auto;gap:.05em .5em;align-items:center;padding:.45em .7em;border:2.5px solid var(--ink);border-radius:14px;background:#fff;color:var(--ink);cursor:pointer;box-shadow:2px 2px 0 var(--ink)}
+.trk .tn{font-weight:900}.trk .tm{grid-column:1;font-size:.78em;font-weight:800;color:#6E6688}.trk .stars{grid-row:1/span 2;grid-column:2;font-size:.8em}
+.trk.cur{background:#FFF3B0}.trk.lock{opacity:.5;cursor:default;box-shadow:none;border-style:dashed}.trk:focus-visible{outline:3px solid #FFD54A;outline-offset:2px}
+.shelf{display:grid;grid-template-columns:repeat(3,1fr);gap:.45em;margin:.6em 0;max-height:52vh;overflow:auto;padding:2px}
+.sh{font:inherit;display:grid;justify-items:center;gap:0;padding:.3em .2em;border:2.5px solid var(--ink);border-radius:14px;background:#fff;color:var(--ink);cursor:pointer;box-shadow:2px 2px 0 var(--ink)}
+.sh img{width:3.4em;height:3.4em}.sh b{font-size:.85em}.sh span{font-size:.66em;font-weight:800;color:#6E6688}.sh:focus-visible{outline:3px solid #FFD54A;outline-offset:2px}
+.own{display:flex;align-items:center;justify-content:center;gap:.5em;margin:.2em 0 .3em;font-weight:900}.ghost.sm{padding:.1em .8em;font-size:1.1em}
+.lv small{font-size:.62em;font-weight:900;color:#6E6688}
+.adbar{height:.7em;border-radius:1em;background:#F2EFFA;border:2px solid var(--ink);overflow:hidden;margin:.6em 0 .2em}.adbar i{display:block;height:100%;background:var(--accent);transition:width .9s linear}
+.btnrow{display:flex;justify-content:center;gap:.6em;margin-top:.5em;flex-wrap:wrap}
+.ghost{font:inherit;font-weight:900;font-size:.95em;color:var(--ink);background:#fff;border:2.5px solid var(--ink);border-radius:999px;padding:.35em 1.1em;cursor:pointer}
+/* results counters */
+[data-count]{display:inline-block;font-variant-numeric:tabular-nums}
+[data-count].pop{animation:cpop .28s ease-out}
+@keyframes cpop{40%{transform:scale(1.22)}}
+.nb.later{visibility:hidden}
+.tourback{background:#FFF8E8;border:2.5px dashed var(--ink);border-radius:16px;padding:.5em .7em;margin-top:.7em;font-weight:800}
+.tourback p{margin:0 0 .5em}
+.tourback .go{display:inline-block;text-decoration:none;font-size:1.25em}
+.nb.stamp{animation:stamp .4s cubic-bezier(.2,1.6,.4,1)}
+@keyframes stamp{0%{transform:scale(2.2) rotate(-8deg);opacity:0}100%{transform:none;opacity:1}}
+@media (prefers-reduced-motion:reduce){.go:active{transform:none}[data-count].pop,.nb.stamp{animation:none}}
+</style>
+</head>
+<body>
+<div id="app"></div>
+<script>
+/* =====================================================================
+   SQUISHVILLE SOUND + SETTINGS  ·  art/sound.js
+   One small file shared by the design pages and every playable prototype.
+   - SQS.settings      the player's settings (saved in this browser)
+   - SQS.set({...})    change settings (the Settings page uses this)
+   - SQS.play(name)    play a sound effect (list: SQS.SFX_LIST)
+   - SQS.music(name)   start a background music track (list: SQS.TRACKS), SQS.music(null) stops
+   - SQS.buzz(ms)      vibrate (only if vibration is on)
+   - SQS.tier()        graphics tier actually in use: 'low' | 'medium' | 'high'
+   Every sound is made live with the Web Audio API (no sound files), so the
+   prototypes stay single files. The real game should use recorded/produced
+   versions of the same sounds (see sound.html).
+   ===================================================================== */
+(function () {
+'use strict';
+if (window.SQS) return;
+const SQS = window.SQS = {};
+const KEY = 'sqv-settings';
+const DEF = {
+  sfx: true, sfxVol: .8, music: true, musicVol: .5, vibration: true,
+  quality: 'auto', fps: 60, motion: 'full', battery: false,
+  gemConfirm: true, hints: true, lefty: false, textSize: 'normal', colour: false, lang: 'en',
+  notif: false, playLimit: 0, trading: true, purchases: 'gate', adsOff: false
+};
+SQS.DEFAULTS = DEF;
+const load = () => { let v = {}; try { v = JSON.parse(localStorage.getItem(KEY)) || {}; } catch (e) {} return Object.assign({}, DEF, v); };
+let S = SQS.settings = load();
+const subs = [];
+SQS.onChange = f => subs.push(f);
+SQS.set = patch => { Object.assign(S, patch); try { localStorage.setItem(KEY, JSON.stringify(S)); } catch (e) {} apply(); subs.forEach(f => { try { f(S); } catch (e) {} }); };
+SQS.reset = () => { try { localStorage.removeItem(KEY); } catch (e) {} Object.keys(S).forEach(k => delete S[k]); Object.assign(S, DEF); apply(); subs.forEach(f => f(S)); };
+window.addEventListener('storage', e => { if (e.key === KEY) { const n = load(); Object.keys(S).forEach(k => delete S[k]); Object.assign(S, n); apply(); subs.forEach(f => f(S)); } });
+
+/* ---------------- graphics tier ----------------
+   'auto' picks a tier from the device the first time (cores, memory, screen),
+   then remembers it. Battery saver always means 'low' at 30 fps. */
+SQS.detect = () => {
+  const cores = navigator.hardwareConcurrency || 4, mem = navigator.deviceMemory || 4, dpr = window.devicePixelRatio || 1;
+  const px = (screen.width || 400) * (screen.height || 800) * dpr * dpr;
+  let pts = 0; pts += cores >= 8 ? 2 : cores >= 6 ? 1 : 0; pts += mem >= 6 ? 2 : mem >= 4 ? 1 : 0; if (px > 6e6 && cores < 6) pts--;
+  const tier = pts >= 3 ? 'high' : pts >= 1 ? 'medium' : 'low';
+  return { tier, cores, mem: navigator.deviceMemory ? mem + ' GB' : 'unknown', dpr };
+};
+SQS.tier = () => {
+  if (S.battery) return 'low';
+  if (S.quality !== 'auto') return S.quality;
+  let t = null; try { t = localStorage.getItem('sqv-detected'); } catch (e) {}
+  if (!t) { t = SQS.detect().tier; try { localStorage.setItem('sqv-detected', t); } catch (e) {} }
+  return t;
+};
+SQS.fps = () => S.battery ? 30 : S.fps;
+SQS.reduced = () => S.motion === 'reduced' || (window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches && S.motion !== 'full-forced');
+SQS.buzz = ms => { if (!S.vibration) return; try { navigator.vibrate && navigator.vibrate(ms); } catch (e) {} };
+
+/* ---------------- audio graph ---------------- */
+let ac = null, master = null, sfxBus = null, musBus = null, nbuf = null, verb = null;
+const foreign = [];   // games with their own AudioContext route through these
+const vol = bus => bus === 'music' ? (S.music ? S.musicVol : 0) : (S.sfx ? S.sfxVol : 0);
+SQS.vol = vol;
+function graph(c) {
+  const comp = c.createDynamicsCompressor(); comp.threshold.value = -14; comp.ratio.value = 3;
+  const m = c.createGain(); m.gain.value = .9; m.connect(comp); comp.connect(c.destination);
+  const sb = c.createGain(), mb = c.createGain(); sb.connect(m); mb.connect(m);
+  const nb = c.createBuffer(1, c.sampleRate, c.sampleRate), d = nb.getChannelData(0); for (let i = 0; i < d.length; i++) d[i] = Math.random() * 2 - 1;
+  // a small soft room so bells and plucks sound round
+  const v = c.createConvolver(), L = Math.floor(c.sampleRate * 1.2), ir = c.createBuffer(2, L, c.sampleRate);
+  for (let k = 0; k < 2; k++) { const x = ir.getChannelData(k); for (let i = 0; i < L; i++) x[i] = (Math.random() * 2 - 1) * Math.pow(1 - i / L, 3); }
+  v.buffer = ir; const vg = c.createGain(); vg.gain.value = .18; v.connect(vg); vg.connect(m);
+  return { ac: c, master: m, sfxBus: sb, musBus: mb, nbuf: nb, verb: v };
+}
+function ctx() {
+  if (!ac) {
+    try { ({ ac, master, sfxBus, musBus, nbuf, verb } = graph(new (window.AudioContext || window.webkitAudioContext)())); apply(); }
+    catch (e) { ac = null; }
+  }
+  if (ac && ac.state === 'suspended' && !(window.OfflineAudioContext && ac instanceof OfflineAudioContext)) { try { ac.resume(); } catch (e) {} }
+  return ac;
+}
+/* render a sound effect or one full loop of a song to an AudioBuffer (for exporting to the real game) */
+function offline(seconds, fn, sr = 44100) {
+  const saved = { ac, master, sfxBus, musBus, nbuf, verb };
+  const g = graph(new OfflineAudioContext(2, Math.ceil(seconds * sr), sr));
+  ({ ac, master, sfxBus, musBus, nbuf, verb } = g); sfxBus.gain.value = .8; musBus.gain.value = .55;
+  try { fn(ac); } finally { const p = ac.startRendering(); ({ ac, master, sfxBus, musBus, nbuf, verb } = saved); return p; }
+}
+SQS.renderFX = (name, seconds = 2.4) => offline(seconds, c => FX[name][1](c.currentTime + .01, .5));
+SQS.renderTrack = id => { const T = TRACKS[id], spb = 60 / T.bpm / 2, steps = 16 * 8, len = steps * spb;
+  return offline(len + 2.5, () => { const st = startTrack(id, true); for (let i = 0; i < steps; i++) st.play(i, .05 + i * spb); }).then(buf => ({ buf, loopEnd: .05 + len })); };
+SQS.wav = buf => { // 16-bit PCM WAV
+  const ch = buf.numberOfChannels, n = buf.length, sr = buf.sampleRate, out = new DataView(new ArrayBuffer(44 + n * ch * 2));
+  const w = (o, str) => { for (let i = 0; i < str.length; i++) out.setUint8(o + i, str.charCodeAt(i)); };
+  w(0, 'RIFF'); out.setUint32(4, 36 + n * ch * 2, true); w(8, 'WAVE'); w(12, 'fmt '); out.setUint32(16, 16, true); out.setUint16(20, 1, true); out.setUint16(22, ch, true);
+  out.setUint32(24, sr, true); out.setUint32(28, sr * ch * 2, true); out.setUint16(32, ch * 2, true); out.setUint16(34, 16, true); w(36, 'data'); out.setUint32(40, n * ch * 2, true);
+  const data = [...Array(ch)].map((_, k) => buf.getChannelData(k)); let o = 44;
+  for (let i = 0; i < n; i++) for (let k = 0; k < ch; k++) { const v = Math.max(-1, Math.min(1, data[k][i])); out.setInt16(o, v < 0 ? v * 0x8000 : v * 0x7FFF, true); o += 2; }
+  return new Blob([out], { type: 'audio/wav' });
+};
+SQS.ctx = ctx;
+function apply() {
+  if (ac) { sfxBus.gain.setTargetAtTime(vol('sfx'), ac.currentTime, .03); musBus.gain.setTargetAtTime(vol('music') * .55 * duck, ac.currentTime, .15); }
+  foreign.forEach(f => { f.sfx.gain.value = vol('sfx'); f.music.gain.value = vol('music'); });
+}
+/* for games that make their own AudioContext: SQS.out(theirContext, 'sfx' | 'music') */
+SQS.out = (c, bus = 'sfx') => {
+  if (c === ac) return bus === 'music' ? musBus : sfxBus;
+  let f = foreign.find(x => x.c === c);
+  if (!f) { f = { c, sfx: c.createGain(), music: c.createGain() }; f.sfx.connect(c.destination); f.music.connect(c.destination); foreign.push(f); apply(); }
+  return f[bus];
+};
+// browsers only allow sound after the first tap or key press
+const unlock = () => { ctx(); if (wantTrack && !cur && S.music) startTrack(wantTrack); };
+['pointerdown', 'keydown', 'touchstart'].forEach(ev => window.addEventListener(ev, unlock, { capture: true, passive: true }));
+document.addEventListener('visibilitychange', () => { if (!ac) return; if (document.hidden) ac.suspend(); else ac.resume(); });
+
+/* ---------------- building blocks ---------------- */
+const mtof = m => 440 * Math.pow(2, (m - 69) / 12);
+function tone(f, d, o = {}) {
+  if (!ac) return; const t = (o.t || ac.currentTime), type = o.type || 'sine', v = o.v ?? .15, out = o.bus === 'music' ? (o.out || musBus) : sfxBus;
+  const osc = ac.createOscillator(), g = ac.createGain(); osc.type = type; osc.frequency.setValueAtTime(f, t);
+  if (o.slide) osc.frequency.exponentialRampToValueAtTime(Math.max(30, f * o.slide), t + d * (o.slideT || 1));
+  if (o.vib) { const l = ac.createOscillator(), lg = ac.createGain(); l.frequency.value = 5.5; lg.gain.value = f * .012; l.connect(lg); lg.connect(osc.frequency); l.start(t); l.stop(t + d + .1); }
+  const a = o.a ?? .005; g.gain.setValueAtTime(.0001, t); g.gain.linearRampToValueAtTime(v, t + a);
+  if (o.hold) g.gain.setValueAtTime(v, t + o.hold);
+  g.gain.exponentialRampToValueAtTime(.0001, t + d);
+  let node = g; if (o.lp) { const lp = ac.createBiquadFilter(); lp.type = 'lowpass'; lp.frequency.value = o.lp; g.connect(lp); node = lp; }
+  osc.connect(g); node.connect(out); if (o.wet) { const wg = ac.createGain(); wg.gain.value = o.wet; node.connect(wg); wg.connect(verb); }
+  osc.start(t); osc.stop(t + d + .05);
+}
+function noise(d, o = {}) {
+  if (!ac) return; const t = o.t || ac.currentTime, out = o.bus === 'music' ? (o.out || musBus) : sfxBus;
+  const n = ac.createBufferSource(), f = ac.createBiquadFilter(), g = ac.createGain(); n.buffer = nbuf;
+  f.type = o.ft || 'bandpass'; f.Q.value = o.q || 1; f.frequency.setValueAtTime(o.f || 2000, t); if (o.f2) f.frequency.exponentialRampToValueAtTime(o.f2, t + d);
+  const v = o.v ?? .12; g.gain.setValueAtTime(.0001, t); g.gain.linearRampToValueAtTime(v, t + (o.a ?? .004)); g.gain.exponentialRampToValueAtTime(.0001, t + d);
+  n.connect(f); f.connect(g); g.connect(out); n.start(t, Math.random() * .5, d + .05);
+}
+const bell = (m, t, v = .1, d = .9) => { tone(mtof(m), d, { t, v, wet: .6 }); tone(mtof(m) * 2.76, d * .45, { t, v: v * .35, wet: .6 }); };
+const pluck = (m, t, v = .12, d = .35, out) => { tone(mtof(m), d, { t, v, type: 'triangle', bus: out ? 'music' : 'sfx', out, wet: .3 }); tone(mtof(m) * 2, d * .5, { t, v: v * .25, bus: out ? 'music' : 'sfx', out }); };
+const arp = (ms, gap, f, t0) => ms.forEach((m, i) => f(m, t0 + i * gap));
+
+/* ---------------- the sound effects ----------------
+   name: [description for sound.html, function(t)] */
+const FX = {
+  tap: ['Any button or bubble tapped: a soft "pop"', t => { tone(880, .07, { t, v: .12, slide: 1.5 }); noise(.02, { t, f: 3000, v: .03 }); }],
+  back: ['Close / back: the pop in reverse', t => tone(900, .09, { t, v: .1, slide: .6 })],
+  open: ['A panel or card slides open: a bubbly "bloop"', t => tone(330, .12, { t, v: .14, slide: 2.2, slideT: .8 })],
+  toggleOn: ['A setting switched on: two notes up', t => { bell(84, t, .07, .25); bell(91, t + .07, .07, .3); }],
+  toggleOff: ['A setting switched off: two notes down', t => { bell(91, t, .06, .25); bell(84, t + .07, .06, .3); }],
+  coin: ['One coin picked up', t => { tone(1319, .08, { t, v: .09, type: 'square', lp: 4000 }); tone(1976, .22, { t: t + .07, v: .09, type: 'square', lp: 4000 }); }],
+  tick: ['Results counter ticking up (pitch rises as it counts)', (t, p = 0) => tone(900 + p * 900, .035, { t, v: .07, type: 'triangle' })],
+  countDone: ['Counter reached its number: bright "ding"', t => { bell(88, t, .1, 1.1); bell(95, t + .02, .07, 1.1); }],
+  coinsCount: ['Coins counter: tiny coin clinks while counting', (t, p = 0) => tone(1600 + p * 600, .05, { t, v: .05, type: 'square', lp: 5000 })],
+  jar: ['Coins drop into the coin jar', t => { [0, .05, .09, .14, .2].forEach((d, i) => tone(1800 + i * 180, .06, { t: t + d, v: .05, type: 'square', lp: 5000 })); }],
+  newBest: ['New best score stamp: a happy fanfare', t => { arp([72, 76, 79, 84], .08, (m, tt) => pluck(m, tt, .12, .5), t); bell(88, t + .34, .1, 1.4); }],
+  buy: ['Something bought with coins: "ka-ching!"', t => { noise(.06, { t, f: 2500, q: .8, v: .1 }); tone(2093, .5, { t: t + .05, v: .08, type: 'square', lp: 6000 }); tone(2637, .6, { t: t + .1, v: .07, type: 'square', lp: 6000 }); }],
+  gemBuy: ['Something bought with Gems: a sparkly rising chime', t => { arp([79, 83, 86, 91, 95], .06, (m, tt) => bell(m, tt, .08, .9), t); noise(.6, { t: t + .1, ft: 'highpass', f: 7000, v: .03, a: .2 }); }],
+  gemAsk: ['"Are you sure?" pop-up for Gems', t => { bell(81, t, .08, .5); bell(78, t + .12, .08, .6); }],
+  nope: ['Can’t do that (not enough coins, locked): a soft "uh-uh"', t => { tone(300, .12, { t, v: .1, type: 'triangle' }); tone(260, .18, { t: t + .13, v: .1, type: 'triangle' }); }],
+  boxShake: ['Mystery Box wiggles on the conveyor: rattle', t => { for (let i = 0; i < 6; i++) noise(.05, { t: t + i * .075, f: 900 + (i % 2) * 500, q: 3, v: .14 }); }],
+  boxPop: ['Box bursts open: "pop!" plus a whoosh', t => { tone(160, .18, { t, v: .25, slide: .5 }); noise(.35, { t, f: 600, f2: 6000, q: .7, v: .12 }); }],
+  revealC: ['Reveal: Common (2 friendly notes)', t => { pluck(72, t, .13); pluck(79, t + .1, .13, .5); }],
+  revealU: ['Reveal: Uncommon (3 notes)', t => arp([72, 76, 79], .09, (m, tt) => pluck(m, tt, .13, .5), t)],
+  revealR: ['Reveal: Rare (bells arpeggio)', t => arp([72, 76, 79, 84], .08, (m, tt) => bell(m, tt, .1, 1), t)],
+  revealE: ['Reveal: Epic (arpeggio + shimmer)', t => { arp([69, 72, 76, 81, 84, 88], .07, (m, tt) => bell(m, tt, .1, 1.1), t); noise(1, { t: t + .2, ft: 'highpass', f: 6000, v: .04, a: .3 }); }],
+  revealL: ['Reveal: Legendary (full fanfare)', t => { [[60, 64, 67], [65, 69, 72], [67, 71, 74], [72, 76, 79, 84]].forEach((ch, i) => ch.forEach(m => tone(mtof(m), i === 3 ? 1.6 : .3, { t: t + i * .16, v: .06, type: 'sawtooth', lp: 2600, wet: .5, hold: i === 3 ? .8 : 0 }))); arp([84, 88, 91, 96], .07, (m, tt) => bell(m, tt, .08, 1.2), t + .5); noise(1.4, { t: t + .5, ft: 'highpass', f: 6500, v: .05, a: .3 }); }],
+  spare: ['Duplicate goes to the Spare Shelf: "boop-boop"', t => { tone(523, .1, { t, v: .1, type: 'triangle' }); tone(659, .14, { t: t + .1, v: .1, type: 'triangle' }); }],
+  sparkly: ['A Sparkly pull: glitter on top of the reveal', t => { for (let i = 0; i < 10; i++) bell(88 + Math.floor(Math.random() * 12), t + i * .05, .04, .6); }],
+  build: ['Renovating a house: 3 hammer knocks…', t => { [0, .18, .36].forEach(d => { tone(140, .09, { t: t + d, v: .22, slide: .6 }); noise(.05, { t: t + d, f: 1800, q: 2, v: .1 }); }); }],
+  tada: ['…and the "ta-da!" when it is done', t => { [60, 64, 67, 72].forEach(m => tone(mtof(m), 1, { t, v: .05, type: 'sawtooth', lp: 3000, wet: .5, hold: .25 })); bell(84, t, .08, 1.2); }],
+  unlock: ['Something new unlocked: magic chime up', t => arp([76, 79, 83, 88], .07, (m, tt) => bell(m, tt, .09, .8), t)],
+  quest: ['Quest finished: "ding-dong"', t => { bell(84, t, .1, .8); bell(79, t + .2, .1, 1); }],
+  star: ['A star earned', t => { bell(91, t, .09, .7); noise(.3, { t, ft: 'highpass', f: 8000, v: .03 }); }],
+  heart: ['A heart lost in a minigame', t => { tone(520, .14, { t, v: .1, type: 'triangle' }); tone(390, .22, { t: t + .12, v: .1, type: 'triangle' }); }],
+  squish: ['Squishing a squishy: a soft squelch', t => noise(.22, { t, f: 700, f2: 260, q: 4, v: .25, a: .015 })],
+  boing: ['Squishy bounces back: "boing"', t => { tone(180, .35, { t, v: .16, slide: 2.4, slideT: .25 }); }],
+  whoosh: ['Camera flies to a building', t => noise(.4, { t, f: 400, f2: 3000, q: .6, v: .07, a: .15 })],
+  wind: ['Story: the Big Grumble Wind', t => { noise(2.6, { t, ft: 'lowpass', f: 300, f2: 1400, q: 1, v: .25, a: .8 }); noise(2.2, { t: t + .6, ft: 'bandpass', f: 900, f2: 500, q: 6, v: .08, a: .6 }); }],
+  thunder: ['Story: a far-away rumble (never scary-loud)', t => { noise(1.8, { t, ft: 'lowpass', f: 180, f2: 60, q: .7, v: .5, a: .03 }); }],
+  sparkle: ['Magic sparkle (story, Gem Challenge done)', t => { for (let i = 0; i < 7; i++) bell(86 + (i * 5) % 12, t + i * .06, .05, .7); }],
+  adStart: ['An ad the player chose is about to play', t => { bell(79, t, .06, .4); bell(84, t + .1, .06, .5); }],
+  hello: ['Bao says hi (tutorial guide speaking)', t => { tone(500, .1, { t, v: .12, slide: 1.6, vib: 1 }); tone(760, .14, { t: t + .1, v: .1, slide: .8 }); }]
+};
+SQS.SFX_LIST = Object.entries(FX).map(([k, v]) => ({ id: k, what: v[0] }));
+const last = {};
+SQS.play = (name, p) => {
+  if (!S.sfx || !FX[name]) return; const c = ctx(); if (!c) return;
+  const now = performance.now(); if (name !== 'tick' && name !== 'coinsCount' && last[name] && now - last[name] < 40) return; last[name] = now;
+  try { FX[name][1](c.currentTime + .01, p); } catch (e) {}
+};
+SQS.tone = (f, d, o) => { if (S.sfx && ctx()) tone(f, d, o); };
+SQS.noise = (d, o) => { if (S.sfx && ctx()) noise(d, o); };
+
+/* ---------------- background music ----------------
+   Every track is a little looping song made from a chord loop, a bass line,
+   a melody written from the chords (AABA form, so it is hummable) and soft drums. */
+const TRACKS = {
+  city:    { name: 'Squishy Island Sunshine', where: 'City map (home screen)', bpm: 96, root: 60, mode: 'maj', prog: [1, 6, 4, 5], lead: 'pluck', pad: true, drums: 'soft', seed: 11 },
+  shop:    { name: 'Factory Bounce', where: 'Squishy Factory & Gem Shop', bpm: 112, root: 65, mode: 'maj', prog: [1, 4, 2, 5], lead: 'bell', drums: 'soft', swing: .18, seed: 4 },
+  market:  { name: 'Swap Meet Shuffle', where: 'Swap Meet Market', bpm: 104, root: 62, mode: 'maj', prog: [1, 5, 6, 4], lead: 'pluck', drums: 'soft', swing: .2, seed: 23 },
+  story:   { name: 'Once Upon a Squish', where: 'Opening story', bpm: 74, root: 57, mode: 'min', prog: [1, 6, 3, 7], lead: 'bell', pad: true, drums: 'none', seed: 7 },
+  house:   { name: 'Cosy Corner', where: 'Inside a house (decorating)', bpm: 84, root: 64, mode: 'maj', prog: [1, 3, 4, 4], lead: 'bell', pad: true, drums: 'none', seed: 31 },
+  lab:     { name: 'Bubble Lab', where: 'Squishy Testing Facility', bpm: 80, root: 62, mode: 'pent', prog: [1, 4, 1, 5], lead: 'bell', pad: true, drums: 'none', sparse: true, seed: 9 },
+  bistro:  { name: 'Hot Bun Hustle', where: 'Bistro Rush', bpm: 124, root: 62, mode: 'maj', prog: [1, 4, 5, 4], lead: 'pluck', drums: 'busy', seed: 3 },
+  sky:     { name: 'Up Up and Away', where: 'Sky Bounce', bpm: 128, root: 67, mode: 'maj', prog: [1, 5, 6, 4], lead: 'flute', drums: 'soft', seed: 17 },
+  detective: { name: 'Lost Sock Mystery', where: 'Lost & Found', bpm: 100, root: 64, mode: 'min', prog: [1, 4, 6, 5], lead: 'pluck', drums: 'soft', swing: .22, seed: 5 },
+  salon:   { name: 'Fluff & Puff', where: 'Style Studio', bpm: 106, root: 70, mode: 'maj', prog: [1, 6, 2, 5], lead: 'bell', drums: 'soft', swing: .15, seed: 29 },
+  fire:    { name: 'Splash Splash Hooray', where: 'Bucket Brigade', bpm: 112, root: 60, mode: 'maj', prog: [1, 4, 1, 5], lead: 'flute', drums: 'soft', seed: 13 },
+  post:    { name: 'Special Delivery', where: 'Sort-a-Lot', bpm: 118, root: 69, mode: 'maj', prog: [1, 5, 4, 5], lead: 'pluck', drums: 'busy', seed: 21 },
+  garden:  { name: 'Sprout Song', where: 'Grow Grow Garden', bpm: 92, root: 65, mode: 'maj', prog: [1, 4, 6, 5], lead: 'flute', pad: true, drums: 'soft', seed: 2 },
+  arcade:  { name: 'Brick Party', where: 'Squish Breaker', bpm: 126, root: 64, mode: 'min', prog: [1, 6, 7, 5], lead: 'chip', drums: 'arcade', seed: 19 }
+};
+SQS.TRACKS = TRACKS;
+const SCALES = { maj: [0, 2, 4, 5, 7, 9, 11], min: [0, 2, 3, 5, 7, 8, 10], pent: [0, 2, 4, 7, 9, 12, 14] };
+function rng(seed) { let a = seed >>> 0 || 1; return () => { a |= 0; a = a + 0x6D2B79F5 | 0; let t = Math.imul(a ^ a >>> 15, 1 | a); t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t; return ((t ^ t >>> 14) >>> 0) / 4294967296; }; }
+function compose(T) {
+  const r = rng(T.seed), sc = SCALES[T.mode === 'pent' ? 'maj' : T.mode];
+  const deg = (d, oct = 0) => T.root + sc[((d - 1) % 7 + 7) % 7] + 12 * (oct + Math.floor((d - 1) / 7));
+  const chords = T.prog.map(d => [deg(d), deg(d + 2), deg(d + 4)]);
+  const RHY = [[1, 0, 1, 0, 1, 0, 1, 0], [1, 0, 1, 1, 1, 0, 0, 0], [1, 1, 1, 0, 1, 0, 1, 0], [1, 0, 0, 1, 1, 0, 1, 0], [1, 0, 1, 0, 1, 1, 1, 0], [1, 0, 0, 0, 1, 0, 1, 1]];
+  const sparse = [[1, 0, 0, 0, 1, 0, 0, 0], [1, 0, 0, 0, 0, 0, 1, 0], [0, 0, 1, 0, 1, 0, 0, 0]];
+  const pool = T.sparse ? sparse : RHY;
+  const allowed = T.mode === 'pent' ? [0, 2, 4, 7, 9] : sc;
+  const near = (m, bar) => { // nearest chord tone (strong beats) or scale tone
+    const ch = chords[bar % 4]; let best = m, bd = 99; for (let o = -1; o <= 2; o++) ch.forEach(c => { const x = c + 12 * o; if (Math.abs(x - m) < bd) { bd = Math.abs(x - m); best = x; } }); return best; };
+  const inScale = m => { const pc = ((m - T.root) % 12 + 12) % 12; if (allowed.includes(pc)) return m; return m + 1; };
+  function phrase(start, endOnRoot) {
+    const bars = []; let m = start;
+    for (let b = 0; b < 4; b++) {
+      const rh = pool[Math.floor(r() * pool.length)], notes = [];
+      for (let s = 0; s < 8; s++) {
+        if (!rh[s]) { notes.push(null); continue; }
+        m += [-2, -1, -1, 0, 1, 1, 2, 3, -3][Math.floor(r() * 9)];
+        m = Math.max(T.root + 7, Math.min(T.root + 24, m));
+        let n = s % 4 === 0 ? near(m, b) : inScale(m);
+        if (b === 3 && s >= 4) n = endOnRoot ? near(T.root + 12, 0) : near(m, 3);
+        notes.push(n); m = n;
+      }
+      if (b === 3) { const lastOn = notes.map((x, i) => x != null ? i : -1).filter(i => i >= 0).pop(); notes.forEach((x, i) => { if (i > lastOn) notes[i] = null; }); }
+      bars.push(notes);
+    }
+    return bars;
+  }
+  const A = phrase(T.root + 12, true), B = phrase(T.root + 16, false);
+  return { chords, mel: [...A, ...A, ...B, ...A] };
+}
+let cur = null, wantTrack = null, duck = 1;
+function startTrack(id, offlineMode) {
+  const c = offlineMode ? ac : ctx(); if (!c || !TRACKS[id]) return;
+  const T = TRACKS[id], song = T.song || (T.song = compose(T));
+  const out = c.createGain(); out.gain.setValueAtTime(.0001, c.currentTime); out.gain.linearRampToValueAtTime(1, c.currentTime + 1.5); out.connect(musBus);
+  const st = { id, out, step: 0, next: c.currentTime + .1, timer: null };
+  const spb = 60 / T.bpm / 2; // seconds per eighth
+  const play = st.play = (step, t) => {
+    const bar = Math.floor(step / 8) % 16, s = step % 8, ch = song.chords[bar % 4];
+    const sw = (s % 2 === 1 && T.swing) ? spb * T.swing : 0; t += sw;
+    const o = { bus: 'music', out };
+    // bass
+    if (s === 0 || s === 4 || (T.drums === 'busy' && s === 6)) tone(mtof(ch[0] - 24 + (s === 4 && T.drums !== 'none' ? 7 : 0)), spb * 3, { ...o, t, v: .2, type: 'triangle', lp: 900 });
+    // chords: pad (whole bar) or off-beat plucks
+    if (T.pad && s === 0) ch.forEach(m => tone(mtof(m - 12), spb * 8.5, { ...o, t, v: .028, type: 'sawtooth', lp: 1100, a: .5, hold: spb * 6 }));
+    if (!T.pad && (s === 2 || s === 6)) ch.forEach(m => tone(mtof(m), spb * 1.2, { ...o, t, v: .03, type: 'triangle', lp: 2400 }));
+    // melody
+    const n = song.mel[bar][s];
+    if (n != null) {
+      if (T.lead === 'bell') { tone(mtof(n), spb * 5, { ...o, t, v: .06, wet: .5 }); tone(mtof(n) * 2.76, spb * 2, { ...o, t, v: .015 }); }
+      else if (T.lead === 'flute') tone(mtof(n), spb * 1.8, { ...o, t, v: .05, a: .04, vib: 1, hold: spb, wet: .4 });
+      else if (T.lead === 'chip') tone(mtof(n), spb * 1.1, { ...o, t, v: .035, type: 'square', lp: 3000, hold: spb * .6 });
+      else pluck(n, t, .07, spb * 3, out);
+    }
+    // drums
+    if (T.drums === 'soft' || T.drums === 'busy' || T.drums === 'arcade') {
+      if (s === 0 || (T.drums !== 'soft' && s === 4)) tone(110, .16, { ...o, t, v: .22, slide: .45 });
+      if (s === 4 || (T.drums === 'soft' && s === 0 && bar % 2)) noise(.09, { ...o, t, f: T.drums === 'arcade' ? 1800 : 1400, q: .8, v: .05 });
+      if (s % 2 === 1 || T.drums === 'busy') noise(.03, { ...o, t, ft: 'highpass', f: 7000, v: T.drums === 'arcade' ? .03 : .02 });
+    }
+  };
+  const loop = () => {
+    while (st.next < c.currentTime + .3) { play(st.step, st.next); st.step++; st.next += spb; }
+  };
+  if (offlineMode) { out.gain.cancelScheduledValues(0); out.gain.value = 1; return st; }
+  st.timer = setInterval(loop, 60); loop(); cur = st;
+}
+function stopTrack(ms = 600) {
+  if (!cur || !ac) { cur = null; return; } const st = cur; cur = null;
+  st.out.gain.cancelScheduledValues(ac.currentTime); st.out.gain.setTargetAtTime(.0001, ac.currentTime, ms / 3000);
+  setTimeout(() => { clearInterval(st.timer); try { st.out.disconnect(); } catch (e) {} }, ms + 400);
+}
+SQS.music = id => {
+  wantTrack = id || null;
+  if (cur && cur.id === id) return;
+  stopTrack();
+  if (id && ac && ac.state !== 'closed' && S.music) startTrack(id);
+};
+SQS.onChange(() => { if (!S.music && cur) stopTrack(300); else if (S.music && wantTrack && !cur && ac) startTrack(wantTrack); });
+SQS.musicNow = () => cur ? cur.id : null;
+SQS.duck = on => { duck = on ? .35 : 1; apply(); };
+})();
+
+</script>
+<script>
+/* squishy pictures (the 3D squishy models, pre-rendered) */
+const SPR = {"marshmallow": "data:image/png;base64,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"};
+</script>
+<script>
+/* ===== Squishy Island mini engine (shared by every minigame file) =====
+   Logical screen 360 x 640 (phone portrait), scaled to fit any screen.
+   A game is an object: { id, title, init, update(dt), draw(ctx), down/move/up(x,y), key(code, isDown) } */
+const SQV = (() => {
+  const W = 360, H = 640;
+  const IMG = {};
+  Object.entries(SPR).forEach(([k, v]) => { const i = new Image(); i.src = v; IMG[k] = i; });
+  const store = {
+    get(k) { try { return +(localStorage.getItem('squishyisland-' + k) || 0); } catch (e) { return 0; } },
+    set(k, v) { try { localStorage.setItem('squishyisland-' + k, String(v)); } catch (e) {} }
+  };
+  let ac = null;
+  const getAc = () => (ac = ac || (window.SQS && SQS.ctx()) || null);
+  const OUT = () => (window.SQS ? SQS.out(ac) : ac.destination);
+  function sfx(f = 600, d = .08, type = 'sine', v = .12, slide = 0) {
+    if (!getAc() || (window.SQS && !SQS.settings.sfx)) return; try {
+      const o = ac.createOscillator(), g = ac.createGain(), t = ac.currentTime;
+      o.type = type; o.frequency.setValueAtTime(f, t); if (slide) o.frequency.exponentialRampToValueAtTime(Math.max(40, f * slide), t + d);
+      g.gain.setValueAtTime(v, t); g.gain.exponentialRampToValueAtTime(.0001, t + d); o.connect(g); g.connect(OUT()); o.start(t); o.stop(t + d + .02);
+    } catch (e) {}
+  }
+  function noise(d = .05, v = .08, hp = 4000) {
+    if (!getAc() || (window.SQS && !SQS.settings.sfx)) return; try {
+      const n = ac.createBufferSource(), b = ac.createBuffer(1, Math.ceil(ac.sampleRate * d), ac.sampleRate), ch = b.getChannelData(0);
+      for (let i = 0; i < ch.length; i++) ch[i] = (Math.random() * 2 - 1) * (1 - i / ch.length);
+      const f = ac.createBiquadFilter(); f.type = 'highpass'; f.frequency.value = hp; const g = ac.createGain(); g.gain.value = v;
+      n.buffer = b; n.connect(f); f.connect(g); g.connect(OUT()); n.start();
+    } catch (e) {}
+  }
+  const buzz = ms => { if (window.SQS) return SQS.buzz(ms); try { navigator.vibrate && navigator.vibrate(ms); } catch (e) {} };
+  const play = (n, p) => { if (window.SQS) SQS.play(n, p); };
+  /* background music for each minigame (see sound.html); Squeak Beat makes its own */
+  const TRACK = { 'bistro-rush': 'bistro', 'sky-bounce': 'sky', 'lost-and-found': 'detective', 'style-studio': 'salon', 'bucket-brigade': 'fire', 'sort-a-lot': 'post', 'grow-grow-garden': 'garden', 'squish-breaker': 'arcade', 'squish-lab': 'lab' };
+  const tier = () => window.SQS ? SQS.tier() : 'high', calm = () => window.SQS && SQS.reduced();
+
+  /* ---------- drawing helpers ---------- */
+  const INK = '#3A2A4A';
+  const D = {
+    rr(c, x, y, w, h, r, fill, stroke = INK, lw = 2.5) { c.beginPath(); c.roundRect ? c.roundRect(x, y, w, h, r) : (c.moveTo(x + r, y), c.arcTo(x + w, y, x + w, y + h, r), c.arcTo(x + w, y + h, x, y + h, r), c.arcTo(x, y + h, x, y, r), c.arcTo(x, y, x + w, y, r)); if (fill) { c.fillStyle = fill; c.fill(); } if (stroke && lw) { c.lineWidth = lw; c.strokeStyle = stroke; c.stroke(); } },
+    circle(c, x, y, r, fill, stroke = INK, lw = 2.5) { c.beginPath(); c.arc(x, y, Math.max(.1, r), 0, Math.PI * 2); if (fill) { c.fillStyle = fill; c.fill(); } if (stroke && lw) { c.lineWidth = lw; c.strokeStyle = stroke; c.stroke(); } },
+    text(c, t, x, y, size = 16, fill = INK, align = 'center', font = 'display', stroke = null, sw = 4) {
+      c.font = (font === 'display' ? `${size}px "Bagel Fat One", "Arial Rounded MT Bold", system-ui, sans-serif` : `900 ${size}px Nunito, system-ui, sans-serif`);
+      c.textAlign = align; c.textBaseline = 'middle'; if (stroke) { c.lineJoin = 'round'; c.lineWidth = sw; c.strokeStyle = stroke; c.strokeText(t, x, y); } c.fillStyle = fill; c.fillText(t, x, y);
+    },
+    sprite(c, id, x, y, size, opt = {}) { const im = IMG[id]; if (!im || !im.complete) return; c.save(); c.translate(x, y); if (opt.rot) c.rotate(opt.rot); const sx = (opt.sx || 1) * (opt.flip ? -1 : 1), sy = opt.sy || 1; c.scale(sx, sy); if (opt.alpha != null) c.globalAlpha = opt.alpha; c.drawImage(im, -size / 2, -size * (opt.anchor ?? .92), size, size); c.restore(); },
+    shadow(c, x, y, rx, a = .14) { c.save(); c.globalAlpha = a; c.fillStyle = '#2B2141'; c.beginPath(); c.ellipse(x, y, rx, rx * .28, 0, 0, Math.PI * 2); c.fill(); c.restore(); },
+    heart(c, x, y, s, fill = '#FF6F7D') { c.save(); c.translate(x, y); c.scale(s / 20, s / 20); c.beginPath(); c.moveTo(0, 7); c.bezierCurveTo(-12, -2, -9, -12, 0, -6); c.bezierCurveTo(9, -12, 12, -2, 0, 7); c.fillStyle = fill; c.fill(); c.lineWidth = 2.2; c.strokeStyle = INK; c.stroke(); c.restore(); },
+    star(c, x, y, R, r, fill = '#FFD54A', stroke = INK, lw = 2) { c.beginPath(); for (let i = 0; i < 10; i++) { const a = -Math.PI / 2 + i * Math.PI / 5, rr = i % 2 ? r : R; c.lineTo(x + rr * Math.cos(a), y + rr * Math.sin(a)); } c.closePath(); c.fillStyle = fill; c.fill(); if (stroke) { c.lineWidth = lw; c.strokeStyle = stroke; c.stroke(); } },
+    coin(c, x, y, r) { D.circle(c, x, y, r, '#FFD54A', '#C98A12', 2); c.fillStyle = '#FFF3B0'; c.beginPath(); c.arc(x - r * .3, y - r * .3, r * .3, 0, 7); c.fill(); },
+    hud(c, color, left, right) { c.fillStyle = color; c.fillRect(0, 0, W, 52); if (left) { D.rr(c, 10, 12, left.w || 112, 28, 14, '#FFFFFF'); D.text(c, left.t, 10 + (left.w || 112) / 2, 27, 14, INK, 'center', 'body'); } if (right) { D.rr(c, W - 10 - (right.w || 100), 12, right.w || 100, 28, 14, '#FFFFFF'); D.text(c, right.t, W - 10 - (right.w || 100) / 2, 27, 14, INK, 'center', 'body'); } },
+    hearts(c, x, y, n, max = 3) { D.rr(c, x - 16, y - 14, max * 22 + 10, 28, 14, '#FFFFFF'); for (let i = 0; i < max; i++) D.heart(c, x + i * 22, y + 1, 18, i < n ? '#FF5E6C' : '#E3DEEF'); },
+    bar(c, x, y, w, h, t, col) { D.rr(c, x, y, w, h, h / 2, '#F2EFFA', INK, 2); if (t > 0) D.rr(c, x + 2, y + 2, Math.max(h - 4, (w - 4) * Math.min(1, t)), h - 4, (h - 4) / 2, col || (t > .5 ? '#4FCFA0' : t > .25 ? '#FFC94D' : '#FF6F7D'), null, 0); },
+    INK
+  };
+
+  /* ---------- the runner ---------- */
+  function run(game) {
+    document.title = game.title + ' · Squishy Island';
+    const root = document.getElementById('app'), cv = document.createElement('canvas'), ctx = cv.getContext('2d');
+    cv.setAttribute('aria-label', game.title + ' game'); root.appendChild(cv);
+    const ui = document.createElement('div'); ui.className = 'ui'; root.appendChild(ui);
+    let scale = 1, dpr = 1, ox = 0, oy = 0;
+    function fit() {
+      const vw = root.clientWidth, vh = root.clientHeight; scale = Math.min(vw / W, vh / H); dpr = Math.min({ low: 1, medium: 2, high: 3 }[tier()] || 2, window.devicePixelRatio || 1);
+      const cw = Math.round(W * scale), ch = Math.round(H * scale); cv.style.width = cw + 'px'; cv.style.height = ch + 'px'; cv.width = Math.round(cw * dpr); cv.height = Math.round(ch * dpr);
+      ox = (vw - cw) / 2; oy = (vh - ch) / 2; cv.style.left = ox + 'px'; cv.style.top = oy + 'px'; ui.style.left = ox + 'px'; ui.style.top = oy + 'px'; ui.style.width = cw + 'px'; ui.style.height = ch + 'px'; ui.style.setProperty('--s', scale);
+    }
+    window.addEventListener('resize', fit); fit();
+    const G = { W, H, IMG, D, sfx, noise, buzz, score: 0, state: 'menu', t: 0, fx: [], shakeT: 0, best: store.get(game.id) };
+    G.float = (x, y, t, col = '#FFFFFF', size = 18) => G.fx.push({ k: 'txt', x, y, t, col, size, life: 1 });
+    G.burst = (x, y, col = '#FFD54A', n = 10, sp = 140) => { if (calm()) n = Math.ceil(n / 3); for (let i = 0; i < n; i++) { const a = Math.random() * Math.PI * 2, s = sp * (.4 + Math.random() * .8); G.fx.push({ k: 'dot', x, y, vx: Math.cos(a) * s, vy: Math.sin(a) * s - 40, r: 3 + Math.random() * 4, col, life: .7 + Math.random() * .4 }); } };
+    G.shake = t => { if (!calm()) G.shakeT = Math.max(G.shakeT, t); };
+    /* rewarded ad: once per game, a player who just lost may choose to watch a short ad to keep going */
+    G.end = () => {
+      if (G.state !== 'play') return;
+      if (game.revive && !G.revived && !(window.SQS && SQS.settings.adsOff) && (!game.canRevive || game.canRevive(G))) { G.state = 'continue'; if (game.pause) game.pause(G); if (window.SQS) SQS.duck(true); buzz(120); sfx(300, .4, 'triangle', .14, .4); return showContinue(); }
+      finish();
+    };
+    function showContinue() {
+      card(`<p class="eyebrow">${game.reviveTitle ? game.reviveTitle(G) : 'Oh no!'}</p><h1>Keep going?</h1><p class="sub">${game.reviveLine ? game.reviveLine(G) : `You have ${G.score.toLocaleString('en-US')} ${game.scoreName || 'points'} so far.`}</p><button class="go" type="button" data-act="__ad">&#9654; Watch an ad</button><p class="keys" style="margin:.4em 0 .6em">${game.reviveGift || 'and carry on with 1 more heart'} · once per game</p><button class="ghost" type="button" data-act="__no">No thanks</button>`);
+      ui.querySelector('[data-act="__ad"]').addEventListener('click', playAd); ui.querySelector('[data-act="__no"]').addEventListener('click', finish);
+    }
+    function playAd() {
+      // prototype stand-in: the real app shows a kid-safe rewarded video here (no tracking).
+      // Google Play Families rule: an ad that interrupts play must be closable after 5 seconds.
+      // Closing early gives no reward; watching to the end continues the game.
+      const LEN = 8; let t = 0; play('adStart');
+      const draw = () => { ui.innerHTML = `<div class="card"><p class="eyebrow">Ad</p><h1 style="font-size:1.6em">Your ad plays here</h1><p class="sub">In the real app: a short, kid-safe video ad. Here it is just a wait (${LEN - t}).</p><div class="adbar"><i style="width:${t / LEN * 100}%"></i></div>${t >= 5 ? '<button class="ghost" type="button" data-act="__close">&#10005; Close (no reward)</button>' : '<p class="keys">You can close it after 5 seconds</p>'}</div>`;
+        const c = ui.querySelector('[data-act="__close"]'); if (c) c.addEventListener('click', () => { clearInterval(iv); if (window.SQS) SQS.duck(false); finish(); }); };
+      draw(); const iv = setInterval(() => { t++; draw(); if (t >= LEN) { clearInterval(iv); G.revived = true; ui.innerHTML = ''; G.state = 'play'; game.revive(G); if (game.resume) game.resume(G); if (window.SQS) SQS.duck(false); sfx(880, .2, 'triangle', .1, 1.5); } }, 1000);
+    }
+    function finish() {
+      if (game.beforeOver) game.beforeOver(G);
+      G.state = 'over'; const nb = !game.levels && G.score > G.best; if (nb) { G.best = G.score; store.set(game.id, G.score); } G.jarFrom = store.get('wallet'); const pay = payout(); if (pay.total) store.set('wallet', store.get('wallet') + pay.total); G.pay = pay; buzz(120); sfx(300, .4, 'triangle', .14, .4); if (window.SQS) SQS.duck(true); showOver(nb, pay); tourBack(); countUp(); }
+    /* first tour: the map sends the player here with ?tour=game; the results card gets a way back to town */
+    const TOUR = new URLSearchParams(location.search).get('tour') === 'game';
+    function tourBack() { if (!TOUR) return; const c = ui.querySelector('.card'); if (c) c.insertAdjacentHTML('beforeend', `<div class="tourback"><p><b>Bao:</b> Great bouncing! Let’s go back to town.</p><a class="go" data-act="__town" href="../index.html">Back to town &#9654;</a></div>`); }
+    function tourHello() { if (!TOUR) return; const c = ui.querySelector('.card'); if (c) c.insertAdjacentHTML('afterbegin', `<p class="tourback" style="margin:0 0 .5em"><b>Bao:</b> Bounce as high as you can, then come back!</p>`); }
+    /* results screen: every number counts up from 0 in about half a second, with ticks, then a ding.
+       Score first, then coins, then the coin jar. 'New best' stamps pop in after the counting. */
+    function countUp() {
+      const els = [...ui.querySelectorAll('[data-count]')], later = [...ui.querySelectorAll('.nb')], put = (el, v) => { el.textContent = fmt(v); };
+      G.counting = true; G.countSkip = false;
+      const reveal = () => { G.counting = false; later.forEach(el => { el.classList.remove('later'); el.classList.add('stamp'); }); if (later.length) { play('newBest'); buzz(40); } };
+      if (calm() || !els.length) { els.forEach(el => put(el, +el.dataset.count)); play('countDone'); reveal(); return; }
+      later.forEach(el => el.classList.add('later')); els.forEach(el => put(el, +(el.dataset.from || 0)));
+      let i = 0; const DUR = 500, GAP = 110;
+      const next = () => {
+        const el = els[i++]; if (!el) return reveal(); if (!el.isConnected) return;
+        const a = +(el.dataset.from || 0), b = +el.dataset.count, coins = el.dataset.kind === 'coins', t0 = performance.now(); let tk = 0;
+        if (a === b) { put(el, b); return next(); }
+        const step = now => { if (!el.isConnected) return; const u = G.countSkip ? 1 : Math.min(1, (now - t0) / DUR), e = 1 - Math.pow(1 - u, 3); put(el, a + (b - a) * e);
+          if (u < 1) { if (now - tk > 42) { tk = now; play(coins ? 'coinsCount' : 'tick', u); } requestAnimationFrame(step); }
+          else { el.classList.remove('pop'); void el.offsetWidth; el.classList.add('pop'); play(coins ? 'jar' : 'countDone'); setTimeout(next, G.countSkip ? 0 : GAP); } };
+        requestAnimationFrame(step);
+      };
+      setTimeout(next, 150);
+    }
+    G.store = store; G.card = card; G.start = start;
+    const pos = e => { const r = cv.getBoundingClientRect(); return [(e.clientX - r.left) / r.width * W, (e.clientY - r.top) / r.height * H]; };
+    cv.addEventListener('pointerdown', e => { e.preventDefault(); cv.setPointerCapture(e.pointerId); if (G.state === 'play' && game.down) game.down(...pos(e), e.pointerId); });
+    cv.addEventListener('pointermove', e => { if (G.state === 'play' && game.move) game.move(...pos(e), e.pointerId, e.buttons || e.pointerType === 'touch'); });
+    const up = e => { if (G.state === 'play' && game.up) game.up(...pos(e), e.pointerId); };
+    cv.addEventListener('pointerup', up); cv.addEventListener('pointercancel', up);
+    window.addEventListener('keydown', e => { if (G.state === 'play' && game.key) { if (game.key(e.code, true, e) !== false) { if (['Space', 'ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'].includes(e.code)) e.preventDefault(); } } else if ((G.state === 'menu' || G.state === 'over') && (e.code === 'Enter' || e.code === 'Space')) { e.preventDefault(); const f = ui.querySelector('.go'); if (f) start(f.dataset.go); } });
+    window.addEventListener('keyup', e => { if (G.state === 'play' && game.key) game.key(e.code, false, e); });
+    /* coins: every game says how its run turns into coins (game.coins). Milestone bonus = only the highest milestone reached. */
+    const BONUS = [10, 25, 50];
+    function payout() {
+      const R = game.coins; if (!R) return { total: 0 };
+      if (R.custom) return R.custom(G);
+      const base = Math.max(0, Math.floor(R.base(G))), m = R.metric ? R.metric(G) : G.score; let tier = -1;
+      (R.tiers || []).forEach((t, i) => { if (m >= t) tier = i; });
+      const bonus = tier >= 0 ? BONUS[tier] : 0, next = R.tiers && tier < R.tiers.length - 1 ? { at: R.tiers[tier + 1], add: BONUS[tier + 1] } : null;
+      return { base, bonus, tier, next, total: base + bonus, rule: R.from || R.rule, unit: R.unit || 'points', m };
+    }
+    const fmt = n => Math.round(n).toLocaleString('en-US'), mmss = s => `${Math.floor(s / 60)}:${String(Math.floor(s % 60)).padStart(2, '0')}`;
+    const coinIco = '<i class="ci" aria-hidden="true"></i>';
+    function rewardLine() { const R = game.coins; if (!R) return ''; if (R.menu) return `<p class="rw">${coinIco}${R.menu}</p>`; return `<p class="rw">${coinIco}Coins: ${R.rule}${R.tiers ? `<br><span>Bonus +${BONUS.join(' / +')} at ${R.tiers.map(fmt).join(' / ')} ${R.unit || 'points'}</span>` : ''}</p>`; }
+    function payHTML(p) {
+      if (!game.coins) return '';
+      if (p.html) return p.html + walletHTML();
+      return `<div class="pay"><p class="pay-big">${coinIco}+<span data-count="${p.total}" data-kind="coins">${fmt(p.total)}</span> coins</p><p class="pay-sm">in ${mmss(G.t)} of play</p><p class="pay-sm">${fmt(p.base)} from ${p.rule}${p.bonus ? ` · <b>+${p.bonus} bonus</b> (${fmt(game.coins.tiers[p.tier])} ${p.unit})` : ''}</p>${p.next ? `<p class="pay-sm">Next bonus: <b>+${p.next.add}</b> at ${fmt(p.next.at)} ${p.unit}</p>` : '<p class="pay-sm">Top bonus reached!</p>'}</div>` + walletHTML();
+    }
+    const walletHTML = () => `<p class="wallet">Coin jar: <b data-count="${store.get('wallet')}" data-from="${G.jarFrom ?? store.get('wallet')}" data-kind="coins">${fmt(store.get('wallet'))}</b> · Mystery Box 200 · Family 500 · Golden 1,000</p>`;
+    function start(arg) {
+      G.arg = arg; G.revived = false;
+      getAc(); if (!ac) { try { ac = new (window.AudioContext || window.webkitAudioContext)(); } catch (e) {} } else if (ac.state === 'suspended') ac.resume();
+      if (window.SQS) { SQS.duck(false); SQS.music(game.music === false ? null : TRACK[game.id] || null); }
+      G.score = 0; G.t = 0; G.fx = []; G.state = 'play'; ui.innerHTML = ''; game.init(G); sfx(660, .12, 'sine', .1, 1.5);
+    }
+    function card(html) {
+      ui.innerHTML = `<div class="card">${html}</div>`;
+      ui.querySelectorAll('.go:not([data-act]),[data-go]').forEach(b => b.addEventListener('click', () => start(b.dataset.go)));
+      ui.querySelectorAll('[data-act]').forEach(b => b.addEventListener('click', () => game.act && game.act(b.dataset.act, G)));
+      const f = ui.querySelector('.go'); if (f) f.focus({ preventScroll: true });
+    }
+    G.menu = () => { G.state = 'menu'; showMenu(); };
+    function showMenu() { if (game.menu) return card(game.menu(G, rewardLine())); card(`<p class="eyebrow">Squishy Island minigame</p><h1>${game.title}</h1><p class="sub">${game.where}</p><ul>${game.how.map(h => `<li>${h}</li>`).join('')}</ul>${rewardLine()}${G.best ? `<p class="best">Your best: <b>${G.best.toLocaleString('en-US')}</b></p>` : ''}<button class="go" type="button">Play</button><p class="keys">${game.keys || ''}</p>`); }
+    function showOver(nb, pay) { if (game.over) return card(game.over(G, payHTML(pay))); card(`<p class="eyebrow">${game.overTitle ? game.overTitle(G) : 'Game over'}</p><h1 data-count="${G.score}">${G.score.toLocaleString('en-US')}</h1><p class="sub">${game.scoreName || 'points'}${game.overLine ? ' · ' + game.overLine(G) : ''}</p>${game.overExtra ? game.overExtra(G) : ''}${nb ? '<p class="nb">New best score!</p>' : `<p class="best">Best: <b>${G.best.toLocaleString('en-US')}</b></p>`}${payHTML(pay)}<button class="go" type="button">Play again</button>`); }
+    let paused = false;
+    document.addEventListener('visibilitychange', () => { paused = document.hidden; last = performance.now(); });
+    let last = performance.now();
+    function frame(now) {
+      requestAnimationFrame(frame);
+      const cap = window.SQS ? SQS.fps() : 60; if (cap < 60 && now - last < 1000 / cap - 4) return;
+      const dt = Math.min(.05, (now - last) / 1000); last = now; if (paused) return;
+      if (G.state === 'play') { G.t += dt; game.update(dt, G); }
+      G.fx.forEach(f => { f.life -= dt * (f.k === 'txt' ? .9 : 1.4); if (f.k === 'dot') { f.x += f.vx * dt; f.y += f.vy * dt; f.vy += 420 * dt; } else f.y -= 38 * dt; });
+      G.fx = G.fx.filter(f => f.life > 0); G.shakeT = Math.max(0, G.shakeT - dt);
+      ctx.setTransform(dpr * scale, 0, 0, dpr * scale, 0, 0);
+      if (G.shakeT > 0) ctx.translate((Math.random() - .5) * 8 * G.shakeT * 4, (Math.random() - .5) * 8 * G.shakeT * 4);
+      ctx.clearRect(-20, -20, W + 40, H + 40); game.draw(ctx, G);
+      G.fx.forEach(f => { ctx.globalAlpha = Math.max(0, Math.min(1, f.life * 1.6)); if (f.k === 'dot') D.circle(ctx, f.x, f.y, f.r, f.col, null, 0); else D.text(ctx, f.t, f.x, f.y, f.size, f.col, 'center', 'display', D.INK, 4); ctx.globalAlpha = 1; });
+    }
+    if (game.boot) game.boot(G);
+    if (window.SQS) { SQS.music(game.music === false ? null : TRACK[game.id] || null); SQS.onChange(() => fit()); }
+    ui.addEventListener('pointerdown', () => { if (G.counting) G.countSkip = true; }, true);
+    ui.addEventListener('click', e => { const b = e.target.closest('button'); if (b && !b.disabled) play(b.classList.contains('go') ? 'open' : 'tap'); });
+    game.init(G); showMenu(); tourHello(); requestAnimationFrame(frame);
+    return G;
+  }
+  /* ---------- level-based games: saved progress, level picker, star results ---------- */
+  function levels(id) {
+    const key = 'squishyisland-' + id + '-levels'; let d = { top: 1, stars: {} };
+    try { const v = JSON.parse(localStorage.getItem(key)); if (v && v.top) d = v; } catch (e) {}
+    const save = () => { try { localStorage.setItem(key, JSON.stringify(d)); } catch (e) {} };
+    return {
+      get top() { return d.top; }, stars: n => d.stars[n] || 0, total: () => Object.values(d.stars).reduce((a, b) => a + b, 0),
+      // coins: first clear 30 + 15 per star (every 10th level pays double); replays pay 10 + 15 per NEW star
+      finish(n, stars) { const prev = d.stars[n] || 0, first = !prev, big = n % 10 === 0; if (stars > prev) d.stars[n] = stars; if (n >= d.top) d.top = n + 1; save(); return { first, prev, big, coins: first ? (30 + 15 * stars) * (big ? 2 : 1) : 10 + 15 * Math.max(0, stars - prev) }; }
+    };
+  }
+  const starRow = (n, big) => `<span class="${big ? 'stars big' : 'stars'}">${[0, 1, 2].map(i => `<i class="${i < n ? 'on' : ''}"></i>`).join('')}</span>`;
+  function levelMenu(game, L, rw) {
+    const top = L.top, from = Math.max(1, top - 13), btns = [];
+    for (let n = from; n <= top + 2; n++) btns.push(n <= top ? `<button type="button" class="lv${n === top ? ' cur' : ''}${n % 10 === 0 ? ' boss' : ''}" data-go="${n}" aria-label="Level ${n}">${n}${starRow(L.stars(n))}</button>` : `<button type="button" class="lv lock" disabled aria-label="Level ${n} locked">${n}</button>`);
+    return `<p class="eyebrow">Squishy Island minigame</p><h1>${game.title}</h1><p class="sub">${game.where}</p><details class="how"${top === 1 ? ' open' : ''}><summary>How to play</summary><ul>${game.how.map(h => `<li>${h}</li>`).join('')}</ul>${rw}</details><p class="best">Stars collected: <b>${L.total()}</b></p><button class="go" type="button" data-go="${top}">Play level ${top}</button><div class="lvgrid">${btns.join('')}</div><p class="keys">${game.keys || ''}</p>`;
+  }
+  function levelPay(L, r) {
+    if (!r.win) return { total: 0, html: '<div class="pay"><p class="pay-sm">No coins this time. Beat the level to earn coins!</p></div>' };
+    const f = L.finish(r.n, r.stars); Object.assign(r, f);
+    const k = Math.max(0, r.stars - f.prev), why = f.first ? `first clear: 30 + 15 per star${f.big ? ' · big level ×2' : ''}` : k ? `replay: 10 + 15 for ${k} new star${k > 1 ? 's' : ''}` : 'replay: 10 coins (get more stars for more)';
+    return { total: f.coins, html: `<div class="pay"><p class="pay-big"><i class="ci" aria-hidden="true"></i>+<span data-count="${f.coins}" data-kind="coins">${f.coins}</span> coins</p><p class="pay-sm">${why}</p></div>` };
+  }
+  function levelOver(r, pay) {
+    return `<p class="eyebrow">Level ${r.n}${r.n % 10 === 0 ? ' · big level' : ''}</p><h1>${r.win ? 'Level clear!' : r.title || 'Out of moves'}</h1>${r.win ? starRow(r.stars, true) : ''}<p class="sub">${r.line || ''}</p>${r.win && r.stars > r.prev && !r.first ? '<p class="nb">New best stars!</p>' : ''}${pay}<div class="btnrow">${r.win ? `<button class="go" type="button" data-go="${r.n + 1}">Next level</button>` : `<button class="go" type="button" data-go="${r.n}">Try again</button>`}</div><div class="btnrow">${r.win ? `<button class="ghost" type="button" data-go="${r.n}">Replay</button>` : ''}<button class="ghost" type="button" data-act="menu">All levels</button></div>`;
+  }
+  // tiny seeded random, so level N is always the same level for everyone
+  function rng(seed) { let a = seed >>> 0 || 1; return () => { a |= 0; a = a + 0x6D2B79F5 | 0; let t = Math.imul(a ^ a >>> 15, 1 | a); t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t; return ((t ^ t >>> 14) >>> 0) / 4294967296; }; }
+  return { run, IMG, D, W, H, store, levels, levelMenu, levelPay, levelOver, starRow, rng };
+})();
+
+</script>
+<script>
+/* ===================== SKY BOUNCE (Bounce Park) =====================
+   Endless jumper: bounce from cloud to cloud and climb as high as you can.
+   It gets harder the higher you go: bigger gaps, moving leaves, crumbly clouds. */
+(() => {
+const { D, W, H } = SQV, INK = D.INK;
+let S;
+function lerpC(a, b, t) { const p = h => [1, 3, 5].map(i => parseInt(h.slice(i, i + 2), 16)); const A = p(a), B = p(b); return `rgb(${A.map((v, i) => Math.round(v + (B[i] - v) * t)).join(',')})`; }
+const SKY = [[0, '#DFF3FF', '#8CCBFF'], [2500, '#FFE3EE', '#FFB3CE'], [6000, '#FFD9A8', '#B9A6FF'], [11000, '#5B4BA8', '#2E2452']];
+function skyAt(h) { for (let i = SKY.length - 1; i >= 0; i--) if (h >= SKY[i][0]) { const n = SKY[i + 1]; if (!n) return [SKY[i][1], SKY[i][2]]; const t = Math.min(1, (h - SKY[i][0]) / (n[0] - SKY[i][0])); return [lerpC(SKY[i][1], n[1], t), lerpC(SKY[i][2], n[2], t)]; } return [SKY[0][1], SKY[0][2]]; }
+
+function addPlat(y) {
+  const h = -y, diff = Math.min(1, h / 12000);
+  const r = Math.random(), w = 70 - diff * 18;
+  let type = 'cloud';
+  if (h > 600 && r < .12 + diff * .2) type = 'crumble';
+  else if (h > 300 && r < .32 + diff * .3) type = 'leaf';
+  const p = { x: 30 + Math.random() * (W - 60), y, w, type, vx: type === 'leaf' ? (Math.random() < .5 ? -1 : 1) * (40 + diff * 90) * (h > 1200 ? 1 : 0) : 0, dead: 0, spring: false };
+  if (type !== 'crumble' && Math.random() < .08) p.spring = true;
+  S.plats.push(p);
+  if (Math.random() < .55) S.items.push({ k: 'coin', x: p.x + (Math.random() - .5) * 40, y: y - 40 - Math.random() * 30 });
+  else if (h > 800 && Math.random() < .035) S.items.push({ k: 'balloon', x: p.x, y: y - 60 });
+}
+function gapAt(h) { return 62 + Math.min(95, h / 110); }
+
+const game = {
+  id: 'sky-bounce', title: 'Sky Bounce', where: 'at Bounce Park',
+  how: ['Your squishy bounces by itself every time it lands.', 'Steer left and right to land on the next cloud.', 'Phone: hold or slide your finger left / right. PC: arrow keys or A / D.', 'Springs and balloons send you flying. Crumbly clouds break after one bounce.', 'It goes forever: the higher you climb, the trickier the sky.'],
+  keys: 'PC: ← → or A / D · Enter to start', scoreName: 'metres high',
+  coins: { rule: 'keep every coin you grab', from: 'coins grabbed', base: () => S.coins, tiers: [600, 1200, 2000], unit: 'm high' },
+  overLine: () => `${S.coins} coins collected`,
+  revive(G) { S.x = W / 2; S.y = S.camY + H - 140; S.vy = -900; S.float = 1.8; G.float(W / 2, H / 2, 'Up you go!', '#FFD54A', 26); },
+  reviveGift: 'and float back up with a balloon',
+  init(G) {
+    S = { x: W / 2, y: -40, vy: -700, plats: [], items: [], camY: -H + 120, top: 0, coins: 0, steer: 0, target: null, keys: { l: false, r: false }, float: 0, squash: 0, face: 1 };
+    S.plats.push({ x: W / 2, y: 0, w: 120, type: 'cloud', vx: 0, dead: 0, spring: false });
+    let y = 0; while (y > -H * 1.6) { y -= gapAt(-y) * (.7 + Math.random() * .5); addPlat(y); }
+  },
+  update(dt, G) {
+    // steering
+    let ax = 0; if (S.keys.l) ax -= 1; if (S.keys.r) ax += 1;
+    if (S.target != null) { const d = S.target - S.x; ax = Math.max(-1, Math.min(1, d / 40)); }
+    S.x += ax * 330 * dt; if (ax) S.face = ax > 0 ? 1 : -1;
+    if (S.x < -20) S.x += W + 40; if (S.x > W + 20) S.x -= W + 40;
+    // physics
+    if (S.float > 0) { S.float -= dt; S.vy = -520; } else S.vy += 1500 * dt;
+    const prevY = S.y; S.y += S.vy * dt; S.squash = Math.max(0, S.squash - dt * 4);
+    if (S.vy > 0) for (const p of S.plats) {
+      if (p.dead) continue;
+      if (prevY <= p.y - 2 && S.y >= p.y - 2 && Math.abs(S.x - p.x) < p.w / 2 + 14) {
+        S.y = p.y - 2; S.squash = 1;
+        if (p.spring && Math.abs(S.x - p.x) < 22) { S.vy = -1180; G.sfx(500, .25, 'sine', .1, 3); G.burst(S.x, p.y, '#FF6F7D', 8); }
+        else { S.vy = -760; G.sfx(420 + Math.random() * 80, .09, 'sine', .08, 1.6); }
+        if (p.type === 'crumble') { p.dead = .01; G.noise(.12, .07, 1200); }
+        break;
+      }
+    }
+    S.plats.forEach(p => { if (p.vx) { p.x += p.vx * dt; if (p.x < p.w / 2 || p.x > W - p.w / 2) p.vx *= -1; } if (p.dead) p.dead += dt; });
+    // items
+    S.items.forEach(it => { if (it.got) return; if (Math.hypot(it.x - S.x, it.y - (S.y - 26)) < 30) { it.got = true; if (it.k === 'coin') { S.coins++; G.sfx(1400, .07, 'square', .05, 1.4); G.float(it.x, it.y - S.camY - 10, '+1', '#FFD54A', 15); } else { S.float = 2.4; G.sfx(700, .4, 'sine', .1, 2); } } });
+    // camera + score
+    S.top = Math.max(S.top, -S.y); const want = S.y - H * .42; if (want < S.camY) S.camY += (want - S.camY) * Math.min(1, dt * 8);
+    G.score = Math.floor(S.top / 10);
+    // spawn ahead / clean behind
+    let highest = Math.min(...S.plats.map(p => p.y)); while (highest > S.camY - 200) { highest -= gapAt(-highest) * (.7 + Math.random() * .5); addPlat(highest); }
+    S.plats = S.plats.filter(p => p.y < S.camY + H + 60 && p.dead < 1); S.items = S.items.filter(i => !i.got && i.y < S.camY + H + 60);
+    if (S.y > S.camY + H + 40) G.end();
+  },
+  draw(c, G) {
+    const h = S.top, [a, b] = skyAt(h), gr = c.createLinearGradient(0, 0, 0, H); gr.addColorStop(0, b); gr.addColorStop(1, a); c.fillStyle = gr; c.fillRect(0, 0, W, H);
+    if (h > 8000) { c.fillStyle = '#FFF3B0'; for (let i = 0; i < 40; i++) { const sx = (i * 97) % W, sy = ((i * 173 - S.camY * .2) % H + H) % H; c.globalAlpha = Math.min(1, (h - 8000) / 3000) * (.4 + .6 * Math.abs(Math.sin(G.t * 2 + i))); c.fillRect(sx, sy, 2.5, 2.5); } c.globalAlpha = 1; }
+    // far clouds (parallax)
+    for (let i = 0; i < 6; i++) { const y = ((i * 140 - S.camY * .3) % (H + 120) + H + 120) % (H + 120) - 60, x = (i * 131) % W; c.globalAlpha = .5; cloud(c, x, y, 34, '#FFFFFF', null); c.globalAlpha = 1; }
+    const oy = -S.camY;
+    if (S.camY > -H) { c.fillStyle = '#9ED67E'; c.fillRect(0, oy + 10, W, 400); }
+    S.plats.forEach(p => {
+      const y = p.y + oy; if (y < -30 || y > H + 30) return;
+      c.save(); if (p.dead) { c.globalAlpha = Math.max(0, 1 - p.dead * 2); c.translate(0, p.dead * 120); }
+      if (p.type === 'leaf') { c.beginPath(); c.ellipse(p.x, y + 4, p.w / 2, 9, 0, 0, Math.PI * 2); c.fillStyle = '#7ED36A'; c.fill(); c.lineWidth = 2.5; c.strokeStyle = INK; c.stroke(); c.lineWidth = 1.5; c.strokeStyle = '#4E9B4E'; c.beginPath(); c.moveTo(p.x - p.w / 2 + 8, y + 4); c.lineTo(p.x + p.w / 2 - 8, y + 4); c.stroke(); }
+      else cloud(c, p.x, y + 6, p.w / 2, p.type === 'crumble' ? '#E3DEEF' : '#FFFFFF', p.type === 'crumble');
+      if (p.spring) { c.lineWidth = 2.5; c.strokeStyle = '#9A8FAA'; c.beginPath(); c.moveTo(p.x - 6, y - 2); c.lineTo(p.x + 6, y - 6); c.lineTo(p.x - 6, y - 10); c.lineTo(p.x + 6, y - 14); c.stroke(); D.rr(c, p.x - 12, y - 20, 24, 7, 3.5, '#FF6F7D'); }
+      c.restore();
+    });
+    S.items.forEach(it => { const y = it.y + oy + Math.sin(G.t * 3 + it.x) * 3; if (it.k === 'coin') D.coin(c, it.x, y, 8); else { c.lineWidth = 1.5; c.strokeStyle = '#9A8FAA'; c.beginPath(); c.moveTo(it.x, y + 16); c.quadraticCurveTo(it.x - 6, y + 28, it.x, y + 38); c.stroke(); c.beginPath(); c.ellipse(it.x, y, 13, 16, 0, 0, Math.PI * 2); c.fillStyle = '#FF6FA3'; c.fill(); c.lineWidth = 2.5; c.strokeStyle = INK; c.stroke(); } });
+    // player
+    const px = S.x, py = S.y + oy, sq = S.squash;
+    if (S.float > 0) { c.lineWidth = 1.5; c.strokeStyle = '#9A8FAA'; c.beginPath(); c.moveTo(px, py - 52); c.lineTo(px + 4, py - 80); c.stroke(); c.beginPath(); c.ellipse(px + 4, py - 96, 14, 18, 0, 0, Math.PI * 2); c.fillStyle = '#FF6FA3'; c.fill(); c.lineWidth = 2.5; c.strokeStyle = INK; c.stroke(); }
+    D.sprite(c, 'marshmallow', px, py, 64, { sx: 1 + sq * .22 - (S.vy < -300 ? .08 : 0), sy: 1 - sq * .22 + (S.vy < -300 ? .1 : 0), flip: S.face < 0 });
+    if (S.target != null) { c.globalAlpha = .35; D.circle(c, S.target, H - 30, 14, '#FFFFFF', INK, 2); c.globalAlpha = 1; }
+    // hud
+    D.rr(c, 10, 12, 132, 30, 15, '#FFFFFF'); D.text(c, `${G.score.toLocaleString('en-US')} m`, 76, 28, 16, INK, 'center', 'body');
+    D.rr(c, W - 92, 12, 82, 30, 15, '#FFFFFF'); D.coin(c, W - 74, 27, 8); D.text(c, String(S.coins), W - 46, 28, 15, INK, 'center', 'body');
+    if (G.best && S.top / 10 < G.best) { const by = -G.best * 10 + oy; if (by > 50 && by < H) { c.setLineDash([8, 6]); c.strokeStyle = '#FF6FA3'; c.lineWidth = 2; c.beginPath(); c.moveTo(0, by); c.lineTo(W, by); c.stroke(); c.setLineDash([]); D.text(c, 'your best', W - 50, by - 10, 11, '#FF6FA3', 'center', 'body'); } }
+  },
+  down(x) { S.target = x; }, move(x, y, id, pressed) { if (pressed && S.target != null) S.target = x; }, up() { S.target = null; },
+  key(code, down) { if (code === 'ArrowLeft' || code === 'KeyA') S.keys.l = down; else if (code === 'ArrowRight' || code === 'KeyD') S.keys.r = down; else return false; }
+};
+function cloud(c, x, y, r, col, cracked) {
+  const pts = [[-.6, .1, .55], [-.2, -.25, .7], [.3, -.2, .65], [.68, .1, .5], [0, .2, .6]];
+  c.beginPath(); pts.forEach(([a, b, s]) => { c.moveTo(x + a * r + s * r * .6, y + b * r * .6); c.arc(x + a * r, y + b * r * .6, s * r * .6, 0, Math.PI * 2); });
+  if (col) { c.fillStyle = col; c.fill(); }
+  if (cracked !== null) { c.lineWidth = 2.4; c.strokeStyle = INK; c.stroke(); c.fillStyle = col; pts.forEach(([a, b, s]) => { c.beginPath(); c.arc(x + a * r, y + b * r * .6, s * r * .6 - 1.4, 0, Math.PI * 2); c.fill(); }); }
+  if (cracked) { c.lineWidth = 2; c.strokeStyle = '#9A8FAA'; c.beginPath(); c.moveTo(x - 6, y - 8); c.lineTo(x, y); c.lineTo(x - 4, y + 6); c.moveTo(x + 10, y - 6); c.lineTo(x + 6, y + 2); c.stroke(); }
+}
+SQV.G = SQV.run(game); SQV.state = () => S;
+})();
+
+</script>
+</body>
+</html>

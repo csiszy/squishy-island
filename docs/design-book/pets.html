@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Paw Palace</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bagel+Fat+One&amp;family=Nunito:wght@400;600;800;900&amp;family=Patrick+Hand&amp;display=swap">
+<link rel="stylesheet" href="art/style.css">
+</head>
+<body style="--theme:#E8727A;--theme2:#FFE4E1">
+<header class="topbar"><div class="topbar-in">
+  <a class="brand" href="index.html"><i></i>Squishy Island</a>
+  <nav><a class="pill" href="index.html">&larr; City map</a><a class="pill" href="guide.html">Game guide</a></nav>
+</div></header>
+<main class="wrap">
+
+<section class="hero">
+  <div class="hero-text">
+    <p class="eyebrow">Family house 3 of 8 · Pet Pals</p>
+    <h1>Paw Palace</h1>
+    <p class="lede">A giant dog kennel with a bone-shaped sign, a chimney and an attic window. The busiest, waggiest house in town.</p>
+    <ul class="facts"><li><b>Address:</b> 1 Butter Boulevard</li><li><b>Unlocks:</b> Teapot Kitchen reaches level 4</li><li><b>Family:</b> 6 squishies</li><li><b>Levels:</b> 1 (broken) to 10 (golden)</li></ul>
+    <p class="note"><b>Try it</b>Drag the slider under the picture to see the house at every level, with the whole family living there.</p>
+  </div>
+  <div class="hero-art" data-hero="pets" data-level="10"></div>
+</section>
+
+<section>
+  <div class="sec-head"><p class="eyebrow">The family</p><h2>The Pet Pals</h2></div>
+  <p>Real-life pets made squishy. Every one of them has a pet-like habit in the city: sleeping on the roof, guarding the mail, napping on the doormat. When you get one from the Factory or the Market, it moves in here and appears around the house on the city map straight away.</p>
+  <div data-family="pets"></div>
+</section>
+
+<section>
+  <div class="sec-head"><p class="eyebrow">Renovation</p><h2>10 levels, from broken to golden</h2></div>
+  <p>Each step costs coins, and some need family squishies living in the house. Tap any level to see it bigger with the family around it.</p>
+  <ol data-levels="pets">
+  <li><b>Abandoned.</b> Hole in the roof, bone sign hanging crooked, boarded windows.</li>
+  <li><b>Clean-up.</b> Tarp on the roof hole, cone and planks out front.</li>
+  <li><b>New roof.</b> Red roof tiles and the bone sign back in place.</li>
+  <li><b>Fresh planks.</b> Walls painted a warm biscuit colour.</li>
+  <li><b>Glass windows.</b> Windows with yellow curtains, attic window cleaned.</li>
+  <li><b>Blue door.</b> A big arched door (big enough for the Corgi).</li>
+  <li><b>Garden.</b> Fence, flower boxes, stepping stones.</li>
+  <li><b>Paw path.</b> Paw-print stepping stones and two lanterns by the roof.</li>
+  <li><b>Party roof.</b> String lights along both roof slopes.</li>
+  <li><b>Golden Paw Palace.</b> Star medal on the sign and sparkles. Complete!</li>
+</ol>
+</section>
+
+<section>
+  <div class="sec-head"><p class="eyebrow">Inside the house</p><h2>The Pet Pals room</h2></div>
+  <p>In the game, tapping the house on the city map opens this room. A sunny pet room with paw-print wallpaper, a tall cat tree, a donut dog bed and a hamster tube that runs across the wall. The numbers match the decor shop list below. <b>Every decor item comes in 4 designs</b> (Classic, Candy Pop, Mint Breeze and the fancier Starlight). Tap a design in the list to try it in the room, and drag the room to look around.</p>
+  <figure class="room" data-room="pets" style="margin:0"></figure>
+  <div class="tbl-wrap"><table>
+    <thead><tr><th>#</th><th>Decor item</th><th>Cozy</th><th>Designs &amp; price (coins)</th></tr></thead>
+    <tbody><tr><td><span class="badge">1</span></td><td><b>Cat Tree Tower</b><br><span class="what">Three platforms and a dangling toy. Kitty sleeps on top.</span></td><td class="num">+4</td><td><div class="designs" data-decor-room="pets" data-item="1"><button type="button" data-style="classic" aria-pressed="true"><i class="sw sw-classic"></i>Classic<small>320</small></button><button type="button" data-style="candy" aria-pressed="false"><i class="sw sw-candy"></i>Candy Pop<small>380</small></button><button type="button" data-style="mint" aria-pressed="false"><i class="sw sw-mint"></i>Mint Breeze<small>380</small></button><button type="button" data-style="star" aria-pressed="false"><i class="sw sw-star"></i>Starlight<small>510</small></button></div></td></tr><tr><td><span class="badge">2</span></td><td><b>Donut Dog Bed</b><br><span class="what">Soft ring bed. The Corgi Loaf never leaves it.</span></td><td class="num">+3</td><td><div class="designs" data-decor-room="pets" data-item="2"><button type="button" data-style="classic" aria-pressed="true"><i class="sw sw-classic"></i>Classic<small>240</small></button><button type="button" data-style="candy" aria-pressed="false"><i class="sw sw-candy"></i>Candy Pop<small>290</small></button><button type="button" data-style="mint" aria-pressed="false"><i class="sw sw-mint"></i>Mint Breeze<small>290</small></button><button type="button" data-style="star" aria-pressed="false"><i class="sw sw-star"></i>Starlight<small>380</small></button></div></td></tr><tr><td><span class="badge">3</span></td><td><b>Fish Tank</b><br><span class="what">Two goldfish swim in a loop. Cats stare at it in an idle.</span></td><td class="num">+3</td><td><div class="designs" data-decor-room="pets" data-item="3"><button type="button" data-style="classic" aria-pressed="true"><i class="sw sw-classic"></i>Classic<small>300</small></button><button type="button" data-style="candy" aria-pressed="false"><i class="sw sw-candy"></i>Candy Pop<small>360</small></button><button type="button" data-style="mint" aria-pressed="false"><i class="sw sw-mint"></i>Mint Breeze<small>360</small></button><button type="button" data-style="star" aria-pressed="false"><i class="sw sw-star"></i>Starlight<small>480</small></button></div></td></tr><tr><td><span class="badge">4</span></td><td><b>Yarn Ball Basket</b><br><span class="what">Unlocks a yarn-chasing idle for Kitty.</span></td><td class="num">+1</td><td><div class="designs" data-decor-room="pets" data-item="4"><button type="button" data-style="classic" aria-pressed="true"><i class="sw sw-classic"></i>Classic<small>120</small></button><button type="button" data-style="candy" aria-pressed="false"><i class="sw sw-candy"></i>Candy Pop<small>140</small></button><button type="button" data-style="mint" aria-pressed="false"><i class="sw sw-mint"></i>Mint Breeze<small>140</small></button><button type="button" data-style="star" aria-pressed="false"><i class="sw sw-star"></i>Starlight<small>190</small></button></div></td></tr><tr><td><span class="badge">5</span></td><td><b>Bone Shelf</b><br><span class="what">Displays toys and trophies from minigames.</span></td><td class="num">+2</td><td><div class="designs" data-decor-room="pets" data-item="5"><button type="button" data-style="classic" aria-pressed="true"><i class="sw sw-classic"></i>Classic<small>180</small></button><button type="button" data-style="candy" aria-pressed="false"><i class="sw sw-candy"></i>Candy Pop<small>220</small></button><button type="button" data-style="mint" aria-pressed="false"><i class="sw sw-mint"></i>Mint Breeze<small>220</small></button><button type="button" data-style="star" aria-pressed="false"><i class="sw sw-star"></i>Starlight<small>290</small></button></div></td></tr><tr><td><span class="badge">6</span></td><td><b>Hamster Tube Wall</b><br><span class="what">Hamster scurries through it in a loop.</span></td><td class="num">+3</td><td><div class="designs" data-decor-room="pets" data-item="6"><button type="button" data-style="classic" aria-pressed="true"><i class="sw sw-classic"></i>Classic<small>260</small></button><button type="button" data-style="candy" aria-pressed="false"><i class="sw sw-candy"></i>Candy Pop<small>310</small></button><button type="button" data-style="mint" aria-pressed="false"><i class="sw sw-mint"></i>Mint Breeze<small>310</small></button><button type="button" data-style="star" aria-pressed="false"><i class="sw sw-star"></i>Starlight<small>420</small></button></div></td></tr></tbody>
+  </table></div>
+  <p class="note"><b>Cozy points</b>Every decor item adds Cozy points to the house. More Cozy means the family is happier: each 5 Cozy gives this family’s squishies +5% coins in minigames, and some items unlock extra idle animations.</p>
+</section>
+
+<section>
+  <div class="sec-head"><p class="eyebrow">Life around the house</p><h2>What you see on the city map</h2></div>
+  <p>Bunny mows the lawn, Puppy waits at the mailbox with a letter in his mouth, Kitty sleeps on the warm roof, Hamster pops in and out of the attic window, the Corgi Loaf snores on the doormat and the Lucky Cat waves non-stop from the roof peak.</p>
+  <p>Every squishy has one fixed spot and one short looping action (2 to 4 seconds) that stays in place. A squishy only appears once you own it. If you trade it away, its spot becomes empty again.</p>
+</section>
+
+<footer class="foot">
+  <span>Words on this page: <code>pets.html</code></span>
+  <span>Pictures &amp; squishy list: <code>art/pets.js</code></span>
+</footer>
+</main>
+<script src="art/kit.js"></script>
+<script>SQ.boot();</script>
+</body>
+</html>

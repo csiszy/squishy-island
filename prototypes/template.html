@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
+<title>%%TITLE%%</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bagel+Fat+One&amp;family=Nunito:wght@600;800;900&amp;display=swap">
+<style>
+/* %%TITLE%% — playable prototype of a Squishy Island minigame. One file, works on phone and PC. */
+:root{--ink:#3A2A4A;--accent:%%ACCENT%%;--bg1:%%BG1%%;--bg2:%%BG2%%;color-scheme:light}
+*{box-sizing:border-box}
+html,body{margin:0;height:100%;overflow:hidden;background:linear-gradient(160deg,var(--bg1),var(--bg2));font-family:Nunito,system-ui,sans-serif;color:var(--ink);-webkit-tap-highlight-color:transparent;user-select:none;-webkit-user-select:none}
+#app{position:fixed;inset:env(safe-area-inset-top,0px) env(safe-area-inset-right,0px) env(safe-area-inset-bottom,0px) env(safe-area-inset-left,0px)}
+canvas{position:absolute;display:block;touch-action:none;border-radius:calc(var(--s,1) * 0px);box-shadow:0 10px 40px rgba(43,33,65,.25)}
+.ui{position:absolute;pointer-events:none;display:grid;place-items:center}
+.card{pointer-events:auto;width:86%;max-height:92%;overflow:auto;background:#fff;border:3px solid var(--ink);border-radius:26px;box-shadow:6px 6px 0 var(--ink);padding:20px 20px 18px;text-align:center;font-size:calc(var(--s) * 15px)}
+.card h1{font-family:"Bagel Fat One","Arial Rounded MT Bold",system-ui,sans-serif;font-weight:400;font-size:2.4em;line-height:1;margin:.15em 0 .1em;color:var(--accent);-webkit-text-stroke:1.5px var(--ink);paint-order:stroke fill}
+.eyebrow{margin:0;font-weight:900;font-size:.72em;letter-spacing:.14em;text-transform:uppercase;color:#6E6688}
+.sub{margin:.2em 0 .8em;font-weight:800;color:#6E6688}
+.card ul{text-align:left;margin:0 0 .8em;padding-left:1.2em;display:grid;gap:.35em;font-weight:700;line-height:1.35}
+.best{margin:.2em 0 .6em;font-weight:800}
+.nb{margin:.2em 0 .6em;font-weight:900;color:#E5484D;font-size:1.15em}
+.go{font:inherit;font-family:"Bagel Fat One",system-ui,sans-serif;font-size:1.6em;color:#fff;background:var(--accent);border:3px solid var(--ink);border-radius:999px;padding:.35em 1.6em;box-shadow:4px 4px 0 var(--ink);cursor:pointer}
+.go:active{transform:translate(2px,2px);box-shadow:2px 2px 0 var(--ink)}
+.go:focus-visible{outline:3px solid #FFD54A;outline-offset:3px}
+.keys{margin:.8em 0 0;font-size:.8em;font-weight:800;color:#8C84A3}
+/* coins */
+.ci{display:inline-block;width:1em;height:1em;border-radius:50%;background:radial-gradient(circle at 35% 35%,#FFF3B0 0 22%,#FFD54A 24%);border:2px solid #C98A12;vertical-align:-.15em;margin-right:.3em}
+.rw{margin:.2em 0 .7em;font-weight:900;font-size:.92em}.rw span{font-weight:800;color:#6E6688;font-size:.92em}
+.pay{background:#FFF7D6;border:2.5px solid var(--ink);border-radius:16px;padding:.5em .6em;margin:.3em 0 .5em}
+.pay-big{margin:0;font-family:"Bagel Fat One",system-ui,sans-serif;font-size:1.5em;color:#C98A12;-webkit-text-stroke:1px var(--ink);paint-order:stroke fill}
+.pay-sm{margin:.15em 0 0;font-weight:800;font-size:.85em;color:#6E6688}.pay-sm b{color:var(--ink)}
+.wallet{margin:.1em 0 .7em;font-weight:800;font-size:.75em;color:#8C84A3}.wallet b{color:var(--ink)}
+/* level games */
+.stars{display:inline-flex;gap:2px;vertical-align:middle}.stars i{width:.9em;height:.9em;background:#E3DEEF;clip-path:polygon(50% 0,61% 35%,98% 35%,68% 57%,79% 91%,50% 70%,21% 91%,32% 57%,2% 35%,39% 35%)}.stars i.on{background:#FFC93C}
+.stars.big{font-size:2.2em;gap:6px;margin:.1em 0}.stars.big i{filter:drop-shadow(0 2px 0 var(--ink))}
+.lvgrid{display:grid;grid-template-columns:repeat(4,1fr);gap:.45em;margin:.9em 0 0}
+.lv{font:inherit;font-weight:900;font-size:1.05em;display:grid;justify-items:center;gap:.1em;padding:.35em 0 .3em;border:2.5px solid var(--ink);border-radius:14px;background:#fff;color:var(--ink);cursor:pointer;box-shadow:2px 2px 0 var(--ink)}
+.lv .stars{font-size:.62em}.lv.cur{background:#FFF3B0}.lv.boss{background:#FFE3EF}.lv.lock{opacity:.4;cursor:default;box-shadow:none;border-style:dashed}
+.lv:focus-visible,.ghost:focus-visible{outline:3px solid #FFD54A;outline-offset:2px}
+.how{margin:0 0 .4em;text-align:left}.how summary{cursor:pointer;font-weight:900;color:var(--accent);text-align:center;margin-bottom:.4em}
+.trks{display:grid;gap:.4em;margin:.8em 0 0;max-height:40vh;overflow:auto;padding:2px}
+.trk{font:inherit;text-align:left;display:grid;grid-template-columns:1fr auto;gap:.05em .5em;align-items:center;padding:.45em .7em;border:2.5px solid var(--ink);border-radius:14px;background:#fff;color:var(--ink);cursor:pointer;box-shadow:2px 2px 0 var(--ink)}
+.trk .tn{font-weight:900}.trk .tm{grid-column:1;font-size:.78em;font-weight:800;color:#6E6688}.trk .stars{grid-row:1/span 2;grid-column:2;font-size:.8em}
+.trk.cur{background:#FFF3B0}.trk.lock{opacity:.5;cursor:default;box-shadow:none;border-style:dashed}.trk:focus-visible{outline:3px solid #FFD54A;outline-offset:2px}
+.shelf{display:grid;grid-template-columns:repeat(3,1fr);gap:.45em;margin:.6em 0;max-height:52vh;overflow:auto;padding:2px}
+.sh{font:inherit;display:grid;justify-items:center;gap:0;padding:.3em .2em;border:2.5px solid var(--ink);border-radius:14px;background:#fff;color:var(--ink);cursor:pointer;box-shadow:2px 2px 0 var(--ink)}
+.sh img{width:3.4em;height:3.4em}.sh b{font-size:.85em}.sh span{font-size:.66em;font-weight:800;color:#6E6688}.sh:focus-visible{outline:3px solid #FFD54A;outline-offset:2px}
+.own{display:flex;align-items:center;justify-content:center;gap:.5em;margin:.2em 0 .3em;font-weight:900}.ghost.sm{padding:.1em .8em;font-size:1.1em}
+.lv small{font-size:.62em;font-weight:900;color:#6E6688}
+.adbar{height:.7em;border-radius:1em;background:#F2EFFA;border:2px solid var(--ink);overflow:hidden;margin:.6em 0 .2em}.adbar i{display:block;height:100%;background:var(--accent);transition:width .9s linear}
+.btnrow{display:flex;justify-content:center;gap:.6em;margin-top:.5em;flex-wrap:wrap}
+.ghost{font:inherit;font-weight:900;font-size:.95em;color:var(--ink);background:#fff;border:2.5px solid var(--ink);border-radius:999px;padding:.35em 1.1em;cursor:pointer}
+/* results counters */
+[data-count]{display:inline-block;font-variant-numeric:tabular-nums}
+[data-count].pop{animation:cpop .28s ease-out}
+@keyframes cpop{40%{transform:scale(1.22)}}
+.nb.later{visibility:hidden}
+.tourback{background:#FFF8E8;border:2.5px dashed var(--ink);border-radius:16px;padding:.5em .7em;margin-top:.7em;font-weight:800}
+.tourback p{margin:0 0 .5em}
+.tourback .go{display:inline-block;text-decoration:none;font-size:1.25em}
+.nb.stamp{animation:stamp .4s cubic-bezier(.2,1.6,.4,1)}
+@keyframes stamp{0%{transform:scale(2.2) rotate(-8deg);opacity:0}100%{transform:none;opacity:1}}
+@media (prefers-reduced-motion:reduce){.go:active{transform:none}[data-count].pop,.nb.stamp{animation:none}}
+</style>
+</head>
+<body>
+<div id="app"></div>
+%%EXTRA%%<script>
+%%SOUND%%
+</script>
+<script>
+/* squishy pictures (the 3D squishy models, pre-rendered) */
+const SPR = %%SPRITES%%;
+</script>
+<script>
+%%ENGINE%%
+</script>
+<script>
+%%GAME%%
+</script>
+</body>
+</html>

@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Fluff & Puff Salon</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bagel+Fat+One&amp;family=Nunito:wght@400;600;800;900&amp;family=Patrick+Hand&amp;display=swap">
+<link rel="stylesheet" href="art/style.css">
+</head>
+<body style="--theme:#C7509A;--theme2:#FFE3EF">
+<header class="topbar"><div class="topbar-in">
+  <a class="brand" href="index.html"><i></i>Squishy Island</a>
+  <nav><a class="pill" href="index.html">&larr; City map</a><a class="pill" href="guide.html">Game guide</a></nav>
+</div></header>
+<main class="wrap">
+
+<section class="hero">
+  <div class="hero-text">
+    <p class="eyebrow">Fun building · minigame</p>
+    <h1>Fluff & Puff Salon</h1>
+    <p class="lede">A pink hair salon with a barber pole, where squishies come to get fluffy hairdos, colours and bows. It grows from a beauty cart to a domed salon with a hair-dryer on the roof.</p>
+    <ul class="facts"><li><b>Address:</b> 2 Squeeze Street</li><li><b>Unlocks:</b> Teapot Kitchen reaches level 3</li><li><b>Minigame:</b> Style Studio</li><li><b>Play time:</b> Endless (3 hearts)</li></ul>
+    <p class="note"><b>Try it</b>Drag the slider to see the building at every level. Level 0 is the empty plot it starts as.</p>
+  </div>
+  <div class="hero-art" data-hero="salon" data-level="10"></div>
+</section>
+
+<section>
+  <div class="sec-head"><p class="eyebrow">The minigame</p><h2>Style Studio</h2></div>
+  <p class="playbar"><a class="play-btn" href="play/style-studio.html">&#9654; Play the prototype</a><span>Works on phone and computer. Each minigame is one file you can open on its own: <code>play/style-studio.html</code></span></p>
+  <div class="game">
+    <div class="prose">
+      <p class="lede">A quick copy-the-look game. Each guest shows a picture of the hairdo they want. Comb, trim a fringe, spray, dye and decorate to match it before their patience runs out. There is no live match meter: you only find out how close you got when you are done. Guests never stop coming, and each one waits a little less.</p>
+      <h3>How it plays</h3><ol><li>A guest sits in the chair. The Wants card shows the look they want, with 5 things to copy: style, colour, accessory, fringe and finish.</li><li>Comb switches between curly, spiky and smooth.</li><li>Fringe cycles the bangs (none, straight, side swoop). Spray cycles the finish (plain, shiny, sparkly glitter).</li><li>Tap a colour drop to dye the hair and an accessory (bow, flower, star) to pop it on.</li><li>The Match box stays a secret “?” while you work. Tap Done! (or let the patience bar run out) to see the final %, plus which things you missed.</li><li>A match under 80% (fewer than 4 of 5 right) makes the guest unhappy and costs a heart. 3 hearts and the salon closes for the day.</li></ol>
+      <h3>Controls</h3><p>Tap tools, colours and accessories. Every tool is a picture. PC: keys 1-3 for comb / fringe / spray, Enter for Done.</p>
+      <h3>Scoring</h3><ul><li>Each happy guest scores match % × 10, plus a speed bonus for patience left. Unhappy guests still score a little (match % × 2).</li><li>A 100% perfect match adds a bonus that grows with every perfect in a row.</li><li>Your best score is saved.</li></ul>
+      <h3>It never ends, it just gets harder</h3><ul><li>Each guest is less patient than the last.</li><li>Guests always arrive with a very different hairdo (at most 1 of the 5 things already right), so most looks need 4 or more changes.</li><li>With no live meter you have to really look: checking your work before tapping Done! is the skill.</li></ul>
+      <h3>Squishy helpers</h3><p>You always play with squishies you own. Some families are extra good at this game:</p><ul><li><b>Sugar Squad</b> stylists unlock sprinkle and glitter accessories.</li><li><b>Sky Puffs</b> stylists give every guest 20% more patience.</li></ul>
+      <h3>Rewards</h3><p>Coins equal to the points ÷ 250, plus a milestone bonus of +10 / +25 / +50 coins at 5,000 / 15,000 / 30,000 points (you get the highest one reached). About 35 coins per minute for a good player. Hairstyles you create can be saved as cosmetic looks for your own squishies.</p><h3>Keep going (optional ad)</h3><p>When the run ends, the player can choose to watch a short ad once per run: carry on with 1 heart. “No thanks” ends the run as normal. See the <a href="guide.html#ads">ad rules</a>.</p>
+    </div>
+    <figure class="phone" data-mock="salon" style="margin:0"></figure>
+  </div>
+</section>
+
+<section>
+  <div class="sec-head"><p class="eyebrow">Building levels</p><h2>From empty plot to level 10</h2></div>
+  <p>The plot is fixed on the map and shows a &ldquo;Build me!&rdquo; sign until you pay to build level 1. After that, each upgrade unlocks when your best score in Style Studio is high enough, and then costs coins. Better results in the minigame = a fancier building. Tap any level to see it bigger.</p>
+  <ol data-levels="salon">
+  <li><b>Beauty cart.</b> A pink striped cart with a scissors sign.</li>
+  <li><b>Cart + mirror board.</b> A chalkboard price list.</li>
+  <li><b>Little salon.</b> A small pink salon with a domed roof.</li>
+  <li><b>Barber pole.</b> A spinning red-and-blue pole and awnings.</li>
+  <li><b>Wider salon.</b> Big windows to show off styles.</li>
+  <li><b>Second floor.</b> An upstairs styling room.</li>
+  <li><b>Style sign.</b> A sign by the door and a freshly styled guest outside.</li>
+  <li><b>Lit sign & garden.</b> Bulbs, flowers and fence.</li>
+  <li><b>Hair-dryer roof.</b> A giant pink hair dryer blows bubbles.</li>
+  <li><b>Golden Salon.</b> Flags, star medal and sparkles.</li>
+</ol>
+</section>
+
+<footer class="foot">
+  <span>Words on this page: <code>salon.html</code></span>
+  <span>Pictures &amp; squishy list: <code>art/salon.js</code></span>
+</footer>
+</main>
+<script src="art/kit.js"></script>
+<script>SQ.boot();</script>
+</body>
+</html>

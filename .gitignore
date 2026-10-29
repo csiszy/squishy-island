@@ -1,3 +1,23 @@
+# ---- Squishy Island ----
+# generated / temporary
+build/
+__pycache__/
+*.pyc
+node_modules/
+.DS_Store
+
+# Godot
+game/.godot/
+game/export_presets.cfg.local
+*.import.tmp
+
+# secrets: never commit
+*.keystore
+*.jks
+.env
+service-account*.json
+
+# ---- from the GitHub Node template ----
 # Logs
 logs
 *.log

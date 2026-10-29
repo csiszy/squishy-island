@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Squish Arcade</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bagel+Fat+One&amp;family=Nunito:wght@400;600;800;900&amp;family=Patrick+Hand&amp;display=swap">
+<link rel="stylesheet" href="art/style.css">
+</head>
+<body style="--theme:#FF7A45;--theme2:#FFE8D6">
+<header class="topbar"><div class="topbar-in">
+  <a class="brand" href="index.html"><i></i>Squishy Island</a>
+  <nav><a class="pill" href="index.html">&larr; City map</a><a class="pill" href="guide.html">Game guide</a></nav>
+</div></header>
+<main class="wrap">
+
+<section class="hero">
+  <div class="hero-text">
+    <p class="eyebrow">Fun building · minigame</p>
+    <h1>Squish Arcade</h1>
+    <p class="lede">A bright arcade hall with a domed orange roof, full of blinking games. The star machine is Squish Breaker, where your own squishies are the bouncing balls. It grows from a little game stall into a neon arcade with a squishy bouncing on the roof.</p>
+    <ul class="facts"><li><b>Address:</b> 6 Butter Boulevard</li><li><b>Unlocks:</b> Sugar Squad cupcake house reaches level 4</li><li><b>Minigame:</b> Squish Breaker (level-based)</li><li><b>Play time:</b> Level-based (1–3 min per level)</li></ul>
+    <p class="note"><b>Try it</b>Drag the slider to see the building at every level. Level 0 is the empty plot it starts as.</p>
+  </div>
+  <div class="hero-art" data-hero="arcade" data-level="10"></div>
+</section>
+
+<section>
+  <div class="sec-head"><p class="eyebrow">The minigame</p><h2>Squish Breaker</h2></div>
+  <p class="playbar"><a class="play-btn" href="play/squish-breaker.html">&#9654; Play the prototype</a><span>Works on phone and computer. Each minigame is one file you can open on its own: <code>play/squish-breaker.html</code></span></p>
+  <div class="game">
+    <div class="prose">
+      <p class="lede">A level-based “balls versus bricks” game. Your squishies are the balls: you get exactly one ball for every squishy you own. Aim, let go, and they all fly out in a stream, bouncing off the walls and knocking numbers off the bricks. Levels open one after another, so a sharp player can go as far as their aim takes them; more squishies just make it easier.</p>
+      <h3>How it plays</h3><ol><li>Drag anywhere to aim: a dotted line shows the path to the first bounce. Let go to fire all your squishies, one after another.</li><li>Every hit takes 1 off a brick’s number; at 0 it pops. Orange bomb bricks explode and hurt the bricks around them.</li><li>Squishies come back to the floor; the first one to land sets where you shoot from next.</li><li>When all squishies are back, every brick moves down one row and more come in from the top.</li><li>Clear every brick to win. If a brick reaches the red line at the bottom, the level is lost.</li></ol>
+      <h3>Controls</h3><p>Drag and release. A fast-forward button appears while balls are flying. PC: mouse, or ← → to aim and Space to shoot, F = fast forward.</p>
+      <h3>Scoring</h3><ul><li>Win in few turns for more stars: ★★★ within the turn target shown under the field, ★★ within 3 more turns, ★ for any win.</li><li>Stars per level are saved, and you can replay any level for more.</li></ul>
+      <h3>Levels that keep getting tougher</h3><ul><li>Beat a level and the next one opens, always. Your collection never locks a level.</li><li>Each level is built for a recommended number of squishies: 5 at level 1, 10 at level 10, 16 at level 20, 34 at level 50, up to all 48. Brick numbers are set from that number, so with only the recommended amount a level is a real challenge, and every extra squishy makes it easier.</li><li>Bricks are tough from the start: on level 1 they carry about 3–8 hits each, and later levels add more rows and bombs. Every 10th level is a Big Level with double coins.</li></ul>
+      <h3>Squishy helpers</h3><p>You always play with squishies you own. Some families are extra good at this game:</p><ul><li>Each squishy you own is one ball, drawn as that squishy.</li><li><b>Sky Puffs</b> balls float a little longer at the top.</li><li>Rarer squishies hit harder: Epic balls take 2 off a brick, Legendary ones 3.</li></ul>
+      <h3>Rewards</h3><p>Coins only when you beat a level: the first time, 30 + 15 per star (45–75 coins; Big Levels pay double). Replaying pays 10 coins + 15 for each new star. The building’s upgrades unlock as you beat more levels.</p><h3>Keep going (optional ad)</h3><p>When the run ends, the player can choose to watch a short ad once per run: the bricks are pushed 3 rows back up. “No thanks” ends the run as normal. See the <a href="guide.html#ads">ad rules</a>.</p>
+    </div>
+    <figure class="phone" data-mock="arcade" style="margin:0"></figure>
+  </div>
+</section>
+
+<section>
+  <div class="sec-head"><p class="eyebrow">Building levels</p><h2>From empty plot to level 10</h2></div>
+  <p>The plot is fixed on the map and shows a &ldquo;Build me!&rdquo; sign until you pay to build level 1. After that, each upgrade unlocks when you have beaten enough levels of Squish Breaker, and then costs coins. Better results in the minigame = a fancier building. Tap any level to see it bigger.</p>
+  <ol data-levels="arcade">
+  <li><b>Game stall.</b> A little striped stall with one blinking game.</li>
+  <li><b>Stall + prize board.</b> A board showing the best scores.</li>
+  <li><b>Little arcade.</b> A small hall with a round orange roof.</li>
+  <li><b>Brick stack.</b> A pile of numbered bricks by the door and awnings.</li>
+  <li><b>Wider hall.</b> Big windows full of blinking screens.</li>
+  <li><b>Second floor.</b> An upstairs games room.</li>
+  <li><b>Bouncing squishy.</b> A giant squishy bounces on the roof.</li>
+  <li><b>Lit sign & garden.</b> Bulbs, flowers and a fence.</li>
+  <li><b>Arcade cabinet.</b> A purple game cabinet out front.</li>
+  <li><b>Neon Arcade.</b> Glowing neon bricks, flags, star medal and sparkles.</li>
+</ol>
+</section>
+
+<footer class="foot">
+  <span>Words on this page: <code>arcade.html</code></span>
+  <span>Pictures &amp; squishy list: <code>art/arcade.js</code></span>
+</footer>
+</main>
+<script src="art/kit.js"></script>
+<script>SQ.boot();</script>
+</body>
+</html>

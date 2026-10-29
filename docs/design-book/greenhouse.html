@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Sprout Club Greenhouse</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bagel+Fat+One&amp;family=Nunito:wght@400;600;800;900&amp;family=Patrick+Hand&amp;display=swap">
+<link rel="stylesheet" href="art/style.css">
+</head>
+<body style="--theme:#3BA7A0;--theme2:#E3FAF3">
+<header class="topbar"><div class="topbar-in">
+  <a class="brand" href="index.html"><i></i>Squishy Island</a>
+  <nav><a class="pill" href="index.html">&larr; City map</a><a class="pill" href="guide.html">Game guide</a></nav>
+</div></header>
+<main class="wrap">
+
+<section class="hero">
+  <div class="hero-text">
+    <p class="eyebrow">Fun building · minigame</p>
+    <h1>Sprout Club Greenhouse</h1>
+    <p class="lede">A greenhouse that starts as a single flower pot on a table and grows into a glass crystal palace with a windmill.</p>
+    <ul class="facts"><li><b>Address:</b> 2 Cloudberry Hill</li><li><b>Unlocks:</b> Cloud Nine reaches level 3</li><li><b>Minigame:</b> Grow Grow Garden</li><li><b>Play time:</b> Endless (3 hearts)</li></ul>
+    <p class="note"><b>Try it</b>Drag the slider to see the building at every level. Level 0 is the empty plot it starts as.</p>
+  </div>
+  <div class="hero-art" data-hero="greenhouse" data-level="10"></div>
+</section>
+
+<section>
+  <div class="sec-head"><p class="eyebrow">The minigame</p><h2>Grow Grow Garden</h2></div>
+  <p class="playbar"><a class="play-btn" href="play/grow-grow-garden.html">&#9654; Play the prototype</a><span>Works on phone and computer. Each minigame is one file you can open on its own: <code>play/grow-grow-garden.html</code></span></p>
+  <div class="game">
+    <div class="prose">
+      <p class="lede">A busy real-time care game. Seeds sprout in the 3×3 garden all by themselves, on a timer that keeps getting quicker, so you can never slow the garden down. Give each plant what it asks for until it blooms, then harvest it, and shoo away the snails.</p>
+      <h3>How it plays</h3><ol><li>Seeds pop up in empty beds on their own every few seconds (a little soil wiggle shows where the next one is coming). You cannot plant or pause them: you have to keep up.</li><li>Each plant shows a bubble with what it needs: a water drop or a sun. The ring around the bubble shows how long it can wait.</li><li>Pick the matching tool and tap the plant. It grows a stage. Three stages later it blooms.</li><li>Pick the basket and tap the bloom to harvest it. Golden blooms are worth 3×.</li><li>Snails crawl toward your plants: tap them to send them home. A need that waits too long makes the plant wilt and costs a heart. 3 hearts and the garden rests.</li></ol>
+      <h3>Controls</h3><p>Tap a tool (Water, Sun, Harvest), then tap a plant. PC: keys 1-3 pick the tool.</p>
+      <h3>Scoring</h3><ul><li>+100 per flower harvested (+300 for golden ones), plus a speed bonus.</li><li>+10 for each feed, +20 for each snail sent home.</li><li>Your best score is saved.</li></ul>
+      <h3>It never ends, it just gets harder</h3><ul><li>New seeds sprout faster and faster (from about every 3.5 s down to about every 1.3 s), based on time played and flowers harvested.</li><li>Every 5 harvests, plants wait less before wilting but also grow faster.</li><li>Snails come more often and crawl faster. From level 2, golden blooms appear.</li></ul>
+      <h3>Squishy helpers</h3><p>You always play with squishies you own. Some families are extra good at this game:</p><ul><li><b>Forest Folk</b> gardeners make plants grow a stage faster 20% of the time.</li><li><b>Fresh Fruits</b> gardeners get golden blooms twice as often.</li></ul>
+      <h3>Rewards</h3><p>Coins equal to the points ÷ 200, plus a milestone bonus of +10 / +25 / +50 coins at 20 / 40 / 70 flowers harvested in one run (you get the highest one reached). About 35 coins per minute for a good player. Harvested flowers can be placed as garden decor around any house.</p><h3>Keep going (optional ad)</h3><p>When the run ends, the player can choose to watch a short ad once per run: carry on with 1 heart; every plant’s wait resets and the snails go home. “No thanks” ends the run as normal. See the <a href="guide.html#ads">ad rules</a>.</p>
+    </div>
+    <figure class="phone" data-mock="greenhouse" style="margin:0"></figure>
+  </div>
+</section>
+
+<section>
+  <div class="sec-head"><p class="eyebrow">Building levels</p><h2>From empty plot to level 10</h2></div>
+  <p>The plot is fixed on the map and shows a &ldquo;Build me!&rdquo; sign until you pay to build level 1. After that, each upgrade unlocks when your best score in Grow Grow Garden is high enough, and then costs coins. Better results in the minigame = a fancier building. Tap any level to see it bigger.</p>
+  <ol data-levels="greenhouse">
+  <li><b>Potting table.</b> One flower pot on a wooden table.</li>
+  <li><b>Seed tray.</b> A seed tray and a watering can.</li>
+  <li><b>Cold frame.</b> A little glass box of seedlings.</li>
+  <li><b>Glass hut.</b> A small greenhouse with a pointed roof.</li>
+  <li><b>Planters.</b> Flower planters on each side.</li>
+  <li><b>Bigger greenhouse.</b> Wider, taller, with climbing leaves.</li>
+  <li><b>Glass dome.</b> A domed roof on top.</li>
+  <li><b>Windmill.</b> A little windmill turns beside it.</li>
+  <li><b>Vines & butterflies.</b> Flowering vines climb the glass.</li>
+  <li><b>Crystal Palace.</b> A golden dome tip and sparkles.</li>
+</ol>
+</section>
+
+<footer class="foot">
+  <span>Words on this page: <code>greenhouse.html</code></span>
+  <span>Pictures &amp; squishy list: <code>art/greenhouse.js</code></span>
+</footer>
+</main>
+<script src="art/kit.js"></script>
+<script>SQ.boot();</script>
+</body>
+</html>

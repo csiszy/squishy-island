@@ -1,0 +1,131 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Google Play and Legal</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bagel+Fat+One&amp;family=Nunito:wght@400;600;800;900&amp;family=Patrick+Hand&amp;display=swap">
+<link rel="stylesheet" href="art/style.css">
+<style>
+.st{display:inline-block;font-size:11px;font-weight:900;letter-spacing:.06em;text-transform:uppercase;border:1.5px solid var(--line);border-radius:999px;padding:2px 8px;white-space:nowrap}
+.ok{background:#CFF3E2}.chg{background:#FFE3A8}.chk{background:#E3E8FF}.no{background:#FFD2D6}
+td small{color:var(--ink2);font-weight:700}
+.legend{display:flex;flex-wrap:wrap;gap:10px;align-items:center;font-size:13.5px;font-weight:800}
+.docs td:first-child{font-weight:800}
+</style>
+</head>
+<body style="--theme:#3BA7A0;--theme2:#DDF5F2">
+<header class="topbar"><div class="topbar-in">
+  <a class="brand" href="index.html"><i></i>Squishy Island</a>
+  <nav><a class="pill" href="index.html">&larr; City map</a><a class="pill" href="guide.html">Game guide</a><a class="pill" href="account.html">Accounts</a><a class="pill" href="gemmine.html">Gem Mine</a></nav>
+</div></header>
+<main class="wrap">
+
+<section class="hero" style="grid-template-columns:1fr">
+  <div class="hero-text">
+    <p class="eyebrow">Launching on Google Play</p>
+    <h1>Rules check</h1>
+    <p class="lede">The game is designed for children, so on Google Play it falls under the <b>Families policies</b>, the strictest set of rules in the store. This page goes through those rules, the EU and country rules that matter for a kids’ game with ads, Gems and Mystery Boxes, and the documents needed before launch. Checked against the published rules in October 2026.</p>
+    <p class="note"><b>Not legal advice</b>This is a design check so the game is built in the right spirit. A lawyer should review the final game, the store listing and every document before launch. Rules here change often (the EU Digital Fairness Act proposal is due in mid-November 2026).</p>
+    <div class="legend"><span class="st ok">OK</span> already in the design <span class="st chg">changed</span> changed on this round <span class="st chk">decide / check</span> needs a decision or a lawyer <span class="st no">avoid</span> don’t do it</div>
+  </div>
+</section>
+
+<section>
+  <div class="sec-head"><p class="eyebrow">Google Play</p><h2>Families policy and store rules</h2></div>
+  <div class="tbl-wrap"><table>
+    <thead><tr><th>Rule</th><th>Status</th><th>What Squishy Island does</th></tr></thead>
+    <tbody>
+      <tr><td><b>Target audience</b>: declare the age groups in the Play Console</td><td><span class="st ok">OK</span></td><td>Declare <b>children only</b> (ages 5–8 and 9–12). That means the whole Families policy applies, but it also avoids needing an age screen.</td></tr>
+      <tr><td>Content must suit children; no simulated gambling</td><td><span class="st ok">OK</span></td><td>Mystery Boxes use coins earned by playing, and never look like a casino (no slot reels, no wheels with chips, no “jackpot”).</td></tr>
+      <tr><td><b>Ads only from Families Self-Certified Ads SDKs</b>; no interest-based ads or remarketing</td><td><span class="st ok">OK</span></td><td>Pick the ad network from Google’s self-certified list and turn on its child-directed setting. Block ad categories that aren’t for kids.</td></tr>
+      <tr><td><b>Ads that interrupt play must be closable after 5 seconds, including rewarded ads</b></td><td><span class="st chg">changed</span></td><td>Every rewarded ad shows a close button after 5 seconds. Closing early simply means no reward (“Watch the whole ad to keep going”). The ad network must support this setting.</td></tr>
+      <tr><td>No ad when the app opens; one ad placement per screen; ads clearly look like ads</td><td><span class="st ok">OK</span></td><td>Only two placements (keep going, free box), both behind a button the child taps, both labelled “Ad”.</td></tr>
+      <tr><td>No shocking or emotionally manipulative tactics to push ads or purchases</td><td><span class="st chg">changed</span></td><td>The “Keep going?” card and the Gem Mine stay neutral: no sad or crying squishies, no countdowns, no “last chance”. Bao never asks for money.</td></tr>
+      <tr><td>Make the difference between game coins and real money clear</td><td><span class="st ok">OK</span></td><td>Coins and Gems look different; every Gem pack shows its real-money price; Gem Shop items show an approximate real-money value.</td></tr>
+      <tr><td>No advertising ID (AAID) or other device identifiers from children; don’t request the AD_ID permission; no location</td><td><span class="st ok">OK</span></td><td>The game needs no permissions apart from internet. Check that no SDK (ads, analytics, crash reports) adds AD_ID or reads identifiers.</td></tr>
+      <tr><td>Only APIs/SDKs approved for child-directed apps</td><td><span class="st chk">check</span></td><td>Check every SDK: game backend, crash reporting, analytics and Google sign-in. If unsure, leave it out (email login codes work without any sign-in SDK).</td></tr>
+      <tr><td>Children exchanging content need adult controls</td><td><span class="st ok">OK</span></td><td>Trading only moves squishies, never text or pictures. Names come from word lists, there is no chat, and a grown-up can switch trading off.</td></tr>
+      <tr><td><b>Google Play Billing</b> for all digital goods; no links to pay elsewhere</td><td><span class="st ok">OK</span></td><td>Gems are sold only through Google Play Billing in the <a href="gemmine.html">Gem Mine</a>.</td></tr>
+      <tr><td>Virtual currency usable only inside the game it was bought in</td><td><span class="st ok">OK</span></td><td>Gems can’t be cashed out, transferred or traded.</td></tr>
+      <tr><td><b>Odds of random items shown before purchase</b></td><td><span class="st ok">OK</span></td><td>Boxes can’t be bought with money at all, but the odds are still shown on the box screen before every box, including the free one.</td></tr>
+      <tr><td>In-app account deletion plus a web link</td><td><span class="st ok">OK</span></td><td>Settings → Grown-ups → Privacy, and a deletion web page listed in the Data safety form (<a href="account.html">Accounts</a>).</td></tr>
+      <tr><td>Privacy policy, accurate Data safety form</td><td><span class="st chk">to do</span></td><td>See the documents list below.</td></tr>
+      <tr><td>Target API level</td><td><span class="st chk">to do</span></td><td>New apps and updates must target Android 16 (API 36) since 31 August 2026.</td></tr>
+      <tr><td>Billing Library version</td><td><span class="st chk">to do</span></td><td>Play Billing Library 8 or newer.</td></tr>
+      <tr><td><b>New personal developer accounts</b>: closed test before going public</td><td><span class="st chk">plan</span></td><td>At least <b>12 testers opted in for 14 days in a row</b> before production access is granted. Plan a friends-and-family test (parents can install it for their kids).</td></tr>
+      <tr><td>Developer identity is public</td><td><span class="st chk">decide</span></td><td>A personal account shows your legal name, country and email, and <b>your full address once you sell anything</b>. Publishing through a company (or a business address) keeps your home address private.</td></tr>
+      <tr><td>Teacher Approved (optional)</td><td><span class="st chk">later</span></td><td>Families-compliant apps can apply. It brings extra visibility in the Kids tab.</td></tr>
+    </tbody>
+  </table></div>
+</section>
+
+<section>
+  <div class="sec-head"><p class="eyebrow">EU</p><h2>European rules</h2></div>
+  <div class="tbl-wrap"><table>
+    <thead><tr><th>Rule</th><th>Status</th><th>What it means for the game</th></tr></thead>
+    <tbody>
+      <tr><td><b>GDPR</b> (data protection), children</td><td><span class="st chk">check</span></td><td>Below the national age of digital consent (16 in Hungary, 13–16 elsewhere) consent must come from a parent. The design avoids needing consent for play: no personal data except a random player ID. The optional parent email is collected by the parent, behind the gate. A DPIA (risk assessment) is advisable for a children’s service.</td></tr>
+      <tr><td>ePrivacy (storing or reading things on the device)</td><td><span class="st chk">check</span></td><td>Saving the game on the phone is fine without consent. An ad SDK reading from or writing to the device may still need consent, even for non-personalised ads. Ask the ad network for its EU set-up for kids’ apps.</td></tr>
+      <tr><td>Unfair commercial practices: <b>no direct “buy now!” aimed at children</b></td><td><span class="st ok">OK</span></td><td>No text, character or ad in the game tells a child to buy. Store copy describes; it never urges.</td></tr>
+      <tr><td><b>Consumer Protection (CPC) Network principles on virtual currencies</b> (2025)</td><td><span class="st ok">OK</span></td><td>Real-money price shown next to Gems; no mixing several currencies to hide prices (Gems buy squishies directly); packs of 100 so players can buy exactly what they need; clear information before buying; parental controls; plain-language terms.</td></tr>
+      <tr><td>Right of withdrawal for digital content (14 days)</td><td><span class="st chg">changed</span></td><td>Before the first purchase the store says the Gems are delivered at once and the cancellation right ends on delivery, and asks the buyer to confirm. The lawyer should confirm the wording and how the confirmation is sent.</td></tr>
+      <tr><td>Prices include VAT; VAT paid</td><td><span class="st ok">OK</span></td><td>Google shows prices with tax, and for EU/UK customers <b>Google charges and pays the VAT</b> on app sales. Your own income still needs registering and taxing (ask an accountant).</td></tr>
+      <tr><td>Digital Services Act: trader details; protection of minors (Article 28 guidelines)</td><td><span class="st chk">check</span></td><td>Declare trader status in the Play Console. The game is probably not an “online platform” (no public user content), but the Commission’s guidelines for minors are a good benchmark, and the design follows them: notifications off by default, no streak punishments, no manipulative design.</td></tr>
+      <tr><td><b>Digital Fairness Act</b> (proposal expected mid-November 2026)</td><td><span class="st chk">watch</span></td><td>May restrict virtual currencies, loot boxes and engagement tricks for minors. The design already avoids paid random items, keeps the real price next to Gems and never punishes missed days, so it should need little change. Re-check when the text is out.</td></tr>
+      <tr><td>European Accessibility Act (since June 2025)</td><td><span class="st chk">check</span></td><td>Covers e-commerce services, possibly the purchase flow. Micro-enterprises (under 10 people and €2M turnover) are exempt for services, but large text, colour helpers and clear buttons are good practice anyway.</td></tr>
+    </tbody>
+  </table></div>
+</section>
+
+<section>
+  <div class="sec-head"><p class="eyebrow">Countries</p><h2>Where the game could hit trouble</h2></div>
+  <div class="tbl-wrap"><table>
+    <thead><tr><th>Country</th><th>Status</th><th>Rule</th></tr></thead>
+    <tbody>
+      <tr><td><b>Belgium</b></td><td><span class="st ok">OK</span></td><td>Paid loot boxes count as illegal gambling. Squishy Island’s boxes can’t be bought with money, and Gems buy only fixed items.</td></tr>
+      <tr><td><b>Brazil</b></td><td><span class="st no">exclude at first</span></td><td>The new Digital ECA (in force since March 2026) bans loot boxes in games likely to be used by children. It is unclear whether free boxes count. Leave Brazil out of the first launch unless a Brazilian lawyer says it is fine.</td></tr>
+      <tr><td><b>Australia</b></td><td><span class="st ok">OK</span></td><td>Since September 2024, games with paid chance-based items get at least an M rating. Squishy Island has none, but describe the boxes honestly in the rating questionnaire.</td></tr>
+      <tr><td><b>United Kingdom</b></td><td><span class="st chk">check</span></td><td>The Children’s Code (Age Appropriate Design Code) asks for high privacy by default, no nudge techniques and a DPIA. The design fits. The Online Safety Act is about user-to-user content; preset trades with no chat are probably outside it, but confirm.</td></tr>
+      <tr><td><b>United States</b></td><td><span class="st chk">check</span></td><td>COPPA: treat every player as under 13. The amended COPPA Rule applies fully since 22 April 2026 and also requires a written data-retention policy. Parental consent is needed before collecting a parent’s email beyond what the exceptions allow. Some states have extra laws. Consider launching in the EU first and adding the US later.</td></tr>
+      <tr><td><b>South Korea, China</b></td><td><span class="st no">exclude</span></td><td>Korea has strict odds-disclosure rules; China needs a licence (and Google Play isn’t available there). Leave them out at launch.</td></tr>
+    </tbody>
+  </table></div>
+  <p>In the Play Console you choose country by country where the game is available, so starting with the EU, EEA and UK (minus anywhere a lawyer flags) and adding more later is easy.</p>
+</section>
+
+<section>
+  <div class="sec-head"><p class="eyebrow">Paperwork</p><h2>Documents you’ll need</h2></div>
+  <div class="tbl-wrap docs"><table>
+    <thead><tr><th>Document</th><th>Why</th><th>Where it goes</th></tr></thead>
+    <tbody>
+      <tr><td>Privacy policy (for parents) + a short kid-friendly version</td><td>Google Play (Families), GDPR, COPPA</td><td>Public web page, linked in the Play Console and in Settings</td></tr>
+      <tr><td>Terms of use, including Gem terms</td><td>Contract with the player: Gems have no cash value, can’t be transferred, refunds, account closure</td><td>Web page, linked in Settings and the Gem Mine</td></tr>
+      <tr><td>Account &amp; data deletion page</td><td>Google Play requirement</td><td>Web page, URL in the Data safety form</td></tr>
+      <tr><td>Data safety form answers</td><td>Google Play: what data is collected, why, and whether it is shared</td><td>Play Console (must match the privacy policy and every SDK)</td></tr>
+      <tr><td>Target audience, ads declaration, content rating questionnaire (IARC)</td><td>Google Play</td><td>Play Console</td></tr>
+      <tr><td>Records of processing</td><td>GDPR: a list of what personal data you handle and why</td><td>Internal file</td></tr>
+      <tr><td>DPIA (data protection impact assessment)</td><td>GDPR (advisable for children), required by the UK Children’s Code</td><td>Internal file</td></tr>
+      <tr><td>Data processing agreements</td><td>GDPR: one with every service that handles player data (backend, crash reports, ad network, email sender)</td><td>Usually the provider’s standard terms; keep copies</td></tr>
+      <tr><td>Parent notice + consent text for the email link</td><td>GDPR / COPPA</td><td>In the save flow and the confirmation email</td></tr>
+      <tr><td>Data-retention policy</td><td>Amended COPPA Rule (if offered in the US); good GDPR practice</td><td>Internal + summary in the privacy policy</td></tr>
+      <tr><td>Purchase information: price, what you get, withdrawal notice, how to get help</td><td>EU consumer law, CPC principles</td><td>Gem Mine (“About buying”) and the terms</td></tr>
+      <tr><td>Box odds</td><td>Google Play, consumer transparency</td><td>Box screen + help page</td></tr>
+      <tr><td>Trader and contact details</td><td>Digital Services Act and e-commerce rules</td><td>Play Console (trader status), website imprint</td></tr>
+      <tr><td>Credits and licences for fonts, sounds and music</td><td>Licence conditions (attribution where required)</td><td>Settings → Credits</td></tr>
+      <tr><td>Data breach procedure</td><td>GDPR: report to the authority (in Hungary, the NAIH) within 72 hours</td><td>Internal one-pager</td></tr>
+      <tr><td>Business registration and tax set-up</td><td>To receive Google payouts and pay income tax</td><td>With an accountant</td></tr>
+    </tbody>
+  </table></div>
+</section>
+
+<footer class="foot">
+  <span>Words on this page: <code>legal.html</code></span>
+  <span>Checked against published rules, October 2026</span>
+</footer>
+</main>
+</body>
+</html>

@@ -1,0 +1,384 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Squishy Island Game Guide</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bagel+Fat+One&amp;family=Nunito:wght@400;600;800;900&amp;family=Patrick+Hand&amp;display=swap">
+<link rel="stylesheet" href="art/style.css">
+<style>
+.loop{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:12px;counter-reset:s}
+.loop li{list-style:none;background:#fff;border:2.5px solid var(--line);border-radius:18px;box-shadow:3px 3px 0 var(--line);padding:12px;display:grid;gap:4px;align-content:start;position:relative}
+.loop li::before{counter-increment:s;content:counter(s);font-family:var(--f-display);font-size:22px;color:var(--pink)}
+.loop li b{font-size:15px}
+.loop li span{font-size:13.5px;color:var(--ink2)}
+.loop{padding:0;margin:0}
+@media (max-width:860px){.loop{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.swatches{display:flex;flex-wrap:wrap;gap:10px}
+.sw{display:grid;gap:4px;font-size:12px;font-weight:800;text-align:center}
+.sw i{width:64px;height:48px;border-radius:12px;border:2px solid var(--line);display:block}
+.anatomy{display:grid;grid-template-columns:200px minmax(0,1fr);gap:20px;align-items:center}
+.anatomy .pic{background:#fff;border:2.5px solid var(--line);border-radius:22px;padding:10px}
+@media (max-width:700px){.anatomy{grid-template-columns:1fr}.anatomy .pic{max-width:220px}}
+.idles{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:12px}
+.idles figure{margin:0;background:#fff;border:2px solid var(--line);border-radius:16px;padding:8px;display:grid;gap:4px;text-align:center;font-size:13px;font-weight:800}
+
+</style>
+</head>
+<body style="--theme:#FF6FA3;--theme2:#FFE3EF">
+<header class="topbar"><div class="topbar-in">
+  <a class="brand" href="index.html"><i></i>Squishy Island</a>
+  <nav><a class="pill" href="index.html">&larr; City map</a><a class="pill" href="guide.html">Game guide</a><a class="pill" href="start.html">First launch</a><a class="pill" href="settings.html">Settings</a><a class="pill" href="account.html">Accounts</a><a class="pill" href="sound.html">Sound</a><a class="pill" href="legal.html">Legal</a><a class="pill" href="build.html">Build plan</a></nav>
+</div></header>
+<main class="wrap">
+
+<section class="hero" style="grid-template-columns:1fr">
+  <div class="hero-text">
+    <p class="eyebrow">Design overview · read this first</p>
+    <h1>How Squishy Island works</h1>
+    <p class="lede">Squishy Island is a cosy collecting game for kids aged about 5 to 11. Players collect squishies, fix up a run-down little island town one house at a time, and play short minigames with the squishies they own. The whole city is a cartoon 3D world seen from above at an angle (like a city-builder): players drag to move around, pinch to zoom in on the squishies, and tap buildings to go inside.</p>
+  </div>
+</section>
+
+<section>
+  <div class="sec-head"><p class="eyebrow">The core loop</p><h2>One loop, repeated</h2></div>
+  <ol class="loop">
+    <li><b>Play a minigame</b><span>Each fun building has one. Five are endless and get harder the longer you last; three are level-based (Lost &amp; Found, Bucket Brigade, Squish Breaker) with stars and new levels forever; Squeak Beat has 30 songs to unlock. The Squishy Testing Facility is a toy just for squishing.</span></li>
+    <li><b>Earn coins</b><span>Every run pays coins from its score, plus a milestone bonus for a great run. Puzzle levels pay for each star.</span></li>
+    <li><b>Spend them</b><span>Open Mystery Boxes, renovate a house, build or upgrade a fun building, or buy decor.</span></li>
+    <li><b>The city comes alive</b><span>New squishies move into their house and start their idle animation on the map.</span></li>
+    <li><b>Play better</b><span>More and rarer squishies give minigame bonuses, so you earn more next time.</span></li>
+    <li><b>Come back tomorrow</b><span>New daily quests with a Gem Challenge, and a visiting squishy hoping to move in.</span></li>
+  </ol>
+</section>
+
+<section>
+  <div class="sec-head"><p class="eyebrow">Currencies</p><h2>Coins, Squish Stars and Squish Gems</h2></div>
+  <div class="tbl-wrap"><table>
+    <thead><tr><th>Currency</th><th>How you get it</th><th>What it buys</th></tr></thead>
+    <tbody>
+      <tr><td><b>Coins</b></td><td>Minigames, star bonuses, daily gift, Cozy bonuses</td><td>Mystery Boxes, house renovations, building and upgrading fun buildings, decor</td></tr>
+      <tr><td><b>Squish Stars</b></td><td>Swapping a spare squishy from the Spare Shelf (Common 5 up to Legendary 300)</td><td>The Star Shop: pick a missing Common or Uncommon, or special decor</td></tr>
+      <tr><td><b>Squish Gems</b> <small>(premium)</small></td><td>Slowly from play: the daily Gem Challenge, weekly streaks, achievements. Also sold for real money in the <a href="gemmine.html">Gem Mine</a>, behind a grown-up gate.</td><td>The <a href="factory.html#gemshop">Gem Shop</a>: single Legendaries (300) and two exclusives (500), plus special decor designs</td></tr>
+    </tbody>
+  </table></div>
+  <p class="note"><b>Design note</b>Gems are never required to finish a house or a minigame. They never turn into coins (or coins into Gems), and they never buy anything random.</p>
+</section>
+
+<section id="economy">
+  <div class="sec-head"><p class="eyebrow">Economy</p><h2>Same time, same coins</h2></div>
+  <p>Mystery Boxes cost <b>200</b> coins, Family Boxes <b>500</b> and Golden Boxes <b>1,000</b>. Every minigame is tuned to pay about the same per minute: roughly <b>35 coins per minute</b> for a good player. So a Golden Box takes about half an hour of play, around 12–15 runs, whichever games you like best.</p>
+  <p>The numbers were set from real test runs. The table shows what those runs earned before and what they earn now (run times are estimated from each game’s speed):</p>
+  <div class="tbl-wrap"><table>
+    <thead><tr><th>Test run</th><th>About</th><th>Before</th><th>Now</th></tr></thead>
+    <tbody>
+      <tr><td>Sky Bounce, 1,024 m</td><td class="num">1.7 min</td><td class="num">47</td><td class="num">≈ 55</td></tr>
+      <tr><td>Sort-a-Lot, 4,850 points</td><td class="num">2.5 min</td><td class="num">97</td><td class="num">88</td></tr>
+      <tr><td>Style Studio, 19,195 points</td><td class="num">3 min</td><td class="num">433</td><td class="num">101</td></tr>
+      <tr><td>Grow Grow Garden, 12,550 points</td><td class="num">2.3 min</td><td class="num">468</td><td class="num">88</td></tr>
+      <tr><td>Bistro Rush, 35,700 points</td><td class="num">3–3.5 min</td><td class="num">496</td><td class="num">110</td></tr>
+      <tr><td>Squeak Beat, one 1:20 song at 90%</td><td class="num">1.3 min</td><td class="num">144 (old endless game)</td><td class="num">48</td></tr>
+    </tbody>
+  </table></div>
+  <p>Endless games pay coins from their score, plus a <b>milestone bonus</b> for a great run: <b>+10 / +25 / +50</b> for the 1st / 2nd / 3rd milestone (only the highest counts). Every prototype shows the coins earned, the time played and a running <b>coin jar</b> on its results screen, so the pacing can be checked by simply playing.</p>
+  <div class="tbl-wrap"><table>
+    <thead><tr><th>Minigame</th><th>Base coins</th><th>Milestones (+10 / +25 / +50)</th></tr></thead>
+    <tbody>
+      <tr><td><b>Bistro Rush</b> (restaurant)</td><td>points ÷ 420</td><td class="num">15,000 / 30,000 / 50,000 points</td></tr>
+      <tr><td><b>Sky Bounce</b> (playground)</td><td>every coin collected (coins appear more often now)</td><td class="num">600 / 1,200 / 2,000 m</td></tr>
+      <tr><td><b>Style Studio</b> (salon)</td><td>points ÷ 250</td><td class="num">5,000 / 15,000 / 30,000 points</td></tr>
+      <tr><td><b>Sort-a-Lot</b> (post office)</td><td>points ÷ 55</td><td>none</td></tr>
+      <tr><td><b>Grow Grow Garden</b> (greenhouse)</td><td>points ÷ 200</td><td class="num">20 / 40 / 70 flowers harvested</td></tr>
+      <tr><td><b>Squeak Beat</b> (bandstand)</td><td colspan="2">About 40 coins per minute of song × your accuracy. Replays pay the same.</td></tr>
+      <tr><td><b>Lost &amp; Found</b> (police) · <b>Bucket Brigade</b> (fire) · <b>Squish Breaker</b> (arcade)</td><td colspan="2">Beat a level the first time: 30 + 15 per star (45–75). Every 10th level ×2. Replays: 10 + 15 per new star. No coins for a lost level.</td></tr>
+      <tr><td><b>Squish Lab</b> (testing facility)</td><td colspan="2">No coins, on purpose. It is a toy.</td></tr>
+    </tbody>
+  </table></div>
+  <p class="note"><b>Tuning note</b>If playtesting shows a game paying clearly more or less than about 35 coins a minute, change its divider (it lives at the top of each game file as <code>coins: {...}</code>).</p>
+</section>
+
+<section id="gems">
+  <div class="sec-head"><p class="eyebrow">Premium currency</p><h2>Squish Gems: rare, but earnable</h2></div>
+  <p>Gems are meant to feel special. A player who never pays can still earn them, but slowly: about <b>30 Gems a week</b> for someone who plays most days. That is a Legendary from the Gem Shop roughly every 2–3 months, or an exclusive every 4. Coins stay the everyday currency.</p>
+  <div class="tbl-wrap"><table>
+    <thead><tr><th>Source</th><th>Gems</th><th>How often</th></tr></thead>
+    <tbody>
+      <tr><td><b>Daily Gem Challenge</b>: one minigame picked at random each day, with a hard goal set from <i>your own</i> best (see below)</td><td class="num">3</td><td>Once a day</td></tr>
+      <tr><td><b>Gem streak</b>: finish the Gem Challenge on 5 days in the same week (any 5)</td><td class="num">+15</td><td>Once a week</td></tr>
+      <tr><td><b>Achievements</b>: a house to level 10, a full family, 100 boxes opened, every track with ★★★ and so on</td><td class="num">10–25</td><td>Once each (about 400 in total)</td></tr>
+      <tr><td><b>Gem packs</b> (real money)</td><td class="num">&ndash;</td><td>Grown-up gate, price shown in real money</td></tr>
+    </tbody>
+  </table></div>
+  <div class="two">
+    <div class="card prose">
+      <h3>How the Gem Challenge goal is set</h3>
+      <ul>
+        <li><b>Endless games:</b> reach <b>90% of your own best score</b> in that game (Sky Bounce: 90% of your best height). A new player’s goal is small; an expert’s is big. It is always a stretch, never impossible.</li>
+        <li><b>Squeak Beat:</b> ★★★ on any track you have, or ★★ on the newest one.</li>
+        <li><b>Level games</b> (Lost &amp; Found, Bucket Brigade, Squish Breaker): win your next new level with ★★★, or raise any two levels to ★★★.</li>
+        <li>Unlimited tries all day. Only games the player has unlocked are picked, never the same game two days running.</li>
+        <li>The quest board shows <b>tomorrow’s game</b> as a teaser, so there is a reason to come back.</li>
+      </ul>
+    </div>
+    <div class="card prose">
+      <h3>Gem rules (kids and parents)</h3>
+      <ul>
+        <li>Gems <b>never</b> buy anything random: no boxes, no lucky draws.</li>
+        <li>Gems and coins never convert into each other.</li>
+        <li>Buying Gems needs a <b>grown-up gate</b> (not a tap-through). Each pack shows its real-money price, and the Gem Shop shows what an item would cost in money.</li>
+        <li>No “limited time, buy now!” timers or pressure pop-ups. The weekly front-shelf discount just sits quietly on the shelf.</li>
+        <li>Gem Shop exclusives can’t be traded, so trades between kids never involve real money.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section id="daily">
+  <div class="sec-head"><p class="eyebrow">Daily visits</p><h2>Reasons to come back, never a punishment for staying away</h2></div>
+  <p>Squishies never get sick, sad or leave. Missing a day only means missing that day’s bonus. Parents should never see a crying squishy because their child went on holiday, and kids should never feel they <i>have</i> to log in.</p>
+  <div class="tbl-wrap"><table>
+    <thead><tr><th>Daily feature</th><th>How it works</th><th>Why it pulls</th></tr></thead>
+    <tbody>
+      <tr><td><b>Daily quests</b></td><td>3 a day: 2 easy coin quests (“play Bistro Rush twice”, “harvest 30 flowers”, +40 coins each) and the <a href="#gems">Gem Challenge</a>. The first run of each day also pays <b>double coins</b>.</td><td>Variety: it pushes players into games they forgot, and the Gem Challenge is the real reason to log in.</td></tr>
+      <tr><td><b>Visitor of the week</b></td><td>Every Monday a squishy from out of town camps in the park, preferring one you don’t own yet (Common to Epic). Say hi and give it a treat on <b>4 different days</b> that week and it moves in for free. Miss it and it waves goodbye and comes back another week.</td><td>The strongest daily hook: a specific squishy the player wants, earned by visiting, not by luck.</td></tr>
+    </tbody>
+  </table></div>
+</section>
+<section>
+  <div class="sec-head"><p class="eyebrow">Squishies</p><h2>8 families, 48 squishies, 5 rarities</h2></div>
+  <p>Every family has exactly 6 squishies: 2 Common, 1 Uncommon, 1 Rare, 1 Epic and 1 Legendary. Six families are inspired by real squishy toys (dumplings, breakfast foods, pets, sweets, fruit, sea creatures) and two are made up (Sky Puffs and Forest Folk).</p>
+  <div class="tbl-wrap"><table>
+    <thead><tr><th>Rarity</th><th>Mystery Box odds</th><th>Chance of one specific squishy</th><th>Trade value</th><th>Card colour</th></tr></thead>
+    <tbody>
+      <tr><td><span class="rar" style="background:#8E9BB0">Common</span></td><td class="num">55%</td><td class="num">3.4%</td><td class="num">1</td><td>Soft grey</td></tr>
+      <tr><td><span class="rar" style="background:#2FB673">Uncommon</span></td><td class="num">25%</td><td class="num">3.1%</td><td class="num">3</td><td>Green</td></tr>
+      <tr><td><span class="rar" style="background:#3B82F6">Rare</span></td><td class="num">13%</td><td class="num">1.6%</td><td class="num">8</td><td>Blue</td></tr>
+      <tr><td><span class="rar" style="background:#9B5CF6">Epic</span></td><td class="num">6%</td><td class="num">0.75%</td><td class="num">20</td><td>Purple</td></tr>
+      <tr><td><span class="rar" style="background:#F59E0B">Legendary</span></td><td class="num">1%</td><td class="num">0.13%</td><td class="num">60</td><td>Gold, sparkles</td></tr>
+    </tbody>
+  </table></div>
+  <p>Ways to get squishies: the <a href="factory.html">Squishy Factory</a> (Mystery Boxes for coins, 3 free boxes a day for an ad, the Gem Shop), the <a href="market.html">Swap Meet Market</a> (trading spares with other players), the Star Shop and the <a href="#daily">Visitor of the week</a>.</p>
+</section>
+
+<section id="collection">
+  <div class="sec-head"><p class="eyebrow">Collection pacing</p><h2>Every box wins, the collection still takes years</h2></div>
+  <p>The first half of the collection comes quickly on purpose, so the city fills up and the game feels generous. The long tail is the Legendaries, then levelling and Sparkly versions, which no player is expected to finish in under a year.</p>
+  <div class="two">
+    <div class="card prose">
+      <h3>The Spare Shelf</h3>
+      <ul>
+        <li>A squishy you already own goes onto your <b>Spare Shelf</b> (it isn’t turned into something automatically). The one living in your house never leaves.</li>
+        <li>Each spare can be used three ways, and the player chooses:
+          <br>&bull; <b>Level up</b> that squishy (it hugs its twin and they become one, stronger squishy)
+          <br>&bull; <b>Trade</b> it at the Swap Meet Market (only spares can be traded)
+          <br>&bull; <b>Swap</b> it for Squish Stars</li>
+        <li>So collectors level up, traders trade, and nothing is wasted.</li>
+      </ul>
+    </div>
+    <div class="card prose">
+      <h3>Squishy levels 1–5</h3>
+      <ul>
+        <li>Spares needed per level: <b>Common &amp; Uncommon</b> 1 / 2 / 3 / 4 (10 in total), <b>Rare &amp; Epic</b> 1 / 1 / 2 / 2 (6), <b>Legendary</b> 1 / 1 / 1 / 1 (4).</li>
+        <li>Lv 2: a bigger, bouncier idle. Lv 3: an accessory (scarf, bow, tiny hat). Lv 4: +Cozy points for its house. <b>Lv 5: it turns Sparkly</b> (shimmering coat, golden name plate).</li>
+        <li>In Squish Breaker a levelled squishy’s ball hits +1 harder per level; elsewhere levels are just for show, so new players are never shut out.</li>
+        <li><b>Sparkly pulls:</b> 1 box in 50 is already Sparkly, a lucky shortcut. Sparklies fill page two of the collection book.</li>
+      </ul>
+    </div>
+  </div>
+  <p>Simulated with the real odds and the Rare guarantee, for a player who plays <b>30 minutes a day</b>, spends about half their coins on boxes (the rest on houses) and watches the 3 free-box ads: about <b>5–6 boxes a day</b>. Medians of 150 simulated players:</p>
+  <div class="tbl-wrap"><table>
+    <thead><tr><th>Goal</th><th>Boxes</th><th>About</th></tr></thead>
+    <tbody>
+      <tr><td>Half of the 48 squishies</td><td class="num">37</td><td>1 week</td></tr>
+      <tr><td>80% (38 squishies)</td><td class="num">158</td><td>1 month</td></tr>
+      <tr><td>90% (43 squishies)</td><td class="num">500</td><td>3 months</td></tr>
+      <tr><td>All 48 (mostly waiting for Legendaries)</td><td class="num">1,850</td><td>11 months (less if Gem Shop Legendaries are bought)</td></tr>
+      <tr><td>Half the Sparkly book</td><td class="num">380</td><td>2–3 months</td></tr>
+      <tr><td>Every squishy Sparkly</td><td class="num">6,300</td><td>about 3 years</td></tr>
+    </tbody>
+  </table></div>
+  <p class="note"><b>Growing the set</b>Adding a new 6-squishy family every few months (seasonal or event families) keeps the top end out of reach for dedicated players without making early boxes feel worse. Three new families take the set to 66, four to 72.</p>
+</section>
+<section id="ads">
+  <div class="sec-head"><p class="eyebrow">Ads</p><h2>Rewarded ads only, always the player’s choice</h2></div>
+  <div class="two">
+    <div class="card prose">
+      <h3>Where ads appear</h3>
+      <ul>
+        <li><b>Keep going:</b> when a minigame run ends, a card offers “&#9654; Watch an ad” to continue once (1 more heart, +5 moves, a balloon float, and so on; each game says what you get). “No thanks” ends the run normally. Once per run. All 10 prototypes have this, with a pretend ad.</li>
+        <li><b>Free Box:</b> one Mystery Box per ad, at most <b>3 a day</b>, from a button in the Factory.</li>
+        <li>That’s all: no banner ads, no ads between levels, no ad when the app opens or a level starts, and no ads at all in the Squish Lab or the Market.</li>
+      </ul>
+    </div>
+    <div class="card prose">
+      <h3>Rules for a kids’ app</h3>
+      <ul>
+        <li>Use only an ad network <b>certified for children’s apps</b> (Google Play’s Families Ads Program; Apple requires human-reviewed, kid-appropriate ads), with <b>no personalised ads</b> and no tracking.</li>
+        <li>Every ad is opted into with a clear button, is labelled “Ad”, and never pretends to be part of the game.</li>
+        <li><b>Every ad can be closed after 5 seconds</b> (Google Play Families rule, rewarded ads included). Closing early just means no reward.</li>
+        <li>The “keep going?” card stays neutral: no sad squishies, no countdown, no “last chance”.</li>
+        <li>An ad-unlocked box still shows its odds before the ad.</li>
+        <li>A grown-up setting can switch ads off (for example, included with any purchase).</li>
+      </ul>
+    </div>
+  </div>
+</section>
+<section>
+  <div class="sec-head"><p class="eyebrow">Progression</p><h2>What unlocks when</h2></div>
+  <div class="tbl-wrap"><table>
+    <thead><tr><th>Moment</th><th>New house</th><th>New fun building</th></tr></thead>
+    <tbody>
+      <tr><td><b>Day 1 (tutorial)</b></td><td>Dumpling Steamhouse + free Bao Bun</td><td>Bounce Park, Squishy Factory</td></tr>
+      <tr><td>Dumpling Steamhouse level 3</td><td>&ndash;</td><td>Squish Bistro</td></tr>
+      <tr><td>Dumpling Steamhouse level 4</td><td>Cozy Teapot Kitchen</td><td>&ndash;</td></tr>
+      <tr><td>Own 8 squishies</td><td>&ndash;</td><td>Swap Meet Market</td></tr>
+      <tr><td>Teapot Kitchen level 3 / 4</td><td>Paw Palace (at 4)</td><td>Fluff &amp; Puff Salon (at 3)</td></tr>
+      <tr><td>Paw Palace level 3 / 4</td><td>Sweet Shoppe (at 4)</td><td>Squishy Post Office (at 3)</td></tr>
+      <tr><td>Sweet Shoppe level 3 / 4</td><td>Pineapple Orchard (at 4)</td><td>Squish Patrol Station (at 3)</td></tr>
+      <tr><td>Pineapple Orchard level 3 / 4</td><td>Coral Cove (at 4)</td><td>Splash Squad Station (at 3)</td></tr>
+      <tr><td>Paw Palace level 3</td><td>&ndash;</td><td>Squishy Testing Facility</td></tr>
+      <tr><td>Sweet Shoppe level 4</td><td>&ndash;</td><td>Squish Arcade</td></tr>
+      <tr><td>Coral Cove level 3 / 4</td><td>Cloud Nine (at 4)</td><td>Squeak Stage (at 3)</td></tr>
+      <tr><td>Cloud Nine level 3 / 4</td><td>Mushroom Hollow (at 4)</td><td>Sprout Club Greenhouse (at 3)</td></tr>
+    </tbody>
+  </table></div>
+  <p>Houses are renovated one at a time in this order, but a player can always go back and keep upgrading older houses. Locked houses and empty building plots are still visible on the map from day one, so the player can see what’s coming.</p>
+</section>
+
+<section class="two">
+  <div class="card prose">
+    <h3>House rules</h3>
+    <ul>
+      <li>Every house starts at <b>level 1: broken</b> (boarded windows, weeds, holes).</li>
+      <li>Each level costs coins (100 at level 2 up to 2,500 at level 10, more for later houses).</li>
+      <li>Some levels also need family squishies living there: 1 at levels 3-4, 2 at 5-6, 3 at 7-8, 4 at 9, 5 at 10.</li>
+      <li>Renovating plays a short "builders" animation: scaffolding, dust puff, ta-da.</li>
+      <li>Inside each house is a room. Decor bought there adds Cozy points (minigame coin bonus for that family). Every decor item comes in 4 designs: Classic, Candy Pop, Mint Breeze and Starlight.</li>
+    </ul>
+  </div>
+  <div class="card prose">
+    <h3>Fun building rules</h3>
+    <ul>
+      <li>Every fun building starts as an <b>empty plot (level 0)</b> with a "Build me!" sign.</li>
+      <li>Level 1 is bought with coins once the building unlocks.</li>
+      <li>Levels 2-10 need a <b>best score</b> in that building’s minigame (for the two puzzle games: a number of <b>levels beaten</b>), then coins. Playing better makes the building look fancier.</li>
+      <li>The Factory levels up from boxes opened, the Market from trades finished.</li>
+      <li>Upgrades are purely visual plus small unlocks (new songs, extra seat, new box type, new lab tools).</li>
+    </ul>
+  </div>
+</section>
+
+<section>
+  <div class="sec-head"><p class="eyebrow">The living city</p><h2>Animation rules</h2></div>
+  <div class="prose"><ul>
+    <li><b>Everything loops in place.</b> Nothing walks across the map. Each loop is 2 to 4 seconds long, like a GIF.</li>
+    <li><b>Every squishy blinks</b> about every 4 seconds, with random offsets so they never blink together.</li>
+    <li><b>One spot per squishy.</b> Each squishy has a fixed spot around its house and one signature action (pool jumps, mowing, mail, window peeking, sunbathing, napping, swaying on the roof, floating).</li>
+    <li><b>The city breathes too:</b> chimney smoke, fountain water, flags, spinning windmill, twinkling sparkles, glowing lanterns at higher levels.</li>
+    <li><b>The map camera</b> looks at the town from the front at about 25–50°, so every building shows its front door and its squishies. Every building faces the camera. Drag pans, pinch/scroll zooms, double-tap zooms in. Zooming in lowers the camera angle so buildings look taller and squishies become visible.</li>
+    <li><b>Map bubbles:</b> every building with a job has a round icon bubble floating above it so it is easy to find from far away. Fun buildings show their own icon (chef hat, badge, scissors...). Family houses show a little house in the family colour with the family emblem squishy on it. A small badge shows the level, a lock, or + for an empty plot.</li>
+    <li>On older phones or with "reduce motion" on, loops pause on a nice still frame.</li>
+  </ul></div>
+  <div class="idles" id="idles"></div>
+</section>
+
+<section>
+  <div class="sec-head"><p class="eyebrow">Art style</p><h2>How a squishy is made</h2></div>
+  <div class="anatomy">
+    <div class="pic" data-sq="peachbun"></div>
+    <div class="prose"><ul>
+      <li><b>3D look:</b> every squishy is a soft, puffy, rounded toy (like a real squishy) with a slightly glossy plastic finish. Each one starts as a flat design drawing that is “inflated” into 3D, so the outline you see on the cards is exactly the toy’s silhouette.</li><li><b>Shape:</b> one soft, chunky silhouette that still reads when it is tiny on the city map. Flat bottom so it sits on the ground.</li>
+      <li><b>Cartoon finish:</b> everything has a soft plum outline, like the original drawings. Buildings use flat cartoon (toon) shading in a few clean steps; squishies stay smooth and glossy like real squishy toys.</li><li><b>Alive:</b> buildings gently breathe (a tiny squash and stretch), squishies blink and loop their idle action.</li>
+      <li><b>Face:</b> two round dark eyes with a white highlight dot, pink blush ovals, a tiny mouth. Faces sit low on the body.</li>
+      
+      <li><b>Moods</b> use the same face: happy arcs for joy, little curves for sleeping, an "o" for surprise.</li>
+      <li><b>Legendaries</b> get gold accents and two twinkling sparkles.</li>
+    </ul></div>
+  </div>
+  <div class="swatches">
+    <span class="sw"><i style="background:#FF6FA3"></i>Bubblegum</span>
+    <span class="sw"><i style="background:#FFC94D"></i>Butter</span>
+    <span class="sw"><i style="background:#4FCFA0"></i>Mint</span>
+    <span class="sw"><i style="background:#8CCBFF"></i>Sky</span>
+    <span class="sw"><i style="background:#B9A6FF"></i>Lilac</span>
+    <span class="sw"><i style="background:#9ED67E"></i>Grass</span>
+    <span class="sw"><i style="background:#2B2141"></i>Plum ink</span>
+  </div>
+</section>
+
+<section id="launch">
+  <div class="sec-head"><p class="eyebrow">Before launch</p><h2>The non-code checklist</h2></div>
+  <p>Store rules, EU and country rules and the full document list are on the <a href="legal.html">Google Play &amp; legal</a> page.</p>
+  <p class="note" style="max-width:none"><b>The name</b>The game is called <b>Squishy Island</b>, and the Google Play title is <b>“Squishy Island: Collect &amp; Play”</b> (exactly 30 characters, Google’s limit). The old working name Squishville was dropped because it is a Squishmallows toy line. “Squishy” is an everyday word, so it is safe to use but hard to own: before launch, have a lawyer run a trademark search (EU, Hungary, US), check the domain and social handles, and consider registering the name together with a logo. Also keep squishy designs clearly different from Squishmallows and other squishy brands.</p>
+  <div class="two">
+    <div class="card prose">
+      <h3>Legal and stores</h3>
+      <ul>
+        <li><b>Lawyer review</b> of the Gems, ads, free boxes and trading against COPPA, GDPR (kids) and the upcoming EU Digital Fairness Act.</li>
+        <li><b>Privacy policy</b> (a parent version and a short kid version), terms of use, refund policy.</li>
+        <li><b>Store programme choice:</b> Apple Kids Category and Google Designed for Families each restrict ads, analytics and links. Decide early: it changes which SDKs you may use.</li>
+        <li><b>Age ratings</b> (IARC questionnaire on Google Play, Apple’s age rating). Expect PEGI 3 / “Everyone”, plus the in-game purchases notice.</li>
+        <li><b>Company and money:</b> a company to publish under, developer accounts, tax/VAT setup for app-store sales, bank account.</li>
+        <li><b>Contracts with full rights</b> for the composer, voice actors (Bao + narrator, every language), artists, and any sound libraries. The fonts used here (Bagel Fat One, Nunito, Patrick Hand) are open-licence and fine to ship.</li>
+      </ul>
+    </div>
+    <div class="card prose">
+      <h3>People, content and launch</h3>
+      <ul>
+        <li><b>Playtests with real kids</b> aged 5–11 (with parent consent forms) at every milestone, especially the first five minutes and the economy.</li>
+        <li><b>Parent page</b> on a website: what the game is, how money, ads and data work, how to delete an account, a support email.</li>
+        <li><b>Support plan</b> for lost towns, purchase problems and deletion requests (who answers, how fast).</li>
+        <li><b>Language:</b> English only at launch. Keep every text in one string table from day one, so adding languages later is a translation job, not a rebuild.</li>
+        <li><b>Live content plan:</b> new squishy families, seasonal events and visitor schedule for the first year.</li>
+        <li><b>Store page:</b> icon, screenshots, a short video, description, keywords. Rules for advertising to children are strict (no “buy now” aimed at kids, influencer ads must be labelled).</li>
+        <li><b>Soft launch</b> in one or two small countries first to tune retention and earnings before the big launch.</li>
+        <li><b>Test devices:</b> a few old, cheap Android phones; that is where Low graphics and battery saver matter.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="sec-head"><p class="eyebrow">For the builder</p><h2>How this documentation is organised</h2></div>
+  <p>Every building has two files. When you want to change something, give the AI only the file(s) for that part and say what to change.</p>
+  <div class="tbl-wrap"><table>
+    <thead><tr><th>File</th><th>What’s inside</th></tr></thead>
+    <tbody>
+      <tr><td><code>index.html</code></td><td>The 3D city map: the <b>CITY</b> block lists where every building, road, roundabout, river, park, pond, field, forest, hill and decoration goes. Also the progress previews.</td></tr>
+      <tr><td><code>guide.html</code></td><td>This page: rules, economy, Gems, daily visits, collection, ads, progression, art style, launch checklist.</td></tr>
+      <tr><td><code>start.html</code></td><td>First launch: loading, opening story storyboard, name picking, first tour, the <b>i</b> help topics. The playable story and tour live at the end of <code>index.html</code>’s script.</td></tr>
+      <tr><td><code>settings.html</code></td><td>The Settings screen (a working mock), every setting’s default, auto graphics quality, the grown-up gate.</td></tr>
+      <tr><td><code>account.html</code></td><td>Guest accounts, “save my town”, transfer codes, deleting, privacy.</td></tr>
+      <tr><td><code>gemmine.html</code>, <code>art/gemmine.js</code></td><td>The Gem Mine: the real-money Gem store (packs, purchase flow, Google Play Billing set-up) and its one-level building.</td></tr>
+      <tr><td><code>build.html</code></td><td>How the real game is built: Godot 4, Nakama server, folder structure, the minigame contract, pipelines, roadmap.</td></tr>
+      <tr><td><code>legal.html</code></td><td>Google Play Families rules, EU and country rules, and the documents needed for launch.</td></tr>
+      <tr><td><code>sound.html</code></td><td>Every sound effect and music track (playable), the results counter, mixing rules, where each sound plays.</td></tr>
+      <tr><td><code>art/sound.js</code>, <code>art/ui.js</code></td><td>The sounds, songs and saved settings shared by every page and prototype; the grown-up gate and pop-ups.</td></tr>
+      <tr><td><code>dumpling.html</code>, <code>kitchen.html</code> &hellip;</td><td>The words for one building: description, level captions, decor shop, minigame design.</td></tr>
+      <tr><td><code>art/dumpling.js</code>, <code>art/kitchen.js</code> &hellip;</td><td>Everything visual for one building: its 3D model at every level (<code>model</code> / <code>extra3</code>), the family’s squishies (design drawing, name, rarity, bio, and where/how they idle around the house: <code>idle3</code>), the room drawing, and the minigame screen mockup.</td></tr>
+      <tr><td><code>art/kit3d.js</code>, <code>art/kit3d-build.js</code></td><td>Shared 3D tools: the squishy “inflater”, lights, viewers, windows, doors, fences, trees, and the broken-to-golden level rules every building follows.</td></tr>
+      <tr><td><code>play/bistro-rush.html</code> &hellip;</td><td>The 10 playable prototypes (9 minigames and the Squish Lab toy). Each one is a complete standalone file (game rules, drawing and squishy pictures inside), so you can change one game without touching anything else.</td></tr>
+      <tr><td><code>art/city3d.js</code></td><td>The map engine: draws the town from the CITY block, camera pan and zoom, tapping buildings.</td></tr>
+      <tr><td><code>art/kit.js</code>, <code>art/style.css</code></td><td>Squishy design drawing helpers, upgrade-cost formula, page layout and loading. Rarely need changing.</td></tr>
+    </tbody>
+  </table></div>
+  <p class="note"><b>Example</b>"Rename Har Gow to Shrimp Pal and make it Epic" &rarr; give the AI <code>art/dumpling.js</code>. "Move the Sweet Shoppe next to the lake" &rarr; give it <code>index.html</code>. "Rewrite the level 7 caption" &rarr; give it <code>dumpling.html</code>.</p>
+</section>
+
+<footer class="foot">
+  <span>Words on this page: <code>guide.html</code></span>
+  <span>Pictures &amp; squishy list: <code>art/kit.js</code></span>
+</footer>
+</main>
+<script src="art/kit.js"></script>
+<script>
+SQ.boot(function () {
+  const D = SQ.three, list = [['bao', 'Pool jumps'], ['banana', 'Mowing'], ['puppy', 'Collecting mail'], ['gyoza', 'Sunbathing'], ['strawberry', 'Swinging'], ['marshmallow', 'Trampoline'], ['whale', 'Beach towel'], ['puff', 'Floating']];
+  document.getElementById('idles').innerHTML = list.map(([id, t]) => { const q = SQ.SQ[id], obj = D.G(q.idle3(D, 8)); const box = new THREE.Box3().setFromObject(obj), cx = (box.min.x + box.max.x) / 2, cz = (box.min.z + box.max.z) / 2; obj.add(D.at(D.disc(5, '#9ED67E'), cx, 0, cz, -Math.PI / 2, 0, 0)); obj.position.set(-cx, 0, -cz); const wrap = D.G(obj); return `<figure><img src="${D.snap(wrap, { w: 300, h: 240, t: .7, pad: .9, pitch: .45, yaw: .5 })}" alt="" style="width:100%;border-radius:10px;background:linear-gradient(#E7F4FF,#F7FBFF 70%)">${t}</figure>`; }).join('');
+});
+</script>
+</body>
+</html>

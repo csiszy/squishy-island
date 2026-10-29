@@ -1,0 +1,158 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Squishy Island First Launch</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bagel+Fat+One&amp;family=Nunito:wght@400;600;800;900&amp;family=Patrick+Hand&amp;display=swap">
+<link rel="stylesheet" href="art/style.css">
+<style>
+.flow{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:12px;padding:0;margin:0;counter-reset:f}
+@media (max-width:900px){.flow{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:520px){.flow{grid-template-columns:1fr}}
+.flow li{list-style:none;background:#fff;border:2.5px solid var(--line);border-radius:18px;box-shadow:3px 3px 0 var(--line);padding:12px;display:grid;gap:4px;align-content:start}
+.flow li::before{counter-increment:f;content:counter(f);font-family:var(--f-display);font-size:22px;color:var(--pink)}
+.flow b{font-size:15.5px}.flow em{font-style:normal;font-weight:900;font-size:12.5px;color:#4A9BFF}.flow span{font-size:13.5px;color:var(--ink2);line-height:1.35}
+.board{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,230px),1fr));gap:14px}
+.sc{background:#fff;border:2.5px solid var(--line);border-radius:18px;box-shadow:3px 3px 0 var(--line);overflow:hidden;display:grid;grid-template-rows:auto 1fr}
+.sc .pic{position:relative;aspect-ratio:400/300;background:linear-gradient(#E7F4FF,#F7FBFF 70%);display:grid;place-items:center}
+.sc .pic img{width:100%;height:100%;object-fit:cover}
+.sc .pic.storm::after{content:"";position:absolute;inset:0;background:repeating-linear-gradient(105deg,transparent 0 14px,rgba(255,255,255,.28) 14px 15px,transparent 15px 34px),linear-gradient(rgba(38,28,80,.6),rgba(38,28,80,.35))}
+.sc .pic .n{position:absolute;left:8px;top:8px;z-index:1;width:28px;height:28px;border-radius:50%;background:var(--sun);border:2px solid var(--line);display:grid;place-items:center;font-weight:900}
+.sc .tx{padding:10px 12px;display:grid;gap:4px}
+.sc .say{font-family:var(--f-hand);font-size:19px;line-height:1.25}
+.sc .cue{font-size:12.5px;color:var(--ink2);font-weight:700}
+.names{display:flex;flex-wrap:wrap;gap:6px}
+.names span{background:#fff;border:2px solid var(--line);border-radius:999px;padding:4px 10px;font-weight:800;font-size:13.5px}
+</style>
+</head>
+<body style="--theme:#FFB833;--theme2:#FFF3D6">
+<header class="topbar"><div class="topbar-in">
+  <a class="brand" href="index.html"><i></i>Squishy Island</a>
+  <nav><a class="pill" href="index.html">&larr; City map</a><a class="pill" href="guide.html">Game guide</a><a class="pill" href="settings.html">Settings</a></nav>
+</div></header>
+<main class="wrap">
+
+<section class="hero" style="grid-template-columns:1fr">
+  <div class="hero-text">
+    <p class="eyebrow">First launch · story · tutorial · help</p>
+    <h1>The first five minutes</h1>
+    <p class="lede">What a child sees from the very first tap: a short story that explains <i>why</i> the town is broken, a name, and a hands-on tour where Bao Bun shows them everything by letting them do it. After that, a little <b>i</b> button on the map replays any part of the tour, any time.</p>
+    <p class="playbar"><a class="play-btn" href="index.html?intro=first">&#9654; Play the opening on the map</a><span>The design-book map plays the real story and then the tour, which leaves the map to open your free box in the Factory and to play Sky Bounce, and brings you back each time. It also plays automatically the first time someone opens the map. Turn the sound on.</span></p>
+  </div>
+</section>
+
+<section>
+  <div class="sec-head"><p class="eyebrow">The flow</p><h2>From install to free play</h2></div>
+  <ol class="flow">
+    <li><b>Loading</b><em>3–6 s · can’t skip</em><span>Logo bounces in, Bao rolls across a loading bar. Meanwhile the game quietly creates the guest account and checks how strong the phone is (<a href="settings.html#auto">graphics tier</a>).</span></li>
+    <li><b>Opening story</b><em>about 45 s · Skip from the first second</em><span>7 short scenes told on the real town map, with a narrator voice and subtitles. Tap to go faster.</span></li>
+    <li><b>Pick a name</b><em>about 15 s</em><span>Bao: “What should I call you?” Spin two word wheels (no typing, so no real names). A number is added automatically.</span></li>
+    <li><b>First tour</b><em>3–4 min · starts by itself · “Skip tour” in the corner</em><span>Starts automatically right after the story, also when the story was skipped. Drag, zoom, open the free first box, play one minigame, fix up the Steamhouse, see the quest board. Skipping still gives the free box and the starting coins.</span></li>
+    <li><b>Free play</b><em>forever</em><span>The <b>i</b> button replays any topic. The first time a new screen opens (Market, a house inside, the Gem Shop), Bao gives one short tip there, once.</span></li>
+  </ol>
+  <div class="names" style="margin-top:14px" aria-label="Name examples"><span>Bouncy Bao 482</span><span>Fluffy Mochi 17</span><span>Sparkly Puff 903</span><span>Sleepy Bean 255</span><span>Jolly Dumpling 61</span><span>Tiny Taco 338</span></div>
+  <p style="font-size:14px;color:var(--ink2);font-weight:700">Name wheels: about 40 friendly adjectives × 40 squishy words, checked so no combination can spell anything rude.</p>
+</section>
+
+<section>
+  <div class="sec-head"><p class="eyebrow">Opening story</p><h2>Storyboard</h2></div>
+  <p>The story is played on the real 3D map: the camera flies between places while the town changes from golden to broken. It needs no extra art except the storm overlay, and it shows children the town they are about to fix.</p>
+  <div class="board" id="board"></div>
+  <div class="two" style="margin-top:18px">
+    <div class="card prose">
+      <h3>Story rules</h3>
+      <ul>
+        <li><b>Skip</b> sits in the top-right corner from the very first frame, always visible, one tap (no “are you sure?”).</li>
+        <li>Tapping anywhere finishes the current line; tapping again goes to the next scene. Otherwise each scene moves on by itself 2.5 s after the line ends.</li>
+        <li>Every line is read by a <b>narrator voice</b> (warm and slow) and shown as subtitles in a storybook strip, so children who can’t read yet still follow.</li>
+        <li>No scene is scary: the storm is purple, not black; the thunder is far away; nobody is hurt, the squishies are just <i>blown away</i> and can come back.</li>
+        <li>With Reduced animations: cuts instead of camera flights, no flash.</li>
+        <li>Plays once, on the very first launch. Replay from Settings → Help, or the <b>i</b> menu.</li>
+      </ul>
+    </div>
+    <div class="card prose">
+      <h3>Sound and music</h3>
+      <ul>
+        <li>Music: “Once Upon a Squish” (music box and soft pad, minor key turning major at the end). Hear it on the <a href="sound.html">Sound page</a>.</li>
+        <li>Scene 3: wind builds up, then a far-away thunder rumble.</li>
+        <li>Scene 4: a soft “poof” and a white flash as the town breaks.</li>
+        <li>Scene 6: magic sparkle on the Factory.</li>
+        <li>Narration ducks the music to 35%.</li>
+        <li>“Let’s go!” fades the story music into the city theme.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="sec-head"><p class="eyebrow">First tour</p><h2>Learning by doing</h2></div>
+  <div class="tbl-wrap"><table>
+    <thead><tr><th>#</th><th>Bao says</th><th>The player does</th><th>Result</th></tr></thead>
+    <tbody>
+      <tr><td class="num">1</td><td>“This is Squishy Island! Drag your finger to look around.”</td><td>Drags the map a little way</td><td>Star sound, next step</td></tr>
+      <tr><td class="num">2</td><td>“Now pinch to zoom in on my house.”</td><td>Zooms in (or taps +)</td><td>Camera settles on the Steamhouse</td></tr>
+      <tr><td class="num">3</td><td>“Squishies were blown away… but the Factory can bring them back! Tap it.”</td><td>Taps the Factory</td><td>Box screen opens</td></tr>
+      <tr><td class="num">4</td><td>“This one’s free. Tap <b>Open!</b>”</td><td>Opens the first box</td><td>Always <b>Gyoza</b> (Common, Dumpling Gang), who moves into the Steamhouse: camera follows</td></tr>
+      <tr><td class="num">5</td><td>“Boxes cost coins. Let’s earn some at the Bounce Park!”</td><td>Taps the Bounce Park, plays one Sky Bounce run</td><td>Tutorial run: hints on screen, can’t fall for the first 20 s. Results count up</td></tr>
+      <tr><td class="num">6</td><td>“Let’s fix my house!”</td><td>Taps the Steamhouse → Fix up (100 coins)</td><td>Hammer knocks, ta-da: Steamhouse level 2</td></tr>
+      <tr><td class="num">7</td><td>“Every day there are quests. This one gives Gems!”</td><td>Taps the quest board</td><td>Sees today’s 3 quests; the first coin quest is already done (+40 coins)</td></tr>
+      <tr><td class="num">8</td><td>“Forgot something? Tap the <b>i</b> any time.”</td><td>Taps Done</td><td>Confetti, <b>+200 coins</b> welcome gift</td></tr>
+    </tbody>
+  </table></div>
+  <div class="two" style="margin-top:18px">
+    <div class="card prose">
+      <h3>Tour rules</h3>
+      <ul>
+        <li>The real screens, with everything except the target dimmed. Taps outside the target do nothing during a “do this” step.</li>
+        <li>If nothing happens for 5 seconds, a hand pointer shows the gesture. After 15 seconds Bao repeats the line.</li>
+        <li>Bao’s lines are short (max ~15 words), voiced, and always on screen as text.</li>
+        <li>Progress saves after each step; closing the app mid-tour resumes at the same step.</li>
+        <li>The tour can’t be failed and never asks for money, Gems or ads.</li>
+        <li>Starting money: 200 coins before the tour, about 450 after it (enough for a second box or the next house level).</li>
+      </ul>
+    </div>
+    <div class="card prose">
+      <h3>The <b>i</b> button: help any time</h3>
+      <ul>
+        <li>Top-left corner of the map, the same place on every screen. On the map it opens a menu of short topics; on any other screen it jumps straight to that screen’s topic.</li>
+        <li>Topics (2–5 steps each): The full tour · Moving around · Houses · Minigames &amp; coins · Mystery Boxes · Gems · Quests &amp; visitor · Trading · Settings &amp; saving · Watch the story.</li>
+        <li>Help topics use the same Bao bubble and spotlight, but every step can be skipped and nothing is spent.</li>
+        <li>Try it on the <a href="index.html?help=1">map</a>: it’s the round <b><i>i</i></b> button in the top-left corner.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<footer class="foot">
+  <span>Words on this page: <code>start.html</code></span>
+  <span>The playable story and tour: <code>index.html</code> (end of its script)</span>
+</footer>
+</main>
+<script src="art/sound.js"></script>
+<script src="art/kit.js"></script>
+<script>
+SQ.boot(async function () {
+  const SC = [
+    ['fruit', 10, '', 'Once upon a time, far out in a fizzy lemonade sea, lay a little place called Squishy Island.', 'Wide shot of the golden town · story music starts'],
+    ['dumpling', 10, '', 'Every house was home to a family of squishies. They bounced, napped and played all day long.', 'Camera glides down to the Steamhouse'],
+    ['dumpling', 10, 'storm', 'Then one night, the Big Grumble Wind came huffing and puffing… WHOOOSH!', 'Purple storm and rain · wind, far-away thunder'],
+    ['dumpling', 1, '', 'The squishies were blown far, far away, and every house fell to pieces.', 'White flash, the town is broken · soft “poof”'],
+    ['bao', 0, '', 'Only Bao Bun held on tight, hiding in the soup pot.', 'Close-up of Bao in the Steamhouse'],
+    ['factory', 1, '', 'But the old Squishy Factory still worked! Every box it makes can find a lost squishy and bring it home.', 'Camera flies to the Factory · sparkle'],
+    ['sweets', 1, '', 'Will you help Bao fix up Squishy Island and bring every squishy home?', 'Wide shot · buttons: “Let’s go!” / “Just look around”']
+  ];
+  const board = document.getElementById('board');
+  board.innerHTML = SC.map(([, , cls, say, cue], i) => `<div class="sc"><div class="pic ${cls}" data-i="${i}"><span class="n">${i + 1}</span></div><div class="tx"><span class="say">“${say}”</span><span class="cue">${cue}</span></div></div>`).join('');
+  for (let i = 0; i < SC.length; i++) {
+    const [id, L] = SC[i], el = board.querySelector(`[data-i="${i}"]`);
+    const url = id === 'bao' ? SQ.three.sprite('bao', { eyes: 'happy' }, 300) : await SQ.snapBuilding(id, L, true, { w: 400, h: 300 });
+    el.insertAdjacentHTML('beforeend', `<img src="${url}" alt="" ${id === 'bao' ? 'style="width:60%;height:auto;object-fit:contain"' : ''}>`);
+  }
+});
+</script>
+</body>
+</html>

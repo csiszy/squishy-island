@@ -1,0 +1,14 @@
+<!doctype html>
+<meta charset="utf-8"><title>rendering</title>
+<!-- Used by tools/render_sprites.py: renders every squishy portrait (128 px) for the minigame prototypes. -->
+<script src="../art/kit.js"></script>
+<script>
+SQ.boot(function () {
+  try {
+    const D = SQ.three, out = {};
+    Object.keys(SQ.SQ).forEach(id => out[id] = D.sprite(id, {}, 128));
+    ['bao', 'kitty', 'puppy', 'bunny', 'marshmallow'].forEach(id => { out[id + '_sleep'] = D.sprite(id, { eyes: 'sleep' }, 128); out[id + '_happy'] = D.sprite(id, { eyes: 'happy' }, 128); });
+    window.__out = out; document.title = 'done';
+  } catch (e) { document.title = 'ERR ' + e.message; }
+});
+</script>

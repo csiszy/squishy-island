@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Squish Bistro</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bagel+Fat+One&amp;family=Nunito:wght@400;600;800;900&amp;family=Patrick+Hand&amp;display=swap">
+<link rel="stylesheet" href="art/style.css">
+</head>
+<body style="--theme:#E5484D;--theme2:#FFE3E0">
+<header class="topbar"><div class="topbar-in">
+  <a class="brand" href="index.html"><i></i>Squishy Island</a>
+  <nav><a class="pill" href="index.html">&larr; City map</a><a class="pill" href="guide.html">Game guide</a></nav>
+</div></header>
+<main class="wrap">
+
+<section class="hero">
+  <div class="hero-text">
+    <p class="eyebrow">Fun building · minigame</p>
+    <h1>Squish Bistro</h1>
+    <p class="lede">A little restaurant where your squishies cook and serve hungry customers. It starts as a food cart and grows into a two-storey bistro with a terrace and a giant chef hat on the roof.</p>
+    <ul class="facts"><li><b>Address:</b> 5 Butter Boulevard</li><li><b>Unlocks:</b> Dumpling Steamhouse reaches level 3</li><li><b>Minigame:</b> Bistro Rush</li><li><b>Play time:</b> Endless (3 hearts)</li></ul>
+    <p class="note"><b>Try it</b>Drag the slider to see the building at every level. Level 0 is the empty plot it starts as.</p>
+  </div>
+  <div class="hero-art" data-hero="restaurant" data-level="10"></div>
+</section>
+
+<section>
+  <div class="sec-head"><p class="eyebrow">The minigame</p><h2>Bistro Rush</h2></div>
+  <p class="playbar"><a class="play-btn" href="play/bistro-rush.html">&#9654; Play the prototype</a><span>Works on phone and computer. Each minigame is one file you can open on its own: <code>play/bistro-rush.html</code></span></p>
+  <div class="game">
+    <div class="prose">
+      <p class="lede">A fast, cheerful order-matching game that never ends. Hungry squishies sit at the counter, show what they want in a speech bubble, and you cook and serve before their patience runs out. The longer you last, the faster they come.</p>
+      <h3>How it plays</h3><ol><li>Squishies arrive and sit at the 3 counter seats. Each shows 1 or 2 foods in its bubble, with a patience bar underneath.</li><li>Tap a food in the tray to start cooking it in a free pan (3 pans). Each food takes a different time to cook.</li><li>When a dish says READY, tap it and then tap the squishy who ordered it (or drag it onto them).</li><li>A served customer pays and leaves happy. If a patience bar runs out, the customer leaves sad and you lose a heart.</li><li>Lose all 3 hearts and the shift is over. There is no time limit: a great chef can keep going forever.</li></ol>
+      <h3>Controls</h3><p>One finger: tap to cook, tap or drag to serve. Every order is a picture, so no reading is needed.</p>
+      <h3>Scoring</h3><ul><li>+100 per food served, +50 if the customer was still happy (green bar).</li><li>Serve 5 customers in a row without losing one: ×2 points, ×3 after 10, up to ×5.</li><li>Your best score is saved, so the goal is always to beat it.</li></ul>
+      <h3>It never ends, it just gets harder</h3><ul><li>Difficulty rises smoothly, a little every second and with every order served (no sudden jumps). It starts brisk: a new guest every ~3.5 s with ~15 s of patience.</li><li>Guests arrive closer together (down to ~1.5 s apart) and get less patient (down to ~7.5 s), easing toward a hard-but-fair ceiling.</li><li>Two-item orders become steadily more common, and after a while a fifth food (dumplings, the slowest to cook) joins the menu with a little announcement.</li></ul>
+      <h3>Squishy helpers</h3><p>You always play with squishies you own. Some families are extra good at this game:</p><ul><li><b>Pantry Pals</b> chefs cook 20% faster.</li><li><b>Dumpling Gang</b> chefs make customers 15% more patient.</li><li>Rarer chefs add a coin bonus: Rare +10%, Epic +20%, Legendary +35%.</li></ul>
+      <h3>Rewards</h3><p>Coins equal to the points ÷ 420, plus a milestone bonus of +10 / +25 / +50 coins when a run passes 15,000 / 30,000 / 50,000 points (you get the highest one reached). That is about 35 coins per minute for a good player, the same as every other minigame. Your best score unlocks building upgrades.</p><h3>Keep going (optional ad)</h3><p>When the run ends, the player can choose to watch a short ad once per run: carry on with 1 heart, and every waiting guest’s patience refills. “No thanks” ends the run as normal. See the <a href="guide.html#ads">ad rules</a>.</p>
+    </div>
+    <figure class="phone" data-mock="restaurant" style="margin:0"></figure>
+  </div>
+</section>
+
+<section>
+  <div class="sec-head"><p class="eyebrow">Building levels</p><h2>From empty plot to level 10</h2></div>
+  <p>The plot is fixed on the map and shows a &ldquo;Build me!&rdquo; sign until you pay to build level 1. After that, each upgrade unlocks when your best score in Bistro Rush is high enough, and then costs coins. Better results in the minigame = a fancier building. Tap any level to see it bigger.</p>
+  <ol data-levels="restaurant">
+  <li><b>Food cart.</b> A striped-awning cart with a chef-hat sign.</li>
+  <li><b>Cart + menu.</b> A chalkboard menu and a potted plant.</li>
+  <li><b>Little bistro.</b> A small one-room restaurant with a red roof.</li>
+  <li><b>Awnings.</b> Red-and-white awnings over the windows.</li>
+  <li><b>Wider dining room.</b> Big windows to watch the diners.</li>
+  <li><b>Second floor.</b> An upstairs dining room.</li>
+  <li><b>Terrace.</b> Outdoor tables with umbrellas and customers.</li>
+  <li><b>Lit sign.</b> Light bulbs around the BISTRO sign, garden out front.</li>
+  <li><b>Chef hat roof.</b> A giant chef hat sits on top and steam rises.</li>
+  <li><b>Golden Bistro.</b> Flags, star medal and sparkles.</li>
+</ol>
+</section>
+
+<footer class="foot">
+  <span>Words on this page: <code>restaurant.html</code></span>
+  <span>Pictures &amp; squishy list: <code>art/restaurant.js</code></span>
+</footer>
+</main>
+<script src="art/kit.js"></script>
+<script>SQ.boot();</script>
+</body>
+</html>
