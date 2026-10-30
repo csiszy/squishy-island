@@ -21,6 +21,9 @@ signal buildings_unlocked(ids: Array[StringName])
 ## A house's decor changed (bought or switched design). Sent by Town.
 signal decor_changed(house: StringName)
 
+## A minigame run ended and was paid (quests and the Gem Challenge listen later).
+signal minigame_played(game: StringName, score: int, coins: int)
+
 ## The game is going to the background (home button, incoming call). Sent by Events itself.
 signal app_paused
 

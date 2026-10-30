@@ -1,0 +1,15 @@
+keys,en
+sky_bounce.title,Sky Bounce
+sky_bounce.where,at Bounce Park
+sky_bounce.how.1,Your squishy bounces by itself every time it lands.
+sky_bounce.how.2,Steer left and right to land on the next cloud.
+sky_bounce.how.3,Hold or slide your finger on the side you want to go (computer: arrow keys or A / D).
+sky_bounce.how.4,Springs and balloons send you flying. Crumbly clouds break after one bounce.
+sky_bounce.how.5,"It goes forever: the higher you climb, the trickier the sky."
+sky_bounce.score_name,metres high
+sky_bounce.metric_line,{n} coins collected
+sky_bounce.unit,m high
+sky_bounce.coin_rule,keep every coin you grab
+sky_bounce.revive_gift,and float back up with a balloon
+sky_bounce.up_you_go,Up you go!
+sky_bounce.your_best,your best

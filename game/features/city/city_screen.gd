@@ -419,6 +419,8 @@ func _on_card_action(id: StringName, action: StringName) -> void:
 			Nav.go(&"house", {"id": id})
 		&"open_factory":
 			Nav.go(&"factory", {})
+		&"play":
+			Nav.go(&"minigame", {"building": id})
 		&"build", &"upgrade":
 			var r := Town.upgrade(id)
 			if r["can"]:

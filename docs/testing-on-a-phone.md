@@ -25,6 +25,19 @@ They are kept for 14 days.
 Later test builds install **over** the old one and keep your town (they share one test key). If Android ever says the
 app "conflicts with an existing package", uninstall the old one first (this deletes the test town).
 
+## What to try (Step 2: the minigames)
+
+- Tap **Bounce Park**, **Squish Bistro** or the **Post Office** on the map, then **Play**.
+- The start card: how to play, how coins work, your best score, and which squishy plays (**Change** once you own
+  more than one).
+- During a game: the pause button at the top (or the phone's back button): sound / music switches, keep playing,
+  or **Finish here** (you still get your coins).
+- When you lose: **Keep going?** offers a pretend ad once (8 seconds, closable after 5 = no reward).
+- The results card: numbers count up, coins go into the jar, "New best score!", and what the building needs next.
+- Good scores unlock building upgrades (with the new confetti!).
+- Please note: are the controls comfortable on a real screen? Too hard, too easy? How many coins per minute feel
+  right?
+
 ## What to try (Step 1)
 
 - The map: drag, pinch to zoom, the − / + / ⛶ buttons, tap buildings and bubbles.

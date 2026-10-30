@@ -42,6 +42,10 @@ func play_sfx(id: StringName, volume: float, pitch: float) -> void:
 	var stream := _sfx_stream(id)
 	if stream == null:
 		return
+	play_stream(stream, volume, pitch)
+
+
+func play_stream(stream: AudioStream, volume: float, pitch: float) -> void:
 	var busy: Array[bool] = []
 	for v in _voices:
 		busy.append(v.playing)

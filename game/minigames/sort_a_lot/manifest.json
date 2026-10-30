@@ -1,0 +1,24 @@
+{
+  "id": "sort_a_lot",
+  "api": 1,
+  "version": "1.0.0",
+  "title": "sort_a_lot.title",
+  "where": "sort_a_lot.where",
+  "building": "post",
+  "kind": "endless",
+  "scene": "sort_a_lot.tscn",
+  "music": "post",
+  "size": [360, 640],
+  "backdrop": "#FFF7D6",
+  "how_to": ["sort_a_lot.how.1", "sort_a_lot.how.2", "sort_a_lot.how.3", "sort_a_lot.how.4", "sort_a_lot.how.5"],
+  "score_name": "sort_a_lot.score_name",
+  "metric_line": "sort_a_lot.metric_line",
+  "coins": { "from": "score", "divide": 55, "milestones": [], "unit": "sort_a_lot.unit", "rule": "sort_a_lot.coin_rule" },
+  "goal": "metric",
+  "revive": { "allowed": true, "gift": "sort_a_lot.revive_gift" },
+  "perks": [
+    { "family": "dumpling", "effect": "slower_belt", "amount": 0.15 },
+    { "family": "pets", "effect": "fetch_every", "amount": 10 }
+  ],
+  "enabled": true
+}

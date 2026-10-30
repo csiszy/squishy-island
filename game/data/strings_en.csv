@@ -1,4 +1,9 @@
 keys,en
+ad.body,"In the real app: a short, kid-safe video ad. Here it is just a wait ({n})."
+ad.close_after,You can close it after {n} seconds
+ad.close_no_reward,Close (no reward)
+ad.eyebrow,Ad
+ad.title,Your ad plays here
 app.loading,Getting the island ready…
 app.subtitle,Collect & Play
 app.title,Squishy Island
@@ -603,6 +608,55 @@ family.ocean.name,Sea Squish
 family.pets.name,Pet Pals
 family.sky.name,Sky Puffs
 family.sweets.name,Sugar Squad
+game.back_to_town,Back to town
+game.best,Best: {n}
+game.bonus_at,Bonus {adds} at {ats} {unit}
+game.bonus_line,+{n} bonus ({at} {unit})
+game.building_ready,You can upgrade {name} now!
+game.capped,The rest is saved for a longer game.
+game.change,Change
+game.coin_jar,Coin jar:
+game.coins_from,{n} from {rule}
+game.coins_levels,"Coins: beat a level for 30 + 15 per star (every 10th level pays double), replays 10 + 15 per new star"
+game.coins_rule,Coins: {rule}
+game.coins_word,coins
+game.eyebrow,Squishy Island minigame
+game.has_helpers,This squishy is extra good at this game!
+game.helper_line,+{n} from {name}'s Cozy home and helpers
+game.keep_going,Keep going?
+game.keep_playing,Keep playing
+game.leave,Finish here
+game.level_clear,Level clear!
+game.level_first,First clear: 30 + 15 per star
+game.level_first_big,First clear: 30 + 15 per star · big level ×2
+game.level_n,Level {n}
+game.level_no_coins,No coins this time. Beat the level to earn coins!
+game.level_replay,Replay: 10 + 15 for {n} new stars
+game.music_off,Music: off
+game.music_on,Music: on
+game.napping,"This game is taking a nap, try another!"
+game.new_best,New best score!
+game.next_bonus,Next bonus: +{n} at {at} {unit}
+game.next_goal,Next for {name} (level {level}):
+game.no_thanks,No thanks
+game.oh_no,Oh no!
+game.once_per_game,{gift} · once per game
+game.over,Game over
+game.pause,Pause
+game.paused,Paused
+game.play,Play
+game.play_again,Play again
+game.playing_as,Playing: {name}
+game.points,points
+game.revive_gift,and carry on
+game.sfx_off,Sounds: off
+game.sfx_on,Sounds: on
+game.so_far,You have {n} {what} so far.
+game.time_played,in {time} of play
+game.top_bonus,Top bonus reached!
+game.watch_ad,Watch an ad
+game.who_plays,Who plays?
+game.your_best,Your best: {n}
 house.bought,The {item} is in your room!
 house.buy,Buy ({coins} coins)
 house.cozy_bonus,Cozy {cozy}: this family earns +{pct}% coins in minigames
@@ -623,6 +677,7 @@ map.built,Ta-da! The {name} is ready!
 map.collection,Collection book
 map.empty_plot,Empty plot
 map.fix_up,Fix it up! ({coins} coins)
+map.game_soon,Game coming soon
 map.gem_store,Open the Gem store
 map.kind_factory,Squishy shop · Mystery Boxes
 map.kind_fun,Fun building · minigame

@@ -198,28 +198,32 @@ pre.code .c{color:#A99BD8}
     <div>
       <h3 style="margin:0 0 8px">manifest.json <small style="font-weight:700;color:var(--ink2)">(comments only explain it here)</small></h3>
 <pre class="code">{
-  "id": "sky_bounce",
+  "id": "sky_bounce",              <span class="c">// = the folder name</span>
   "api": 1,                        <span class="c">// contract version it was built for</span>
-  "version": "1.3.0",
-  "title": "Sky Bounce",
+  "version": "1.0.0",
+  "title": "sky_bounce.title",     <span class="c">// words: keys in the game's own strings_en.csv</span>
   "building": "playground",
   "kind": "endless",               <span class="c">// endless | levels | songs | toy</span>
   "scene": "sky_bounce.tscn",
-  "music": "audio/up_up_and_away.ogg",
-  "how_to": ["Tilt or tap left/right…", "…"],
-  "coins": { "from": "coins_collected",
+  "music": "sky",                  <span class="c">// a track of the sound pack</span>
+  "size": [360, 640],              <span class="c">// the game's own drawing space</span>
+  "backdrop": "#8CCBFF",           <span class="c">// colour around it on taller phones</span>
+  "how_to": ["sky_bounce.how.1", "…"],
+  "coins": { "from": "metric",     <span class="c">// score | metric (coins grabbed)</span>
+             "divide": 1,
              "milestones": [600, 1200, 2000],
-             "unit": "m high" },
+             "unit": "sky_bounce.unit" },
+  "goal": "score",                 <span class="c">// what counts for the building's level goal</span>
   "revive": { "allowed": true,
-              "gift": "float back up with a balloon" },
-  "perks": [{ "family": "sky", "effect": "float_longer" }],
+              "gift": "sky_bounce.revive_gift" },
+  "perks": [{ "family": "sky", "effect": "fall_slower", "amount": 0.25 }],
   "enabled": true                  <span class="c">// the server can switch it off</span>
 }</pre>
     </div>
     <div>
       <h3 style="margin:0 0 8px">The contract (minigame_api v1)</h3>
-<pre class="code"><span class="c"># what every minigame extends</span>
-class_name Minigame extends Node
+<pre class="code"><span class="c"># what every minigame extends (game/minigame_api/)</span>
+class_name Minigame extends Node2D   <span class="c"># draws in its "size"; the host scales it</span>
 
 signal finished(result: MinigameResult)
 signal score_changed(score: int)
@@ -228,19 +232,25 @@ func setup(ctx: MinigameContext) -> void: pass
 func start(level: int = 0) -> void: pass
 func pause() -> void: pass
 func resume() -> void: pass
+func stop() -> void: pass          <span class="c"># player left: end the run now</span>
 func can_revive() -> bool: return false
 func revive() -> void: pass
+func advance(delta: float) -> void: pass  <span class="c"># all game time</span>
 
 <span class="c"># MinigameContext: the ONLY things a game can use</span>
-<span class="c">#   squad            squishies the player brought (+ models)</span>
-<span class="c">#   settings         sound, vibration, quality tier,</span>
-<span class="c">#                    reduced motion, left-handed, colour helpers</span>
-<span class="c">#   sfx(id) buzz(ms) rng(seed)</span>
+<span class="c">#   squad            squishies the player brought (pictures: portrait(id))</span>
+<span class="c">#   perks            helper effects the squad switches on</span>
+<span class="c">#   settings         vibration, quality tier, reduced motion, left-handed</span>
+<span class="c">#   sfx(id) play(sound) buzz(ms) rng(seed) font(kind) t(key)</span>
 <span class="c">#   store            this game's own little save box</span>
+<span class="c">#   best             the player's best score so far</span>
 <span class="c">#   request_revive() asks the host (the host shows the ad)</span>
 
 <span class="c"># MinigameResult: what it gives back</span>
-<span class="c">#   score, metric, won, level, stars, seconds_played</span></pre>
+<span class="c">#   score, metric, won, level, stars, seconds_played</span>
+
+<span class="c"># minigame_kit/v1: KitGame = the prototypes' engine in Godot</span>
+<span class="c">#   (drawing helpers, taps, floating text, tones, "keep going?")</span></pre>
     </div>
   </div>
   <div class="two" style="margin-top:18px">
@@ -248,7 +258,8 @@ func revive() -> void: pass
       <h3>The host does, so games never have to</h3>
       <ul>
         <li>The start card (title, how to play, best score, levels or tracks) from the manifest.</li>
-        <li>Pause, the in-game Settings panel, leaving.</li>
+        <li>Pause (button and the phone's back button), sound and music switches, leaving: “Finish here” ends the run and still pays for what was reached.</li>
+        <li>Which squishy plays (the player picks one they own); its family’s helpers and Cozy bonus.</li>
         <li>“Keep going?” with the ad (closable after 5 s); then calls <code>revive()</code>.</li>
         <li>The results screen with the half-second count-up, coins from the manifest’s coin rule, milestone bonus, best score, “back to town” during the tour.</li>
         <li>Music from the manifest, ducking, the graphics tier, squishy perks.</li>

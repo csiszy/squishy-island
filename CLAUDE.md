@@ -43,11 +43,12 @@ AdMob (child-directed) · GUT tests + headless Godot in GitHub Actions · art/da
 
 ## Status and next step
 
-Design is complete (October 2026). **Steps 0 and 1 of the roadmap are done**: the Godot project, CI, core services
-with fakes, export tools and toon look (Step 0); the town (Step 1): city map, houses (fixing up, rooms, decor),
-the Factory (boxes with a pretend server), the collection book and the Spare Shelf. **Next: Step 2** (the minigame
-contract and host, results screen, payout, template; port Sky Bounce, Bistro Rush and Sort-a-Lot).
-Open decisions for the owner: end of `docs/decisions.md` §14 and §15.
+Design is complete (October 2026). **Steps 0, 1 and 2 of the roadmap are done**: the Godot project, CI, core services
+with fakes, export tools and toon look (Step 0); the town (Step 1): city map, houses, the Factory, the collection book
+and the Spare Shelf; the minigames (Step 2): the contract (`game/minigame_api/`), the kit (`game/minigame_kit/v1/`),
+the host (start card, pause, keep going with a pretend ad, results, payout checked by the pretend server), the
+template and Sky Bounce, Bistro Rush and Sort-a-Lot. **Next: Step 3** (the other seven minigames, one at a time).
+Open decisions for the owner: end of `docs/decisions.md` §14, §15 and §17.
 
 How the game is laid out: `game/core/` services are autoloads (`Events`, `Save`, `Settings`, `Text`, `Audio`,
 `Haptics`, `Server`, `Economy`, `Collection`, `Town`, `Nav`); each outside-world part sits behind a small base class with a fake (`Storage`/`MemoryStorage`,
@@ -56,6 +57,9 @@ How the game is laid out: `game/core/` services are autoloads (`Events`, `Save`,
 Models: `ArtLibrary.building(id, level)`, `ArtLibrary.squishy(id)`, `ArtLibrary.portrait(id)`, `.life(id)`, `.island()`.
 Screens live in `game/features/<name>/` and are opened with `Nav.go(&"house", {"id": &"dumpling"})`; only
 `game/app/main.gd` knows which scene each name is. Shared widgets: `game/shared_ui/` (theme, pop-ups, wallet, viewer).
+Minigames: one sealed folder each in `game/minigames/` (copy `_template/`, see its README); a game extends `KitGame`
+(the prototypes' engine in Godot) and only uses its folder, `minigame_api/` and `minigame_kit/v1/`; its words are in its
+own `strings_en.csv`; `tests/unit/test_minigame_contract.gd` plays every game with its `bot.gd`.
 Numbers and rules: `GameData` (from `game/data/`). The server's decisions go through `Server.api` (always `await`).
 To look at the running game without a phone: `xvfb-run godot --path game --rendering-driver opengl3 --resolution 540x960
 -s res://tests/visual/shoot.gd -- out.png go:factory` (steps listed in that file). Debug builds have a DEV button.

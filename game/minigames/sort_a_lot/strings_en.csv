@@ -1,0 +1,20 @@
+keys,en
+sort_a_lot.title,Sort-a-Lot
+sort_a_lot.where,at the Squishy Post Office
+sort_a_lot.how.1,Letters ride along the belt. Each has a coloured stamp.
+sort_a_lot.how.2,Swipe (or drag) a letter down into the mail bag with the same colour.
+sort_a_lot.how.3,"Wrong bag, or a letter falls off the end of the belt: you lose a heart. 3 hearts and it is over."
+sort_a_lot.how.4,Sort in a row to build your streak multiplier.
+sort_a_lot.how.5,"The belt speeds up and more bags open, forever. Later, stamps get spots too!"
+sort_a_lot.score_name,points
+sort_a_lot.metric_line,{n} letters sorted
+sort_a_lot.unit,points
+sort_a_lot.coin_rule,points ÷ 55
+sort_a_lot.revive_gift,"and carry on with 1 heart, the far end of the belt cleared"
+sort_a_lot.help.1,Swipe each letter into
+sort_a_lot.help.2,the bag with the same stamp
+sort_a_lot.streak,streak ×{n}
+sort_a_lot.sorted,Sorted {n}
+sort_a_lot.missed,Missed!
+sort_a_lot.wrong_bag,Wrong bag!
+sort_a_lot.fetched,Fetched!

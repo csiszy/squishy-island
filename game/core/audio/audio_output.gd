@@ -14,6 +14,11 @@ func play_sfx(_id: StringName, _volume: float, _pitch: float) -> void:
 	pass
 
 
+## A sound that is not in the pack (a minigame's own blips), on the sound-effects bus.
+func play_stream(_stream: AudioStream, _volume: float, _pitch: float) -> void:
+	pass
+
+
 ## Start a music loop, fading in over `fade` seconds (and fading out whatever was playing).
 func play_music(_id: StringName, _fade: float) -> void:
 	pass

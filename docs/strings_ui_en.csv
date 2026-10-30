@@ -106,3 +106,58 @@ collection.swap_title,Swap one {name} for {n} Stars?
 collection.swap_body,"Stars buy missing Commons and Uncommons, and special decor, in the Star Shop."
 collection.levelled,{name} is now level {n}!
 collection.trade_soon,Trading at the Market comes soon.
+map.game_soon,Game coming soon
+game.eyebrow,Squishy Island minigame
+game.play,Play
+game.play_again,Play again
+game.back_to_town,Back to town
+game.pause,Pause
+game.paused,Paused
+game.keep_playing,Keep playing
+game.leave,Finish here
+game.sfx_on,Sounds: on
+game.sfx_off,Sounds: off
+game.music_on,Music: on
+game.music_off,Music: off
+game.oh_no,Oh no!
+game.keep_going,Keep going?
+game.so_far,You have {n} {what} so far.
+game.watch_ad,Watch an ad
+game.once_per_game,{gift} · once per game
+game.revive_gift,and carry on
+game.no_thanks,No thanks
+game.over,Game over
+game.points,points
+game.new_best,New best score!
+game.best,Best: {n}
+game.your_best,Your best: {n}
+game.coins_word,coins
+game.coin_jar,Coin jar:
+game.time_played,in {time} of play
+game.coins_from,{n} from {rule}
+game.bonus_line,+{n} bonus ({at} {unit})
+game.helper_line,+{n} from {name}'s Cozy home and helpers
+game.next_bonus,Next bonus: +{n} at {at} {unit}
+game.top_bonus,Top bonus reached!
+game.capped,The rest is saved for a longer game.
+game.coins_rule,Coins: {rule}
+game.bonus_at,Bonus {adds} at {ats} {unit}
+game.coins_levels,"Coins: beat a level for 30 + 15 per star (every 10th level pays double), replays 10 + 15 per new star"
+game.playing_as,Playing: {name}
+game.change,Change
+game.who_plays,Who plays?
+game.has_helpers,This squishy is extra good at this game!
+game.next_goal,Next for {name} (level {level}):
+game.building_ready,You can upgrade {name} now!
+game.napping,"This game is taking a nap, try another!"
+game.level_n,Level {n}
+game.level_clear,Level clear!
+game.level_no_coins,No coins this time. Beat the level to earn coins!
+game.level_first,First clear: 30 + 15 per star
+game.level_first_big,First clear: 30 + 15 per star · big level ×2
+game.level_replay,Replay: 10 + 15 for {n} new stars
+ad.eyebrow,Ad
+ad.title,Your ad plays here
+ad.body,"In the real app: a short, kid-safe video ad. Here it is just a wait ({n})."
+ad.close_after,You can close it after {n} seconds
+ad.close_no_reward,Close (no reward)

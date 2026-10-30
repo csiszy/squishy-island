@@ -17,6 +17,10 @@ func play_sfx(id: StringName, volume: float, pitch: float) -> void:
 	sfx_played.append({"id": id, "volume": volume, "pitch": pitch})
 
 
+func play_stream(stream: AudioStream, volume: float, pitch: float) -> void:
+	sfx_played.append({"id": &"(stream)", "stream": stream, "volume": volume, "pitch": pitch})
+
+
 func play_music(id: StringName, _fade: float) -> void:
 	music_now = id
 	music_calls.append(id)

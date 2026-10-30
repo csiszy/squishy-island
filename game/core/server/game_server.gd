@@ -7,7 +7,7 @@ extends RefCounted
 ## Every answer is a Dictionary with "ok" (bool); when ok is false, "error" says why (a key of ERRORS).
 ## Collection entries look like {"level": 1..5, "spares": int, "sparkly": bool}.
 
-const ERRORS := [&"offline", &"unknown_box", &"unknown_squishy", &"not_owned", &"no_spares", &"max_level"]
+const ERRORS := [&"offline", &"unknown_box", &"unknown_squishy", &"not_owned", &"no_spares", &"max_level", &"bad_run"]
 
 
 ## Everything the server knows about this player: {"ok", "collection": {id: entry}, "stars", "gems", "pity",
@@ -30,4 +30,11 @@ func level_up(_id: StringName) -> Dictionary:
 
 ## Swap one spare for Squish Stars. Answer: {"ok", "entry", "stars"}.
 func swap_spare(_id: StringName) -> Dictionary:
+	return {"ok": false, "error": &"offline"}
+
+
+## Report a finished minigame run and the coins the phone worked out for it. The server keeps an impossible amount
+## from being paid (more than about 60 coins per minute of play, build.html "What lives where").
+## Answer: {"ok", "coins" (what may be paid), "capped" (bool)}.
+func submit_run(_game: StringName, _seconds: float, _coins: int) -> Dictionary:
 	return {"ok": false, "error": &"offline"}

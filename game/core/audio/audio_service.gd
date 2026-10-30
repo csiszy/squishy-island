@@ -73,6 +73,14 @@ func play(id: StringName, pitch := 1.0, loudness := 1.0) -> bool:
 	return true
 
 
+## Play a sound that is not in the pack (a minigame's own blips). Follows the sound-effects switch and volume.
+func play_stream(stream: AudioStream, pitch := 1.0, loudness := 1.0) -> bool:
+	if stream == null or not settings.get_value(&"sfx"):
+		return false
+	output.play_stream(stream, clampf(loudness, 0.0, 1.0), pitch)
+	return true
+
+
 ## Switch the background song (&"" for silence). Does nothing if it is already playing.
 func music(id: StringName) -> void:
 	if id != &"" and not music_catalog().has(id):

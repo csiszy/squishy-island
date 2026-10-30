@@ -1,0 +1,25 @@
+{
+  "id": "bistro_rush",
+  "api": 1,
+  "version": "1.0.0",
+  "title": "bistro_rush.title",
+  "where": "bistro_rush.where",
+  "building": "restaurant",
+  "kind": "endless",
+  "scene": "bistro_rush.tscn",
+  "music": "bistro",
+  "size": [360, 640],
+  "backdrop": "#FFF1E0",
+  "how_to": ["bistro_rush.how.1", "bistro_rush.how.2", "bistro_rush.how.3", "bistro_rush.how.4", "bistro_rush.how.5"],
+  "score_name": "bistro_rush.score_name",
+  "metric_line": "bistro_rush.metric_line",
+  "coins": { "from": "score", "divide": 420, "milestones": [15000, 30000, 50000], "unit": "bistro_rush.unit",
+             "rule": "bistro_rush.coin_rule", "rarity_bonus": { "R": 0.1, "E": 0.2, "L": 0.35 } },
+  "goal": "score",
+  "revive": { "allowed": true, "gift": "bistro_rush.revive_gift" },
+  "perks": [
+    { "family": "kitchen", "effect": "cook_faster", "amount": 0.2 },
+    { "family": "dumpling", "effect": "more_patience", "amount": 0.15 }
+  ],
+  "enabled": true
+}

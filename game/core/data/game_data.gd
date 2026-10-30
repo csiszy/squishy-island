@@ -13,6 +13,9 @@ static var _cache: Dictionary = {}
 static var _overrides: Dictionary = {}
 static var _squishy_index: Dictionary = {}
 static var _building_index: Dictionary = {}
+## building id -> {"id", "folder"} of the minigame played there (filled at start-up by the app shell, which asks
+## the minigame host; core itself never looks inside minigames/).
+static var minigames: Dictionary = {}
 
 
 ## The whole contents of data/<file_name> (or its override).
@@ -103,3 +106,8 @@ static func max_level(id: StringName) -> int:
 	for lv: Dictionary in building(id).get("levels", []):
 		top = maxi(top, int(lv["level"]))
 	return top
+
+
+## The minigame played at a building (&"" if none yet).
+static func minigame_for(building_id: StringName) -> StringName:
+	return StringName((minigames.get(building_id, {}) as Dictionary).get("id", ""))

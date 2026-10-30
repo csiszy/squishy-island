@@ -8,6 +8,7 @@ const SCREENS: Dictionary[StringName, String] = {
 	&"house": "res://features/houses/house_screen.tscn",
 	&"factory": "res://features/factory/factory_screen.tscn",
 	&"collection": "res://features/collection/collection_screen.tscn",
+	&"minigame": "res://features/minigame_host/minigame_screen.tscn",
 }
 const FIRST_SCREEN := &"city"
 
@@ -30,6 +31,10 @@ func _ready() -> void:
 	_overlay.mouse_filter = MOUSE_FILTER_IGNORE
 	_overlay.add_to_group(&"ui_overlay")
 	add_child(_overlay)
+	# which minigames exist (the host reads every manifest), so the map knows where "Play" leads
+	GameData.minigames = MinigameCatalog.by_building()
+	if Ads.provider is FakeAdProvider:
+		(Ads.provider as FakeAdProvider).presenter = PretendAd.play
 	Nav.go_requested.connect(open_screen)
 	Nav.back_requested.connect(go_back)
 	get_tree().node_added.connect(_on_node_added)
@@ -71,6 +76,9 @@ func open_screen(id: StringName, args: Dictionary) -> void:
 ## Close the top screen. On the first screen, the phone's back button leaves the game.
 func go_back() -> void:
 	if _overlay.get_child_count() > 0 and _overlay.get_child(-1) is UiPopup:
+		return
+	# a screen may want the back button for itself (a running minigame pauses instead)
+	if not _stack.is_empty() and (_stack[-1]["node"] as Node).has_method(&"back_pressed") and (_stack[-1]["node"] as Node).call(&"back_pressed"):
 		return
 	if _stack.size() <= 1:
 		if Nav.current == FIRST_SCREEN:

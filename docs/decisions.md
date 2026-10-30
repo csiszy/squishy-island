@@ -218,3 +218,46 @@ Small choices made while building (each follows the book; say if one is wrong):
   opens). Progress stays plentiful: 8 houses × 10 levels, fun-building upgrades, decor, 48 squishies.
 - The natural order remains (later houses cost more; the tutorial and quests suggest what to try next) but is never
   forced. The data format (`art/economy.js`, `unlocks`) can still hold a later unlock if one is ever wanted.
+
+## 17. Step 2: the minigame host and the first three games (done, October 2026)
+
+What was built: the contract (`game/minigame_api/`), the kit (`game/minigame_kit/v1/`), the host
+(`game/features/minigame_host/`), the template (`game/minigames/_template/`), and Sky Bounce, Bistro Rush and
+Sort-a-Lot ported from the prototypes. Tap a built fun building on the map → **Play**.
+
+- **The contract follows build.html**, with these small, deliberate changes (build.html updated): `Minigame`
+  extends `Node2D` (a game draws itself; the host scales its 360 × 640 space to the phone and fills the bands
+  around it with the manifest's `backdrop` colour); `stop()` (the player left) and `advance(delta)` (all game time
+  goes through it, so tests can fast-forward two minutes in a moment) were added; the manifest gained `size`,
+  `backdrop`, `goal` (score, metric or levels: what counts for the building) and `divide` in the coin rule; every
+  player-facing word of a game is a key in the game's own `strings_en.csv` (keys start with the game id).
+- **The kit is the prototypes' engine in Godot** (`KitGame`): same drawing helpers (`rr`, `circle`, `text`,
+  `sprite`, `hearts`, …), same "keep going?" flow, floating text, bursts, shake and the same synthesised blips
+  (`KitTone`), so a port is mostly translating one file. Frozen: only bug fixes; new helpers go into `v2`.
+- **Coins**: the host works them out from the manifest (`MinigamePayout`) with the numbers in `economy.json`
+  (milestone bonus +10/+25/+50, level rules), then asks the server (`submit_run`): the pretend server caps a run at
+  60 coins per minute of play (a run counts as at least one minute). Offline, the phone pays and the server checks
+  later (Step 4).
+- **Which squishy plays**: the start card shows "Playing: <squishy>" with **Change** (any squishy you own; the last
+  one is remembered). Its family's **helpers** (each building page's "Squishy helpers", in the manifest's `perks`)
+  and its house's **Cozy bonus** apply; Bistro Rush also pays the rarity bonus (Rare +10 %, Epic +20 %,
+  Legendary +35 %). Sky Bounce now plays as your squishy instead of always Marshmallow; the Bistro chef is your
+  squishy too.
+- **Leaving early pays**: "Finish here" (pause card, or the phone's back button pauses first) ends the run like a
+  game over, coins included. Kids should never lose what they earned by stopping. → guide.html "Keep going"
+- **Keep going?** uses a pretend ad (8 seconds, close after 5 = no reward) behind the new `Ads` service
+  (`AdProvider` / `FakeAdProvider`), once per run, never offered when the grown-up switch turns ads off. The real
+  child-directed AdMob comes in Step 5.
+- **Results card**: score, coins, coin jar count up in about half a second each (tap to skip), "New best score!"
+  stamps in after, then a line about the building ("Next for Bounce Park (level 2): Best height 60m" or
+  "You can upgrade … now!"). Best scores and each game's save box live in the save file under `minigames`.
+- **Safety nets**: the boundary check walls every game in; the contract test plays every game (and the template)
+  with its robot for two simulated minutes and with random taps until it loses, checking the Result, that the
+  score never goes down, every word exists and nothing is left behind. A game whose scene fails to load shows
+  "This game is taking a nap, try another!". (A frozen game cannot be stopped from inside Godot; a hang timer
+  needs the real server's off switch, Step 4.)
+- **Robot balance check (2 minutes each, 3 tries)**: Sort-a-Lot 30–33 coins/min, Bistro Rush 54–56, Sky Bounce 26–32 (the
+  robots are not children; the real check is the owner's phone test). Not changed yet: the book's numbers stay
+  until real play says otherwise.
+- Not yet: the squishy "helper" list on the start card names no effects yet (just "extra good at this game"),
+  tilt steering for Sky Bounce, and decor found in sorted letters (Sort-a-Lot page) — later steps.

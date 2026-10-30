@@ -28,8 +28,8 @@ STRING_OR_COMMENT = re.compile(r'"(?:\\.|[^"\\])*"|\'(?:\\.|[^\'\\])*\'|#[^\n]*'
 def zone(rel):
     """The area a game-relative path belongs to, e.g. 'minigames/sky_bounce', 'features/city', 'core'."""
     parts = rel.replace('\\', '/').split('/')
-    if parts[0] in ('minigames', 'features') and len(parts) > 2:
-        return parts[0] + '/' + parts[1]
+    if parts[0] in ('minigames', 'features') and len(parts) >= 2 and parts[1]:
+        return parts[0] + '/' + parts[1]    # a game's or feature's folder, or anything inside it
     if parts[0] == 'minigame_kit' and len(parts) > 2:
         return 'minigame_kit/' + parts[1]
     return parts[0] if len(parts) > 1 else ''

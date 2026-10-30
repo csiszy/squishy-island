@@ -43,7 +43,8 @@ static func for_building(id: StringName, town: TownService, collection: Collecti
 		&"market":
 			actions.append({"id": &"market", "text": Text.t(&"map.open"), "enabled": true})
 		_:
-			actions.append({"id": &"play", "text": Text.t(&"map.play"), "enabled": true})
+			var has_game := GameData.minigame_for(id) != &""
+			actions.append({"id": &"play", "text": Text.t(&"map.play") if has_game else Text.t(&"map.game_soon"), "enabled": has_game})
 	if check["reason"] == &"max":
 		out["note"] = Text.t(&"map.max_level")
 		return out
