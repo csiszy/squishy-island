@@ -80,7 +80,7 @@ jobs:
           if-no-files-found: ignore
 
   android:
-    name: Android build (.aab)
+    name: Android build (.aab + .apk)
     needs: [checks, tests]
     runs-on: ubuntu-latest
     timeout-minutes: 40
@@ -120,6 +120,12 @@ jobs:
           export/android/android_sdk_path = "$ANDROID_HOME"
           export/android/java_sdk_path = "$JAVA_HOME"
           EOF
+      - name: Keep the test signing key between runs
+        # Android only updates an installed app if the new one has the same key, so test builds reuse one key.
+        uses: actions/cache@v4
+        with:
+          path: ~/keys/debug.keystore
+          key: android-debug-keystore-v1
       - name: Signing key
         env:
           RELEASE_KEYSTORE_B64: ${{ secrets.ANDROID_UPLOAD_KEYSTORE_B64 }}
@@ -137,8 +143,9 @@ jobs:
               echo "EXPORT_MODE=release"
             } >> "$GITHUB_ENV"
           else
-            # No upload key yet: a throw-away debug key, so the build is still proven on every change.
-            keytool -genkeypair -v -keystore ~/keys/debug.keystore -storepass android -alias androiddebugkey \
+            # No upload key yet: a test (debug) key, made once and then reused from the cache.
+            mkdir -p ~/keys
+            [ -s ~/keys/debug.keystore ] || keytool -genkeypair -v -keystore ~/keys/debug.keystore -storepass android -alias androiddebugkey \
               -keypass android -keyalg RSA -keysize 2048 -validity 10000 -dname "CN=Android Debug,O=Android,C=US"
             {
               echo "GODOT_ANDROID_KEYSTORE_DEBUG_PATH=$HOME/keys/debug.keystore"
@@ -155,10 +162,19 @@ jobs:
           # --install-android-build-template only works together with an export
           $G --headless --path game --install-android-build-template --export-$EXPORT_MODE "Android" build/squishy-island.aab 2>&1 | tee export.log
           test -s game/build/squishy-island.aab || { echo "No .aab was produced"; exit 1; }
+          # the same game as an .apk, which can be installed straight onto a phone for testing
+          $G --headless --path game --export-$EXPORT_MODE "Android APK" build/squishy-island.apk 2>&1 | tee -a export.log
+          test -s game/build/squishy-island.apk || { echo "No .apk was produced"; exit 1; }
           ls -la game/build
       - name: Keep the app bundle
         uses: actions/upload-artifact@v5
         with:
           name: squishy-island-aab
           path: game/build/squishy-island.aab
+          retention-days: 14
+      - name: Keep the installable test app
+        uses: actions/upload-artifact@v5
+        with:
+          name: squishy-island-apk
+          path: game/build/squishy-island.apk
           retention-days: 14
