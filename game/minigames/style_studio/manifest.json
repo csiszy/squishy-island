@@ -1,0 +1,25 @@
+{
+  "id": "style_studio",
+  "api": 1,
+  "version": "1.0.0",
+  "title": "style_studio.title",
+  "where": "style_studio.where",
+  "building": "salon",
+  "kind": "endless",
+  "scene": "style_studio.tscn",
+  "music": "salon",
+  "size": [360, 640],
+  "backdrop": "#FFE3EF",
+  "how_to": ["style_studio.how.1", "style_studio.how.2", "style_studio.how.3", "style_studio.how.4", "style_studio.how.5"],
+  "score_name": "style_studio.score_name",
+  "metric_line": "style_studio.metric_line",
+  "over_title": "style_studio.over_title",
+  "coins": { "from": "score", "divide": 250, "milestones": [5000, 15000, 30000], "unit": "style_studio.unit",
+             "rule": "style_studio.coin_rule" },
+  "goal": "score",
+  "revive": { "allowed": true, "gift": "style_studio.revive_gift" },
+  "perks": [
+    { "family": "sky", "effect": "more_patience", "amount": 0.2 }
+  ],
+  "enabled": true
+}

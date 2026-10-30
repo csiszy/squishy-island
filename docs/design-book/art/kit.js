@@ -314,6 +314,8 @@ SQ.phone = (inner) => { const id = K.uid(); return `<svg viewBox="0 0 260 480" c
 /* ---------- upgrade requirements (one formula for all buildings) ---------- */
 const HC = [0, 0, 100, 200, 350, 500, 750, 1000, 1400, 1900, 2500], HQ = [0, 0, 0, 1, 1, 2, 2, 3, 3, 4, 5];
 const CC = [0, 300, 150, 250, 400, 600, 850, 1150, 1500, 2000, 2600], CT = [0, 0, 1, 2, 4, 6, 9, 13, 18, 24, 32];
+/* the same tables for tools/export_data: house coins + family squishies needed, fun-building coins + goal steps (× the building's unit) */
+SQ.COSTS = { houseCoins: HC, houseSquishies: HQ, civicCoins: CC, civicGoal: CT };
 SQ.req = function (d, L) {
   const m = d.mult || 1, coins = v => (Math.round(v * m / 10) * 10).toLocaleString('en-US');
   if (d.type === 'house') { if (L === 1) return 'How you find it'; return `${coins(HC[L])} coins${HQ[L] ? ` · ${HQ[L]} family squish${HQ[L] > 1 ? 'ies' : 'y'}` : ''}`; }
@@ -435,7 +437,7 @@ SQ.badgeHTML = function (id) {
 function load(src) { return new Promise(res => { const s = document.createElement('script'); s.src = src; s.onload = res; s.onerror = () => { console.warn('Missing file: ' + src); res(); }; document.head.appendChild(s); }); }
 SQ.boot = async function (cb) {
   if (!window.THREE) await load('https://cdn.jsdelivr.net/npm/three@0.149.0/build/three.min.js');
-  await load(DIR + 'kit3d.js'); await load(DIR + 'kit3d-build.js');
+  await load(DIR + 'kit3d.js'); await load(DIR + 'kit3d-build.js'); await load(DIR + 'economy.js');
   await Promise.all(SQ.MODULES.map(m => load(DIR + m + '.js')));
   if (document.fonts && document.fonts.ready) { try { await document.fonts.ready; } catch (e) {} }
   mountAll(); if (cb) cb();

@@ -1,0 +1,29 @@
+keys,en
+grow_grow_garden.title,Grow Grow Garden
+grow_grow_garden.where,at the Sprout Club Greenhouse
+grow_grow_garden.how.1,"Seeds sprout in the beds all by themselves, faster and faster. You can't stop them!"
+grow_grow_garden.how.2,Each plant shows what it needs: a water drop or a sun. Pick that tool and tap the plant.
+grow_grow_garden.how.3,Three good feeds and it blooms. Pick the basket and harvest it!
+grow_grow_garden.how.4,Tap snails to send them home before they nibble your plants.
+grow_grow_garden.how.5,"If a need waits too long, the plant wilts. 3 wilted plants and it is over."
+grow_grow_garden.score_name,points
+grow_grow_garden.metric_line,{n} flowers harvested
+grow_grow_garden.over_title,The garden is resting
+grow_grow_garden.unit,flowers harvested
+grow_grow_garden.coin_rule,points ÷ 200
+grow_grow_garden.revive_gift,"and carry on with 1 heart; every plant's wait resets and the snails go home"
+grow_grow_garden.tool.water,Water
+grow_grow_garden.tool.sun,Sun
+grow_grow_garden.tool.basket,Harvest
+grow_grow_garden.tools,TOOLS
+grow_grow_garden.wilted,Wilted!
+grow_grow_garden.munch,Munch!
+grow_grow_garden.harvest_count,Harvest {n}
+grow_grow_garden.tip.waiting,Seeds are on their way…
+grow_grow_garden.tip.basket,Tap blooming flowers to harvest
+grow_grow_garden.tip.water,Tap plants that ask for water
+grow_grow_garden.tip.sun,Tap plants that ask for sun
+grow_grow_garden.hint.empty,Seeds sprout here by themselves
+grow_grow_garden.hint.ready,Ready! Pick the basket
+grow_grow_garden.hint.water,It needs water
+grow_grow_garden.hint.sun,It needs sun

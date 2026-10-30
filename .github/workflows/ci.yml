@@ -1,0 +1,249 @@
+# Every push and pull request: check the walls between modules, check game/data and game/audio match the design
+# book, run every Godot test headless, start the game once, test the game server (its rules, then the real server
+# in Docker, talked to over the network), then build an Android App Bundle (.aab).
+# Later (Step 7 prep): upload the signed bundle to Google Play's internal testing track.
+name: CI
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  GODOT_VERSION: 4.6.3
+  GODOT_URL: https://github.com/godotengine/godot/releases/download/4.6.3-stable
+
+jobs:
+  checks:
+    name: Walls and exported data
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+      - uses: actions/setup-node@v5
+        with:
+          node-version: "22"
+          cache: npm
+          cache-dependency-path: tools/package-lock.json
+      - name: Boundary check (minigames sealed, features independent)
+        run: |
+          python3 -m unittest discover -s tools/tests
+          python3 tools/check_boundaries.py
+      - name: Install export tools
+        working-directory: tools
+        run: |
+          npm ci
+          npx playwright install --with-deps chromium
+      - name: game/data matches the design book
+        run: node tools/export_data/export_data.js --check
+      - name: game/audio matches the sound pack
+        run: node tools/export_audio/export_audio.js --check
+
+  tests:
+    name: Godot tests
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v5
+      - name: Cache Godot
+        id: cache-godot
+        uses: actions/cache@v4
+        with:
+          path: ~/godot
+          key: godot-${{ env.GODOT_VERSION }}
+      - name: Download Godot
+        if: steps.cache-godot.outputs.cache-hit != 'true'
+        run: |
+          mkdir -p ~/godot && cd ~/godot
+          curl -sSL -o godot.zip "$GODOT_URL/Godot_v${GODOT_VERSION}-stable_linux.x86_64.zip"
+          unzip -q godot.zip && rm godot.zip
+      - name: Import the project
+        run: ~/godot/Godot_v${GODOT_VERSION}-stable_linux.x86_64 --headless --path game --import
+      - name: Run the tests (GUT)
+        run: GODOT=~/godot/Godot_v${GODOT_VERSION}-stable_linux.x86_64 game/run_tests.sh
+      - name: Start the game for 120 frames
+        run: |
+          ~/godot/Godot_v${GODOT_VERSION}-stable_linux.x86_64 --headless --path game --quit-after 120 2>&1 | tee boot.log
+          if grep -E "SCRIPT ERROR|Parse Error|Failed to load" boot.log; then echo "The game reported errors while starting"; exit 1; fi
+      - name: Keep the test report
+        if: always()
+        uses: actions/upload-artifact@v5
+        with:
+          name: test-results
+          path: game/tests/results.xml
+          if-no-files-found: ignore
+
+  server:
+    name: Game server (Nakama)
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with:
+          node-version: "22"
+          cache: npm
+          cache-dependency-path: server/package-lock.json
+      - name: The server's rules (no Nakama needed)
+        working-directory: server
+        run: |
+          npm ci
+          npm test
+      - name: server/build/index.js is up to date with src/ and game/data
+        run: |
+          git diff --exit-code server/build/index.js || (echo "Out of date. Run (in server/): npm run build, then commit build/index.js"; exit 1)
+      - name: Start the server (Nakama + PostgreSQL)
+        working-directory: server
+        run: |
+          docker compose up -d --build
+          for i in $(seq 1 60); do docker compose ps nakama | grep -q healthy && break; sleep 2; done
+          docker compose logs nakama | grep "Squishy Island server ready"
+      - name: Talk to it over the network
+        working-directory: server
+        run: npm run test:live
+      - name: Cache Godot
+        id: cache-godot
+        uses: actions/cache@v4
+        with:
+          path: ~/godot
+          key: godot-${{ env.GODOT_VERSION }}
+      - name: Download Godot
+        if: steps.cache-godot.outputs.cache-hit != 'true'
+        run: |
+          mkdir -p ~/godot && cd ~/godot
+          curl -sSL -o godot.zip "$GODOT_URL/Godot_v${GODOT_VERSION}-stable_linux.x86_64.zip"
+          unzip -q godot.zip && rm godot.zip
+      - name: The game's own code against the real server
+        run: |
+          ~/godot/Godot_v${GODOT_VERSION}-stable_linux.x86_64 --headless --path game --import
+          SQUISHY_SERVER=http://127.0.0.1:7350 GODOT=~/godot/Godot_v${GODOT_VERSION}-stable_linux.x86_64 game/run_tests.sh -gselect=test_live_server
+      - name: Server log
+        if: failure()
+        working-directory: server
+        run: docker compose logs nakama | tail -100
+
+  android:
+    name: Android build (.aab + .apk)
+    needs: [checks, tests]
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write   # to put the newest test .apk on the "Test build" release page
+    timeout-minutes: 40
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: "17"
+      - name: Cache Godot and export templates
+        id: cache-templates
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/godot
+            ~/.local/share/godot/export_templates/${{ env.GODOT_VERSION }}.stable
+          key: godot-android-${{ env.GODOT_VERSION }}
+      - name: Download Godot and the Android export templates
+        if: steps.cache-templates.outputs.cache-hit != 'true'
+        run: |
+          mkdir -p ~/godot && cd ~/godot
+          curl -sSL -o godot.zip "$GODOT_URL/Godot_v${GODOT_VERSION}-stable_linux.x86_64.zip"
+          unzip -q godot.zip && rm godot.zip
+          curl -sSL -o t.tpz "$GODOT_URL/Godot_v${GODOT_VERSION}-stable_export_templates.tpz"
+          unzip -q t.tpz && rm t.tpz
+          T=~/.local/share/godot/export_templates/${GODOT_VERSION}.stable
+          mkdir -p "$T"
+          cp templates/version.txt templates/android_source.zip templates/android_debug.apk templates/android_release.apk "$T"/
+          rm -rf templates
+      - name: Point Godot at the Android SDK and Java
+        run: |
+          mkdir -p ~/.config/godot
+          cat > ~/.config/godot/editor_settings-4.6.tres <<EOF
+          [gd_resource type="EditorSettings" format=3]
+
+          [resource]
+          export/android/android_sdk_path = "$ANDROID_HOME"
+          export/android/java_sdk_path = "$JAVA_HOME"
+          EOF
+      - name: Keep the test signing key between runs
+        # Android only updates an installed app if the new one has the same key, so test builds reuse one key.
+        uses: actions/cache@v4
+        with:
+          path: ~/keys/debug.keystore
+          key: android-debug-keystore-v1
+      - name: Signing key
+        env:
+          RELEASE_KEYSTORE_B64: ${{ secrets.ANDROID_UPLOAD_KEYSTORE_B64 }}
+          RELEASE_KEY_ALIAS: ${{ secrets.ANDROID_UPLOAD_KEY_ALIAS }}
+          RELEASE_KEY_PASSWORD: ${{ secrets.ANDROID_UPLOAD_KEY_PASSWORD }}
+        run: |
+          mkdir -p ~/keys
+          if [ -n "$RELEASE_KEYSTORE_B64" ]; then
+            # The owner's upload key (stored as GitHub secrets): a release build Google Play accepts.
+            echo "$RELEASE_KEYSTORE_B64" | base64 -d > ~/keys/upload.keystore
+            {
+              echo "GODOT_ANDROID_KEYSTORE_RELEASE_PATH=$HOME/keys/upload.keystore"
+              echo "GODOT_ANDROID_KEYSTORE_RELEASE_USER=$RELEASE_KEY_ALIAS"
+              echo "GODOT_ANDROID_KEYSTORE_RELEASE_PASSWORD=$RELEASE_KEY_PASSWORD"
+              echo "EXPORT_MODE=release"
+            } >> "$GITHUB_ENV"
+          else
+            # No upload key yet: a test (debug) key, made once and then reused from the cache.
+            mkdir -p ~/keys
+            [ -s ~/keys/debug.keystore ] || keytool -genkeypair -v -keystore ~/keys/debug.keystore -storepass android -alias androiddebugkey \
+              -keypass android -keyalg RSA -keysize 2048 -validity 10000 -dname "CN=Android Debug,O=Android,C=US"
+            {
+              echo "GODOT_ANDROID_KEYSTORE_DEBUG_PATH=$HOME/keys/debug.keystore"
+              echo "GODOT_ANDROID_KEYSTORE_DEBUG_USER=androiddebugkey"
+              echo "GODOT_ANDROID_KEYSTORE_DEBUG_PASSWORD=android"
+              echo "EXPORT_MODE=debug"
+            } >> "$GITHUB_ENV"
+          fi
+      - name: Build the app bundle
+        run: |
+          G=~/godot/Godot_v${GODOT_VERSION}-stable_linux.x86_64
+          $G --headless --path game --import
+          mkdir -p game/build
+          # --install-android-build-template only works together with an export
+          $G --headless --path game --install-android-build-template --export-$EXPORT_MODE "Android" build/squishy-island.aab 2>&1 | tee export.log
+          test -s game/build/squishy-island.aab || { echo "No .aab was produced"; exit 1; }
+          # the same game as an .apk, which can be installed straight onto a phone for testing
+          $G --headless --path game --export-$EXPORT_MODE "Android APK" build/squishy-island.apk 2>&1 | tee -a export.log
+          test -s game/build/squishy-island.apk || { echo "No .apk was produced"; exit 1; }
+          ls -la game/build
+      - name: Check the phone build's game files
+        # files are stored differently in a phone build (scenes converted, only listed extras included);
+        # this opens the same game files the phone gets and checks every screen and minigame is there
+        run: |
+          G=~/godot/Godot_v${GODOT_VERSION}-stable_linux.x86_64
+          $G --headless --path game --export-pack "Android APK" build/check.pck
+          $G --headless --main-pack game/build/check.pck -s "$PWD/game/tests/export/check_pack.gd"
+      - name: Keep the app bundle
+        uses: actions/upload-artifact@v5
+        with:
+          name: squishy-island-aab
+          path: game/build/squishy-island.aab
+          retention-days: 14
+      - name: Keep the installable test app
+        uses: actions/upload-artifact@v5
+        with:
+          name: squishy-island-apk
+          path: game/build/squishy-island.apk
+          retention-days: 14
+      - name: Put the newest test app on the "Test build" release page
+        # One fixed page (Releases -> "Test build") with a plain .apk: easy to download on a phone.
+        if: github.event_name == 'push'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release delete test-build --yes --cleanup-tag --repo "$GITHUB_REPOSITORY" || true
+          gh release create test-build game/build/squishy-island.apk --repo "$GITHUB_REPOSITORY" --prerelease \
+            --target "$GITHUB_SHA" --title "Test build (newest)" \
+            --notes "The newest test version of Squishy Island for Android phones, built from ${GITHUB_REF_NAME} at ${GITHUB_SHA::7}. Download squishy-island.apk on the phone and open it. How to install: docs/testing-on-a-phone.md. Test builds have a DEV button for coins."

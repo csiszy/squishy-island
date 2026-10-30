@@ -130,7 +130,7 @@
       <h3>First start-up</h3>
       <ol>
         <li><b>Known devices:</b> look the phone model up in a list shipped with the game (all iPhones and iPads, plus the ~300 most common Android phones) and use its tier.</li>
-        <li><b>Unknown device:</b> score it. Memory under 3 GB = Low; 3–5 GB = Medium; 6 GB or more = High. Fewer than 6 CPU cores caps it at Medium. Old GPUs on a block list are always Low. A very high-resolution screen on a Medium phone renders at 80% resolution.</li>
+        <li><b>Unknown device:</b> score it. Memory under 3 GB = Low; 3–5 GB = Medium; 6 GB or more = High. Fewer than 6 CPU cores caps it at Medium. Old GPUs on a block list are always Low. A very high-resolution screen (wider than 1200 pixels) on a Medium phone renders at 80% resolution.</li>
         <li><b>Check it:</b> while the logo and the first story scene play, measure frame times for 3 seconds. If 1 frame in 10 takes longer than 33 ms, drop one tier. If a Low phone is easily fast enough (under 14 ms), raise it to Medium.</li>
         <li>Save the result. The player never sees any of this, just a game that runs smoothly.</li>
       </ol>
@@ -149,16 +149,16 @@
   <div class="tbl-wrap tiers"><table>
     <thead><tr><th>What changes</th><th>Low</th><th>Medium</th><th>High</th></tr></thead>
     <tbody>
-      <tr><td>Resolution</td><td>70%</td><td>85–100%</td><td>100%</td></tr>
+      <tr><td>Resolution</td><td>70% (sharpened)</td><td>100% (80% on very sharp screens)</td><td>100%</td></tr>
       <tr><td>Frame rate</td><td>30</td><td>60</td><td>60</td></tr>
-      <tr><td>Shadows</td><td>Blob shadows only</td><td>Hard, low-res</td><td>Soft</td></tr>
+      <tr><td>Shadows</td><td>Blob shadows only</td><td>Soft, lower-res</td><td>Soft</td></tr>
       <tr><td>Outlines</td><td>On (thinner)</td><td>On</td><td>On</td></tr>
       <tr><td>Squishies idling on the map</td><td>Only near the camera</td><td>On screen</td><td>All</td></tr>
       <tr><td>Particles (confetti, sparkles, steam)</td><td>25%</td><td>60%</td><td>100%</td></tr>
       <tr><td>Water shimmer, clouds, glow</td><td>Off</td><td>Simple</td><td>Full</td></tr>
       <tr><td>Small town details (filler houses, parked cars, flowers)</td><td>Half</td><td>Most</td><td>All</td></tr>
       <tr><td>Texture size</td><td>512</td><td>1024</td><td>2048</td></tr>
-      <tr><td>Anti-aliasing</td><td>Off</td><td>2×</td><td>4×</td></tr>
+      <tr><td>Anti-aliasing (smooth edges)</td><td>Off</td><td>4×</td><td>4×</td></tr>
     </tbody>
   </table></div>
 </section>

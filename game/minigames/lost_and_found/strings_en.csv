@@ -1,0 +1,31 @@
+keys,en
+lost_and_found.title,Lost & Found
+lost_and_found.where,at the Squish Patrol Station
+lost_and_found.how.1,Swap two neighbouring items to line up 3 or more of the same kind.
+lost_and_found.how.2,"Reach the goal at the top before your moves run out: collect items, find paw-print clues, or pop bubble wrap."
+lost_and_found.how.3,4 in a row = Siren · L or T = Bubble Bomb · 5 in a row = Gold Badge. Swap two specials together for a mega combo!
+lost_and_found.how.4,"Win for 1 star, score high for 2 or 3. Every win unlocks a new level, forever."
+lost_and_found.score_name,points
+lost_and_found.revive_gift,and get 5 more moves
+lost_and_found.moves,moves
+lost_and_found.points,{n} pts
+lost_and_found.level,Level {n}
+lost_and_found.restart,↺ restart
+lost_and_found.big,BIG LEVEL · ×2 coins
+lost_and_found.nice,Nice!
+lost_and_found.super,Super!
+lost_and_found.amazing,Amazing!
+lost_and_found.wipe,BOARD WIPE!
+lost_and_found.shuffle,Shuffle!
+lost_and_found.wrapped,Wrapped!
+lost_and_found.case_closed,Case closed!
+lost_and_found.goal.collect,Collect the items shown at the top
+lost_and_found.goal.prints,Find every paw-print clue: match on top of them
+lost_and_found.goal.wraps,Pop all the bubble wrap (match the wrapped items)
+lost_and_found.goal.mix,Collect the items AND find the paw prints
+lost_and_found.tip.bonus,Spare moves turn into bonus points!
+lost_and_found.tip.last,Only {n} moves left!
+lost_and_found.tip.combo,Swap two specials for a mega combo!
+lost_and_found.note.win,{n} points · {s} specials made
+lost_and_found.note.lose,{n} left to find. So close!
+lost_and_found.note.restart,No coins for a restart.

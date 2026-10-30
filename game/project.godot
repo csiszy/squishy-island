@@ -1,0 +1,85 @@
+; Engine configuration file for Squishy Island.
+; Godot writes this file itself when settings change in the editor; it is plain text so changes show in git.
+
+config_version=5
+
+[application]
+
+config/name="Squishy Island"
+config/description="Squishy Island: Collect & Play. A cosy squishy-collecting game for kids aged 5-11."
+config/version="0.1.0"
+run/main_scene="res://app/boot.tscn"
+config/features=PackedStringArray("4.6", "Mobile")
+config/icon="res://icon.svg"
+
+[autoload]
+
+Events="*res://core/events/events.gd"
+Settings="*res://core/settings/settings_service.gd"
+Save="*res://core/save/save_service.gd"
+Text="*res://core/text/text_service.gd"
+Audio="*res://core/audio/audio_service.gd"
+Haptics="*res://core/haptics/haptics_service.gd"
+Server="*res://core/server/server_service.gd"
+Ads="*res://core/ads/ads_service.gd"
+Economy="*res://core/economy/economy_service.gd"
+Collection="*res://core/collection/collection_service.gd"
+Town="*res://core/town/town_service.gd"
+Nav="*res://core/nav/nav_service.gd"
+Account="*res://core/account/account_service.gd"
+Quests="*res://core/quests/quests_service.gd"
+
+[audio]
+
+buses/default_bus_layout="res://core/audio/bus_layout.tres"
+
+[debug]
+
+gdscript/warnings/untyped_declaration=2
+gdscript/warnings/inferred_declaration=0
+gdscript/warnings/unsafe_property_access=1
+gdscript/warnings/unsafe_method_access=1
+gdscript/warnings/unsafe_call_argument=1
+
+[display]
+
+window/size/viewport_width=720
+window/size/viewport_height=1280
+window/size/window_width_override=405
+window/size/window_height_override=720
+window/stretch/mode="canvas_items"
+window/stretch/aspect="expand"
+window/handheld/orientation=1
+
+[editor_plugins]
+
+enabled=PackedStringArray("res://addons/squishy_art_import/plugin.cfg")
+
+[importer_defaults]
+
+scene={
+"meshes/create_shadow_meshes": false
+}
+
+[input_devices]
+
+pointing/emulate_touch_from_mouse=true
+
+[internationalization]
+
+locale/translations=PackedStringArray("res://data/strings_en.en.translation")
+locale/fallback="en"
+
+[rendering]
+
+renderer/rendering_method="mobile"
+renderer/rendering_method.mobile="mobile"
+textures/vram_compression/import_etc2_astc=true
+rendering_device/fallback_to_opengl3=true
+
+[shader_globals]
+
+outline_scale={
+"type": "float",
+"value": 1.0
+}

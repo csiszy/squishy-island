@@ -43,9 +43,34 @@ AdMob (child-directed) · GUT tests + headless Godot in GitHub Actions · art/da
 
 ## Status and next step
 
-Design is complete (October 2026). **Next: Step 0 of the roadmap in `build.html`**: create the Godot project
-(`game/`), CI (tests + Android AAB build), core services with fakes, and the export tools
-(design book → glTF models, PNG sprites, JSON data).
+Design is complete (October 2026). **Steps 0, 1, 2 and 3 of the roadmap are done**: the Godot project, CI, core
+services with fakes, export tools and toon look (Step 0); the town (Step 1): city map, houses, the Factory, the
+collection book and the Spare Shelf; the minigames (Step 2): the contract (`game/minigame_api/`), the kit
+(`game/minigame_kit/v1/`), the host (start card, pause, keep going with a pretend ad, results, payout checked by the
+pretend server), the template and Sky Bounce, Bistro Rush and Sort-a-Lot; all ten minigames (Step 3), including level
+games, Squeak Beat (song games: `tools/render_squeak_beat.js` renders its songs) and the Squish Lab (a toy: soft body
+bending the real 3D squishy). **Step 4 (the server) is under way**: `server/` holds Nakama + PostgreSQL in Docker
+with our rules in TypeScript (boxes, spares, Stars, coin check; `server/README.md`); the owner runs it on their
+laptop for testing (DEV → More… → Server… on the phone); the game's `NakamaGameServer` talks to it. Done: accounts and
+cloud save (4b: `Account`, "Your town" screen, grown-up gate), daily quests and the Gem Challenge (`Quests`, quest
+board; live changes in `server/live/live-config.json`), the Visitor of the week (camps in the beach park on the map,
+`ParkVisitor`; also on the quest board). Next: the Market and trading.
+Open decisions for the owner: end of `docs/decisions.md` §14, §15 and §17.
+
+How the game is laid out: `game/core/` services are autoloads (`Events`, `Save`, `Settings`, `Text`, `Audio`,
+`Haptics`, `Server`, `Economy`, `Collection`, `Town`, `Nav`); each outside-world part sits behind a small base class with a fake (`Storage`/`MemoryStorage`,
+`DeviceInfo`/`FakeDevice`, `AudioOutput`/`FakeAudioOutput`, `Vibrator`/`FakeVibrator`). Player-facing words:
+`Text.t(&"key")`, keys in `game/data/strings_en.csv` (generated; hand-written UI words go in `docs/strings_ui_en.csv`).
+Models: `ArtLibrary.building(id, level)`, `ArtLibrary.squishy(id)`, `ArtLibrary.portrait(id)`, `.life(id)`, `.island()`.
+Screens live in `game/features/<name>/` and are opened with `Nav.go(&"house", {"id": &"dumpling"})`; only
+`game/app/main.gd` knows which scene each name is. Shared widgets: `game/shared_ui/` (theme, pop-ups, wallet, viewer).
+Minigames: one sealed folder each in `game/minigames/` (copy `_template/`, see its README); kinds: endless, levels,
+songs, toy (`minigame_manifest.gd`); a game extends `KitGame`
+(the prototypes' engine in Godot) and only uses its folder, `minigame_api/` and `minigame_kit/v1/`; its words are in its
+own `strings_en.csv`; `tests/unit/test_minigame_contract.gd` plays every game with its `bot.gd`.
+Numbers and rules: `GameData` (from `game/data/`). The server's decisions go through `Server.api` (always `await`).
+To look at the running game without a phone: `xvfb-run godot --path game --rendering-driver opengl3 --resolution 540x960
+-s res://tests/visual/shoot.gd -- out.png go:factory` (steps listed in that file). Debug builds have a DEV button.
 
 ## Useful commands
 
@@ -58,6 +83,23 @@ python3 prototypes/build.py            # all games
 python3 prototypes/build.py sky-bounce # one game
 python3 prototypes/docs.py             # refresh the minigame sections of the building pages
 
+# the game (Godot 4.6.3 on the PATH as "godot")
+game/run_tests.sh                      # every GUT test, headless
+godot --path game                      # run it on a computer
+python3 tools/check_boundaries.py      # the walls between minigames / features / core
+
+# design book -> game (setup once: cd tools && npm ci && npx playwright install chromium; see tools/README.md)
+node tools/export_data/export_data.js  # numbers + words -> game/data (CI runs it with --check)
+node tools/export_audio/export_audio.js
+node tools/export_art/export_art.js    # glTF models + portraits -> game/art
+node tools/render_squeak_beat.js       # Squeak Beat songs, notes and charts -> game/minigames/squeak_beat (ffmpeg)
+
+# the game server (needs Docker; details in server/README.md)
+cd server && npm ci && npm test        # the server's rules (also rebuilds build/index.js: commit it)
+cd server && docker compose up -d      # the real server on this computer (port 7350, console on 7351)
+cd server && npm run test:live         # talk to it over the network
+SQUISHY_SERVER=http://127.0.0.1:7350 game/run_tests.sh -gselect=test_live_server
+
 # checks / tools (need: pip install playwright && playwright install chromium)
 python3 tools/fuzz_prototypes.py       # random-input smoke test of every prototype
 python3 tools/render_sprites.py        # re-render squishy portraits into prototypes/sprites.json
@@ -67,7 +109,9 @@ python3 tools/collection_sim.py        # collection pacing simulation
 
 ## Design-book code map (for edits to the spec site)
 
-- `art/kit.js`: page loader, squishy 2D drawing kit, rarity table, level-cost helpers, hero/level mounts.
+- `art/kit.js`: page loader, squishy 2D drawing kit, rarity table, level-cost helpers (`SQ.COSTS`), hero/level mounts.
+- `art/economy.js`: every box, collection, Gem, ad and unlock number (`SQ.ECONOMY`), read by the Factory page and the data export.
+- `_tools/export.html`, `_tools/export_art.html`: pages the export tools drive (not shown to anyone).
 - `art/kit3d.js`, `art/kit3d-build.js`: three.js toolkit: squishy "inflater", toon materials, outline, buildings.
 - `art/<building>.js`: one per building: 3D model per level, the family's squishies (houses), room, phone mock-up.
 - `art/city3d.js` + the `CITY` block in `index.html`: the island map (layout, roads, decorations), story and tour.

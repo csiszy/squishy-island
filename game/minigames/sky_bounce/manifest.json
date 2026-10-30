@@ -1,0 +1,26 @@
+{
+  "id": "sky_bounce",
+  "api": 1,
+  "version": "1.0.0",
+  "title": "sky_bounce.title",
+  "where": "sky_bounce.where",
+  "building": "playground",
+  "kind": "endless",
+  "scene": "sky_bounce.tscn",
+  "music": "sky",
+  "size": [360, 640],
+  "backdrop": "#8CCBFF",
+  "how_to": ["sky_bounce.how.1", "sky_bounce.how.2", "sky_bounce.how.3", "sky_bounce.how.4", "sky_bounce.how.5"],
+  "score_name": "sky_bounce.score_name",
+  "metric_line": "sky_bounce.metric_line",
+  "coins": { "from": "metric", "divide": 1, "milestones": [600, 1200, 2000], "unit": "sky_bounce.unit",
+             "rule": "sky_bounce.coin_rule" },
+  "goal": "score",
+  "revive": { "allowed": true, "gift": "sky_bounce.revive_gift" },
+  "perks": [
+    { "family": "sky", "effect": "fall_slower", "amount": 0.25 },
+    { "family": "sweets", "effect": "bounce_higher", "amount": 0.1 },
+    { "rarity": ["E", "L"], "effect": "start_balloon", "amount": 1 }
+  ],
+  "enabled": true
+}

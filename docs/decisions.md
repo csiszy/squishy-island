@@ -35,6 +35,7 @@ minigames in its fun buildings to earn coins. The home screen is a cartoon 3D ma
   over time (seasonal) to reach 70+.
 - Houses: levels 1–10 (100 coins at L2 … 2,500 at L10, more for later houses); some levels need family squishies.
   Fun buildings: levels 0–10, upgrades need a best score (or levels beaten), then coins.
+- **Nothing is locked** (§16): every house and every plot is open from day one; three minigames start built.
 
 ## 3. Currencies
 
@@ -156,3 +157,255 @@ with credit; never "NC" licences or the YouTube Audio Library.
 - **Minigames are sealed folders** with a `manifest.json`, talking to the game only through `minigame_api` v1;
   a boundary check, contract tests (bots) and a per-game server off-switch keep them independent.
 - Roadmap: 8 steps, about 7 months to public release (Step 0: repo, CI, core services, export tools).
+- Step 0 details (done, October 2026): Godot pinned to **4.6.3** (bug-fix release of 4.6), tests with **GUT 9.6.1**;
+  static typing is enforced as an error. The export tools are Node scripts that drive the book in headless Chromium
+  (three.js is pinned to the book's 0.149.0 through `tools/package.json`, never loaded from a CDN).
+- Numbers the book only had in prose (box prices and odds, Rare guarantee, Sparkly chance, spare levels, Stars,
+  Gem prices and packs, daily quests, ads, Cozy, unlocks) now have **one machine-readable home: `art/economy.js`**.
+  The Factory page reads it; the game gets it as `game/data/economy.json`. No number changed.
+- Decor design prices are the Classic price × the design multiplier, **rounded to 10 coins** (like all prices).
+- Exported models are **committed** (about 128 MB raw, ~34 MB compressed in git; the export is repeatable, so
+  unchanged models never churn). Godot compresses them again on import and makes LODs for far-away buildings.
+- Android: App Bundle via Gradle, target API 36, arm64 + armv7, only the VIBRATE and INTERNET permissions.
+  **To decide before the first upload:** the package name (placeholder `com.squishyisland.game`; it can never change
+  once uploaded) and the upload key (CI signs with it once it is stored as GitHub secrets).
+
+## 15. Step 1: the town (done, October 2026)
+
+What was built: the city map (the island, every building at its level, owned squishies in their spots, bubbles,
+building cards), houses (fixing up, the room with decor in 4 designs, Cozy), the Factory (Mystery / Family / Golden
+boxes through a pretend server), the collection book with its Sparkly page, and the Spare Shelf.
+
+Small choices made while building (each follows the book; say if one is wrong):
+- A new player starts with **0 coins**, Bao Bun, the broken Steamhouse, the Factory and Bounce Park. Coins come from
+  minigames (Step 2); the tutorial's free first box (always Gyoza) is ready in the pretend server for Step 6.
+- **Houses can be fixed up from the map card** (as in the book's tour) and from inside the house.
+- **Decor is tried on before buying**: tapping a design shows it in the room; "Buy" makes it yours. Designs you own
+  switch at once. The room shows only decor you own (the book's drawing shows everything).
+- **A Sparkly pull of a squishy you already have** makes yours Sparkly *and* still adds a spare (as in
+  `tools/collection_sim.py`).
+- Swapping a spare for Stars asks first (it can't be undone); levelling up doesn't.
+- Not yet: the free ad box and the Gem Shop (Step 5), the Market and trading (Step 4), the Star Shop, the help,
+  settings and save-my-town buttons on the map (they say "Coming soon!"). Fun buildings can be built and upgraded,
+  but "Play" waits for Step 2.
+- **To check on a real phone:** the map draws about 150,000 triangles for the island plus the buildings. It runs well
+  on a computer; the Step 1 plan asks for a test on a cheap Android before going further (internal testing track).
+- **Download size:** imported models no longer keep a separate "shadow mesh" copy, and only map models (buildings,
+  island, squishies around houses) get far-away LODs. The game's data went from 146 MB to 95 MB. Keep an eye on it:
+  Google Play allows 200 MB, the plan aims for under 150 MB.
+- **Testing on a phone:** every push builds an installable `.apk`; the newest one is always on the repository's
+  Releases page as "Test build (newest)". How to install: `docs/testing-on-a-phone.md`.
+- **Picture quality (after the owner's phone test):** the 3D is drawn at the phone's real pixel count; Medium now
+  gets the same smooth edges (4×) and soft shadows as High, because hard shadows showed stair-steps (settings.html
+  tier table updated); the cartoon outline is pushed out exactly as in the book (`D.outlineMat`), about 1.8 book
+  pixels wide; the map pins are drawn with smoothed edges; the buildings' square grass slabs are left out on the map
+  (the book's own map hides them under the island's grass). Visual checks now run on the phone's own renderer
+  (Vulkan "Mobile") with a software driver, not only the desktop fallback.
+
+- **Upgrade celebration (owner's request):** building or upgrading anything (map card or "Fix it up!" in the house)
+  plays about a second of confetti and three small fireworks around it, on top of the ta-da sound, so the player
+  feels the achievement. Shared widget `game/shared_ui/celebration.gd`; amount follows the tier's particle
+  setting (25/60/100%); reduced motion = a few twinkling stars. → `guide.html#upgrade-celebration`
+
+## 16. An open island (owner's decision, October 2026)  → `guide.html#progression`
+
+- **Nothing is locked.** All 8 houses are on the map from day one (broken, fixed up with coins); a squishy from any
+  family moves straight into its own house. **Three minigames are built from the start**: Bounce Park (Sky Bounce),
+  Squish Bistro (Bistro Rush) and the Post Office (Sort-a-Lot), plus the Factory and the Gem Mine. Every other fun
+  building, the Market and the Testing Facility are empty plots built with coins whenever the player likes.
+- Why: the old chain ("Bistro at Steamhouse level 3, Kitchen at level 4, …") was confusing for 5–11 year olds and
+  felt restrictive, and a single starting minigame was risky (a child who doesn't like it may stop before the next one
+  opens). Progress stays plentiful: 8 houses × 10 levels, fun-building upgrades, decor, 48 squishies.
+- The natural order remains (later houses cost more; the tutorial and quests suggest what to try next) but is never
+  forced. The data format (`art/economy.js`, `unlocks`) can still hold a later unlock if one is ever wanted.
+
+## 17. Step 2: the minigame host and the first three games (done, October 2026)
+
+What was built: the contract (`game/minigame_api/`), the kit (`game/minigame_kit/v1/`), the host
+(`game/features/minigame_host/`), the template (`game/minigames/_template/`), and Sky Bounce, Bistro Rush and
+Sort-a-Lot ported from the prototypes. Tap a built fun building on the map → **Play**.
+
+- **The contract follows build.html**, with these small, deliberate changes (build.html updated): `Minigame`
+  extends `Node2D` (a game draws itself; the host scales its 360 × 640 space to the phone and fills the bands
+  around it with the manifest's `backdrop` colour); `stop()` (the player left) and `advance(delta)` (all game time
+  goes through it, so tests can fast-forward two minutes in a moment) were added; the manifest gained `size`,
+  `backdrop`, `goal` (score, metric or levels: what counts for the building) and `divide` in the coin rule; every
+  player-facing word of a game is a key in the game's own `strings_en.csv` (keys start with the game id).
+- **The kit is the prototypes' engine in Godot** (`KitGame`): same drawing helpers (`rr`, `circle`, `text`,
+  `sprite`, `hearts`, …), same "keep going?" flow, floating text, bursts, shake and the same synthesised blips
+  (`KitTone`), so a port is mostly translating one file. Frozen: only bug fixes; new helpers go into `v2`.
+- **Coins**: the host works them out from the manifest (`MinigamePayout`) with the numbers in `economy.json`
+  (milestone bonus +10/+25/+50, level rules), then asks the server (`submit_run`): the pretend server caps a run at
+  60 coins per minute of play (a run counts as at least one minute). Offline, the phone pays and the server checks
+  later (Step 4).
+- **Which squishy plays**: the start card shows "Playing: <squishy>" with **Change** (any squishy you own; the last
+  one is remembered). Its family's **helpers** (each building page's "Squishy helpers", in the manifest's `perks`)
+  and its house's **Cozy bonus** apply; Bistro Rush also pays the rarity bonus (Rare +10 %, Epic +20 %,
+  Legendary +35 %). Sky Bounce now plays as your squishy instead of always Marshmallow; the Bistro chef is your
+  squishy too.
+- **Leaving early pays**: "Finish here" (pause card, or the phone's back button pauses first) ends the run like a
+  game over, coins included. Kids should never lose what they earned by stopping. → guide.html "Keep going"
+- **Keep going?** uses a pretend ad (8 seconds, close after 5 = no reward) behind the new `Ads` service
+  (`AdProvider` / `FakeAdProvider`), once per run, never offered when the grown-up switch turns ads off. The real
+  child-directed AdMob comes in Step 5.
+- **Results card**: score, coins, coin jar count up in about half a second each (tap to skip), "New best score!"
+  stamps in after, then a line about the building ("Next for Bounce Park (level 2): Best height 60m" or
+  "You can upgrade … now!"). Best scores and each game's save box live in the save file under `minigames`.
+- **Safety nets**: the boundary check walls every game in; the contract test plays every game (and the template)
+  with its robot for two simulated minutes and with random taps until it loses, checking the Result, that the
+  score never goes down, every word exists and nothing is left behind. A game whose scene fails to load shows
+  "This game is taking a nap, try another!". (A frozen game cannot be stopped from inside Godot; a hang timer
+  needs the real server's off switch, Step 4.)
+- **Robot balance check (2 minutes each, 3 tries)**: Sort-a-Lot 30–33 coins/min, Bistro Rush 54–56, Sky Bounce 26–32 (the
+  robots are not children; the real check is the owner's phone test). Not changed yet: the book's numbers stay
+  until real play says otherwise.
+- **Fixed after the owner's phone test**: on the phone every game said "Game coming soon", because a phone build
+  stores scenes converted (`.tscn.remap`) and the manifest check looked for the plain file. CI now also opens the
+  phone build's own game files and checks every screen and minigame is there (`game/tests/export/check_pack.gd`).
+  The map card's buttons wrap onto a second line instead of running off the screen. Map pins now sit just above
+  what is actually built (a level 1 Bounce Park is only a sandbox in one corner of its plot), 3 units over its top;
+  the book's minimum of 12 left small things with a far-floating pin once the plot squares were gone. Tapping a
+  building also centres the camera on what is built.
+- **Second phone test, fixed**: taps never reached the games (the app's frame and the game screen are interface
+  panels that kept every tap for themselves; a new test now taps through the whole app); words and the food
+  pictures looked blurry (the games drew at their small 360 × 640 size and Godot scaled the picture up; the kit now
+  draws every shape and word at the phone's real pixel size like the book's canvas, and a test keeps games from
+  drawing any other way); the pretend ad sat in the top-left corner (it was never given the screen's size).
+- **Games button and Games page (owner's request)** → `guide.html#games`: a round pink button in the map's
+  bottom-left corner (easy to notice, but it stays still apart from one hop when the map appears) opens a page with
+  every minigame: building, best score and Play; games still being made are listed greyed as "on the way".
+- **Third phone test, fixed**: games now fill the whole screen. The host tells a game how much of its world the
+  phone shows (`set_view` / `view_rect`: the 360 × 640 design area plus the extra above and below on tall phones,
+  or at the sides on tablets); games paint their backgrounds there and Sky Bounce shows more sky. Buttons and
+  gameplay stay inside the design area, so every phone plays the same. Also: a squishy not found yet in the
+  collection book opens the Factory with its family chosen (guide.html, Spare Shelf section); the Factory's
+  duplicate message closes when you go to the Spare Shelf; screens are never opened twice (book → Factory → book
+  goes back to the book).
+- **Step 3 so far**: Grow Grow Garden, Style Studio and Bucket Brigade are ported. Level games now have the
+  prototypes' level picker on the start card (newest 14 levels + the next 2, stars on each), stars and Next level
+  / Try again / Replay / All levels on the results card. Puzzle levels use the prototypes' own random numbers
+  (`KitRng`, checked number for number), so level N is the same puzzle as in the design book (Bucket Brigade's
+  3-star targets match the prototype's exactly). The pretend server always allows a level's fixed reward (a quick
+  first clear of a level pays its 30 + 15 per star even under a minute). A game's result can carry a short note
+  ("12 moves · target 10"). Robot coins per minute: Grow Grow Garden ≈ 24, Style Studio ≈ 59 (perfect streaks add
+  up; worth checking in real play).
+- **Squish Breaker** (one ball per squishy you own, drawn as that squishy; Epic hit 2, Legendary 3, +1 per level
+  above 1; Sky Puffs float longer at the top). Its prototype shuffles brick columns with the browser's own sort,
+  so its levels differ between browsers; the game follows the recipe and random numbers exactly and shuffles the
+  way Node's JavaScript does, so every player gets the same levels. A manifest can ask for the whole collection
+  as its squad (`"squad": "all"`), and the context now says each squishy's rarity, level and family.
+- **Lost & Found** (match-3 with Sirens, Bubble Bombs, Gold Badges, mega combos, paw prints and bubble wrap):
+  the same boards as the prototype, tile for tile. Pet Pals detectives start with a Siren; rarer detectives get
+  +1/+2/+3 moves. One small change: the prototype picks the paw-print cells with the browser's sort (which differs
+  between browsers); the game does the same "lower rows first, a little mixed" with its own fixed rule.
+- **Squeak Beat** (30 tracks, the prototype's own songs): each song's backing band and every melody note are
+  rendered from the prototype's synthesiser by `tools/render_squeak_beat.js` (mono Ogg: the 30 songs about 14 MB,
+  the 149 melody notes about 3 MB, so the game download grows by about 17 MB; one note file per voice and pitch,
+  so a tap sounds at once). If the download size matters later, the songs can move to a download on first play. The note charts (`charts.json`) are the
+  prototype's, note for note. Song games are a new kind for the host: a track list with stars, track N opens at
+  (N−1)×3 stars, coins = 40 a minute of song × accuracy, and the Squeak Stage counts tracks with at least one
+  star. Instead of a separate calibration screen, the game keeps time with the song as the phone plays it and
+  learns, from taps near the line, how early or late this player's taps land, and moves the PERFECT window to
+  match (a few hundredths of a second, saved). Sea Squish players get a slightly wider PERFECT window. Not yet:
+  "the band you bring changes the voice", the bonus encore track for a full one-family band, and "each building
+  level unlocks a new set of tracks" (the stars rule decides for now) — open for the owner.
+- **Squish Lab** (a toy: no score to beat, no coins): the prototype's soft body (40 points, 600 steps a second,
+  the same numbers), tools opening with the Lab's level (Hand and Drop, then Ball, Press, Roller, Squeeze), the
+  prototype's 3D lab, and, as the build plan asks, the **real 3D squishy** from the island: its outline is traced
+  from the model and every point of the model follows the soft body (a small shader in the game's folder), puffing
+  out towards you when squished flat. Materials: the prototype's 16 squishies as listed, otherwise ocean = jelly,
+  pets and sky = rubber, the rest foam. A squish counts past 50% on the squish-o-meter and squishes add up over
+  visits for the Lab's upgrades (a new goal kind, "metric_total"). The physics loop is plain GDScript (about 0.1 s
+  of computer time per second of play here); if a cheap phone struggles, it is the one loop to move to C++. Not yet:
+  level 6 "two squishies at once" and level 8 "trampoline table".
+- **Fourth phone test fixes** (owner, October 2026): Sky Bounce could make a cloud too far to reach at great
+  heights (the gap could reach 188 while a bounce rises 192, plus a long way sideways): now the next cloud is
+  never more than 150 up and always within steering reach sideways (book prototype too). Squish Lab: an
+  over-squished 3D squishy looked crumpled; the bend now blends smoothly between the ring's slices, a slice
+  squashed flat or turned inside out follows the overall squish, deep notches in the traced outline are filled
+  (a jelly's tentacles), parts outside the outline (ears, tentacles) hang from the edge, the picture never gets
+  thinner than about a quarter, and the press stops at 30% of the height. Scrolling: every list now uses one
+  finger-friendly scroller (`TouchScroll`) that also scrolls when the finger lands on a button (the button then
+  doesn't click) and glides after a flick; the house page scrolls as a whole (room, family, decor) and the
+  "who plays" picker no longer sits in a small box.
+- **Fifth phone test fixes**: Sky Bounce still had jumps that were only just possible when the next cloud was
+  across the screen: reach is now measured straight across (not round the screen edge), allows a moment to react
+  and keeps a margin; the highest gap is 140; a drifting leaf only drifts 70 either side of where it was made (it
+  used to wander, and one made by the edge flipped every frame and shook), it counts as up to 70 further away,
+  and two drifting leaves never come in a row. Squish Run: the gears sit closer with bigger teeth that mesh; the
+  paddles hold the whole squishy between them (it could slip past them before), glide within the physics steps
+  (a slow frame used to make them jump and tear a stiff squishy apart) and the run's pieces are deeper so a
+  puffed-up squishy is visibly inside them; a safety net puts a squishy back together if the physics ever went
+  wild (tests ride all 48 squishies with uneven frames: it is never needed).
+- **The Squish Run** (owner's idea; owner: it stays open from the start): throw the squishy up out of the Lab and the camera follows it up a wind tunnel
+  to a marble run above: a narrow chute, two gears, a paddle box on a trapdoor, pinball bumpers and a funnel back to
+  the table. Nobody can touch it there and nothing can hold it (no grip on the run's walls, gears turn downwards,
+  the trapdoor always opens, a squishy that stops going down is let through); inside the run every squishy gives in
+  to the squeezes like foam, and rubber and jelly spring back once out. Squishes on the way count. It is there
+  from the start (owner's decision).
+- The contract grew (still version 1, nothing removed): song and toy kinds, `sound_bus` (a game's own sounds that
+  it must start and stop, like a song), `model(id)` (a squishy's 3D model) and `building_level`.
+- Not yet: the squishy "helper" list on the start card names no effects yet (just "extra good at this game"),
+  tilt steering for Sky Bounce, and decor found in sorted letters (Sort-a-Lot page) — later steps.
+
+## 18. Step 4: the server (started, October 2026)  → `server/README.md`, `build.html`
+
+- **Testing runs on the owner's own laptop** (owner's decision): the same Docker setup that will run on the paid
+  EU server (Nakama + PostgreSQL) starts with one script (`server/start-server.bat` / `.sh`). A test build switches
+  to it in the DEV menu (DEV → More… → Server…, type the laptop's address, same Wi-Fi). The paid server is only
+  needed when the game goes live; until then it costs nothing.
+- **Foundation (4a)**: the server's rules (`server/src/rules.ts`, TypeScript as planned) are the pretend server's
+  rules: box odds, the Rare guarantee, Sparkly chance, the Spare Shelf, levelling up, Stars, the coins-per-minute
+  check. They read the same numbers as the game (copied from `game/data`). Each player is a guest account made
+  from a random id the game creates (not the phone's hardware id: no personal data); the player's state is kept in
+  Nakama's storage and only the server can change it (two taps at once can't lose or double anything).
+  The game talks to it with Nakama's plain web API (no extra plugin). If the server can't be reached the game says
+  so (boxes need it; minigames still pay out).
+- The compiled server file (`server/build/index.js`) is kept in the repository so a computer running the server
+  needs only Docker; CI checks it matches the source and the game's numbers, runs the rules' tests, starts the real
+  server in Docker and runs the game's own code against it.
+- Coins stay on the phone (as designed); squishies, Stars and boxes live on the server. A test phone switched back
+  to the pretend server gets its pretend collection back.
+- **Accounts (4b)**, following account.html: the town is saved to the server a few seconds after it changes (and
+  when the app goes to the background), the phone keeps its own copy for offline play, and a newer save from
+  another phone replaces the phone's on start. The cloud button on the map (orange dot until saved) opens "Your
+  town": **Save my town** (email + 6-digit code, no password), **Moving to a new phone?** (one-time code + PIN,
+  24 hours), **I already have a town** (code + PIN or email; "Which town?" shows both and suggests the bigger
+  one; the phone's own guest town is kept 30 days) and **Delete account** (gone after 30 days; logging back in
+  before then keeps it; the phone starts a new town at once). Everything there starts with the **grown-up gate**
+  (a sum in words on a number pad, art/ui.js; 3 wrong answers = a 30-second pause), built now and used by Step 5.
+  The email is typed by the grown-up behind the gate (the only typing in the game; children never type).
+- Real emails need an email service (a paid account, chosen at launch). Until then the server writes each
+  "email" into its log, and a test server (laptop) also shows the code on the phone, so the whole flow can be
+  tried. Emails are stored only to send codes; the server looks them up by a one-way hash, answers the same
+  whether or not an email has a town, and sends at most 5 codes an hour.
+- Codes: 8 letters/digits without look-alikes (0/O, 1/I), PIN 4 digits, 5 wrong tries and the code is gone.
+  Deleted accounts are removed by a server job (`purge_deleted`, run nightly on the live server).
+- Not yet (later steps): Sign in with Google/Apple (needs store accounts), Bao's "Keep your town safe!" card at
+  the right moments and the Safety Cloud weathervane gift (Step 6 polish), a deletion web page (Step 7, with the
+  live server).
+- **Quests and the Gem Challenge (4c, first part)**, as in guide.html "Daily visits" and "Gems": 2 coin quests
+  (+40) a day from a quest list in the book (`art/economy.js` questPool, only with games the player has built) and
+  the Gem Challenge (+3 Gems: one game a day, never the same two days running, a goal from the player's own best:
+  90% of their best score, ★★★ on a track or ★★ on the newest, a new level with ★★★ or two levels raised to ★★★);
+  5 Gem Challenge days in a week = +15 Gems; the day's first game pays double. The server makes and checks them
+  (the phone says which games are built and reports each run's score, count and stars); the pretend server plays
+  the same rules. Quest board from a new button on the map (a dot when something is ready to collect); results
+  say "First game today: double coins!" and "Quest done!". Days follow the phone's own date (it may be at most a
+  day away from the server's).
+- **Changing things live** (owner's question): `server/live/live-config.json`, a plain text file the server reads
+  each time it makes a day's quests: the numbers, the quest list, and exact quests or the Gem Challenge game for
+  chosen dates (Christmas Eve...). Edit, save, no restart, no app update; a broken file is ignored. A friendlier
+  admin page can come with the live server if editing the file is fiddly.
+- **Visitor of the week (4c, second part)**, as in guide.html "Daily visits": each week a squishy the player
+  doesn't own (Common to Epic, never last week's visitor) camps in the beach park near where the game starts (a
+  little tent and picnic blanket, its pin shows "!" until today's hi). Tap it: "Say hi & give a treat", once a day;
+  hi on 4 different days and it moves in for free (one you got meanwhile goes onto the Spare Shelf), with a
+  celebration and a flight to its house. The quest board shows it at the top with its visits as hearts and a
+  "Go and say hi" button. The server picks it and counts the days; the pretend server plays the same rules.
+  One addition, so nobody gets an impossible visitor: one that arrives too late in the week for 4 visits (a new
+  player starting on a Friday) stays until the end of the next week. No countdown is shown, and nothing is lost
+  when a visitor leaves. Live config: `visitorEnabled`, `visitorDays`, and `visitors` (who visits everyone in a
+  chosen week). The book's map marks the park (`visitor: true` in the CITY parks) and the tour flies there.
+  Later: the "The visitor is waiting" notification (settings.html, Step 6).
+- Next in Step 4: the Market and trading.

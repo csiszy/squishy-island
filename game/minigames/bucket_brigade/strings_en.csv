@@ -1,0 +1,29 @@
+keys,en
+bucket_brigade.title,Bucket Brigade
+bucket_brigade.where,at Fire Station No. 1
+bucket_brigade.how.1,The coloured water for the Splash Parade got mixed up! Sort each colour into its own bucket.
+bucket_brigade.how.2,"Tap a bucket, then tap another to pour. You can only pour onto the same colour, or into an empty bucket."
+bucket_brigade.how.3,Smoky layers (?) show their colour when you uncover them.
+bucket_brigade.how.4,"Solve it in few moves for 3 stars (undo is free, but undone moves still count). Every win unlocks a new level, forever."
+bucket_brigade.score_name,stars
+bucket_brigade.moves,moves
+bucket_brigade.stars_now,Stars if you finish now
+bucket_brigade.target,★★★ in {n} moves or fewer
+bucket_brigade.target_extra,★★★ in {n} moves or fewer · extra bucket: max ★★
+bucket_brigade.undo,Undo
+bucket_brigade.restart,Restart
+bucket_brigade.add_bucket,+ Bucket
+bucket_brigade.used,Used
+bucket_brigade.level,Level {n}
+bucket_brigade.colours,{n} colours
+bucket_brigade.big,BIG LEVEL · ×2 coins
+bucket_brigade.banner.smoke,Watch out for smoky layers!
+bucket_brigade.banner.tall,Tall buckets: 5 layers each
+bucket_brigade.banner.plain,One colour per bucket
+bucket_brigade.sorted_all,All sorted!
+bucket_brigade.poof,poof!
+bucket_brigade.tip.pour,Now tap where to pour
+bucket_brigade.tip.start,Tap a bucket to pick it up
+bucket_brigade.tip.progress,{n} of {k} colours sorted
+bucket_brigade.note.win,{n} moves · target {t}
+bucket_brigade.note.restart,No coins for a restart.

@@ -119,8 +119,9 @@
         <li><b>Endless games:</b> reach <b>90% of your own best score</b> in that game (Sky Bounce: 90% of your best height). A new player’s goal is small; an expert’s is big. It is always a stretch, never impossible.</li>
         <li><b>Squeak Beat:</b> ★★★ on any track you have, or ★★ on the newest one.</li>
         <li><b>Level games</b> (Lost &amp; Found, Bucket Brigade, Squish Breaker): win your next new level with ★★★, or raise any two levels to ★★★.</li>
-        <li>Unlimited tries all day. Only games the player has unlocked are picked, never the same game two days running.</li>
+        <li>Unlimited tries all day. Only games the player has built are picked, never the same game two days running.</li>
         <li>The quest board shows <b>tomorrow’s game</b> as a teaser, so there is a reason to come back.</li>
+        <li>In the game (Step 4): the coin quests come from a list in <code>art/economy.js</code> (questPool), and the server can change the list, the numbers and special days without an app update.</li>
       </ul>
     </div>
     <div class="card prose">
@@ -143,7 +144,7 @@
     <thead><tr><th>Daily feature</th><th>How it works</th><th>Why it pulls</th></tr></thead>
     <tbody>
       <tr><td><b>Daily quests</b></td><td>3 a day: 2 easy coin quests (“play Bistro Rush twice”, “harvest 30 flowers”, +40 coins each) and the <a href="#gems">Gem Challenge</a>. The first run of each day also pays <b>double coins</b>.</td><td>Variety: it pushes players into games they forgot, and the Gem Challenge is the real reason to log in.</td></tr>
-      <tr><td><b>Visitor of the week</b></td><td>Every Monday a squishy from out of town camps in the park, preferring one you don’t own yet (Common to Epic). Say hi and give it a treat on <b>4 different days</b> that week and it moves in for free. Miss it and it waves goodbye and comes back another week.</td><td>The strongest daily hook: a specific squishy the player wants, earned by visiting, not by luck.</td></tr>
+      <tr><td><b>Visitor of the week</b></td><td>Every Monday a squishy from out of town camps in the park, preferring one you don’t own yet (Common to Epic). Say hi and give it a treat on <b>4 different days</b> that week and it moves in for free. Miss it and it waves goodbye and comes back another week. A visitor who arrives too late in the week for 4 visits (a brand-new player starting on a Friday) stays until the end of the next week.</td><td>The strongest daily hook: a specific squishy the player wants, earned by visiting, not by luck.</td></tr>
     </tbody>
   </table></div>
 </section>
@@ -185,6 +186,7 @@
         <li>Lv 2: a bigger, bouncier idle. Lv 3: an accessory (scarf, bow, tiny hat). Lv 4: +Cozy points for its house. <b>Lv 5: it turns Sparkly</b> (shimmering coat, golden name plate).</li>
         <li>In Squish Breaker a levelled squishy’s ball hits +1 harder per level; elsewhere levels are just for show, so new players are never shut out.</li>
         <li><b>Sparkly pulls:</b> 1 box in 50 is already Sparkly, a lucky shortcut. Sparklies fill page two of the collection book.</li>
+        <li><b>Not found yet:</b> in the collection book a squishy you don't have yet is a soft silhouette; tapping it opens the Factory with its family already chosen, so children see where to get it.</li>
       </ul>
     </div>
   </div>
@@ -209,6 +211,7 @@
       <h3>Where ads appear</h3>
       <ul>
         <li><b>Keep going:</b> when a minigame run ends, a card offers “&#9654; Watch an ad” to continue once (1 more heart, +5 moves, a balloon float, and so on; each game says what you get). “No thanks” ends the run normally. Once per run. All 10 prototypes have this, with a pretend ad.</li>
+        <li><b>Leaving a run early</b> (pause, “Finish here”) ends it like a normal game over: the coins for what was reached are paid, nothing is lost.</li>
         <li><b>Free Box:</b> one Mystery Box per ad, at most <b>3 a day</b>, from a button in the Factory.</li>
         <li>That’s all: no banner ads, no ads between levels, no ad when the app opens or a level starts, and no ads at all in the Squish Lab or the Market.</li>
       </ul>
@@ -226,26 +229,27 @@
     </div>
   </div>
 </section>
-<section>
-  <div class="sec-head"><p class="eyebrow">Progression</p><h2>What unlocks when</h2></div>
+<section id="progression">
+  <div class="sec-head"><p class="eyebrow">Progression</p><h2>An open island</h2></div>
+  <p>Nothing is locked. From the first minute the whole island is there to explore, and progress comes from fixing
+  things up, building, decorating and collecting, never from waiting for something to unlock.</p>
   <div class="tbl-wrap"><table>
-    <thead><tr><th>Moment</th><th>New house</th><th>New fun building</th></tr></thead>
+    <thead><tr><th>On day 1</th><th>What the player finds</th></tr></thead>
     <tbody>
-      <tr><td><b>Day 1 (tutorial)</b></td><td>Dumpling Steamhouse + free Bao Bun</td><td>Bounce Park, Squishy Factory</td></tr>
-      <tr><td>Dumpling Steamhouse level 3</td><td>&ndash;</td><td>Squish Bistro</td></tr>
-      <tr><td>Dumpling Steamhouse level 4</td><td>Cozy Teapot Kitchen</td><td>&ndash;</td></tr>
-      <tr><td>Own 8 squishies</td><td>&ndash;</td><td>Swap Meet Market</td></tr>
-      <tr><td>Teapot Kitchen level 3 / 4</td><td>Paw Palace (at 4)</td><td>Fluff &amp; Puff Salon (at 3)</td></tr>
-      <tr><td>Paw Palace level 3 / 4</td><td>Sweet Shoppe (at 4)</td><td>Squishy Post Office (at 3)</td></tr>
-      <tr><td>Sweet Shoppe level 3 / 4</td><td>Pineapple Orchard (at 4)</td><td>Squish Patrol Station (at 3)</td></tr>
-      <tr><td>Pineapple Orchard level 3 / 4</td><td>Coral Cove (at 4)</td><td>Splash Squad Station (at 3)</td></tr>
-      <tr><td>Paw Palace level 3</td><td>&ndash;</td><td>Squishy Testing Facility</td></tr>
-      <tr><td>Sweet Shoppe level 4</td><td>&ndash;</td><td>Squish Arcade</td></tr>
-      <tr><td>Coral Cove level 3 / 4</td><td>Cloud Nine (at 4)</td><td>Squeak Stage (at 3)</td></tr>
-      <tr><td>Cloud Nine level 3 / 4</td><td>Mushroom Hollow (at 4)</td><td>Sprout Club Greenhouse (at 3)</td></tr>
+      <tr><td><b>Houses</b></td><td>All 8 family houses, all broken (level 1). The Dumpling Steamhouse has Bao Bun living in it. A squishy from any family moves straight into its own house, broken or not.</td></tr>
+      <tr><td><b>Built and ready</b></td><td>Bounce Park (Sky Bounce), Squish Bistro (Bistro Rush), Squishy Post Office (Sort-a-Lot): three different games to choose from right away. Also the Squishy Factory and the Gem Mine.</td></tr>
+      <tr><td><b>Empty plots</b></td><td>Every other fun building, the Swap Meet Market and the Squishy Testing Facility: a plot with a "Build me!" sign, built with coins whenever the player likes (about 10&ndash;20 minutes of play each).</td></tr>
     </tbody>
   </table></div>
-  <p>Houses are renovated one at a time in this order, but a player can always go back and keep upgrading older houses. Locked houses and empty building plots are still visible on the map from day one, so the player can see what’s coming.</p>
+  <p>Later houses cost more to fix up (each family has its own price multiplier), so the cheapest path runs Dumpling Steamhouse &rarr; Teapot Kitchen &rarr; Paw Palace &rarr; &hellip; on its own, and the tutorial and daily quests suggest what to try next, without ever forcing an order. A player can always go back and keep upgrading any house.</p>
+  <p class="note"><b>Why open?</b> Players are 5&ndash;11: a chain of "this needs that house at level 3, which needs&hellip;" was confusing, and a single starting minigame was risky (a child who doesn't like it may stop before the others open). The 8 houses &times; 10 levels, the fun-building upgrades, decor and the 48-squishy collection give plenty of progress. Decided October 2026 (decisions.md &sect;16).</p>
+</section>
+<section id="games">
+  <div class="sec-head"><p class="eyebrow">On the map</p><h2>The Games button</h2></div>
+  <div class="card prose">
+    <p>A round <b>pink Games button</b> sits in the map&rsquo;s bottom-left corner, bigger and brighter than the little white buttons so children find it straight away, but it stays still (one small hop when the map appears, nothing more). It opens the <b>Games page</b>: every minigame in one place, each with its building, the player&rsquo;s best score and a big <b>Play</b> button. Games still being made are listed underneath, greyed, as &ldquo;More games on the way&rdquo;. A game whose building isn&rsquo;t built yet shows &ldquo;Show me&rdquo;, which flies the map to that plot.</p>
+    <p>Playing from the Games page is exactly the same as playing from the building: same coins, same best score, same building goals.</p>
+  </div>
 </section>
 
 <section class="two">
@@ -256,6 +260,7 @@
       <li>Each level costs coins (100 at level 2 up to 2,500 at level 10, more for later houses).</li>
       <li>Some levels also need family squishies living there: 1 at levels 3-4, 2 at 5-6, 3 at 7-8, 4 at 9, 5 at 10.</li>
       <li>Renovating plays a short "builders" animation: scaffolding, dust puff, ta-da.</li>
+      <li id="upgrade-celebration"><b>Upgrade celebration:</b> every time a house or fun building goes up a level (on the map or inside the house), confetti pops up around it and three little fireworks burst above it for about a second, with the ta-da sound and a buzz. Fewer pieces on lower graphics settings; with "reduced motion" a few stars just twinkle in place.</li>
       <li>Inside each house is a room. Decor bought there adds Cozy points (minigame coin bonus for that family). Every decor item comes in 4 designs: Classic, Candy Pop, Mint Breeze and Starlight.</li>
     </ul>
   </div>
@@ -263,10 +268,10 @@
     <h3>Fun building rules</h3>
     <ul>
       <li>Every fun building starts as an <b>empty plot (level 0)</b> with a "Build me!" sign.</li>
-      <li>Level 1 is bought with coins once the building unlocks.</li>
+      <li>Level 1 is bought with coins, any time (Bounce Park, Squish Bistro and the Post Office start built).</li>
       <li>Levels 2-10 need a <b>best score</b> in that building’s minigame (for the two puzzle games: a number of <b>levels beaten</b>), then coins. Playing better makes the building look fancier.</li>
       <li>The Factory levels up from boxes opened, the Market from trades finished.</li>
-      <li>Upgrades are purely visual plus small unlocks (new songs, extra seat, new box type, new lab tools).</li>
+      <li>Upgrades are purely visual plus small unlocks (new songs, extra seat, new box type, new lab tools). Building and every upgrade get the same confetti-and-fireworks celebration as houses.</li>
     </ul>
   </div>
 </section>

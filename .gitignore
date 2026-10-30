@@ -1,6 +1,7 @@
 # ---- Squishy Island ----
 # generated / temporary
 build/
+!server/build/
 __pycache__/
 *.pyc
 node_modules/

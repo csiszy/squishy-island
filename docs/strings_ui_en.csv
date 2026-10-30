@@ -1,0 +1,333 @@
+keys,en
+# Words the game shows that are not on a design-book page (yet). One row per key; tools/export_data merges this
+# into game/data/strings_en.csv. Keys: area.what (lower case, dots). Use {name} for a value filled in by the game.
+app.title,Squishy Island
+app.subtitle,Collect & Play
+app.loading,Getting the island ready…
+ui.back,Back
+ui.back_to_town,Back to town
+ui.close,Close
+ui.coins_earned,+{n} coins
+ui.not_enough_coins,You need {n} more coins
+ui.offline,"This needs the internet. The map and all the games still work, though!"
+save.too_new,"This town was saved by a newer version of Squishy Island. Please update the game to keep playing."
+save.cannot_upgrade,"Something went wrong opening your town. Nothing is lost: please update the game or ask a grown-up to contact us."
+minigame.napping,"This game is taking a nap, try another!"
+ui.yes,Yes
+ui.no,No
+ui.ok,OK
+ui.not_now,Not now
+ui.coming_soon,Coming soon!
+ui.coins,coins
+ui.stars,Stars
+ui.gems,Gems
+ui.zoom_in,Zoom in
+ui.zoom_out,Zoom out
+ui.show_island,Show the whole island
+ui.help,How to play
+ui.settings,Settings
+ui.music,Music
+ui.save_town,Save my town
+ui.gem_store,Gem store
+map.kind_house,Family house · {family}
+map.kind_factory,Squishy shop · Mystery Boxes
+map.kind_market,Squishy shop · trading
+map.kind_gemmine,Gem store · buy Gems
+map.kind_fun,Fun building · minigame
+map.level,Level {n}
+map.empty_plot,Empty plot
+map.locked,Locked
+map.unlock_house_level,Unlocks when the {house} reaches level {n}
+map.unlock_owned,Unlocks when you have {n} squishies
+map.open,Open
+map.open_house,Go inside
+map.build,Build it! ({coins} coins)
+map.upgrade,Upgrade ({coins} coins)
+map.play,Play
+map.need_goal,Next level needs: {goal}
+map.need_coins,You need {n} more coins
+map.max_level,Top level!
+map.gem_store,Open the Gem store
+map.built,Ta-da! The {name} is ready!
+map.upgraded,Ta-da! The {name} is now level {n}!
+map.collection,Collection book
+map.fix_up,Fix it up! ({coins} coins)
+house.needs_squishies,Needs {n} family squishies living here (you have {have})
+house.level_cozy,Level {n} · Cozy {cozy}
+house.cozy_bonus,"Cozy {cozy}: this family earns +{pct}% coins in minigames"
+house.family,The family
+house.missing,Find me in a Mystery Box!
+house.decor,Decor shop
+house.cozy_points,+{n} Cozy
+house.buy,Buy ({coins} coins)
+house.in_room,In your room
+house.trying,Trying it on
+house.owned,Yours
+house.bought,The {item} is in your room!
+house.fixed,Ta-da! Level {n}!
+house.next_level,"Next: level {n}"
+house.top_level,Golden and complete!
+decor_style.short.classic,Classic
+decor_style.short.candy,Candy
+decor_style.short.mint,Mint
+decor_style.short.star,Starlight
+factory.box_mystery,Mystery Box
+factory.box_family,Family Box
+factory.box_golden,Golden Box
+factory.price,{n} coins
+factory.needs_level,Factory level {n}
+factory.rare_in,Rare guarantee in {n} boxes
+factory.rare_next,The next box is Rare or better!
+factory.odds_title,What can be inside
+factory.odds_note,"Every box has a squishy inside. One you already have goes onto your Spare Shelf."
+factory.open,Open! ({n} coins)
+factory.cannot_open,That box can't be opened right now.
+factory.sparkly,Sparkly
+factory.new_moves_in,New! Moving into the {house}.
+factory.to_shelf,"You have this one already, so it goes onto your Spare Shelf ({n} there now)."
+factory.see_move_in,See it move in
+factory.another,Open another
+factory.spare_shelf,Spare Shelf
+collection.title,Collection book
+collection.owned,{n} / {total} squishies
+collection.sparkly_owned,{n} / {total} Sparkly
+collection.tab_book,Book
+collection.tab_sparkly,Sparkly
+collection.tab_shelf,Spare Shelf
+collection.not_found,Not found yet
+collection.level,Lv {n}
+collection.shelf_empty,"Nothing here yet. When a box gives you a squishy you already have, it waits here for you."
+collection.spares,Spares: {n}
+collection.level_up,Level up (uses {n})
+collection.level_up_need,Level up needs {n} spares
+collection.max_level,Level 5 · Sparkly!
+collection.swap,Swap 1 for {n} Stars
+collection.swap_title,Swap one {name} for {n} Stars?
+collection.swap_body,"Stars buy missing Commons and Uncommons, and special decor, in the Star Shop."
+collection.levelled,{name} is now level {n}!
+collection.trade_soon,Trading at the Market comes soon.
+map.game_soon,Game coming soon
+game.eyebrow,Squishy Island minigame
+game.play,Play
+game.play_again,Play again
+game.back_to_town,Back to town
+game.pause,Pause
+game.paused,Paused
+game.keep_playing,Keep playing
+game.leave,Finish here
+game.sfx_on,Sounds: on
+game.sfx_off,Sounds: off
+game.music_on,Music: on
+game.music_off,Music: off
+game.oh_no,Oh no!
+game.keep_going,Keep going?
+game.so_far,You have {n} {what} so far.
+game.watch_ad,Watch an ad
+game.once_per_game,{gift} · once per game
+game.revive_gift,and carry on
+game.no_thanks,No thanks
+game.over,Game over
+game.points,points
+game.new_best,New best score!
+game.best,Best: {n}
+game.your_best,Your best: {n}
+game.coins_word,coins
+game.coin_jar,Coin jar:
+game.time_played,in {time} of play
+game.coins_from,{n} from {rule}
+game.bonus_line,+{n} bonus ({at} {unit})
+game.helper_line,+{n} from {name}'s Cozy home and helpers
+game.next_bonus,Next bonus: +{n} at {at} {unit}
+game.top_bonus,Top bonus reached!
+game.capped,The rest is saved for a longer game.
+game.coins_rule,Coins: {rule}
+game.bonus_at,Bonus {adds} at {ats} {unit}
+game.coins_levels,"Coins: beat a level for 30 + 15 per star (every 10th level pays double), replays 10 + 15 per new star"
+game.playing_as,Playing: {name}
+game.change,Change
+game.who_plays,Who plays?
+game.has_helpers,This squishy is extra good at this game!
+game.next_goal,Next for {name} (level {level}):
+game.building_ready,You can upgrade {name} now!
+game.napping,"This game is taking a nap, try another!"
+game.level_n,Level {n}
+game.level_clear,Level clear!
+game.level_no_coins,No coins this time. Beat the level to earn coins!
+game.level_first,First clear: 30 + 15 per star
+game.level_first_big,First clear: 30 + 15 per star · big level ×2
+game.level_replay,Replay: 10 + 15 for {n} new stars
+ad.eyebrow,Ad
+ad.title,Your ad plays here
+ad.body,"In the real app: a short, kid-safe video ad. Here it is just a wait ({n})."
+ad.close_after,You can close it after {n} seconds
+ad.close_no_reward,Close (no reward)
+games.button,Games
+games.open,All the games
+games.title,Games
+games.play,Play
+games.best,Best: {n} {what}
+games.build_first,Build it on the map first.
+games.show_me,Show me
+games.more_soon,More games on the way
+collection.find_in_factory,Find it in the Factory
+game.level_not_yet,Not quite!
+game.next_level,Next level
+game.try_again,Try again
+game.replay,Replay
+game.all_levels,All levels
+game.play_level,Play level {n}
+game.stars_collected,Stars collected: {n}
+game.track_n,Track {n} · {name}
+game.song_clear,Encore!
+game.song_stopped,Show stopped
+game.next_track,Next track
+game.all_tracks,All tracks
+game.play_track,Play: {name}
+game.tracks_open,Stars: {stars} / {all} · tracks open: {open} / {count}
+game.track_line,{tags} · {bpm} BPM · {time}
+game.track_locked,needs {n}★ (you have {have}★)
+game.track_needs,{name} needs {n}★ (you have {have}★)
+game.new_track_open,New track open: {name}!
+game.new_best_stars,New best stars!
+game.song_pay,{time} song × {n}% accuracy
+ui.cancel,Cancel
+gate.tag,Grown-ups only
+gate.title,Ask a grown-up
+gate.question,Grown-ups: what is
+gate.plus,{a} plus {b}
+gate.minus,{a} minus {b}
+gate.not_quite,"Not quite, try again."
+gate.wait_title,Try again soon
+gate.wait_body,Too many wrong answers. Please wait {n} seconds.
+gate.twenty_plus,twenty-{n}
+gate.n0,zero
+gate.n1,one
+gate.n2,two
+gate.n3,three
+gate.n4,four
+gate.n5,five
+gate.n6,six
+gate.n7,seven
+gate.n8,eight
+gate.n9,nine
+gate.n10,ten
+gate.n11,eleven
+gate.n12,twelve
+gate.n13,thirteen
+gate.n14,fourteen
+gate.n15,fifteen
+gate.n16,sixteen
+gate.n17,seventeen
+gate.n18,eighteen
+gate.n19,nineteen
+gate.n20,twenty
+account.title,Your town
+account.saved,Saved
+account.not_saved,Not saved yet
+account.saved_with,"Saved with {email}. If this phone gets lost, a grown-up can bring the town back."
+account.not_saved_why,"Your town is kept on this phone and on the island server. If the phone gets lost or broken, a grown-up can only bring it back if it was saved with an email."
+account.deleting_on,"This account will be deleted on {date}. Logging back in before then (email or transfer code) keeps it."
+account.pretend_note,Test build: playing with the pretend server inside this phone (DEV → More… → Server… to use a real one).
+account.save_my_town,Save my town
+account.moving,Moving to a new phone?
+account.already,I already have a town
+account.privacy,Grown-ups · Privacy
+account.what_we_keep,"We keep a random player number, the town, settings and purchase receipts. The grown-up's email only if you save the town with it: just for codes, never for marketing. No names, chat, photos, location or advertising ID."
+account.delete,Delete account
+account.oops,Oops
+account.err_offline,"We couldn't reach the island server. Check the internet and try again."
+account.err_bad_email,That doesn't look like an email address. Please check it.
+account.err_email_taken,Another town is already saved with this email.
+account.err_too_many,Too many codes for now. Please try again in an hour.
+account.err_bad_code,That code didn't work. Check it and try again (codes work for 15 minutes).
+account.err_bad_pin,"That PIN didn't match. Check it and try again."
+account.err_same_town,That code is for the town already on this phone.
+account.err_not_this_phone,Something went wrong moving the town. Please try again.
+account.err_busy,The island server is busy. Please try again.
+account.gate_save,Saving the town needs a grown-up's email.
+account.gate_move,This makes a code for moving the town to another phone.
+account.gate_already,This brings a saved town onto this phone.
+account.gate_delete,Deleting the account is for grown-ups.
+account.email_title,Your email
+account.email_body,We only use it to send a 6-digit code and to bring the town back. No ads and no newsletters.
+account.email_login_body,The email the town was saved with. We'll send it a 6-digit code.
+account.send_code,Send code
+account.code_title,Check your email
+account.code_body,We sent a 6-digit code to {email}. Type it here.
+account.code_dev,(Test server: the code is {code}.)
+account.saved_title,Your town is saved!
+account.saved_body,"It's saved with {email}. On a new phone, choose ""I already have a town"" and use this email."
+account.pin,PIN: {pin}
+account.moving_title,Your transfer code
+account.moving_body,"On the new phone, tap the cloud, choose ""I already have a town"" and type this code and PIN. They work once, for 24 hours."
+account.already_title,I already have a town
+account.already_body,How was it saved?
+account.with_code,Transfer code
+account.with_email,Email
+account.code_pin_title,Transfer code
+account.code_pin_body,Type the code and PIN shown on the other phone.
+account.pin_hint,PIN
+account.same_title,All good
+account.same_body,This phone already plays that town.
+account.which_title,Which town?
+account.which_body,This phone has a town too. Which one should it play? (The other one is kept on the server for 30 days.)
+account.on_this_phone,On this phone
+account.saved_town,Saved town
+account.squishies,{n} squishies
+account.steamhouse,Steamhouse level {n}
+account.play_saved,Play the saved town
+account.keep_phone,Keep this one
+account.welcome_back_title,Welcome back!
+account.welcome_back_body,Your saved town is on this phone now.
+account.delete_title,Delete this account?
+account.delete_body,"The town, every squishy, Squish Stars and Gems, and anything bought will be gone. The account is kept for 30 days in case you change your mind (log in with the email or a transfer code to keep it), then it's deleted for good. This phone starts a new town."
+account.delete_yes,Delete
+account.delete_no,Keep it
+account.delete_sure_title,Are you sure?
+account.delete_sure_body,This can't be undone after 30 days.
+quest.play_any,Play any minigame {n} times
+quest.play_game,Play {game} {n} times
+quest.flowers,Harvest {n} flowers
+quest.orders,Serve {n} orders at the Bistro
+quest.letters,Sort {n} letters
+quest.sky_coins,Collect {n} coins in Sky Bounce
+quest.guests,Style {n} guests at the Salon
+quest.squishes,Squish {n} times in the Lab
+quest.box,Open a Mystery Box
+game.first_today,First game today: double coins!
+game.quest_done,Quest done! Collect it on the quest board.
+game.challenge_done,Gem Challenge done! Collect your Gems on the quest board.
+quests.title,Today's quests
+quests.coin_quests,Quests
+quests.collect,Collect
+quests.collected,Collected
+quests.play,Play
+quests.first_run,Your first game today pays double coins!
+quests.challenge,Gem Challenge
+quests.goal_score,"{game}: reach {n} {unit}"
+quests.goal_first,{game}: play one game
+quests.goal_levels3,"{game}: win your next new level with ★★★, or raise any two levels to ★★★"
+quests.goal_song3,"{game}: ★★★ on any track, or ★★ on your newest one"
+quests.tomorrow,Tomorrow's Gem Challenge: {game}
+quests.streak,Gem Challenge days this week: {days} of {needed}
+quests.streak_reward,Do it on {needed} days this week for +{gems} Gems
+quests.reward_coins,+{n} coins
+quests.reward_gems,+{n} Gems
+quests.no_games,Build a minigame building to get quests!
+quests.offline,"The quests are on the island server, which we can't reach just now."
+quests.no_rush,"No rush: missing a day never takes anything away."
+map.quests,Quests
+visitor.pin,Visitor: {name}
+visitor.title,{name} is visiting!
+visitor.body,"{name} is camping in the park. Say hi and give {name} a treat on {needed} different days, and {name} moves into your island for free!"
+visitor.visits,Visits: {days} of {needed}
+visitor.say_hi,Say hi & give a treat
+visitor.thanks_title,{name} loved the treat!
+visitor.thanks_body,Say hi again on another day. Visits: {days} of {needed}
+visitor.done_today,"You already said hi today. {name} is happy to see you again on another day!"
+visitor.moved_title,{name} moved in!
+visitor.moved_body,{name} now lives at the {house}. Thank you for all the visits!
+visitor.spare_body,"You already had {name}, so the extra one went onto the Spare Shelf."
+visitor.heading,Visitor of the week
+visitor.go,Go and say hi
+visitor.see_you,You said hi today. See {name} again another day!

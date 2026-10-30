@@ -256,7 +256,7 @@ const CITY = {
   ],
   roundabouts: [{ x: -76, z: 48, r: 9, center: 'fountain', snap: true }, { x: 40, z: -10, r: 7, center: 'statue', snap: true }],
   river: { w: 8, lake: 10, pts: [[-92, -98], [-94, -82], [-97, -70], [-101, -45], [-104, -14], [-102, 16], [-100, 48], [-97, 76], [-96, 96], [-97, 114], [-99, 132], [-100, 150]] },
-  parks: [{ x: 36, z: -38, r: 10, benches: 3 }, { x: 108, z: 64, r: 10, benches: 3 }, { x: -20, z: 116, r: 10, benches: 2 }],
+  parks: [{ x: 36, z: -38, r: 10, benches: 3 }, { x: 108, z: 64, r: 10, benches: 3 }, { x: -20, z: 116, r: 10, benches: 2, visitor: true }],
   ponds: [{ x: -22, z: -108, r: 6 }, { x: 122, z: -78, r: 6 }],
   fields: [{ x: 112, z: -96, w: 18, d: 10, rows: 4 }, { x: 40, z: -108, w: 14, d: 8, rows: 3, crop: '#FFB833' }],
   forests: [{ x: -96, z: -122, r: 26, n: 70, pine: .6 }, { x: 10, z: -126, r: 24, n: 60, pine: .7 }, { x: 132, z: -70, r: 12, n: 22, pine: .4 }, { x: -60, z: 122, r: 22, n: 46 }, { x: 70, z: 124, r: 20, n: 40 }, { x: -172, z: 40, r: 12, n: 18, pine: .5 }],
@@ -272,12 +272,12 @@ const CITY = {
 
 /* progress previews: building level + how many family squishies are owned */
 const STATES = {
-  day1: { note: 'Day 1: every house is broken, only the Dumpling Steamhouse has a resident (Bao Bun), and only the Factory and Playground are built.',
-    lvl: { dumpling: 1, kitchen: 1, pets: 1, sweets: 1, fruit: 1, ocean: 1, sky: 1, forest: 1, factory: 1, playground: 1 }, own: { dumpling: 1 },
-    locked: ['kitchen', 'pets', 'sweets', 'fruit', 'ocean', 'sky', 'forest'] },
+  day1: { note: 'Day 1: the whole island is open. Every house is broken, only the Dumpling Steamhouse has a resident (Bao Bun); Bounce Park, Squish Bistro, the Post Office and the Factory are built, every other fun building is an empty plot to build with coins.',
+    lvl: { dumpling: 1, kitchen: 1, pets: 1, sweets: 1, fruit: 1, ocean: 1, sky: 1, forest: 1, factory: 1, playground: 1, restaurant: 1, post: 1 }, own: { dumpling: 1 },
+    locked: [] },
   mid: { note: 'A few weeks in: the first houses are fixed up, some fun buildings are built, the rest are still empty plots.',
     lvl: { dumpling: 9, kitchen: 7, pets: 6, sweets: 5, fruit: 4, ocean: 3, sky: 2, forest: 1, factory: 6, playground: 7, restaurant: 5, market: 4, salon: 3, post: 3, police: 2, fire: 1, testlab: 3, arcade: 2 },
-    own: { dumpling: 6, kitchen: 5, pets: 4, sweets: 4, fruit: 3, ocean: 2, sky: 1 }, locked: ['forest'] },
+    own: { dumpling: 6, kitchen: 5, pets: 4, sweets: 4, fruit: 3, ocean: 2, sky: 1 }, locked: [] },
   full: { note: 'Fully built: every house is golden, every family is complete and every fun building is at level 10.', lvl: 'all10', own: 'all6', locked: [] }
 };
 
@@ -394,7 +394,7 @@ SQ.boot(async function () {
     ] },
     quests: { title: 'Quests & visitor', steps: [
       { say: 'Every day there are 3 <b>quests</b>. Two give coins, and the <b>Gem Challenge</b> gives Gems.' },
-      { say: 'Each week a <b>visitor</b> camps in the park. Say hi on 4 different days and it moves in!', fly: { x: 36, z: -38 }, dist: 70 },
+      { say: 'Each week a <b>visitor</b> camps in the park. Say hi on 4 different days and it moves in!', fly: { x: -20, z: 116 }, dist: 70 },
       { say: 'No stress: if you miss a day, nothing bad happens.', link: ['guide.html#daily', 'Read more'] }
     ] },
     market: { title: 'Trading', steps: [

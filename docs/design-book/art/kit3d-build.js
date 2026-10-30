@@ -106,8 +106,8 @@ function ctx(d, L, civ) {
 D.ctx = ctx;
 
 /* ---------- plot base + yards ---------- */
-function plotBase(d, L, civ) {
-  const grass = !civ && L <= 2 ? '#B8C78F' : '#9ED67E', g = G(at(box(26, .8, 22, grass, .3), 0, -.4, 0), at(box(26.6, .5, 22.6, '#C9A97A', .2), 0, -.72, 0));
+function plotBase(d, L, civ, slabs = true) {
+  const grass = !civ && L <= 2 ? '#B8C78F' : '#9ED67E', g = slabs ? G(at(box(26, .8, 22, grass, .3), 0, -.4, 0), at(box(26.6, .5, 22.6, '#C9A97A', .2), 0, -.72, 0)) : G();
   if (!civ && L <= 2) { g.add(at(D.disc(3, '#C9B48C'), -6, .02, 6, -PI / 2, 0, 0), at(D.disc(2.2, '#C9B48C'), 6.5, .02, 7.5, -PI / 2, 0, 0)); }
   return g;
 }
@@ -204,7 +204,7 @@ function civicBody(c, d) {
 D.building = function (id, L, o = {}) {
   const d = SQ.B[id]; if (!d) return new T.Group();
   const civ = d.type !== 'house', root = new T.Group();
-  root.add(plotBase(d, L, civ));
+  root.add(plotBase(d, L, civ, !o.noPlot));   // o.noPlot: no grass/dirt slabs (the game's map has its own grass)
   if (civ && L === 0) { root.add(lot(d)); return root; }
   const c = ctx(d, L, civ);
   const bigSize = D.SIZE; D.SIZE = Math.min(bigSize, 1.5);   // squishies that are part of a building's own model keep their designed size

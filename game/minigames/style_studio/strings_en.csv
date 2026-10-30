@@ -1,0 +1,31 @@
+keys,en
+style_studio.title,Style Studio
+style_studio.where,at the Fluff & Puff Salon
+style_studio.how.1,"Each guest shows the hairdo they want on the Wants card. Look closely: 5 things must match."
+style_studio.how.2,"Comb changes the style (curly, spiky, smooth), Fringe changes the bangs, Spray changes the finish (plain, shiny, glitter)."
+style_studio.how.3,Tap a colour drop to dye it and an accessory to pop it on.
+style_studio.how.4,"There is no match meter: you only see how close you got when you tap Done! (or time runs out)."
+style_studio.how.5,"Under 80% (fewer than 4 of 5 right) makes a guest unhappy. 3 unhappy guests and it is over. Guests get less patient forever."
+style_studio.score_name,points
+style_studio.metric_line,{n} guests styled
+style_studio.over_title,Salon closed!
+style_studio.unit,points
+style_studio.coin_rule,points ÷ 250
+style_studio.revive_gift,and carry on with 1 heart
+style_studio.tool.comb,Comb
+style_studio.tool.fringe,Fringe
+style_studio.tool.spray,Spray
+style_studio.done,Done!
+style_studio.none,none
+style_studio.wants,WANTS
+style_studio.patience,patience
+style_studio.match,MATCH
+style_studio.perfect,perfect ×{n}
+style_studio.guest,Guest {n}
+style_studio.missed_many,missed {n} of 5 things
+style_studio.missed,missed: {list}
+style_studio.part.style,style
+style_studio.part.col,colour
+style_studio.part.acc,accessory
+style_studio.part.fringe,fringe
+style_studio.part.fin,spray

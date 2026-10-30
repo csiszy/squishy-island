@@ -1,0 +1,10 @@
+keys,en
+_template.title,Bubble Pop
+_template.where,an example game
+_template.how.1,Bubbles float up. Tap them before they reach the top.
+_template.how.2,Three bubbles escape and it is over.
+_template.score_name,points
+_template.metric_line,{n} bubbles popped
+_template.unit,points
+_template.coin_rule,points ÷ 50
+_template.revive_gift,and carry on with 1 more heart

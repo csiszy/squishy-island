@@ -1,0 +1,22 @@
+{
+  "id": "squish_lab",
+  "api": 1,
+  "version": "1.0.0",
+  "title": "squish_lab.title",
+  "where": "squish_lab.where",
+  "building": "testlab",
+  "kind": "toy",
+  "scene": "squish_lab.tscn",
+  "music": "lab",
+  "size": [360, 640],
+  "backdrop": "#CFE0F3",
+  "squad": "all",
+  "how_to": ["squish_lab.how.1", "squish_lab.how.2", "squish_lab.how.3", "squish_lab.how.4"],
+  "score_name": "squish_lab.score_name",
+  "metric_line": "squish_lab.metric_line",
+  "coins": { "from": "none", "rule": "squish_lab.coins_rule" },
+  "goal": "metric_total",
+  "revive": { "allowed": false },
+  "perks": [],
+  "enabled": true
+}

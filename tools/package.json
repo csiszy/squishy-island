@@ -1,0 +1,17 @@
+{
+  "name": "squishy-island-tools",
+  "private": true,
+  "description": "Export tools: design book -> game data, art and sound. See tools/README.md.",
+  "scripts": {
+    "export-data": "node export_data/export_data.js",
+    "check-data": "node export_data/export_data.js --check",
+    "export-audio": "node export_audio/export_audio.js",
+    "export-art": "node export_art/export_art.js"
+  },
+  "dependencies": {
+    "three": "0.149.0"
+  },
+  "devDependencies": {
+    "playwright": "1.63.0"
+  }
+}

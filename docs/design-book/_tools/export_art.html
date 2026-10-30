@@ -1,0 +1,203 @@
+<!doctype html>
+<meta charset="utf-8"><title>exporting</title>
+<!-- Used by tools/export_art/export_art.js: builds every building at every level and every squishy with the same code
+     as the rest of the book, and hands each one back as a glTF binary (.glb) or a PNG portrait. Nothing is shown here.
+     window.EXPORT.list() names everything; window.EXPORT.one(item) returns { glb | png } as base64. -->
+<script>
+/* the book uses Math.random (animation phases, scattered details): make it repeatable, so exporting twice gives the
+   same files and git only sees models that really changed. EXPORT.one() reseeds per file. */
+window.__seed = s => { let a = 0; for (const ch of String(s)) a = (a * 31 + ch.charCodeAt(0)) >>> 0; Math.random = () => { a = (a + 0x6D2B79F5) >>> 0; let t = a; t = Math.imul(t ^ (t >>> 15), t | 1); t ^= t + Math.imul(t ^ (t >>> 7), t | 61); return ((t ^ (t >>> 14)) >>> 0) / 4294967296; }; };
+window.__seed('squishy island');
+</script>
+<script src="../art/sound.js"></script>
+<script src="../art/kit.js"></script>
+<script>
+SQ.boot(async function () {
+  try {
+    /* GLTFExporter ships as an ES module that imports 'three'; point that import at the THREE the book already loaded */
+    const shim = URL.createObjectURL(new Blob([Object.keys(THREE).map(k => `export const ${k} = window.THREE[${JSON.stringify(k)}];`).join('\n')], { type: 'text/javascript' }));
+    const src = (await (await fetch('../_vendor/three/examples/jsm/exporters/GLTFExporter.js')).text()).replace(/from\s+['"]three['"]/g, `from '${shim}'`);
+    const { GLTFExporter } = await import(URL.createObjectURL(new Blob([src], { type: 'text/javascript' })));
+    const D = SQ.three, T = THREE;
+
+    /* what the game needs from each object: drop the book's outline shells (Godot draws its own outline),
+       keep only the tags Godot's import script understands, and say which material look each mesh has */
+    const ANIM_KEYS = ['type', 'ph', 'amp', 'sp', 'depth'];
+    const noUvCache = new Map();   // one stripped copy per shared geometry, so reused parts stay reused in the file
+    const noUv = g => { let c = noUvCache.get(g); if (!c) { c = g.clone(); c.deleteAttribute('uv'); noUvCache.set(g, c); } return c; };
+    const r3 = v => Math.round(v * 1000) / 1000;
+    function clean(root) {
+      const shells = []; root.traverse(o => { if (o.userData.outline) shells.push(o); });
+      shells.forEach(o => o.parent.remove(o));
+      /* glTF (three r149) cannot hold instanced meshes: keep one copy of the mesh and list every instance's
+         transform (and colour) as tags; Godot's import step rebuilds them as one MultiMesh */
+      const inst = []; root.traverse(o => { if (o.isInstancedMesh) inst.push(o); });
+      inst.forEach(im => {
+        const m = new T.Mesh(im.geometry, im.material); m.name = im.name || 'instances'; m.position.copy(im.position); m.quaternion.copy(im.quaternion); m.scale.copy(im.scale);
+        const mats = [], cols = [], m4 = new T.Matrix4(), c = new T.Color();
+        for (let i = 0; i < im.count; i++) { im.getMatrixAt(i, m4); mats.push(...m4.elements.map(r3)); if (im.instanceColor) { im.getColorAt(i, c); cols.push(r3(c.r), r3(c.g), r3(c.b)); } }
+        m.userData = Object.assign({}, im.userData, { instances: mats }); if (cols.length) m.userData.instance_colors = cols;
+        im.parent.add(m); im.parent.remove(im);
+      });
+      root.traverse(o => {
+        const u = o.userData, keep = {};
+        if (u.instances) { keep.instances = u.instances; if (u.instance_colors) keep.instance_colors = u.instance_colors; }
+        if (u.sqWrap) keep.wrap = true;
+        if (u.clip) keep.clip_y = r3(u.clipY0 ?? -u.clip.constant);   // peeking squishies are hidden below this height (in the parent's space)
+        if (u.anim) { keep.anim = {}; ANIM_KEYS.forEach(k => { if (u.anim[k] != null) keep.anim[k] = typeof u.anim[k] === 'number' ? Math.round(u.anim[k] * 1000) / 1000 : u.anim[k]; }); }
+        if (u.sq) keep.squishy = u.sq;
+        if (o.isMesh) {
+          const m = o.material;
+          if (!m.map && o.geometry.attributes.uv) o.geometry = noUv(o.geometry);   // no texture: no UVs needed
+          keep.look = m.isMeshToonMaterial ? 'toon' : (m.isMeshStandardMaterial ? 'soft' : 'flat');
+          if (u.noOutline || m.transparent || o.geometry.type === 'PlaneGeometry' || o.geometry.type === 'CircleGeometry') keep.outline = false;
+          if (m.emissive && m.emissiveIntensity > 0 && m.emissive.getHex() !== 0) keep.glow = Math.round(m.emissiveIntensity * 100) / 100;
+        }
+        o.userData = keep;
+      });
+      return root;
+    }
+    const exporter = new GLTFExporter();
+    const glb = root => new Promise((res, rej) => exporter.parse(root, buf => res(buf), rej, { binary: true, onlyVisible: true, maxTextureSize: 1024 }));
+    const b64 = buf => { const a = new Uint8Array(buf); let s = ''; for (let i = 0; i < a.length; i += 32768) s += String.fromCharCode.apply(null, a.subarray(i, i + 32768)); return btoa(s); };
+
+    const items = [];
+    SQ.MODULES.forEach(id => {
+      const d = SQ.B[id], civ = d.type !== 'house';
+      const levels = d.single ? [1] : (civ ? [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10] : [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]);
+      levels.forEach(L => items.push({ kind: 'building', id, level: L, file: `models/buildings/${id}/building_${id}_L${String(L).padStart(2, '0')}.glb` }));
+    });
+    Object.keys(SQ.SQ).sort().forEach(id => {
+      items.push({ kind: 'squishy', id, file: `models/squishies/squishy_${id}.glb` });
+      items.push({ kind: 'portrait', id, file: `sprites/squishies/${id}.png` });
+    });
+    /* house rooms: the shadow-box (back panel + frame + anything that is not shop decor), and every decor item in
+       each of its designs on its own, so the game shows only what the player owns, in the design they picked */
+    SQ.HOUSES.forEach(h => {
+      if (!SQ.B[h].interior) return;
+      items.push({ kind: 'room', id: h, file: `models/rooms/${h}/room_${h}.glb` });
+      roomParts(h).items.forEach(n => SQ.DECOR_STYLES.forEach(st => items.push({ kind: 'decor', id: h, item: n, style: st.id, file: `models/rooms/${h}/decor_${n}_${st.id}.glb` })));
+    });
+    /* Factory boxes in their colours (factory.html: mystery, family, golden, ad) */
+    const BOX_COLOURS = { mystery: '#FF6FA3', family: '#7ED3B2', golden: '#FFD54A', ad: '#8CCBFF' };
+    Object.keys(BOX_COLOURS).forEach(k => items.push({ kind: 'box', id: k, file: `models/boxes/box_${k}.glb` }));
+    /* map bubble icons of fun buildings (houses use a house shape + the family's emblem portrait, built in the game) */
+    SQ.CIVIC.forEach(id => { if (SQ.B[id].icon) items.push({ kind: 'badge', id, file: `sprites/badges/${id}.svg` }); });
+    /* the island (everything on the map except the buildings) and each squishy's life around its house */
+    items.push({ kind: 'island', id: 'island', file: 'models/island/island.glb' });
+    SQ.HOUSES.forEach(h => SQ.B[h].squishies.forEach(q => items.push({ kind: 'life', id: q.id, house: h, file: `models/life/life_${q.id}.glb` })));
+    const exclusives = SQ.B.factory.exclusives || [];
+    exclusives.forEach(q => {
+      items.push({ kind: 'squishy', id: q.id, exclusive: true, file: `models/squishies/squishy_${q.id}.glb` });
+      items.push({ kind: 'portrait', id: q.id, exclusive: true, file: `sprites/squishies/${q.id}.png` });
+    });
+
+    /* buildings: fun buildings include their yard squishy (it depends on the level, not on what you own);
+       houses come without their family, who are exported one by one (life) and placed by the game.
+       The breathing body is named "Body" so the game can attach squishies that sit on the house to it. */
+    const SQSIZE = 2.1;   // CITY.squishySize: squishies on the map
+    function building(id, L) {
+      const keep = D.SIZE; D.SIZE = SQSIZE;
+      try {
+        // no plot slabs: on the book's map the island's grass is drawn over them (art/city3d.js), so the game
+        // leaves them out instead of showing a plain green square
+        const d = SQ.B[id], root = D.building(id, L, { life: d.type !== 'house', noPlot: true });
+        const breathe = root.children[1], body = breathe && breathe.children[0];
+        if (body && breathe.userData.anim && breathe.userData.anim.type === 'squish') body.name = 'Body';
+        return root;
+      } finally { D.SIZE = keep; }
+    }
+    /* one squishy's spot, props and idle loop around its house; its squishy wraps are named so the game can
+       apply the per-level heights in life.json */
+    function nameWraps(root) { const n = {}; root.traverse(o => { if (!o.userData.sqWrap) return; const sq = (o.children[0] && o.children[0].userData.sq) || 'x'; n[sq] = (n[sq] || 0) + 1; o.name = `wrap_${sq}_${n[sq]}`; }); return root; }
+    function life(house, sq) {
+      const keep = D.SIZE; D.SIZE = SQSIZE;
+      try { const q = SQ.SQ[sq], v = q.idle3 ? q.idle3(D, 10) : null, g = new T.Group(); if (v) g.add(v); g.name = `life_${sq}`; return nameWraps(g); } finally { D.SIZE = keep; }
+    }
+    /* heights of every squishy wrap at every house level, after the book settles them onto roofs and lids */
+    function lifeHeights() {
+      const out = {}, keep = D.SIZE; D.SIZE = SQSIZE;
+      try {
+        SQ.HOUSES.forEach(h => {
+          const d = SQ.B[h]; out[h] = {};
+          d.squishies.forEach(q => { out[h][q.id] = { on: !!q.on, wraps: {} }; });
+          for (let L = 1; L <= 10; L++) {
+            window.__seed(`life_${h}_${L}`);
+            const root = D.building(h, L, { life: true, owned: 6 });
+            const n = {};
+            root.traverse(o => { if (!o.userData.sqWrap) return; const sq = (o.children[0] && o.children[0].userData.sq) || 'x'; n[sq] = (n[sq] || 0) + 1;
+              const fam = d.squishies.find(q => q.id === sq); if (!fam) return;
+              const w = out[h][sq].wraps, key = `wrap_${sq}_${n[sq]}`; (w[key] = w[key] || []).push(r3(o.position.y)); });
+          }
+        });
+      } finally { D.SIZE = keep; }
+      return out;
+    }
+    /* rooms (D.room3 in art/kit3d.js, taken apart): the room drawing, its decor groups (data-item) and the rest */
+    function roomParts(h) {
+      const d = SQ.B[h], K = SQ.K; let roomSvg = ''; const orig = K.room, origTag = K.tag;
+      K.room = o => { roomSvg = orig(o); return ''; }; K.tag = () => '';
+      let items = ''; try { items = d.interior(K); } finally { K.room = orig; K.tag = origTag; }
+      const doc = new DOMParser().parseFromString(`<svg xmlns="http://www.w3.org/2000/svg">${items}</svg>`, 'image/svg+xml');
+      const defs = [...doc.documentElement.querySelectorAll('defs')].map(x => x.outerHTML).join('');
+      const nums = [...doc.documentElement.querySelectorAll('[data-item]')].map(g => +g.getAttribute('data-item'));
+      const rest = doc.documentElement.cloneNode(true); rest.querySelectorAll('[data-item]').forEach(g => g.remove());
+      return { roomSvg, itemsSvg: items, defs, items: nums, restSvg: rest.innerHTML };
+    }
+    const relief = (svg) => { const rel = D.inflate(svg, { noBody: true, back: true, puff: 1.7, rough: .55 }); rel.scale.set(.1, .1, .1); rel.position.set(-30, 34, .05); return rel; };
+    function roomBase(h) {
+      const P = roomParts(h), g = new T.Group(); g.name = `room_${h}`;
+      const tex = D.svgTex(P.roomSvg, '0 0 600 340', 1200);
+      const panel = new T.Mesh(new T.PlaneGeometry(60, 34), new T.MeshStandardMaterial({ map: tex, roughness: .95 })); panel.position.set(0, 17, 0); panel.userData.noOutline = true; g.add(panel);
+      const fr = '#FFF8EC', edge = SQ.dk(fr, .15), at = D.at;
+      g.add(at(D.box(63, 1.4, 9, '#C9A97A', .4), 0, -.7, 3.6), at(D.box(1.6, 36, 9, fr, .5), -31, 17, 3.6), at(D.box(1.6, 36, 9, fr, .5), 31, 17, 3.6), at(D.box(63.6, 1.6, 9, fr, .5), 0, 34.8, 3.6), at(D.box(66, 36, 1.2, edge, .4), 0, 17, -.7));
+      if (P.restSvg.replace(/<defs>.*?<\/defs>/g, '').trim()) g.add(relief(P.restSvg));
+      return D.finish(g);
+    }
+    function decorItem(h, n, style) {
+      const P = roomParts(h), styled = SQ.restyle(P.itemsSvg, { [n]: style });
+      const doc = new DOMParser().parseFromString(`<svg xmlns="http://www.w3.org/2000/svg">${styled}</svg>`, 'image/svg+xml');
+      const el = doc.documentElement.querySelector(`[data-item="${n}"]`);
+      const g = new T.Group(); g.name = `decor_${n}_${style}`; if (el) g.add(relief(P.defs + el.outerHTML));
+      return D.finish(g);
+    }
+
+    /* the island: the book's own map engine builds it in a hidden box; only the static world is kept */
+    async function island() {
+      const idx = await (await fetch('../index.html')).text(), a = idx.indexOf('const CITY = '), z = idx.indexOf('\n};', a);
+      const CITY = (0, eval)('(' + idx.slice(a + 'const CITY = '.length, z + 2) + ')');
+      if (!SQ.city) await new Promise(res => { const s = document.createElement('script'); s.src = '../art/city3d.js'; s.onload = res; document.head.appendChild(s); });
+      const host = document.createElement('div'); host.style.cssText = 'position:fixed;left:0;top:0;width:360px;height:640px'; document.body.appendChild(host);
+      const city = SQ.city(host, CITY, {});
+      await D.ready();
+      const w = city.world; w.parent.remove(w); w.name = 'island';
+      return w;
+    }
+
+    window.EXPORT = {
+      lifeHeights,
+      list: () => items,
+      one: async (it) => {
+        const ex = it.exclusive && exclusives.find(q => q.id === it.id);
+        if (ex) { ex.family = 'factory'; ex.i = 0; SQ.SQ[ex.id] = ex; }   // exclusives stay out of SQ.SQ (and boxes) except while drawn
+        window.__seed(it.file);
+        try {
+          if (it.kind === 'portrait') return { png: D.sprite(it.id, {}, 256).split(',')[1] };
+          if (it.kind === 'badge') return { svg: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="-16 -16 32 32" width="128" height="128">${SQ.B[it.id].icon(SQ.K, 0, 0, 1.05)}</svg>\n` };
+          if (it.kind === 'room') { const g = roomBase(it.id); await D.ready(); return { glb: b64(await glb(clean(g))) }; }
+          if (it.kind === 'decor') { const g = decorItem(it.id, it.item, it.style); await D.ready(); return { glb: b64(await glb(clean(g))) }; }
+          if (it.kind === 'box') { const g = new T.Group(); g.name = `box_${it.id}`; g.add(SQ.B.factory.box3(D, BOX_COLOURS[it.id], 1)); await D.ready(); return { glb: b64(await glb(clean(g))) }; }
+          if (it.kind === 'island') return { glb: b64(await glb(clean(await island()))) };
+          if (it.kind === 'life') return { glb: b64(await glb(clean(life(it.house, it.id)))) };
+          const obj = it.kind === 'building' ? building(it.id, it.level) : D.squishy(it.id, 1);
+          await D.ready();
+          obj.name = it.kind === 'building' ? `${it.id}_L${it.level}` : it.id;
+          return { glb: b64(await glb(clean(obj))) };
+        } finally { if (ex) delete SQ.SQ[ex.id]; }
+      }
+    };
+    window.__out = { count: items.length };
+    document.title = 'done';
+  } catch (e) { document.title = 'ERR ' + e.message + ' ' + (e.stack || ''); }
+});
+</script>

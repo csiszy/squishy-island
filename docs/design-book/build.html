@@ -85,7 +85,7 @@ pre.code .c{color:#A99BD8}
       <tr><td><b>3D art</b></td><td>glTF files exported automatically from this design book; a Godot import script adds the toon material, outline and idle animation</td><td>The models already exist here as code; no remodelling needed. A hand-made model can later replace any file with the same name.</td><td>Free</td></tr>
       <tr><td><b>2D art and UI</b></td><td>Godot UI nodes with one shared Theme; icons and squishy pictures exported from the book; fonts Bagel Fat One, Nunito, Patrick Hand (open licence)</td><td>One theme = one place to change the look</td><td>Free</td></tr>
       <tr><td><b>Sound</b></td><td>The rendered pack (38 WAV effects, 14 Ogg loops); Squeak Beat songs rendered as backing tracks plus melody notes</td><td>Already made and owned by you</td><td>Free</td></tr>
-      <tr><td><b>Game server</b></td><td>Nakama (open source) + PostgreSQL, in Docker, on a small EU server (e.g. Hetzner, Germany or Finland), logic written in TypeScript</td><td>Built for games: guest accounts, account linking, cloud saves, wallets, Google purchase checking with refund notices, and an official Godot client</td><td>~€5–10 / month</td></tr>
+      <tr><td><b>Game server</b></td><td>Nakama (open source) + PostgreSQL, in Docker, on a small EU server (e.g. Hetzner, Germany or Finland), logic written in TypeScript. While testing, the same setup runs on the owner’s laptop (free); the paid server is only needed at launch</td><td>Built for games: guest accounts, account linking, cloud saves, wallets, Google purchase checking with refund notices, and an official Godot client</td><td>~€5–10 / month</td></tr>
       <tr><td><b>Login codes by email</b></td><td>An EU email service on its free tier (e.g. Brevo)</td><td>For “save my town” codes only</td><td>Free at this scale</td></tr>
       <tr><td><b>Purchases</b></td><td>Google Play Billing Library 8 through a Godot Android plugin, checked on the server by Nakama</td><td>Required by Google for Gems</td><td>Google’s store fee on sales</td></tr>
       <tr><td><b>Ads</b></td><td>Google AdMob (on Google’s Families self-certified list), rewarded ads only, child-directed, content rating G</td><td>Allowed in kids’ apps, simplest set-up</td><td>Earns money</td></tr>
@@ -198,28 +198,32 @@ pre.code .c{color:#A99BD8}
     <div>
       <h3 style="margin:0 0 8px">manifest.json <small style="font-weight:700;color:var(--ink2)">(comments only explain it here)</small></h3>
 <pre class="code">{
-  "id": "sky_bounce",
+  "id": "sky_bounce",              <span class="c">// = the folder name</span>
   "api": 1,                        <span class="c">// contract version it was built for</span>
-  "version": "1.3.0",
-  "title": "Sky Bounce",
+  "version": "1.0.0",
+  "title": "sky_bounce.title",     <span class="c">// words: keys in the game's own strings_en.csv</span>
   "building": "playground",
   "kind": "endless",               <span class="c">// endless | levels | songs | toy</span>
   "scene": "sky_bounce.tscn",
-  "music": "audio/up_up_and_away.ogg",
-  "how_to": ["Tilt or tap left/right…", "…"],
-  "coins": { "from": "coins_collected",
+  "music": "sky",                  <span class="c">// a track of the sound pack</span>
+  "size": [360, 640],              <span class="c">// the game's own drawing space</span>
+  "backdrop": "#8CCBFF",           <span class="c">// colour around it on taller phones</span>
+  "how_to": ["sky_bounce.how.1", "…"],
+  "coins": { "from": "metric",     <span class="c">// score | metric (coins grabbed)</span>
+             "divide": 1,
              "milestones": [600, 1200, 2000],
-             "unit": "m high" },
+             "unit": "sky_bounce.unit" },
+  "goal": "score",                 <span class="c">// what counts for the building's level goal</span>
   "revive": { "allowed": true,
-              "gift": "float back up with a balloon" },
-  "perks": [{ "family": "sky", "effect": "float_longer" }],
+              "gift": "sky_bounce.revive_gift" },
+  "perks": [{ "family": "sky", "effect": "fall_slower", "amount": 0.25 }],
   "enabled": true                  <span class="c">// the server can switch it off</span>
 }</pre>
     </div>
     <div>
       <h3 style="margin:0 0 8px">The contract (minigame_api v1)</h3>
-<pre class="code"><span class="c"># what every minigame extends</span>
-class_name Minigame extends Node
+<pre class="code"><span class="c"># what every minigame extends (game/minigame_api/)</span>
+class_name Minigame extends Node2D   <span class="c"># draws in its "size"; the host scales it</span>
 
 signal finished(result: MinigameResult)
 signal score_changed(score: int)
@@ -228,19 +232,27 @@ func setup(ctx: MinigameContext) -> void: pass
 func start(level: int = 0) -> void: pass
 func pause() -> void: pass
 func resume() -> void: pass
+func stop() -> void: pass          <span class="c"># player left: end the run now</span>
 func can_revive() -> bool: return false
 func revive() -> void: pass
+func advance(delta: float) -> void: pass  <span class="c"># all game time</span>
+func set_view(rect: Rect2) -> void: pass  <span class="c"># what the phone shows: the "size" plus</span>
+                                          <span class="c"># extra above/below (tall phones): paint it</span>
 
 <span class="c"># MinigameContext: the ONLY things a game can use</span>
-<span class="c">#   squad            squishies the player brought (+ models)</span>
-<span class="c">#   settings         sound, vibration, quality tier,</span>
-<span class="c">#                    reduced motion, left-handed, colour helpers</span>
-<span class="c">#   sfx(id) buzz(ms) rng(seed)</span>
+<span class="c">#   squad            squishies the player brought (pictures: portrait(id))</span>
+<span class="c">#   perks            helper effects the squad switches on</span>
+<span class="c">#   settings         vibration, quality tier, reduced motion, left-handed</span>
+<span class="c">#   sfx(id) play(sound) buzz(ms) rng(seed) font(kind) t(key)</span>
 <span class="c">#   store            this game's own little save box</span>
+<span class="c">#   best             the player's best score so far</span>
 <span class="c">#   request_revive() asks the host (the host shows the ad)</span>
 
 <span class="c"># MinigameResult: what it gives back</span>
-<span class="c">#   score, metric, won, level, stars, seconds_played</span></pre>
+<span class="c">#   score, metric, won, level, stars, seconds_played</span>
+
+<span class="c"># minigame_kit/v1: KitGame = the prototypes' engine in Godot</span>
+<span class="c">#   (drawing helpers, taps, floating text, tones, "keep going?")</span></pre>
     </div>
   </div>
   <div class="two" style="margin-top:18px">
@@ -248,7 +260,8 @@ func revive() -> void: pass
       <h3>The host does, so games never have to</h3>
       <ul>
         <li>The start card (title, how to play, best score, levels or tracks) from the manifest.</li>
-        <li>Pause, the in-game Settings panel, leaving.</li>
+        <li>Pause (button and the phone's back button), sound and music switches, leaving: “Finish here” ends the run and still pays for what was reached.</li>
+        <li>Which squishy plays (the player picks one they own); its family’s helpers and Cozy bonus.</li>
         <li>“Keep going?” with the ad (closable after 5 s); then calls <code>revive()</code>.</li>
         <li>The results screen with the half-second count-up, coins from the manifest’s coin rule, milestone bonus, best score, “back to town” during the tour.</li>
         <li>Music from the manifest, ducking, the graphics tier, squishy perks.</li>
@@ -285,9 +298,9 @@ func revive() -> void: pass
     <thead><tr><th>What</th><th>How</th></tr></thead>
     <tbody>
       <tr><td><b>3D models</b></td><td>A script opens the design book in a headless browser, builds every building at every level (and the Gem Mine), every squishy, the decor and the room sets, and saves each as a glTF file (<code>building_dumpling_L07.glb</code>, <code>squishy_bao.glb</code>). The squishies’ idle animations travel along as tags, and Godot’s import script turns them into a small reusable “idle” component.</td></tr>
-      <tr><td><b>Look</b></td><td>One toon shader and one outline shader in Godot reproduce the book’s look. The import script swaps every material for them, so changing the look later is one file.</td></tr>
+      <tr><td><b>Look</b></td><td>One toon shader and one outline shader in Godot reproduce the book’s look. The import script swaps every material for them, so changing the look later is one file. The shader does the book’s lighting sum (hemisphere + ambient + sun through the 4-step ramp) on sRGB colours like the book does, so a building in the game looks like its picture here.</td></tr>
       <tr><td><b>Pictures</b></td><td>Squishy portraits, icons and badges rendered to PNG from the same scripts.</td></tr>
-      <tr><td><b>Numbers and text</b></td><td>Squishies (names, bios, rarities), buildings, level costs, decor, odds, prices, quests, the city layout (the CITY block), story and tutorial lines: exported to JSON, with all player-facing text in <code>strings_en.csv</code> from day one, so adding a language later is just translation.</td></tr>
+      <tr><td><b>Numbers and text</b></td><td>Squishies (names, bios, rarities), buildings, level costs, decor, odds, prices, quests, the city layout (the CITY block), story and tutorial lines: exported to JSON, with all player-facing text in <code>strings_en.csv</code> from day one, so adding a language later is just translation. Box, collection, Gem, ad and unlock numbers have one machine-readable home in this book, <code>art/economy.js</code> (the guide explains them in words; change both together). Words the game needs that are on no page yet (buttons, messages) live in <code>docs/strings_ui_en.csv</code>. The export checks that the book agrees with itself (odds add up to 100, decor design prices, Gem prices) and CI fails if <code>game/data</code> falls behind the book.</td></tr>
       <tr><td><b>Sound</b></td><td>The rendered pack. Squeak Beat: each song becomes a backing track plus a note chart and one melody note per pitch, so taps still play the tune with no lag from live synthesis.</td></tr>
       <tr><td><b>Replacing with hand-made art</b></td><td>Drop a file with the same name into <code>art/overrides/</code>. Nothing else changes.</td></tr>
     </tbody>
@@ -304,7 +317,7 @@ func revive() -> void: pass
         <li>Download under 150 MB; memory under 400 MB on a 3 GB phone.</li>
         <li>The map: buildings far from the camera use simpler versions; squishies idle only when near; shadows by tier (see <a href="settings.html#auto">graphics tiers</a>).</li>
         <li>Auto graphics tier: phone memory and cores, plus a 3-second check during the story, as specified in Settings.</li>
-        <li>Squeak Beat gets a tap-timing calibration screen, because audio delay differs between Android phones.</li>
+        <li>Squeak Beat handles the audio delay, which differs between Android phones, by itself: its clock follows the song as the phone plays it, and it learns from the player's taps how early or late they land (no separate calibration screen to explain to a child).</li>
       </ul>
     </div>
     <div class="card prose">
@@ -327,7 +340,7 @@ func revive() -> void: pass
     <div class="phase"><div class="w">Step 0<small>~2 weeks</small></div><div><h3>Foundations</h3><ul><li>Repository, Godot project, automatic tests and Android builds.</li><li>Core services with fakes: save, settings, audio, haptics, events, text.</li><li>The three export tools (art, data, sound) and the toon look.</li></ul></div></div>
     <div class="phase"><div class="w">Step 1<small>~4 weeks</small></div><div><h3>The town</h3><ul><li>City map from the CITY layout: drag, pinch, bubbles, building cards.</li><li>Houses: renovating, rooms and decor; squishies idling around town.</li><li>Factory boxes, Spare Shelf and collection book (with a pretend server).</li></ul></div></div>
     <div class="phase"><div class="w">Step 2<small>~3 weeks</small></div><div><h3>Minigame host + first 3 games</h3><ul><li>The contract, host, results screen, payout, template, boundary check, contract tests.</li><li>Port Sky Bounce, Bistro Rush and Sort-a-Lot. The core loop is now playable end to end.</li></ul></div></div>
-    <div class="phase"><div class="w">Step 3<small>~5 weeks</small></div><div><h3>The other minigames</h3><ul><li>Style Studio, Grow Grow Garden, Lost &amp; Found, Bucket Brigade, Squish Breaker.</li><li>Squeak Beat (songs, charts, calibration) and the Squish Lab (soft body with the 3D squishy).</li><li>These can be built in any order, one at a time, because they’re independent.</li></ul></div></div>
+    <div class="phase"><div class="w">Step 3<small>~5 weeks</small></div><div><h3>The other minigames</h3><ul><li>Style Studio, Grow Grow Garden, Lost &amp; Found, Bucket Brigade, Squish Breaker.</li><li>Squeak Beat (songs, charts, calibration) and the Squish Lab (soft body with the 3D squishy).</li><li>These can be built in any order, one at a time, because they’re independent.</li><li><b>Done (October 2026).</b></li></ul></div></div>
     <div class="phase"><div class="w">Step 4<small>~4 weeks</small></div><div><h3>Server</h3><ul><li>Nakama on an EU server: guest accounts, cloud save, “save my town” codes, transfer codes, deletion.</li><li>Server-side boxes, coins checks, quests, Gem Challenge, the weekly visitor, the Market and trading.</li></ul></div></div>
     <div class="phase"><div class="w">Step 5<small>~3 weeks</small></div><div><h3>Gems, ads and grown-ups</h3><ul><li>Gem Mine with Google Play Billing (tested with Google’s test cards), Gem Shop, refunds.</li><li>Rewarded ads (keep going, free boxes) with the kids’ settings.</li><li>Grown-up gate, spending limit, purchases and ads switches.</li></ul></div></div>
     <div class="phase"><div class="w">Step 6<small>~3 weeks</small></div><div><h3>First five minutes and polish</h3><ul><li>Opening story, name picking, the first tour, the <b>i</b> help topics.</li><li>Settings screen, graphics tiers, battery saver, accessibility, every sound in place.</li></ul></div></div>

@@ -1,0 +1,20 @@
+keys,en
+bistro_rush.title,Bistro Rush
+bistro_rush.where,at the Squish Bistro
+bistro_rush.how.1,Hungry squishies sit at the counter and show what they want.
+bistro_rush.how.2,Tap a food at the bottom to cook it in a free pan.
+bistro_rush.how.3,"When it is ready, tap the dish, then tap the squishy who ordered it (or drag it to them)."
+bistro_rush.how.4,Serve before their patience bar runs out. Lose 3 customers and the shift is over.
+bistro_rush.how.5,It never ends: guests come faster and order more the longer you last.
+bistro_rush.score_name,points
+bistro_rush.metric_line,{n} orders served
+bistro_rush.unit,points
+bistro_rush.coin_rule,points ÷ 420
+bistro_rush.revive_gift,"and carry on with 1 heart, every guest's patience full again"
+bistro_rush.new_dish,New dish: dumplings!
+bistro_rush.too_slow,Too slow!
+bistro_rush.not_this,Not this!
+bistro_rush.pans,PANS
+bistro_rush.ready,READY
+bistro_rush.tap_to_cook,TAP TO COOK
+bistro_rush.combo,combo ×{n}

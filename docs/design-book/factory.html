@@ -184,15 +184,15 @@ SQ.boot(function () {
   const K = SQ.K, F = SQ.B.factory, R = SQ.RARITY;
   const D = SQ.three, boxImg = (col, px) => D.snap(F.box3(D, col, 1), { w: px, h: px, yaw: .6, pitch: .45, pad: .95 });
   document.querySelectorAll('[data-boxart]').forEach(el => el.innerHTML = `<img src="${boxImg(el.dataset.boxart, 112)}" alt="" width="56" height="56">`);
-  const ODDS = { mystery: { C: 55, U: 25, R: 13, E: 6, L: 1 }, ad: { C: 55, U: 25, R: 13, E: 6, L: 1 }, family: { C: 55, U: 25, R: 13, E: 6, L: 1 }, golden: { C: 0, U: 50, R: 30, E: 16, L: 4 } };
-  const PRICE = { mystery: 200, family: 500, golden: 1000, ad: 0 }, STARS = { C: 5, U: 15, R: 40, E: 100, L: 300 };
+  const EC = SQ.ECONOMY, ODDS = {}, PRICE = {}, STARS = EC.starsPerSpare;   // numbers: art/economy.js
+  Object.entries(EC.boxes).forEach(([k, b]) => { ODDS[k] = b.odds; PRICE[k] = b.price; });
   SQS.music('shop');
   if (SQS.settings.adsOff) { const ab = document.querySelector('[data-box="ad"]'); ab.disabled = true; ab.querySelector('small').textContent = 'ads off (grown-up setting)'; }
   const famSel = document.getElementById('fam');
   SQ.HOUSES.forEach(h => famSel.insertAdjacentHTML('beforeend', `<option value="${h}">${SQ.B[h].family}</option>`));
   let box = 'mystery', spent = 0, stars = 0, pity = 0; const owned = new Set();
   const colors = { mystery: '#FF6FA3', family: '#7ED3B2', golden: '#FFD54A', ad: '#8CCBFF' };
-  let adsLeft = 3, spares = 0;
+  let adsLeft = EC.boxes.ad.perDay, spares = 0;
   const bigCache = {}; const bigbox = () => `<img src="${bigCache[box] || (bigCache[box] = boxImg(colors[box], 240))}" alt="" width="120" height="120">`;
   document.getElementById('bigbox').innerHTML = bigbox();
   document.querySelectorAll('.boxbtn').forEach(b => b.addEventListener('click', () => {
@@ -207,7 +207,7 @@ SQ.boot(function () {
     if (tourBox) return SQ.SQ.gyoza;
     const o = ODDS[box]; let r = Math.random() * 100, rar = 'C';
     for (const k of ['L', 'E', 'R', 'U', 'C']) { if (r < o[k]) { rar = k; break; } r -= o[k]; }
-    if (pity >= 9 && (rar === 'C' || rar === 'U')) rar = 'R';
+    if (pity >= EC.rareGuaranteeAfter && (rar === 'C' || rar === 'U')) rar = 'R';
     pity = (rar === 'C' || rar === 'U') ? pity + 1 : 0;
     let pool = Object.values(SQ.SQ).filter(q => q.r === rar);
     if (box === 'family') pool = pool.filter(q => q.family === famSel.value);
@@ -217,7 +217,7 @@ SQ.boot(function () {
   const reveal = () => {
     rev.innerHTML = `<div class="shake">${bigbox()}</div>`; SQS.play('boxShake');
     setTimeout(() => {
-      const q = roll(), r = R[q.r], dup = owned.has(q.id), sparkly = Math.random() < 1 / 50;
+      const q = roll(), r = R[q.r], dup = owned.has(q.id), sparkly = Math.random() < EC.sparklyChance;
       const wasTour = tourBox; if (tourBox) { tourBox = false; document.querySelector('[data-box="mystery"] small').textContent = '200 coins'; } else spent += PRICE[box]; owned.add(q.id); if (dup) spares++;
       if (wasTour) setTimeout(() => { tb.innerHTML = `${baoT}<p><b>Gyoza</b> is moving into my Dumpling Steamhouse! Let’s go back to town.</p><a href="index.html">Back to town &#9654;</a>`; try { const t = JSON.parse(localStorage.getItem('sqv-tour')) || { t: 'first', i: 4 }; t.box = true; localStorage.setItem('sqv-tour', JSON.stringify(t)); } catch (e) {} SQS.play('quest'); }, 900);
       SQS.play('boxPop'); SQS.buzz(q.r === 'E' || q.r === 'L' ? [30, 40, 60] : 30); setTimeout(() => { SQS.play(dup ? 'spare' : 'reveal' + q.r); if (sparkly) SQS.play('sparkly'); }, 120);
@@ -246,7 +246,7 @@ SQ.boot(function () {
   /* Gem Shop */
   const XR = { name: 'Exclusive', color: '#E25BB0' };
   (F.exclusives || []).forEach(q => { q.family = 'factory'; q.i = 0; });   // exclusives stay out of SQ.SQ so boxes never roll them
-  const legs = Object.values(SQ.SQ).filter(q => q.r === 'L'), shop = legs.map(q => ({ q, gems: 300 })).concat((F.exclusives || []).map(q => ({ q, gems: q.gems })));
+  const legs = Object.values(SQ.SQ).filter(q => q.r === 'L'), shop = legs.map(q => ({ q, gems: EC.gemShop.legendary })).concat((F.exclusives || []).map(q => ({ q, gems: q.gems })));
   let gems = 650; try { gems = +(localStorage.getItem('sqv-gems') ?? 650); } catch (e) {}   /* shared with the Gem Mine demo */ const bought = new Set(); const grid = document.getElementById('gemgrid');
   const drawShop = () => {
     grid.innerHTML = shop.map(({ q, gems: g }) => { const x = q.r === 'X', rc = x ? XR : R.L, have = bought.has(q.id);

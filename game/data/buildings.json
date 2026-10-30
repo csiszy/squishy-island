@@ -1,0 +1,2323 @@
+{
+ "buildings": [
+  {
+   "id": "dumpling",
+   "type": "house",
+   "name": "building.dumpling.name",
+   "mult": 1,
+   "levels": [
+    {
+     "level": 1,
+     "coins": 0,
+     "squishies": 0,
+     "title": "building.dumpling.level.1.title",
+     "caption": "building.dumpling.level.1.caption"
+    },
+    {
+     "level": 2,
+     "coins": 100,
+     "squishies": 0,
+     "title": "building.dumpling.level.2.title",
+     "caption": "building.dumpling.level.2.caption"
+    },
+    {
+     "level": 3,
+     "coins": 200,
+     "squishies": 1,
+     "title": "building.dumpling.level.3.title",
+     "caption": "building.dumpling.level.3.caption"
+    },
+    {
+     "level": 4,
+     "coins": 350,
+     "squishies": 1,
+     "title": "building.dumpling.level.4.title",
+     "caption": "building.dumpling.level.4.caption"
+    },
+    {
+     "level": 5,
+     "coins": 500,
+     "squishies": 2,
+     "title": "building.dumpling.level.5.title",
+     "caption": "building.dumpling.level.5.caption"
+    },
+    {
+     "level": 6,
+     "coins": 750,
+     "squishies": 2,
+     "title": "building.dumpling.level.6.title",
+     "caption": "building.dumpling.level.6.caption"
+    },
+    {
+     "level": 7,
+     "coins": 1000,
+     "squishies": 3,
+     "title": "building.dumpling.level.7.title",
+     "caption": "building.dumpling.level.7.caption"
+    },
+    {
+     "level": 8,
+     "coins": 1400,
+     "squishies": 3,
+     "title": "building.dumpling.level.8.title",
+     "caption": "building.dumpling.level.8.caption"
+    },
+    {
+     "level": 9,
+     "coins": 1900,
+     "squishies": 4,
+     "title": "building.dumpling.level.9.title",
+     "caption": "building.dumpling.level.9.caption"
+    },
+    {
+     "level": 10,
+     "coins": 2500,
+     "squishies": 5,
+     "title": "building.dumpling.level.10.title",
+     "caption": "building.dumpling.level.10.caption"
+    }
+   ],
+   "family": "family.dumpling.name",
+   "emblem": "bao",
+   "color": "#D2483F",
+   "description": "building.dumpling.description",
+   "decor": [
+    {
+     "item": 1,
+     "prices": {
+      "classic": 300,
+      "candy": 360,
+      "mint": 360,
+      "star": 480
+     },
+     "cozy": 4,
+     "name": "decor.dumpling.1.name",
+     "what": "decor.dumpling.1.what"
+    },
+    {
+     "item": 2,
+     "prices": {
+      "classic": 150,
+      "candy": 180,
+      "mint": 180,
+      "star": 240
+     },
+     "cozy": 2,
+     "name": "decor.dumpling.2.name",
+     "what": "decor.dumpling.2.what"
+    },
+    {
+     "item": 3,
+     "prices": {
+      "classic": 220,
+      "candy": 260,
+      "mint": 260,
+      "star": 350
+     },
+     "cozy": 3,
+     "name": "decor.dumpling.3.name",
+     "what": "decor.dumpling.3.what"
+    },
+    {
+     "item": 4,
+     "prices": {
+      "classic": 260,
+      "candy": 310,
+      "mint": 310,
+      "star": 420
+     },
+     "cozy": 3,
+     "name": "decor.dumpling.4.name",
+     "what": "decor.dumpling.4.what"
+    },
+    {
+     "item": 5,
+     "prices": {
+      "classic": 180,
+      "candy": 220,
+      "mint": 220,
+      "star": 290
+     },
+     "cozy": 2,
+     "name": "decor.dumpling.5.name",
+     "what": "decor.dumpling.5.what"
+    },
+    {
+     "item": 6,
+     "prices": {
+      "classic": 120,
+      "candy": 140,
+      "mint": 140,
+      "star": 190
+     },
+     "cozy": 1,
+     "name": "decor.dumpling.6.name",
+     "what": "decor.dumpling.6.what"
+    }
+   ]
+  },
+  {
+   "id": "kitchen",
+   "type": "house",
+   "name": "building.kitchen.name",
+   "mult": 1.25,
+   "levels": [
+    {
+     "level": 1,
+     "coins": 0,
+     "squishies": 0,
+     "title": "building.kitchen.level.1.title",
+     "caption": "building.kitchen.level.1.caption"
+    },
+    {
+     "level": 2,
+     "coins": 130,
+     "squishies": 0,
+     "title": "building.kitchen.level.2.title",
+     "caption": "building.kitchen.level.2.caption"
+    },
+    {
+     "level": 3,
+     "coins": 250,
+     "squishies": 1,
+     "title": "building.kitchen.level.3.title",
+     "caption": "building.kitchen.level.3.caption"
+    },
+    {
+     "level": 4,
+     "coins": 440,
+     "squishies": 1,
+     "title": "building.kitchen.level.4.title",
+     "caption": "building.kitchen.level.4.caption"
+    },
+    {
+     "level": 5,
+     "coins": 630,
+     "squishies": 2,
+     "title": "building.kitchen.level.5.title",
+     "caption": "building.kitchen.level.5.caption"
+    },
+    {
+     "level": 6,
+     "coins": 940,
+     "squishies": 2,
+     "title": "building.kitchen.level.6.title",
+     "caption": "building.kitchen.level.6.caption"
+    },
+    {
+     "level": 7,
+     "coins": 1250,
+     "squishies": 3,
+     "title": "building.kitchen.level.7.title",
+     "caption": "building.kitchen.level.7.caption"
+    },
+    {
+     "level": 8,
+     "coins": 1750,
+     "squishies": 3,
+     "title": "building.kitchen.level.8.title",
+     "caption": "building.kitchen.level.8.caption"
+    },
+    {
+     "level": 9,
+     "coins": 2380,
+     "squishies": 4,
+     "title": "building.kitchen.level.9.title",
+     "caption": "building.kitchen.level.9.caption"
+    },
+    {
+     "level": 10,
+     "coins": 3130,
+     "squishies": 5,
+     "title": "building.kitchen.level.10.title",
+     "caption": "building.kitchen.level.10.caption"
+    }
+   ],
+   "family": "family.kitchen.name",
+   "emblem": "toast",
+   "color": "#FF8A5C",
+   "description": "building.kitchen.description",
+   "decor": [
+    {
+     "item": 1,
+     "prices": {
+      "classic": 340,
+      "candy": 410,
+      "mint": 410,
+      "star": 540
+     },
+     "cozy": 4,
+     "name": "decor.kitchen.1.name",
+     "what": "decor.kitchen.1.what"
+    },
+    {
+     "item": 2,
+     "prices": {
+      "classic": 300,
+      "candy": 360,
+      "mint": 360,
+      "star": 480
+     },
+     "cozy": 4,
+     "name": "decor.kitchen.2.name",
+     "what": "decor.kitchen.2.what"
+    },
+    {
+     "item": 3,
+     "prices": {
+      "classic": 280,
+      "candy": 340,
+      "mint": 340,
+      "star": 450
+     },
+     "cozy": 3,
+     "name": "decor.kitchen.3.name",
+     "what": "decor.kitchen.3.what"
+    },
+    {
+     "item": 4,
+     "prices": {
+      "classic": 200,
+      "candy": 240,
+      "mint": 240,
+      "star": 320
+     },
+     "cozy": 2,
+     "name": "decor.kitchen.4.name",
+     "what": "decor.kitchen.4.what"
+    },
+    {
+     "item": 5,
+     "prices": {
+      "classic": 150,
+      "candy": 180,
+      "mint": 180,
+      "star": 240
+     },
+     "cozy": 2,
+     "name": "decor.kitchen.5.name",
+     "what": "decor.kitchen.5.what"
+    },
+    {
+     "item": 6,
+     "prices": {
+      "classic": 160,
+      "candy": 190,
+      "mint": 190,
+      "star": 260
+     },
+     "cozy": 2,
+     "name": "decor.kitchen.6.name",
+     "what": "decor.kitchen.6.what"
+    }
+   ]
+  },
+  {
+   "id": "pets",
+   "type": "house",
+   "name": "building.pets.name",
+   "mult": 1.5,
+   "levels": [
+    {
+     "level": 1,
+     "coins": 0,
+     "squishies": 0,
+     "title": "building.pets.level.1.title",
+     "caption": "building.pets.level.1.caption"
+    },
+    {
+     "level": 2,
+     "coins": 150,
+     "squishies": 0,
+     "title": "building.pets.level.2.title",
+     "caption": "building.pets.level.2.caption"
+    },
+    {
+     "level": 3,
+     "coins": 300,
+     "squishies": 1,
+     "title": "building.pets.level.3.title",
+     "caption": "building.pets.level.3.caption"
+    },
+    {
+     "level": 4,
+     "coins": 530,
+     "squishies": 1,
+     "title": "building.pets.level.4.title",
+     "caption": "building.pets.level.4.caption"
+    },
+    {
+     "level": 5,
+     "coins": 750,
+     "squishies": 2,
+     "title": "building.pets.level.5.title",
+     "caption": "building.pets.level.5.caption"
+    },
+    {
+     "level": 6,
+     "coins": 1130,
+     "squishies": 2,
+     "title": "building.pets.level.6.title",
+     "caption": "building.pets.level.6.caption"
+    },
+    {
+     "level": 7,
+     "coins": 1500,
+     "squishies": 3,
+     "title": "building.pets.level.7.title",
+     "caption": "building.pets.level.7.caption"
+    },
+    {
+     "level": 8,
+     "coins": 2100,
+     "squishies": 3,
+     "title": "building.pets.level.8.title",
+     "caption": "building.pets.level.8.caption"
+    },
+    {
+     "level": 9,
+     "coins": 2850,
+     "squishies": 4,
+     "title": "building.pets.level.9.title",
+     "caption": "building.pets.level.9.caption"
+    },
+    {
+     "level": 10,
+     "coins": 3750,
+     "squishies": 5,
+     "title": "building.pets.level.10.title",
+     "caption": "building.pets.level.10.caption"
+    }
+   ],
+   "family": "family.pets.name",
+   "emblem": "puppy",
+   "color": "#E8727A",
+   "description": "building.pets.description",
+   "decor": [
+    {
+     "item": 1,
+     "prices": {
+      "classic": 320,
+      "candy": 380,
+      "mint": 380,
+      "star": 510
+     },
+     "cozy": 4,
+     "name": "decor.pets.1.name",
+     "what": "decor.pets.1.what"
+    },
+    {
+     "item": 2,
+     "prices": {
+      "classic": 240,
+      "candy": 290,
+      "mint": 290,
+      "star": 380
+     },
+     "cozy": 3,
+     "name": "decor.pets.2.name",
+     "what": "decor.pets.2.what"
+    },
+    {
+     "item": 3,
+     "prices": {
+      "classic": 300,
+      "candy": 360,
+      "mint": 360,
+      "star": 480
+     },
+     "cozy": 3,
+     "name": "decor.pets.3.name",
+     "what": "decor.pets.3.what"
+    },
+    {
+     "item": 4,
+     "prices": {
+      "classic": 120,
+      "candy": 140,
+      "mint": 140,
+      "star": 190
+     },
+     "cozy": 1,
+     "name": "decor.pets.4.name",
+     "what": "decor.pets.4.what"
+    },
+    {
+     "item": 5,
+     "prices": {
+      "classic": 180,
+      "candy": 220,
+      "mint": 220,
+      "star": 290
+     },
+     "cozy": 2,
+     "name": "decor.pets.5.name",
+     "what": "decor.pets.5.what"
+    },
+    {
+     "item": 6,
+     "prices": {
+      "classic": 260,
+      "candy": 310,
+      "mint": 310,
+      "star": 420
+     },
+     "cozy": 3,
+     "name": "decor.pets.6.name",
+     "what": "decor.pets.6.what"
+    }
+   ]
+  },
+  {
+   "id": "sweets",
+   "type": "house",
+   "name": "building.sweets.name",
+   "mult": 1.75,
+   "levels": [
+    {
+     "level": 1,
+     "coins": 0,
+     "squishies": 0,
+     "title": "building.sweets.level.1.title",
+     "caption": "building.sweets.level.1.caption"
+    },
+    {
+     "level": 2,
+     "coins": 180,
+     "squishies": 0,
+     "title": "building.sweets.level.2.title",
+     "caption": "building.sweets.level.2.caption"
+    },
+    {
+     "level": 3,
+     "coins": 350,
+     "squishies": 1,
+     "title": "building.sweets.level.3.title",
+     "caption": "building.sweets.level.3.caption"
+    },
+    {
+     "level": 4,
+     "coins": 610,
+     "squishies": 1,
+     "title": "building.sweets.level.4.title",
+     "caption": "building.sweets.level.4.caption"
+    },
+    {
+     "level": 5,
+     "coins": 880,
+     "squishies": 2,
+     "title": "building.sweets.level.5.title",
+     "caption": "building.sweets.level.5.caption"
+    },
+    {
+     "level": 6,
+     "coins": 1310,
+     "squishies": 2,
+     "title": "building.sweets.level.6.title",
+     "caption": "building.sweets.level.6.caption"
+    },
+    {
+     "level": 7,
+     "coins": 1750,
+     "squishies": 3,
+     "title": "building.sweets.level.7.title",
+     "caption": "building.sweets.level.7.caption"
+    },
+    {
+     "level": 8,
+     "coins": 2450,
+     "squishies": 3,
+     "title": "building.sweets.level.8.title",
+     "caption": "building.sweets.level.8.caption"
+    },
+    {
+     "level": 9,
+     "coins": 3330,
+     "squishies": 4,
+     "title": "building.sweets.level.9.title",
+     "caption": "building.sweets.level.9.caption"
+    },
+    {
+     "level": 10,
+     "coins": 4380,
+     "squishies": 5,
+     "title": "building.sweets.level.10.title",
+     "caption": "building.sweets.level.10.caption"
+    }
+   ],
+   "family": "family.sweets.name",
+   "emblem": "icecream",
+   "color": "#FF6FA3",
+   "description": "building.sweets.description",
+   "decor": [
+    {
+     "item": 1,
+     "prices": {
+      "classic": 340,
+      "candy": 410,
+      "mint": 410,
+      "star": 540
+     },
+     "cozy": 4,
+     "name": "decor.sweets.1.name",
+     "what": "decor.sweets.1.what"
+    },
+    {
+     "item": 2,
+     "prices": {
+      "classic": 180,
+      "candy": 220,
+      "mint": 220,
+      "star": 290
+     },
+     "cozy": 2,
+     "name": "decor.sweets.2.name",
+     "what": "decor.sweets.2.what"
+    },
+    {
+     "item": 3,
+     "prices": {
+      "classic": 260,
+      "candy": 310,
+      "mint": 310,
+      "star": 420
+     },
+     "cozy": 3,
+     "name": "decor.sweets.3.name",
+     "what": "decor.sweets.3.what"
+    },
+    {
+     "item": 4,
+     "prices": {
+      "classic": 200,
+      "candy": 240,
+      "mint": 240,
+      "star": 320
+     },
+     "cozy": 2,
+     "name": "decor.sweets.4.name",
+     "what": "decor.sweets.4.what"
+    },
+    {
+     "item": 5,
+     "prices": {
+      "classic": 140,
+      "candy": 170,
+      "mint": 170,
+      "star": 220
+     },
+     "cozy": 1,
+     "name": "decor.sweets.5.name",
+     "what": "decor.sweets.5.what"
+    },
+    {
+     "item": 6,
+     "prices": {
+      "classic": 380,
+      "candy": 460,
+      "mint": 460,
+      "star": 610
+     },
+     "cozy": 4,
+     "name": "decor.sweets.6.name",
+     "what": "decor.sweets.6.what"
+    }
+   ]
+  },
+  {
+   "id": "fruit",
+   "type": "house",
+   "name": "building.fruit.name",
+   "mult": 2,
+   "levels": [
+    {
+     "level": 1,
+     "coins": 0,
+     "squishies": 0,
+     "title": "building.fruit.level.1.title",
+     "caption": "building.fruit.level.1.caption"
+    },
+    {
+     "level": 2,
+     "coins": 200,
+     "squishies": 0,
+     "title": "building.fruit.level.2.title",
+     "caption": "building.fruit.level.2.caption"
+    },
+    {
+     "level": 3,
+     "coins": 400,
+     "squishies": 1,
+     "title": "building.fruit.level.3.title",
+     "caption": "building.fruit.level.3.caption"
+    },
+    {
+     "level": 4,
+     "coins": 700,
+     "squishies": 1,
+     "title": "building.fruit.level.4.title",
+     "caption": "building.fruit.level.4.caption"
+    },
+    {
+     "level": 5,
+     "coins": 1000,
+     "squishies": 2,
+     "title": "building.fruit.level.5.title",
+     "caption": "building.fruit.level.5.caption"
+    },
+    {
+     "level": 6,
+     "coins": 1500,
+     "squishies": 2,
+     "title": "building.fruit.level.6.title",
+     "caption": "building.fruit.level.6.caption"
+    },
+    {
+     "level": 7,
+     "coins": 2000,
+     "squishies": 3,
+     "title": "building.fruit.level.7.title",
+     "caption": "building.fruit.level.7.caption"
+    },
+    {
+     "level": 8,
+     "coins": 2800,
+     "squishies": 3,
+     "title": "building.fruit.level.8.title",
+     "caption": "building.fruit.level.8.caption"
+    },
+    {
+     "level": 9,
+     "coins": 3800,
+     "squishies": 4,
+     "title": "building.fruit.level.9.title",
+     "caption": "building.fruit.level.9.caption"
+    },
+    {
+     "level": 10,
+     "coins": 5000,
+     "squishies": 5,
+     "title": "building.fruit.level.10.title",
+     "caption": "building.fruit.level.10.caption"
+    }
+   ],
+   "family": "family.fruit.name",
+   "emblem": "strawberry",
+   "color": "#4FAF72",
+   "description": "building.fruit.description",
+   "decor": [
+    {
+     "item": 1,
+     "prices": {
+      "classic": 320,
+      "candy": 380,
+      "mint": 380,
+      "star": 510
+     },
+     "cozy": 4,
+     "name": "decor.fruit.1.name",
+     "what": "decor.fruit.1.what"
+    },
+    {
+     "item": 2,
+     "prices": {
+      "classic": 300,
+      "candy": 360,
+      "mint": 360,
+      "star": 480
+     },
+     "cozy": 3,
+     "name": "decor.fruit.2.name",
+     "what": "decor.fruit.2.what"
+    },
+    {
+     "item": 3,
+     "prices": {
+      "classic": 160,
+      "candy": 190,
+      "mint": 190,
+      "star": 260
+     },
+     "cozy": 2,
+     "name": "decor.fruit.3.name",
+     "what": "decor.fruit.3.what"
+    },
+    {
+     "item": 4,
+     "prices": {
+      "classic": 260,
+      "candy": 310,
+      "mint": 310,
+      "star": 420
+     },
+     "cozy": 3,
+     "name": "decor.fruit.4.name",
+     "what": "decor.fruit.4.what"
+    },
+    {
+     "item": 5,
+     "prices": {
+      "classic": 180,
+      "candy": 220,
+      "mint": 220,
+      "star": 290
+     },
+     "cozy": 2,
+     "name": "decor.fruit.5.name",
+     "what": "decor.fruit.5.what"
+    },
+    {
+     "item": 6,
+     "prices": {
+      "classic": 220,
+      "candy": 260,
+      "mint": 260,
+      "star": 350
+     },
+     "cozy": 2,
+     "name": "decor.fruit.6.name",
+     "what": "decor.fruit.6.what"
+    }
+   ]
+  },
+  {
+   "id": "ocean",
+   "type": "house",
+   "name": "building.ocean.name",
+   "mult": 2.25,
+   "levels": [
+    {
+     "level": 1,
+     "coins": 0,
+     "squishies": 0,
+     "title": "building.ocean.level.1.title",
+     "caption": "building.ocean.level.1.caption"
+    },
+    {
+     "level": 2,
+     "coins": 230,
+     "squishies": 0,
+     "title": "building.ocean.level.2.title",
+     "caption": "building.ocean.level.2.caption"
+    },
+    {
+     "level": 3,
+     "coins": 450,
+     "squishies": 1,
+     "title": "building.ocean.level.3.title",
+     "caption": "building.ocean.level.3.caption"
+    },
+    {
+     "level": 4,
+     "coins": 790,
+     "squishies": 1,
+     "title": "building.ocean.level.4.title",
+     "caption": "building.ocean.level.4.caption"
+    },
+    {
+     "level": 5,
+     "coins": 1130,
+     "squishies": 2,
+     "title": "building.ocean.level.5.title",
+     "caption": "building.ocean.level.5.caption"
+    },
+    {
+     "level": 6,
+     "coins": 1690,
+     "squishies": 2,
+     "title": "building.ocean.level.6.title",
+     "caption": "building.ocean.level.6.caption"
+    },
+    {
+     "level": 7,
+     "coins": 2250,
+     "squishies": 3,
+     "title": "building.ocean.level.7.title",
+     "caption": "building.ocean.level.7.caption"
+    },
+    {
+     "level": 8,
+     "coins": 3150,
+     "squishies": 3,
+     "title": "building.ocean.level.8.title",
+     "caption": "building.ocean.level.8.caption"
+    },
+    {
+     "level": 9,
+     "coins": 4280,
+     "squishies": 4,
+     "title": "building.ocean.level.9.title",
+     "caption": "building.ocean.level.9.caption"
+    },
+    {
+     "level": 10,
+     "coins": 5630,
+     "squishies": 5,
+     "title": "building.ocean.level.10.title",
+     "caption": "building.ocean.level.10.caption"
+    }
+   ],
+   "family": "family.ocean.name",
+   "emblem": "whale",
+   "color": "#3BA7C9",
+   "description": "building.ocean.description",
+   "decor": [
+    {
+     "item": 1,
+     "prices": {
+      "classic": 360,
+      "candy": 430,
+      "mint": 430,
+      "star": 580
+     },
+     "cozy": 4,
+     "name": "decor.ocean.1.name",
+     "what": "decor.ocean.1.what"
+    },
+    {
+     "item": 2,
+     "prices": {
+      "classic": 300,
+      "candy": 360,
+      "mint": 360,
+      "star": 480
+     },
+     "cozy": 3,
+     "name": "decor.ocean.2.name",
+     "what": "decor.ocean.2.what"
+    },
+    {
+     "item": 3,
+     "prices": {
+      "classic": 200,
+      "candy": 240,
+      "mint": 240,
+      "star": 320
+     },
+     "cozy": 2,
+     "name": "decor.ocean.3.name",
+     "what": "decor.ocean.3.what"
+    },
+    {
+     "item": 4,
+     "prices": {
+      "classic": 260,
+      "candy": 310,
+      "mint": 310,
+      "star": 420
+     },
+     "cozy": 3,
+     "name": "decor.ocean.4.name",
+     "what": "decor.ocean.4.what"
+    },
+    {
+     "item": 5,
+     "prices": {
+      "classic": 160,
+      "candy": 190,
+      "mint": 190,
+      "star": 260
+     },
+     "cozy": 2,
+     "name": "decor.ocean.5.name",
+     "what": "decor.ocean.5.what"
+    },
+    {
+     "item": 6,
+     "prices": {
+      "classic": 140,
+      "candy": 170,
+      "mint": 170,
+      "star": 220
+     },
+     "cozy": 1,
+     "name": "decor.ocean.6.name",
+     "what": "decor.ocean.6.what"
+    }
+   ]
+  },
+  {
+   "id": "sky",
+   "type": "house",
+   "name": "building.sky.name",
+   "mult": 2.5,
+   "levels": [
+    {
+     "level": 1,
+     "coins": 0,
+     "squishies": 0,
+     "title": "building.sky.level.1.title",
+     "caption": "building.sky.level.1.caption"
+    },
+    {
+     "level": 2,
+     "coins": 250,
+     "squishies": 0,
+     "title": "building.sky.level.2.title",
+     "caption": "building.sky.level.2.caption"
+    },
+    {
+     "level": 3,
+     "coins": 500,
+     "squishies": 1,
+     "title": "building.sky.level.3.title",
+     "caption": "building.sky.level.3.caption"
+    },
+    {
+     "level": 4,
+     "coins": 880,
+     "squishies": 1,
+     "title": "building.sky.level.4.title",
+     "caption": "building.sky.level.4.caption"
+    },
+    {
+     "level": 5,
+     "coins": 1250,
+     "squishies": 2,
+     "title": "building.sky.level.5.title",
+     "caption": "building.sky.level.5.caption"
+    },
+    {
+     "level": 6,
+     "coins": 1880,
+     "squishies": 2,
+     "title": "building.sky.level.6.title",
+     "caption": "building.sky.level.6.caption"
+    },
+    {
+     "level": 7,
+     "coins": 2500,
+     "squishies": 3,
+     "title": "building.sky.level.7.title",
+     "caption": "building.sky.level.7.caption"
+    },
+    {
+     "level": 8,
+     "coins": 3500,
+     "squishies": 3,
+     "title": "building.sky.level.8.title",
+     "caption": "building.sky.level.8.caption"
+    },
+    {
+     "level": 9,
+     "coins": 4750,
+     "squishies": 4,
+     "title": "building.sky.level.9.title",
+     "caption": "building.sky.level.9.caption"
+    },
+    {
+     "level": 10,
+     "coins": 6250,
+     "squishies": 5,
+     "title": "building.sky.level.10.title",
+     "caption": "building.sky.level.10.caption"
+    }
+   ],
+   "family": "family.sky.name",
+   "emblem": "sunny",
+   "color": "#8C7CF0",
+   "description": "building.sky.description",
+   "decor": [
+    {
+     "item": 1,
+     "prices": {
+      "classic": 340,
+      "candy": 410,
+      "mint": 410,
+      "star": 540
+     },
+     "cozy": 4,
+     "name": "decor.sky.1.name",
+     "what": "decor.sky.1.what"
+    },
+    {
+     "item": 2,
+     "prices": {
+      "classic": 220,
+      "candy": 260,
+      "mint": 260,
+      "star": 350
+     },
+     "cozy": 3,
+     "name": "decor.sky.2.name",
+     "what": "decor.sky.2.what"
+    },
+    {
+     "item": 3,
+     "prices": {
+      "classic": 280,
+      "candy": 340,
+      "mint": 340,
+      "star": 450
+     },
+     "cozy": 3,
+     "name": "decor.sky.3.name",
+     "what": "decor.sky.3.what"
+    },
+    {
+     "item": 4,
+     "prices": {
+      "classic": 200,
+      "candy": 240,
+      "mint": 240,
+      "star": 320
+     },
+     "cozy": 2,
+     "name": "decor.sky.4.name",
+     "what": "decor.sky.4.what"
+    },
+    {
+     "item": 5,
+     "prices": {
+      "classic": 120,
+      "candy": 140,
+      "mint": 140,
+      "star": 190
+     },
+     "cozy": 1,
+     "name": "decor.sky.5.name",
+     "what": "decor.sky.5.what"
+    },
+    {
+     "item": 6,
+     "prices": {
+      "classic": 260,
+      "candy": 310,
+      "mint": 310,
+      "star": 420
+     },
+     "cozy": 3,
+     "name": "decor.sky.6.name",
+     "what": "decor.sky.6.what"
+    }
+   ]
+  },
+  {
+   "id": "forest",
+   "type": "house",
+   "name": "building.forest.name",
+   "mult": 2.75,
+   "levels": [
+    {
+     "level": 1,
+     "coins": 0,
+     "squishies": 0,
+     "title": "building.forest.level.1.title",
+     "caption": "building.forest.level.1.caption"
+    },
+    {
+     "level": 2,
+     "coins": 280,
+     "squishies": 0,
+     "title": "building.forest.level.2.title",
+     "caption": "building.forest.level.2.caption"
+    },
+    {
+     "level": 3,
+     "coins": 550,
+     "squishies": 1,
+     "title": "building.forest.level.3.title",
+     "caption": "building.forest.level.3.caption"
+    },
+    {
+     "level": 4,
+     "coins": 960,
+     "squishies": 1,
+     "title": "building.forest.level.4.title",
+     "caption": "building.forest.level.4.caption"
+    },
+    {
+     "level": 5,
+     "coins": 1380,
+     "squishies": 2,
+     "title": "building.forest.level.5.title",
+     "caption": "building.forest.level.5.caption"
+    },
+    {
+     "level": 6,
+     "coins": 2060,
+     "squishies": 2,
+     "title": "building.forest.level.6.title",
+     "caption": "building.forest.level.6.caption"
+    },
+    {
+     "level": 7,
+     "coins": 2750,
+     "squishies": 3,
+     "title": "building.forest.level.7.title",
+     "caption": "building.forest.level.7.caption"
+    },
+    {
+     "level": 8,
+     "coins": 3850,
+     "squishies": 3,
+     "title": "building.forest.level.8.title",
+     "caption": "building.forest.level.8.caption"
+    },
+    {
+     "level": 9,
+     "coins": 5230,
+     "squishies": 4,
+     "title": "building.forest.level.9.title",
+     "caption": "building.forest.level.9.caption"
+    },
+    {
+     "level": 10,
+     "coins": 6880,
+     "squishies": 5,
+     "title": "building.forest.level.10.title",
+     "caption": "building.forest.level.10.caption"
+    }
+   ],
+   "family": "family.forest.name",
+   "emblem": "shroomy",
+   "color": "#E8615A",
+   "description": "building.forest.description",
+   "decor": [
+    {
+     "item": 1,
+     "prices": {
+      "classic": 260,
+      "candy": 310,
+      "mint": 310,
+      "star": 420
+     },
+     "cozy": 3,
+     "name": "decor.forest.1.name",
+     "what": "decor.forest.1.what"
+    },
+    {
+     "item": 2,
+     "prices": {
+      "classic": 280,
+      "candy": 340,
+      "mint": 340,
+      "star": 450
+     },
+     "cozy": 3,
+     "name": "decor.forest.2.name",
+     "what": "decor.forest.2.what"
+    },
+    {
+     "item": 3,
+     "prices": {
+      "classic": 200,
+      "candy": 240,
+      "mint": 240,
+      "star": 320
+     },
+     "cozy": 2,
+     "name": "decor.forest.3.name",
+     "what": "decor.forest.3.what"
+    },
+    {
+     "item": 4,
+     "prices": {
+      "classic": 240,
+      "candy": 290,
+      "mint": 290,
+      "star": 380
+     },
+     "cozy": 3,
+     "name": "decor.forest.4.name",
+     "what": "decor.forest.4.what"
+    },
+    {
+     "item": 5,
+     "prices": {
+      "classic": 140,
+      "candy": 170,
+      "mint": 170,
+      "star": 220
+     },
+     "cozy": 1,
+     "name": "decor.forest.5.name",
+     "what": "decor.forest.5.what"
+    },
+    {
+     "item": 6,
+     "prices": {
+      "classic": 380,
+      "candy": 460,
+      "mint": 460,
+      "star": 610
+     },
+     "cozy": 4,
+     "name": "decor.forest.6.name",
+     "what": "decor.forest.6.what"
+    }
+   ]
+  },
+  {
+   "id": "restaurant",
+   "type": "civic",
+   "name": "building.restaurant.name",
+   "mult": 1.2,
+   "levels": [
+    {
+     "level": 0,
+     "coins": 0
+    },
+    {
+     "level": 1,
+     "coins": 360,
+     "target": 0,
+     "title": "building.restaurant.level.1.title",
+     "caption": "building.restaurant.level.1.caption"
+    },
+    {
+     "level": 2,
+     "coins": 180,
+     "target": 1500,
+     "title": "building.restaurant.level.2.title",
+     "caption": "building.restaurant.level.2.caption"
+    },
+    {
+     "level": 3,
+     "coins": 300,
+     "target": 3000,
+     "title": "building.restaurant.level.3.title",
+     "caption": "building.restaurant.level.3.caption"
+    },
+    {
+     "level": 4,
+     "coins": 480,
+     "target": 6000,
+     "title": "building.restaurant.level.4.title",
+     "caption": "building.restaurant.level.4.caption"
+    },
+    {
+     "level": 5,
+     "coins": 720,
+     "target": 9000,
+     "title": "building.restaurant.level.5.title",
+     "caption": "building.restaurant.level.5.caption"
+    },
+    {
+     "level": 6,
+     "coins": 1020,
+     "target": 13500,
+     "title": "building.restaurant.level.6.title",
+     "caption": "building.restaurant.level.6.caption"
+    },
+    {
+     "level": 7,
+     "coins": 1380,
+     "target": 19500,
+     "title": "building.restaurant.level.7.title",
+     "caption": "building.restaurant.level.7.caption"
+    },
+    {
+     "level": 8,
+     "coins": 1800,
+     "target": 27000,
+     "title": "building.restaurant.level.8.title",
+     "caption": "building.restaurant.level.8.caption"
+    },
+    {
+     "level": 9,
+     "coins": 2400,
+     "target": 36000,
+     "title": "building.restaurant.level.9.title",
+     "caption": "building.restaurant.level.9.caption"
+    },
+    {
+     "level": 10,
+     "coins": 3120,
+     "target": 48000,
+     "title": "building.restaurant.level.10.title",
+     "caption": "building.restaurant.level.10.caption"
+    }
+   ],
+   "color": "#E5484D",
+   "description": "building.restaurant.description",
+   "goal": {
+    "stat": "best_score",
+    "text": "building.restaurant.goal"
+   }
+  },
+  {
+   "id": "playground",
+   "type": "civic",
+   "name": "building.playground.name",
+   "mult": 1,
+   "levels": [
+    {
+     "level": 0,
+     "coins": 0
+    },
+    {
+     "level": 1,
+     "coins": 300,
+     "target": 0,
+     "title": "building.playground.level.1.title",
+     "caption": "building.playground.level.1.caption"
+    },
+    {
+     "level": 2,
+     "coins": 150,
+     "target": 60,
+     "title": "building.playground.level.2.title",
+     "caption": "building.playground.level.2.caption"
+    },
+    {
+     "level": 3,
+     "coins": 250,
+     "target": 120,
+     "title": "building.playground.level.3.title",
+     "caption": "building.playground.level.3.caption"
+    },
+    {
+     "level": 4,
+     "coins": 400,
+     "target": 240,
+     "title": "building.playground.level.4.title",
+     "caption": "building.playground.level.4.caption"
+    },
+    {
+     "level": 5,
+     "coins": 600,
+     "target": 360,
+     "title": "building.playground.level.5.title",
+     "caption": "building.playground.level.5.caption"
+    },
+    {
+     "level": 6,
+     "coins": 850,
+     "target": 540,
+     "title": "building.playground.level.6.title",
+     "caption": "building.playground.level.6.caption"
+    },
+    {
+     "level": 7,
+     "coins": 1150,
+     "target": 780,
+     "title": "building.playground.level.7.title",
+     "caption": "building.playground.level.7.caption"
+    },
+    {
+     "level": 8,
+     "coins": 1500,
+     "target": 1080,
+     "title": "building.playground.level.8.title",
+     "caption": "building.playground.level.8.caption"
+    },
+    {
+     "level": 9,
+     "coins": 2000,
+     "target": 1440,
+     "title": "building.playground.level.9.title",
+     "caption": "building.playground.level.9.caption"
+    },
+    {
+     "level": 10,
+     "coins": 2600,
+     "target": 1920,
+     "title": "building.playground.level.10.title",
+     "caption": "building.playground.level.10.caption"
+    }
+   ],
+   "color": "#4A9BFF",
+   "description": "building.playground.description",
+   "goal": {
+    "stat": "best_height",
+    "text": "building.playground.goal"
+   }
+  },
+  {
+   "id": "police",
+   "type": "civic",
+   "name": "building.police.name",
+   "mult": 1.6,
+   "levels": [
+    {
+     "level": 0,
+     "coins": 0
+    },
+    {
+     "level": 1,
+     "coins": 480,
+     "target": 0,
+     "title": "building.police.level.1.title",
+     "caption": "building.police.level.1.caption"
+    },
+    {
+     "level": 2,
+     "coins": 240,
+     "target": 2,
+     "title": "building.police.level.2.title",
+     "caption": "building.police.level.2.caption"
+    },
+    {
+     "level": 3,
+     "coins": 400,
+     "target": 4,
+     "title": "building.police.level.3.title",
+     "caption": "building.police.level.3.caption"
+    },
+    {
+     "level": 4,
+     "coins": 640,
+     "target": 8,
+     "title": "building.police.level.4.title",
+     "caption": "building.police.level.4.caption"
+    },
+    {
+     "level": 5,
+     "coins": 960,
+     "target": 12,
+     "title": "building.police.level.5.title",
+     "caption": "building.police.level.5.caption"
+    },
+    {
+     "level": 6,
+     "coins": 1360,
+     "target": 18,
+     "title": "building.police.level.6.title",
+     "caption": "building.police.level.6.caption"
+    },
+    {
+     "level": 7,
+     "coins": 1840,
+     "target": 26,
+     "title": "building.police.level.7.title",
+     "caption": "building.police.level.7.caption"
+    },
+    {
+     "level": 8,
+     "coins": 2400,
+     "target": 36,
+     "title": "building.police.level.8.title",
+     "caption": "building.police.level.8.caption"
+    },
+    {
+     "level": 9,
+     "coins": 3200,
+     "target": 48,
+     "title": "building.police.level.9.title",
+     "caption": "building.police.level.9.caption"
+    },
+    {
+     "level": 10,
+     "coins": 4160,
+     "target": 64,
+     "title": "building.police.level.10.title",
+     "caption": "building.police.level.10.caption"
+    }
+   ],
+   "color": "#2F5BD3",
+   "description": "building.police.description",
+   "goal": {
+    "stat": "levels_beaten",
+    "text": "building.police.goal"
+   }
+  },
+  {
+   "id": "salon",
+   "type": "civic",
+   "name": "building.salon.name",
+   "mult": 1.4,
+   "levels": [
+    {
+     "level": 0,
+     "coins": 0
+    },
+    {
+     "level": 1,
+     "coins": 420,
+     "target": 0,
+     "title": "building.salon.level.1.title",
+     "caption": "building.salon.level.1.caption"
+    },
+    {
+     "level": 2,
+     "coins": 210,
+     "target": 900,
+     "title": "building.salon.level.2.title",
+     "caption": "building.salon.level.2.caption"
+    },
+    {
+     "level": 3,
+     "coins": 350,
+     "target": 1800,
+     "title": "building.salon.level.3.title",
+     "caption": "building.salon.level.3.caption"
+    },
+    {
+     "level": 4,
+     "coins": 560,
+     "target": 3600,
+     "title": "building.salon.level.4.title",
+     "caption": "building.salon.level.4.caption"
+    },
+    {
+     "level": 5,
+     "coins": 840,
+     "target": 5400,
+     "title": "building.salon.level.5.title",
+     "caption": "building.salon.level.5.caption"
+    },
+    {
+     "level": 6,
+     "coins": 1190,
+     "target": 8100,
+     "title": "building.salon.level.6.title",
+     "caption": "building.salon.level.6.caption"
+    },
+    {
+     "level": 7,
+     "coins": 1610,
+     "target": 11700,
+     "title": "building.salon.level.7.title",
+     "caption": "building.salon.level.7.caption"
+    },
+    {
+     "level": 8,
+     "coins": 2100,
+     "target": 16200,
+     "title": "building.salon.level.8.title",
+     "caption": "building.salon.level.8.caption"
+    },
+    {
+     "level": 9,
+     "coins": 2800,
+     "target": 21600,
+     "title": "building.salon.level.9.title",
+     "caption": "building.salon.level.9.caption"
+    },
+    {
+     "level": 10,
+     "coins": 3640,
+     "target": 28800,
+     "title": "building.salon.level.10.title",
+     "caption": "building.salon.level.10.caption"
+    }
+   ],
+   "color": "#C7509A",
+   "description": "building.salon.description",
+   "goal": {
+    "stat": "best_score",
+    "text": "building.salon.goal"
+   }
+  },
+  {
+   "id": "fire",
+   "type": "civic",
+   "name": "building.fire.name",
+   "mult": 1.8,
+   "levels": [
+    {
+     "level": 0,
+     "coins": 0
+    },
+    {
+     "level": 1,
+     "coins": 540,
+     "target": 0,
+     "title": "building.fire.level.1.title",
+     "caption": "building.fire.level.1.caption"
+    },
+    {
+     "level": 2,
+     "coins": 270,
+     "target": 2,
+     "title": "building.fire.level.2.title",
+     "caption": "building.fire.level.2.caption"
+    },
+    {
+     "level": 3,
+     "coins": 450,
+     "target": 4,
+     "title": "building.fire.level.3.title",
+     "caption": "building.fire.level.3.caption"
+    },
+    {
+     "level": 4,
+     "coins": 720,
+     "target": 8,
+     "title": "building.fire.level.4.title",
+     "caption": "building.fire.level.4.caption"
+    },
+    {
+     "level": 5,
+     "coins": 1080,
+     "target": 12,
+     "title": "building.fire.level.5.title",
+     "caption": "building.fire.level.5.caption"
+    },
+    {
+     "level": 6,
+     "coins": 1530,
+     "target": 18,
+     "title": "building.fire.level.6.title",
+     "caption": "building.fire.level.6.caption"
+    },
+    {
+     "level": 7,
+     "coins": 2070,
+     "target": 26,
+     "title": "building.fire.level.7.title",
+     "caption": "building.fire.level.7.caption"
+    },
+    {
+     "level": 8,
+     "coins": 2700,
+     "target": 36,
+     "title": "building.fire.level.8.title",
+     "caption": "building.fire.level.8.caption"
+    },
+    {
+     "level": 9,
+     "coins": 3600,
+     "target": 48,
+     "title": "building.fire.level.9.title",
+     "caption": "building.fire.level.9.caption"
+    },
+    {
+     "level": 10,
+     "coins": 4680,
+     "target": 64,
+     "title": "building.fire.level.10.title",
+     "caption": "building.fire.level.10.caption"
+    }
+   ],
+   "color": "#D93A2B",
+   "description": "building.fire.description",
+   "goal": {
+    "stat": "levels_beaten",
+    "text": "building.fire.goal"
+   }
+  },
+  {
+   "id": "post",
+   "type": "civic",
+   "name": "building.post.name",
+   "mult": 1.5,
+   "levels": [
+    {
+     "level": 0,
+     "coins": 0
+    },
+    {
+     "level": 1,
+     "coins": 450,
+     "target": 0,
+     "title": "building.post.level.1.title",
+     "caption": "building.post.level.1.caption"
+    },
+    {
+     "level": 2,
+     "coins": 230,
+     "target": 4,
+     "title": "building.post.level.2.title",
+     "caption": "building.post.level.2.caption"
+    },
+    {
+     "level": 3,
+     "coins": 380,
+     "target": 8,
+     "title": "building.post.level.3.title",
+     "caption": "building.post.level.3.caption"
+    },
+    {
+     "level": 4,
+     "coins": 600,
+     "target": 16,
+     "title": "building.post.level.4.title",
+     "caption": "building.post.level.4.caption"
+    },
+    {
+     "level": 5,
+     "coins": 900,
+     "target": 24,
+     "title": "building.post.level.5.title",
+     "caption": "building.post.level.5.caption"
+    },
+    {
+     "level": 6,
+     "coins": 1280,
+     "target": 36,
+     "title": "building.post.level.6.title",
+     "caption": "building.post.level.6.caption"
+    },
+    {
+     "level": 7,
+     "coins": 1730,
+     "target": 52,
+     "title": "building.post.level.7.title",
+     "caption": "building.post.level.7.caption"
+    },
+    {
+     "level": 8,
+     "coins": 2250,
+     "target": 72,
+     "title": "building.post.level.8.title",
+     "caption": "building.post.level.8.caption"
+    },
+    {
+     "level": 9,
+     "coins": 3000,
+     "target": 96,
+     "title": "building.post.level.9.title",
+     "caption": "building.post.level.9.caption"
+    },
+    {
+     "level": 10,
+     "coins": 3900,
+     "target": 128,
+     "title": "building.post.level.10.title",
+     "caption": "building.post.level.10.caption"
+    }
+   ],
+   "color": "#3BA7A0",
+   "description": "building.post.description",
+   "goal": {
+    "stat": "best_letters",
+    "text": "building.post.goal"
+   }
+  },
+  {
+   "id": "bandstand",
+   "type": "civic",
+   "name": "building.bandstand.name",
+   "mult": 2,
+   "levels": [
+    {
+     "level": 0,
+     "coins": 0
+    },
+    {
+     "level": 1,
+     "coins": 600,
+     "target": 0,
+     "title": "building.bandstand.level.1.title",
+     "caption": "building.bandstand.level.1.caption"
+    },
+    {
+     "level": 2,
+     "coins": 300,
+     "target": 1,
+     "title": "building.bandstand.level.2.title",
+     "caption": "building.bandstand.level.2.caption"
+    },
+    {
+     "level": 3,
+     "coins": 500,
+     "target": 2,
+     "title": "building.bandstand.level.3.title",
+     "caption": "building.bandstand.level.3.caption"
+    },
+    {
+     "level": 4,
+     "coins": 800,
+     "target": 4,
+     "title": "building.bandstand.level.4.title",
+     "caption": "building.bandstand.level.4.caption"
+    },
+    {
+     "level": 5,
+     "coins": 1200,
+     "target": 5,
+     "title": "building.bandstand.level.5.title",
+     "caption": "building.bandstand.level.5.caption"
+    },
+    {
+     "level": 6,
+     "coins": 1700,
+     "target": 8,
+     "title": "building.bandstand.level.6.title",
+     "caption": "building.bandstand.level.6.caption"
+    },
+    {
+     "level": 7,
+     "coins": 2300,
+     "target": 12,
+     "title": "building.bandstand.level.7.title",
+     "caption": "building.bandstand.level.7.caption"
+    },
+    {
+     "level": 8,
+     "coins": 3000,
+     "target": 16,
+     "title": "building.bandstand.level.8.title",
+     "caption": "building.bandstand.level.8.caption"
+    },
+    {
+     "level": 9,
+     "coins": 4000,
+     "target": 22,
+     "title": "building.bandstand.level.9.title",
+     "caption": "building.bandstand.level.9.caption"
+    },
+    {
+     "level": 10,
+     "coins": 5200,
+     "target": 29,
+     "title": "building.bandstand.level.10.title",
+     "caption": "building.bandstand.level.10.caption"
+    }
+   ],
+   "color": "#7C4DDB",
+   "description": "building.bandstand.description",
+   "goal": {
+    "stat": "tracks_cleared",
+    "text": "building.bandstand.goal"
+   }
+  },
+  {
+   "id": "greenhouse",
+   "type": "civic",
+   "name": "building.greenhouse.name",
+   "mult": 2.2,
+   "levels": [
+    {
+     "level": 0,
+     "coins": 0
+    },
+    {
+     "level": 1,
+     "coins": 660,
+     "target": 0,
+     "title": "building.greenhouse.level.1.title",
+     "caption": "building.greenhouse.level.1.caption"
+    },
+    {
+     "level": 2,
+     "coins": 330,
+     "target": 2,
+     "title": "building.greenhouse.level.2.title",
+     "caption": "building.greenhouse.level.2.caption"
+    },
+    {
+     "level": 3,
+     "coins": 550,
+     "target": 4,
+     "title": "building.greenhouse.level.3.title",
+     "caption": "building.greenhouse.level.3.caption"
+    },
+    {
+     "level": 4,
+     "coins": 880,
+     "target": 8,
+     "title": "building.greenhouse.level.4.title",
+     "caption": "building.greenhouse.level.4.caption"
+    },
+    {
+     "level": 5,
+     "coins": 1320,
+     "target": 12,
+     "title": "building.greenhouse.level.5.title",
+     "caption": "building.greenhouse.level.5.caption"
+    },
+    {
+     "level": 6,
+     "coins": 1870,
+     "target": 18,
+     "title": "building.greenhouse.level.6.title",
+     "caption": "building.greenhouse.level.6.caption"
+    },
+    {
+     "level": 7,
+     "coins": 2530,
+     "target": 26,
+     "title": "building.greenhouse.level.7.title",
+     "caption": "building.greenhouse.level.7.caption"
+    },
+    {
+     "level": 8,
+     "coins": 3300,
+     "target": 36,
+     "title": "building.greenhouse.level.8.title",
+     "caption": "building.greenhouse.level.8.caption"
+    },
+    {
+     "level": 9,
+     "coins": 4400,
+     "target": 48,
+     "title": "building.greenhouse.level.9.title",
+     "caption": "building.greenhouse.level.9.caption"
+    },
+    {
+     "level": 10,
+     "coins": 5720,
+     "target": 64,
+     "title": "building.greenhouse.level.10.title",
+     "caption": "building.greenhouse.level.10.caption"
+    }
+   ],
+   "color": "#3BA7A0",
+   "description": "building.greenhouse.description",
+   "goal": {
+    "stat": "best_flowers",
+    "text": "building.greenhouse.goal"
+   }
+  },
+  {
+   "id": "arcade",
+   "type": "civic",
+   "name": "building.arcade.name",
+   "mult": 1.7,
+   "levels": [
+    {
+     "level": 0,
+     "coins": 0
+    },
+    {
+     "level": 1,
+     "coins": 510,
+     "target": 0,
+     "title": "building.arcade.level.1.title",
+     "caption": "building.arcade.level.1.caption"
+    },
+    {
+     "level": 2,
+     "coins": 260,
+     "target": 2,
+     "title": "building.arcade.level.2.title",
+     "caption": "building.arcade.level.2.caption"
+    },
+    {
+     "level": 3,
+     "coins": 430,
+     "target": 4,
+     "title": "building.arcade.level.3.title",
+     "caption": "building.arcade.level.3.caption"
+    },
+    {
+     "level": 4,
+     "coins": 680,
+     "target": 8,
+     "title": "building.arcade.level.4.title",
+     "caption": "building.arcade.level.4.caption"
+    },
+    {
+     "level": 5,
+     "coins": 1020,
+     "target": 12,
+     "title": "building.arcade.level.5.title",
+     "caption": "building.arcade.level.5.caption"
+    },
+    {
+     "level": 6,
+     "coins": 1450,
+     "target": 18,
+     "title": "building.arcade.level.6.title",
+     "caption": "building.arcade.level.6.caption"
+    },
+    {
+     "level": 7,
+     "coins": 1960,
+     "target": 26,
+     "title": "building.arcade.level.7.title",
+     "caption": "building.arcade.level.7.caption"
+    },
+    {
+     "level": 8,
+     "coins": 2550,
+     "target": 36,
+     "title": "building.arcade.level.8.title",
+     "caption": "building.arcade.level.8.caption"
+    },
+    {
+     "level": 9,
+     "coins": 3400,
+     "target": 48,
+     "title": "building.arcade.level.9.title",
+     "caption": "building.arcade.level.9.caption"
+    },
+    {
+     "level": 10,
+     "coins": 4420,
+     "target": 64,
+     "title": "building.arcade.level.10.title",
+     "caption": "building.arcade.level.10.caption"
+    }
+   ],
+   "color": "#FF7A45",
+   "description": "building.arcade.description",
+   "goal": {
+    "stat": "levels_beaten",
+    "text": "building.arcade.goal"
+   }
+  },
+  {
+   "id": "testlab",
+   "type": "civic",
+   "name": "building.testlab.name",
+   "mult": 1.1,
+   "levels": [
+    {
+     "level": 0,
+     "coins": 0
+    },
+    {
+     "level": 1,
+     "coins": 330,
+     "target": 0,
+     "title": "building.testlab.level.1.title",
+     "caption": "building.testlab.level.1.caption"
+    },
+    {
+     "level": 2,
+     "coins": 170,
+     "target": 10,
+     "title": "building.testlab.level.2.title",
+     "caption": "building.testlab.level.2.caption"
+    },
+    {
+     "level": 3,
+     "coins": 280,
+     "target": 20,
+     "title": "building.testlab.level.3.title",
+     "caption": "building.testlab.level.3.caption"
+    },
+    {
+     "level": 4,
+     "coins": 440,
+     "target": 40,
+     "title": "building.testlab.level.4.title",
+     "caption": "building.testlab.level.4.caption"
+    },
+    {
+     "level": 5,
+     "coins": 660,
+     "target": 60,
+     "title": "building.testlab.level.5.title",
+     "caption": "building.testlab.level.5.caption"
+    },
+    {
+     "level": 6,
+     "coins": 940,
+     "target": 90,
+     "title": "building.testlab.level.6.title",
+     "caption": "building.testlab.level.6.caption"
+    },
+    {
+     "level": 7,
+     "coins": 1270,
+     "target": 130,
+     "title": "building.testlab.level.7.title",
+     "caption": "building.testlab.level.7.caption"
+    },
+    {
+     "level": 8,
+     "coins": 1650,
+     "target": 180,
+     "title": "building.testlab.level.8.title",
+     "caption": "building.testlab.level.8.caption"
+    },
+    {
+     "level": 9,
+     "coins": 2200,
+     "target": 240,
+     "title": "building.testlab.level.9.title",
+     "caption": "building.testlab.level.9.caption"
+    },
+    {
+     "level": 10,
+     "coins": 2860,
+     "target": 320,
+     "title": "building.testlab.level.10.title",
+     "caption": "building.testlab.level.10.caption"
+    }
+   ],
+   "color": "#4A7BD0",
+   "description": "building.testlab.description",
+   "goal": {
+    "stat": "lab_squishes",
+    "text": "building.testlab.goal"
+   }
+  },
+  {
+   "id": "factory",
+   "type": "civic",
+   "name": "building.factory.name",
+   "mult": 1,
+   "levels": [
+    {
+     "level": 0,
+     "coins": 0
+    },
+    {
+     "level": 1,
+     "coins": 300,
+     "target": 0,
+     "title": "building.factory.level.1.title",
+     "caption": "building.factory.level.1.caption"
+    },
+    {
+     "level": 2,
+     "coins": 150,
+     "target": 5,
+     "title": "building.factory.level.2.title",
+     "caption": "building.factory.level.2.caption"
+    },
+    {
+     "level": 3,
+     "coins": 250,
+     "target": 10,
+     "title": "building.factory.level.3.title",
+     "caption": "building.factory.level.3.caption"
+    },
+    {
+     "level": 4,
+     "coins": 400,
+     "target": 20,
+     "title": "building.factory.level.4.title",
+     "caption": "building.factory.level.4.caption"
+    },
+    {
+     "level": 5,
+     "coins": 600,
+     "target": 30,
+     "title": "building.factory.level.5.title",
+     "caption": "building.factory.level.5.caption"
+    },
+    {
+     "level": 6,
+     "coins": 850,
+     "target": 45,
+     "title": "building.factory.level.6.title",
+     "caption": "building.factory.level.6.caption"
+    },
+    {
+     "level": 7,
+     "coins": 1150,
+     "target": 65,
+     "title": "building.factory.level.7.title",
+     "caption": "building.factory.level.7.caption"
+    },
+    {
+     "level": 8,
+     "coins": 1500,
+     "target": 90,
+     "title": "building.factory.level.8.title",
+     "caption": "building.factory.level.8.caption"
+    },
+    {
+     "level": 9,
+     "coins": 2000,
+     "target": 120,
+     "title": "building.factory.level.9.title",
+     "caption": "building.factory.level.9.caption"
+    },
+    {
+     "level": 10,
+     "coins": 2600,
+     "target": 160,
+     "title": "building.factory.level.10.title",
+     "caption": "building.factory.level.10.caption"
+    }
+   ],
+   "color": "#FF6FA3",
+   "description": "building.factory.description",
+   "goal": {
+    "stat": "boxes_opened",
+    "text": "building.factory.goal"
+   }
+  },
+  {
+   "id": "market",
+   "type": "civic",
+   "name": "building.market.name",
+   "mult": 1.3,
+   "levels": [
+    {
+     "level": 0,
+     "coins": 0
+    },
+    {
+     "level": 1,
+     "coins": 390,
+     "target": 0,
+     "title": "building.market.level.1.title",
+     "caption": "building.market.level.1.caption"
+    },
+    {
+     "level": 2,
+     "coins": 200,
+     "target": 3,
+     "title": "building.market.level.2.title",
+     "caption": "building.market.level.2.caption"
+    },
+    {
+     "level": 3,
+     "coins": 330,
+     "target": 6,
+     "title": "building.market.level.3.title",
+     "caption": "building.market.level.3.caption"
+    },
+    {
+     "level": 4,
+     "coins": 520,
+     "target": 12,
+     "title": "building.market.level.4.title",
+     "caption": "building.market.level.4.caption"
+    },
+    {
+     "level": 5,
+     "coins": 780,
+     "target": 18,
+     "title": "building.market.level.5.title",
+     "caption": "building.market.level.5.caption"
+    },
+    {
+     "level": 6,
+     "coins": 1110,
+     "target": 27,
+     "title": "building.market.level.6.title",
+     "caption": "building.market.level.6.caption"
+    },
+    {
+     "level": 7,
+     "coins": 1500,
+     "target": 39,
+     "title": "building.market.level.7.title",
+     "caption": "building.market.level.7.caption"
+    },
+    {
+     "level": 8,
+     "coins": 1950,
+     "target": 54,
+     "title": "building.market.level.8.title",
+     "caption": "building.market.level.8.caption"
+    },
+    {
+     "level": 9,
+     "coins": 2600,
+     "target": 72,
+     "title": "building.market.level.9.title",
+     "caption": "building.market.level.9.caption"
+    },
+    {
+     "level": 10,
+     "coins": 3380,
+     "target": 96,
+     "title": "building.market.level.10.title",
+     "caption": "building.market.level.10.caption"
+    }
+   ],
+   "color": "#2E8A84",
+   "description": "building.market.description",
+   "goal": {
+    "stat": "trades_done",
+    "text": "building.market.goal"
+   }
+  },
+  {
+   "id": "gemmine",
+   "type": "civic",
+   "name": "building.gemmine.name",
+   "mult": 1,
+   "levels": [
+    {
+     "level": 1,
+     "coins": 0
+    }
+   ],
+   "color": "#8E6CFF",
+   "description": "building.gemmine.description",
+   "single": true
+  }
+ ]
+}
