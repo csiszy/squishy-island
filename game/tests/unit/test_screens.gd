@@ -41,3 +41,36 @@ func test_buying_decor_in_a_house() -> void:
 	house.call("_buy", 6, &"candy", "Lucky Knot")
 	assert_eq(Town.decor_style(&"dumpling", 6), &"candy")
 	assert_eq(Economy.coins(), 500 - 140)
+
+
+func test_opening_a_box_in_the_factory() -> void:
+	var factory: Control = add_child_autofree((load("res://features/factory/factory_screen.tscn") as PackedScene).instantiate())
+	factory.call("open", {})
+	Economy.earn(200, &"test")
+	await factory.call("open_box")
+	assert_eq(Economy.coins(), 0)
+	assert_eq(Collection.owned_count() + (1 if Collection.spare_ids().size() > 0 else 0) >= 2, true, "a squishy arrived (new or a spare)")
+	assert_eq(Town.progress(&"factory"), 1)
+	assert_not_null(factory.get("_result"), "the result card shows")
+
+
+func test_a_locked_box_cannot_be_opened() -> void:
+	var factory: Control = add_child_autofree((load("res://features/factory/factory_screen.tscn") as PackedScene).instantiate())
+	factory.call("open", {})
+	Economy.earn(1000, &"test")
+	factory.call("_choose", &"golden")
+	await factory.call("open_box")
+	assert_eq(Economy.coins(), 1000, "Golden Boxes need Factory level 6")
+
+
+func test_the_spare_shelf_levels_up_and_swaps() -> void:
+	var col: Dictionary = (Server.api as FakeGameServer).state["collection"]
+	col["bao"] = {"level": 1, "spares": 2, "sparkly": false}
+	await Collection.sync()
+	var screen: Control = add_child_autofree((load("res://features/collection/collection_screen.tscn") as PackedScene).instantiate())
+	screen.call("open", {"tab": &"shelf"})
+	await screen.call("_level_up", &"bao")
+	assert_eq(int(Collection.entry(&"bao")["level"]), 2)
+	await screen.call("_swap", &"bao", 5)
+	assert_eq(Economy.stars(), 5)
+	assert_eq(Collection.spare_ids(), [] as Array[StringName])

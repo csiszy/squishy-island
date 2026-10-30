@@ -71,3 +71,38 @@ decor_style.short.classic,Classic
 decor_style.short.candy,Candy
 decor_style.short.mint,Mint
 decor_style.short.star,Starlight
+factory.box_mystery,Mystery Box
+factory.box_family,Family Box
+factory.box_golden,Golden Box
+factory.price,{n} coins
+factory.needs_level,Factory level {n}
+factory.rare_in,Rare guarantee in {n} boxes
+factory.rare_next,The next box is Rare or better!
+factory.odds_title,What can be inside
+factory.odds_note,"Every box has a squishy inside. One you already have goes onto your Spare Shelf."
+factory.open,Open! ({n} coins)
+factory.cannot_open,That box can't be opened right now.
+factory.sparkly,Sparkly
+factory.new_moves_in,New! Moving into the {house}.
+factory.to_shelf,"You have this one already, so it goes onto your Spare Shelf ({n} there now)."
+factory.see_move_in,See it move in
+factory.another,Open another
+factory.spare_shelf,Spare Shelf
+collection.title,Collection book
+collection.owned,{n} / {total} squishies
+collection.sparkly_owned,{n} / {total} Sparkly
+collection.tab_book,Book
+collection.tab_sparkly,Sparkly
+collection.tab_shelf,Spare Shelf
+collection.not_found,Not found yet
+collection.level,Lv {n}
+collection.shelf_empty,"Nothing here yet. When a box gives you a squishy you already have, it waits here for you."
+collection.spares,Spares: {n}
+collection.level_up,Level up (uses {n})
+collection.level_up_need,Level up needs {n} spares
+collection.max_level,Level 5 · Sparkly!
+collection.swap,Swap 1 for {n} Stars
+collection.swap_title,Swap one {name} for {n} Stars?
+collection.swap_body,"Stars buy missing Commons and Uncommons, and special decor, in the Star Shop."
+collection.levelled,{name} is now level {n}!
+collection.trade_soon,Trading at the Market comes soon.

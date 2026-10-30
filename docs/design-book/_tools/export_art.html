@@ -78,6 +78,9 @@ SQ.boot(async function () {
       items.push({ kind: 'room', id: h, file: `models/rooms/${h}/room_${h}.glb` });
       roomParts(h).items.forEach(n => SQ.DECOR_STYLES.forEach(st => items.push({ kind: 'decor', id: h, item: n, style: st.id, file: `models/rooms/${h}/decor_${n}_${st.id}.glb` })));
     });
+    /* Factory boxes in their colours (factory.html: mystery, family, golden, ad) */
+    const BOX_COLOURS = { mystery: '#FF6FA3', family: '#7ED3B2', golden: '#FFD54A', ad: '#8CCBFF' };
+    Object.keys(BOX_COLOURS).forEach(k => items.push({ kind: 'box', id: k, file: `models/boxes/box_${k}.glb` }));
     /* map bubble icons of fun buildings (houses use a house shape + the family's emblem portrait, built in the game) */
     SQ.CIVIC.forEach(id => { if (SQ.B[id].icon) items.push({ kind: 'badge', id, file: `sprites/badges/${id}.svg` }); });
     /* the island (everything on the map except the buildings) and each squishy's life around its house */
@@ -181,6 +184,7 @@ SQ.boot(async function () {
           if (it.kind === 'badge') return { svg: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="-16 -16 32 32" width="128" height="128">${SQ.B[it.id].icon(SQ.K, 0, 0, 1.05)}</svg>\n` };
           if (it.kind === 'room') { const g = roomBase(it.id); await D.ready(); return { glb: b64(await glb(clean(g))) }; }
           if (it.kind === 'decor') { const g = decorItem(it.id, it.item, it.style); await D.ready(); return { glb: b64(await glb(clean(g))) }; }
+          if (it.kind === 'box') { const g = new T.Group(); g.name = `box_${it.id}`; g.add(SQ.B.factory.box3(D, BOX_COLOURS[it.id], 1)); await D.ready(); return { glb: b64(await glb(clean(g))) }; }
           if (it.kind === 'island') return { glb: b64(await glb(clean(await island()))) };
           if (it.kind === 'life') return { glb: b64(await glb(clean(life(it.house, it.id)))) };
           const obj = it.kind === 'building' ? building(it.id, it.level) : D.squishy(it.id, 1);

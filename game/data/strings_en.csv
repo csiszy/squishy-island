@@ -456,6 +456,24 @@ building.testlab.level.8.title,Lit sign & garden
 building.testlab.level.9.caption,A giant press squishes a giant marshmallow on the roof.
 building.testlab.level.9.title,Giant press
 building.testlab.name,Squishy Testing Facility
+collection.level,Lv {n}
+collection.level_up,Level up (uses {n})
+collection.level_up_need,Level up needs {n} spares
+collection.levelled,{name} is now level {n}!
+collection.max_level,Level 5 · Sparkly!
+collection.not_found,Not found yet
+collection.owned,{n} / {total} squishies
+collection.shelf_empty,"Nothing here yet. When a box gives you a squishy you already have, it waits here for you."
+collection.spares,Spares: {n}
+collection.sparkly_owned,{n} / {total} Sparkly
+collection.swap,Swap 1 for {n} Stars
+collection.swap_body,"Stars buy missing Commons and Uncommons, and special decor, in the Star Shop."
+collection.swap_title,Swap one {name} for {n} Stars?
+collection.tab_book,Book
+collection.tab_shelf,Spare Shelf
+collection.tab_sparkly,Sparkly
+collection.title,Collection book
+collection.trade_soon,Trading at the Market comes soon.
 decor.dumpling.1.name,Steamer Bed
 decor.dumpling.1.what,A bamboo basket bed with the lid as a blanket. Bao naps here.
 decor.dumpling.2.name,Paper Lantern
@@ -560,6 +578,23 @@ decor_style.short.classic,Classic
 decor_style.short.mint,Mint
 decor_style.short.star,Starlight
 decor_style.star.name,Starlight
+factory.another,Open another
+factory.box_family,Family Box
+factory.box_golden,Golden Box
+factory.box_mystery,Mystery Box
+factory.cannot_open,That box can't be opened right now.
+factory.needs_level,Factory level {n}
+factory.new_moves_in,New! Moving into the {house}.
+factory.odds_note,Every box has a squishy inside. One you already have goes onto your Spare Shelf.
+factory.odds_title,What can be inside
+factory.open,Open! ({n} coins)
+factory.price,{n} coins
+factory.rare_in,Rare guarantee in {n} boxes
+factory.rare_next,The next box is Rare or better!
+factory.see_move_in,See it move in
+factory.spare_shelf,Spare Shelf
+factory.sparkly,Sparkly
+factory.to_shelf,"You have this one already, so it goes onto your Spare Shelf ({n} there now)."
 family.dumpling.name,Dumpling Gang
 family.forest.name,Forest Folk
 family.fruit.name,Fresh Fruits
