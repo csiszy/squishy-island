@@ -144,11 +144,14 @@ func _make_context() -> MinigameContext:
 	c.settings = {"graphics": Settings.graphics_tier(), "reduced_motion": Settings.reduced_motion(),
 		"left_handed": bool(Settings.get_value(&"left_handed")), "vibration": bool(Settings.get_value(&"vibration"))}
 	c.store = _record().get("store", {})
+	c.sound_bus = GodotAudioOutput.BUS_NAMES[&"sfx"]
 	c.play_sound = func(stream: AudioStream, loudness: float, pitch: float) -> void: Audio.play_stream(stream, pitch, loudness)
 	c.play_named = func(id: StringName, pitch: float) -> void: Audio.play(id, pitch)
 	c.vibrate = func(ms: int) -> void: Haptics.buzz(ms)
 	c.ask_revive = _ask_revive
 	c.get_portrait = func(id: StringName) -> Texture2D: return ArtLibrary.portrait(id)
+	c.get_model = func(id: StringName) -> PackedScene: return ArtLibrary.squishy(id)
+	c.building_level = Town.level(building)
 	c.get_font = func(kind: StringName) -> Font: return UiTheme.display_font() if kind == &"display" else UiTheme.font(900)
 	c.translate = func(key: StringName, args: Dictionary) -> String: return Text.t(key, args)
 	c.save_store = func(store: Dictionary) -> void:
@@ -159,7 +162,8 @@ func _make_context() -> MinigameContext:
 
 # ---------------------------------------------------------------- running
 
-## Start a run. level: for level games, which level (0 = the next one to beat).
+## Start a run. level: for level games, which level (0 = the next one to beat); for song games, which track
+## (0 = the first open one without three stars).
 func _start(level := 0) -> void:
 	_close_card()
 	_revives = 0
@@ -169,6 +173,8 @@ func _start(level := 0) -> void:
 	Audio.unduck()
 	if manifest.data.get("kind") == "levels":
 		level = clampi(level if level > 0 else _top_level(), 1, _top_level())
+	elif manifest.data.get("kind") == "songs":
+		level = level if _song_open(level) else _first_song()
 	else:
 		level = 0
 	_fill_squad(game.ctx)
@@ -271,8 +277,26 @@ func _on_finished(result: MinigameResult) -> void:
 	var rec := _record()
 	var old_best := int(rec.get("best", 0))
 	var level_game: bool = manifest.data.get("kind") == "levels"
+	var song_game: bool = manifest.data.get("kind") == "songs"
 	var pay := {}
-	if level_game:
+	if manifest.data.get("kind") == "toy":
+		pay = {"total": 0}
+		rec["total"] = int(rec.get("total", 0)) + result.metric
+	elif song_game:
+		var track: Dictionary = manifest.songs()[clampi(result.level - 1, 0, manifest.songs().size() - 1)]
+		pay = MinigamePayout.song(manifest.coins(), result, float(track.get("len", 0.0)))
+		var levels: Dictionary = rec.get("levels", {})
+		var scores: Dictionary = rec.get("scores", {})
+		pay["prev_stars"] = int(levels.get(str(result.level), 0))
+		pay["open_before"] = _songs_open()
+		old_best = int(scores.get(str(result.level), 0))
+		if result.won and result.stars > int(pay["prev_stars"]):
+			levels[str(result.level)] = result.stars
+			rec["levels"] = levels
+		scores[str(result.level)] = maxi(old_best, result.score)
+		rec["scores"] = scores
+		pay["open_after"] = _songs_open()
+	elif level_game:
 		var levels: Dictionary = rec.get("levels", {})
 		var prev := int(levels.get(str(result.level), 0))
 		pay = MinigamePayout.level(result, prev)
@@ -284,7 +308,7 @@ func _on_finished(result: MinigameResult) -> void:
 		var info := GameData.squishy(player_squishy)
 		var boost := MinigamePayout.helper_boost(manifest.coins(), String(info.get("rarity", "")), Town.cozy_bonus(StringName(info.get("family", ""))))
 		pay = MinigamePayout.endless(manifest.coins(), result, boost)
-	var answer: Dictionary = await Server.api.submit_run(manifest.id(), result.seconds_played, int(pay["total"]), StringName(manifest.data.get("kind", "endless")))
+	var answer: Dictionary = {"ok": true, "coins": 0} if int(pay["total"]) <= 0 and manifest.data.get("kind") == "toy" else await Server.api.submit_run(manifest.id(), result.seconds_played, int(pay["total"]), StringName(manifest.data.get("kind", "endless")))
 	# offline: minigames still pay (the server checks later); otherwise the server's amount
 	var paid: int = int(answer.get("coins", pay["total"])) if answer.get("ok", false) else int(pay["total"])
 	pay["paid"] = paid
@@ -292,7 +316,7 @@ func _on_finished(result: MinigameResult) -> void:
 	var jar_before := Economy.coins()
 	Economy.earn(paid, &"minigame")
 	var new_best := not level_game and result.score > old_best
-	if new_best:
+	if new_best and not song_game:
 		rec["best"] = result.score
 	rec["plays"] = int(rec.get("plays", 0)) + 1
 	rec["squishy"] = String(player_squishy)
@@ -302,6 +326,10 @@ func _on_finished(result: MinigameResult) -> void:
 			Town.offer_progress(building, result.metric)
 		"levels":
 			Town.offer_progress(building, int(rec.get("top", 1)) - 1)
+		"songs":
+			Town.offer_progress(building, _songs_cleared())
+		"metric_total":
+			Town.offer_progress(building, int(rec.get("total", 0)))
 		_:
 			Town.offer_progress(building, result.score)
 	Events.minigame_played.emit(manifest.id(), result.score, paid)
@@ -312,6 +340,12 @@ func _on_finished(result: MinigameResult) -> void:
 
 
 func _show_results(r: MinigameResult, pay: Dictionary, new_best: bool, old_best: int, jar_before: int) -> void:
+	if manifest.data.get("kind") == "songs":
+		_show_song_results(r, pay, new_best, jar_before)
+		return
+	if manifest.data.get("kind") == "toy":
+		_show_toy_results(r)
+		return
 	var level_game: bool = manifest.data.get("kind") == "levels"
 	var over_key := StringName(manifest.data.get("over_title", "game.over"))
 	var title := Text.t(over_key) if not level_game else Text.t(&"game.level_n", {"n": r.level})
@@ -337,32 +371,7 @@ func _show_results(r: MinigameResult, pay: Dictionary, new_best: bool, old_best:
 		stamp.modulate.a = 0.0
 	elif not level_game and old_best > 0:
 		col.add_child(Ui.label(Text.t(&"game.best", {"n": Ui.number(old_best)}), "Small", HORIZONTAL_ALIGNMENT_CENTER))
-	# the coins box
-	var box := PanelContainer.new()
-	var style := UiTheme.card(Color("#FFF8E6"), 28)
-	style.shadow = Vector2.ZERO
-	box.add_theme_stylebox_override("panel", style)
-	var pc := VBoxContainer.new()
-	pc.add_theme_constant_override("separation", 6)
-	box.add_child(pc)
-	col.add_child(box)
-	var coin_row := HBoxContainer.new()
-	coin_row.alignment = BoxContainer.ALIGNMENT_CENTER
-	coin_row.add_child(Ui.texture(Ui.icon("coin"), Vector2(56, 56)))
-	var coins_label := Ui.label("+%s" % Ui.number(int(pay["paid"])), "Heading")
-	coin_row.add_child(coins_label)
-	coin_row.add_child(Ui.label(Text.t(&"game.coins_word"), "Heading"))
-	pc.add_child(coin_row)
-	counters.append({"label": coins_label, "from": 0, "to": int(pay["paid"]), "coins": true, "plus": true})
-	for words in _pay_lines(r, pay):
-		pc.add_child(Ui.label(words, "Small", HORIZONTAL_ALIGNMENT_CENTER, true))
-	var jar := Ui.label(Ui.number(Economy.coins()), "")
-	var jar_row := HBoxContainer.new()
-	jar_row.alignment = BoxContainer.ALIGNMENT_CENTER
-	jar_row.add_child(Ui.label(Text.t(&"game.coin_jar"), "Small"))
-	jar_row.add_child(jar)
-	pc.add_child(jar_row)
-	counters.append({"label": jar, "from": jar_before, "to": Economy.coins(), "coins": true, "jar": true})
+	_coins_box(col, counters, r, pay, jar_before)
 	var goal := _goal_line()
 	if goal != "":
 		col.add_child(Ui.label(goal, "Small", HORIZONTAL_ALIGNMENT_CENTER, true))
@@ -392,6 +401,108 @@ func _show_results(r: MinigameResult, pay: Dictionary, new_best: bool, old_best:
 	_count_up(counters, stamp if new_best else null)
 
 
+## The coins box: "+48 coins", how they were worked out, and the coin jar counting up.
+func _coins_box(col: VBoxContainer, counters: Array, r: MinigameResult, pay: Dictionary, jar_before: int) -> void:
+	var box := PanelContainer.new()
+	var style := UiTheme.card(Color("#FFF8E6"), 28)
+	style.shadow = Vector2.ZERO
+	box.add_theme_stylebox_override("panel", style)
+	var pc := VBoxContainer.new()
+	pc.add_theme_constant_override("separation", 6)
+	box.add_child(pc)
+	col.add_child(box)
+	var coin_row := HBoxContainer.new()
+	coin_row.alignment = BoxContainer.ALIGNMENT_CENTER
+	coin_row.add_child(Ui.texture(Ui.icon("coin"), Vector2(56, 56)))
+	var coins_label := Ui.label("+%s" % Ui.number(int(pay["paid"])), "Heading")
+	coin_row.add_child(coins_label)
+	coin_row.add_child(Ui.label(Text.t(&"game.coins_word"), "Heading"))
+	pc.add_child(coin_row)
+	counters.append({"label": coins_label, "from": 0, "to": int(pay["paid"]), "coins": true, "plus": true})
+	for words in _pay_lines(r, pay):
+		pc.add_child(Ui.label(words, "Small", HORIZONTAL_ALIGNMENT_CENTER, true))
+	var jar := Ui.label(Ui.number(Economy.coins()), "")
+	var jar_row := HBoxContainer.new()
+	jar_row.alignment = BoxContainer.ALIGNMENT_CENTER
+	jar_row.add_child(Ui.label(Text.t(&"game.coin_jar"), "Small"))
+	jar_row.add_child(jar)
+	pc.add_child(jar_row)
+	counters.append({"label": jar, "from": jar_before, "to": Economy.coins(), "coins": true, "jar": true})
+
+
+## A song game's results: "Encore!" (or "Show stopped"), stars, points and accuracy, new tracks, coins.
+func _show_song_results(r: MinigameResult, pay: Dictionary, new_best: bool, jar_before: int) -> void:
+	var col := _card(Text.t(&"game.song_clear") if r.won else Text.t(&"game.song_stopped"), Text.t(&"game.track_n", {"n": r.level, "name": _song_name(r.level)}))
+	var counters: Array = []
+	if r.won:
+		col.add_child(_stars_row(r.stars, 52))
+	var points := Ui.label(Ui.number(r.score), "Heading", HORIZONTAL_ALIGNMENT_CENTER)
+	col.add_child(points)
+	counters.append({"label": points, "from": 0, "to": r.score, "coins": false})
+	var line := Text.t(StringName(manifest.data.get("score_name", "game.points")))
+	if manifest.data.has("metric_line"):
+		line += " · " + Text.t(StringName(manifest.data["metric_line"]), {"n": r.metric})
+	col.add_child(Ui.label(line, "Small", HORIZONTAL_ALIGNMENT_CENTER, true))
+	if r.note != "":
+		col.add_child(Ui.label(r.note, "Small", HORIZONTAL_ALIGNMENT_CENTER, true))
+	var stamp := Ui.label(Text.t(&"game.new_best"), "Heading", HORIZONTAL_ALIGNMENT_CENTER)
+	stamp.add_theme_color_override("font_color", UiTheme.PINK)
+	if new_best:
+		col.add_child(stamp)
+		stamp.modulate.a = 0.0
+	var count := manifest.songs().size()
+	var next_open := r.level < count and _song_open(r.level + 1)
+	if r.won and r.stars > int(pay["prev_stars"]) and int(pay["prev_stars"]) > 0:
+		col.add_child(Ui.label(Text.t(&"game.new_best_stars"), "", HORIZONTAL_ALIGNMENT_CENTER))
+	if int(pay["open_after"]) > int(pay["open_before"]):
+		var names := PackedStringArray()
+		for n in range(int(pay["open_before"]) + 1, int(pay["open_after"]) + 1):
+			names.append(_song_name(n))
+		col.add_child(Ui.label(Text.t(&"game.new_track_open", {"name": ", ".join(names)}), "", HORIZONTAL_ALIGNMENT_CENTER, true))
+	elif r.level < count and (not r.won or not next_open):
+		col.add_child(Ui.label(Text.t(&"game.track_needs", {"name": _song_name(r.level + 1), "n": _song_need(r.level + 1), "have": _song_stars()}), "Small", HORIZONTAL_ALIGNMENT_CENTER, true))
+	_coins_box(col, counters, r, pay, jar_before)
+	var goal := _goal_line()
+	if goal != "":
+		col.add_child(Ui.label(goal, "Small", HORIZONTAL_ALIGNMENT_CENTER, true))
+	var row := HBoxContainer.new()
+	row.alignment = BoxContainer.ALIGNMENT_CENTER
+	if r.won and next_open:
+		var next := Ui.button(Text.t(&"game.next_track"), "BigButton", "play")
+		next.pressed.connect(func() -> void: _start(r.level + 1))
+		col.add_child(next)
+		var again := Ui.button(Text.t(&"game.play_again"))
+		again.pressed.connect(func() -> void: _start(r.level))
+		row.add_child(again)
+	else:
+		var again := Ui.button(Text.t(&"game.play_again") if r.won else Text.t(&"game.try_again"), "BigButton", "play")
+		again.pressed.connect(func() -> void: _start(r.level))
+		col.add_child(again)
+	var all := Ui.button(Text.t(&"game.all_tracks"))
+	all.pressed.connect(_show_start)
+	row.add_child(all)
+	col.add_child(row)
+	var town := Ui.button(Text.t(&"game.back_to_town"))
+	town.pressed.connect(Nav.back)
+	col.add_child(town)
+	_count_up(counters, stamp if new_best else null)
+
+
+## A toy's card when the player leaves it: what they did, and what it means for the building. No coins.
+func _show_toy_results(r: MinigameResult) -> void:
+	var col := _card(Text.t(StringName(manifest.data.get("metric_line", "game.points")), {"n": Ui.number(r.metric)}), Text.t(StringName(manifest.data.get("title", ""))))
+	col.add_child(Ui.label(Text.t(StringName(manifest.data.get("coins", {}).get("rule", "game.points"))), "Small", HORIZONTAL_ALIGNMENT_CENTER, true))
+	var goal := _goal_line()
+	if goal != "":
+		col.add_child(Ui.label(goal, "Small", HORIZONTAL_ALIGNMENT_CENTER, true))
+	var again := Ui.button(Text.t(&"game.keep_playing"), "BigButton", "play")
+	again.pressed.connect(func() -> void: _start())
+	col.add_child(again)
+	var town := Ui.button(Text.t(&"game.back_to_town"))
+	town.pressed.connect(Nav.back)
+	col.add_child(town)
+
+
 ## Three stars, the earned ones yellow.
 func _stars_row(n: int, size_px: float) -> Control:
 	var row := HBoxContainer.new()
@@ -407,6 +518,85 @@ func _stars_row(n: int, size_px: float) -> Control:
 ## The next level to beat (1 the first time).
 func _top_level() -> int:
 	return maxi(1, int(_record().get("top", 1)))
+
+
+## Song games: stars collected over all tracks, which tracks are open (track n needs (n - 1) x stars_each),
+## the track to suggest (the first open one without three stars), tracks with at least one star.
+func _song_stars() -> int:
+	var total := 0
+	for v: Variant in (_record().get("levels", {}) as Dictionary).values():
+		total += int(v)
+	return total
+
+
+func _song_need(n: int) -> int:
+	return (n - 1) * int((manifest.data.get("songs", {}) as Dictionary).get("stars_each", 3))
+
+
+func _song_open(n: int) -> bool:
+	return n >= 1 and n <= manifest.songs().size() and _song_stars() >= _song_need(n)
+
+
+func _songs_open() -> int:
+	var n := 0
+	while _song_open(n + 1):
+		n += 1
+	return n
+
+
+func _first_song() -> int:
+	var levels: Dictionary = _record().get("levels", {})
+	var open := maxi(1, _songs_open())
+	for n in range(1, open + 1):
+		if int(levels.get(str(n), 0)) < 3:
+			return n
+	return open
+
+
+func _songs_cleared() -> int:
+	var n := 0
+	for v: Variant in (_record().get("levels", {}) as Dictionary).values():
+		if int(v) > 0:
+			n += 1
+	return n
+
+
+func _song_name(n: int) -> String:
+	var list := manifest.songs()
+	return Text.t(StringName((list[n - 1] as Dictionary).get("title", ""))) if n >= 1 and n <= list.size() else ""
+
+
+## The track list on a song game's start card: every track with its stars, or what a locked one needs.
+func _song_list() -> Control:
+	var box := VBoxContainer.new()
+	box.add_theme_constant_override("separation", 8)
+	var levels: Dictionary = _record().get("levels", {})
+	var first := _first_song()
+	var list := manifest.songs()
+	for i in list.size():
+		var n := i + 1
+		var info: Dictionary = list[i]
+		var b := Button.new()
+		b.focus_mode = FOCUS_NONE
+		b.name = "Track_%d" % n
+		b.alignment = HORIZONTAL_ALIGNMENT_LEFT
+		b.custom_minimum_size = Vector2(0, 96)
+		var line := ""
+		if _song_open(n):
+			var tags := PackedStringArray()
+			for key: String in info.get("tags", []):
+				tags.append(Text.t(StringName(key)))
+			var secs := roundi(float(info.get("len", 0.0)))
+			var stars := int(levels.get(str(n), 0))
+			line = Text.t(&"game.track_line", {"tags": " · ".join(tags), "bpm": int(info.get("bpm", 0)), "time": "%d:%02d" % [secs / 60, secs % 60]}) + "   " + "★".repeat(stars) + "☆".repeat(3 - stars)
+			b.theme_type_variation = "PillButton" if n == first else ""
+			b.pressed.connect(func() -> void: _start(n))
+		else:
+			line = Text.t(&"game.track_locked", {"n": _song_need(n), "have": _song_stars()})
+			b.disabled = true
+		b.text = "%d. %s\n%s" % [n, _song_name(n), line]
+		box.add_child(b)
+	return box
 
 
 ## The level picker on a level game's start card: the newest 14 levels and the next 2 (locked), each with stars.
@@ -436,6 +626,12 @@ func _level_grid() -> Control:
 
 func _pay_lines(r: MinigameResult, pay: Dictionary) -> PackedStringArray:
 	var out := PackedStringArray()
+	if manifest.data.get("kind") == "songs":
+		var secs := roundi(float(pay["seconds"]))
+		out.append(Text.t(&"game.song_pay", {"time": "%d:%02d" % [secs / 60, secs % 60], "n": r.metric}))
+		if int(pay["paid"]) < int(pay["total"]):
+			out.append(Text.t(&"game.capped"))
+		return out
 	if manifest.data.get("kind") == "levels":
 		if not r.won:
 			out.append(Text.t(&"game.level_no_coins"))
@@ -551,6 +747,30 @@ func _show_start() -> void:
 	col.add_child(how)
 	var rule := manifest.coins()
 	var level_game: bool = manifest.data.get("kind") == "levels"
+	var song_game: bool = manifest.data.get("kind") == "songs"
+	if manifest.data.get("kind") == "toy":
+		col.add_child(Ui.label(Text.t(StringName(rule.get("rule", "game.points"))), "Small", HORIZONTAL_ALIGNMENT_CENTER, true))
+		col.add_child(_squishy_row())
+		var go := Ui.button(Text.t(&"game.play"), "BigButton", "play")
+		go.pressed.connect(func() -> void: _start())
+		col.add_child(go)
+		var back := Ui.button(Text.t(&"game.back_to_town"))
+		back.pressed.connect(Nav.back)
+		col.add_child(back)
+		return
+	if song_game:
+		col.add_child(Ui.label(Text.t(&"game.coins_rule", {"rule": Text.t(StringName(rule.get("rule", "game.points")))}), "Small", HORIZONTAL_ALIGNMENT_CENTER, true))
+		var count := manifest.songs().size()
+		col.add_child(Ui.label(Text.t(&"game.tracks_open", {"stars": _song_stars(), "all": count * 3, "open": _songs_open(), "count": count}), "", HORIZONTAL_ALIGNMENT_CENTER, true))
+		col.add_child(_squishy_row())
+		var go := Ui.button(Text.t(&"game.play_track", {"name": _song_name(_first_song())}), "BigButton", "play")
+		go.pressed.connect(func() -> void: _start())
+		col.add_child(go)
+		col.add_child(_song_list())
+		var back := Ui.button(Text.t(&"game.back_to_town"))
+		back.pressed.connect(Nav.back)
+		col.add_child(back)
+		return
 	if level_game:
 		col.add_child(Ui.label(Text.t(&"game.coins_levels"), "Small", HORIZONTAL_ALIGNMENT_CENTER, true))
 		var total := 0
@@ -704,7 +924,8 @@ func _show_napping() -> void:
 	col.add_child(town)
 
 
-## This game's own corner of the save file: {"best", "plays", "squishy", "store", "levels", "top"}.
+## This game's own corner of the save file: {"best", "plays", "squishy", "store", "levels", "top", "scores"}
+## (levels: best stars per level or track; scores: best points per track).
 func _record() -> Dictionary:
 	var all := Save.section(&"minigames")
 	var key := String(manifest.id())

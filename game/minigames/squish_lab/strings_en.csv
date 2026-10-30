@@ -1,0 +1,35 @@
+keys,en
+squish_lab.title,Squish Lab
+squish_lab.where,at the Squishy Testing Facility
+squish_lab.how.1,"Pick any of your squishies and test how squishy it is. No coins, no timer: just squish!"
+squish_lab.how.2,"Hand: grab the edge to stretch it (two fingers stretch both ways), grab the middle to pick it up and throw it, tap to poke a dent."
+squish_lab.how.3,"Press, Roller and Squeeze: hold or drag to flatten it. Ball: tap to drop a heavy rubber ball. Drop: lift it high and let go. New tools open as the Lab grows."
+squish_lab.how.4,"Foam squishies rise back slowly, jelly ones wobble, rubber ones bounce. Squishies never break, they always spring back."
+squish_lab.score_name,% best squish
+squish_lab.metric_line,{n} squishes
+squish_lab.coins_rule,No coins here: it's just for fun. Every squish past 50% on the squish-o-meter helps the Lab grow.
+squish_lab.meter,squish-o-meter
+squish_lab.best,best {n}%
+squish_lab.count,{n} squishes
+squish_lab.swap,swap
+squish_lab.squish,Squish!
+squish_lab.pick,Pick one to test
+squish_lab.close,Close
+squish_lab.metres,{n} m
+squish_lab.level_n,Level {n}
+squish_lab.locked,This tool opens when the Lab|reaches level {n}
+squish_lab.mat.foam,Slow-rise foam
+squish_lab.mat.jelly,Wobbly jelly
+squish_lab.mat.bouncy,Bouncy rubber
+squish_lab.tool.hand,Hand
+squish_lab.tool.press,Press
+squish_lab.tool.roller,Roller
+squish_lab.tool.squeeze,Squeeze
+squish_lab.tool.ball,Ball
+squish_lab.tool.drop,Drop
+squish_lab.tip.hand,Pull an edge to stretch · grab the middle to throw|tap to poke a dent
+squish_lab.tip.press,Hold anywhere to press down|let go to lift the press
+squish_lab.tip.roller,Drag the rolling pin over your squishy
+squish_lab.tip.squeeze,Hold anywhere to squeeze from both sides
+squish_lab.tip.ball,Tap to drop a heavy rubber ball
+squish_lab.tip.drop,Up it goes… and SPLAT!

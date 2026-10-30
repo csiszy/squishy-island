@@ -57,7 +57,7 @@ func _fit() -> void:
 func _start() -> void:
 	_play.visible = false
 	_info.text = ""
-	game.start(1 if _manifest.data.get("kind") == "levels" else 0)
+	game.start(1 if _manifest.data.get("kind") in ["levels", "songs"] else 0)
 
 
 func _on_finished(r: MinigameResult) -> void:
@@ -71,11 +71,13 @@ static func fake_context(manifest: MinigameManifest, words: Dictionary, host: No
 	var c := MinigameContext.new()
 	c.game_id = manifest.id()
 	c.settings = {"graphics": &"high", "reduced_motion": false, "left_handed": false, "vibration": true}
+	c.building_level = 10
 	c.translate = func(key: StringName, args: Dictionary) -> String:
 		var s: String = words.get(String(key), String(key))
 		return s.format(args) if not args.is_empty() else s
 	if host != null and host.has_method(&"_play_sound"):
 		c.play_sound = Callable(host, &"_play_sound")
+		c.sound_bus = &"Master"
 	var answer: bool = host.get(&"always_revive") if host != null else false
 	c.ask_revive = func() -> bool: return answer
 	return c

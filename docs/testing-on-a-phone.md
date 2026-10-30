@@ -25,6 +25,18 @@ They are kept for 14 days.
 Later test builds install **over** the old one and keep your town (they share one test key). If Android ever says the
 app "conflicts with an existing package", uninstall the old one first (this deletes the test town).
 
+## What to try (Step 3: all ten minigames)
+
+- Every building's game now works: open them from the map or the pink **Games** button. New since last time:
+  **Grow Grow Garden** (Greenhouse), **Style Studio** (Salon), **Bucket Brigade** (Fire Station, levels),
+  **Squish Breaker** (Arcade, levels), **Lost & Found** (Police, match-3 levels), **Squeak Beat** (Squeak Stage,
+  30 songs) and the **Squish Lab** (a toy, no coins).
+- Level games: the level picker on the start card, stars, Next level / Try again.
+- **Squeak Beat**: sound on! Do taps feel in time with the music? (The game learns your phone's delay from your
+  taps; tell us if the first song feels off and later ones better.) Track 2 opens at 3 stars.
+- **Squish Lab**: pull, poke, throw and drop your squishy; more tools open as the Lab building levels up (build it
+  with coins first). Is it smooth on your phone, or does it stutter?
+
 ## What to try (Step 2: the minigames)
 
 - Tap **Bounce Park**, **Squish Bistro** or the **Post Office** on the map, then **Play**, or use the pink

@@ -298,5 +298,27 @@ Sort-a-Lot ported from the prototypes. Tap a built fun building on the map → *
   the same boards as the prototype, tile for tile. Pet Pals detectives start with a Siren; rarer detectives get
   +1/+2/+3 moves. One small change: the prototype picks the paw-print cells with the browser's sort (which differs
   between browsers); the game does the same "lower rows first, a little mixed" with its own fixed rule.
+- **Squeak Beat** (30 tracks, the prototype's own songs): each song's backing band and every melody note are
+  rendered from the prototype's synthesiser by `tools/render_squeak_beat.js` (mono Ogg: the 30 songs about 14 MB,
+  the 149 melody notes about 3 MB, so the game download grows by about 17 MB; one note file per voice and pitch,
+  so a tap sounds at once). If the download size matters later, the songs can move to a download on first play. The note charts (`charts.json`) are the
+  prototype's, note for note. Song games are a new kind for the host: a track list with stars, track N opens at
+  (N−1)×3 stars, coins = 40 a minute of song × accuracy, and the Squeak Stage counts tracks with at least one
+  star. Instead of a separate calibration screen, the game keeps time with the song as the phone plays it and
+  learns, from taps near the line, how early or late this player's taps land, and moves the PERFECT window to
+  match (a few hundredths of a second, saved). Sea Squish players get a slightly wider PERFECT window. Not yet:
+  "the band you bring changes the voice", the bonus encore track for a full one-family band, and "each building
+  level unlocks a new set of tracks" (the stars rule decides for now) — open for the owner.
+- **Squish Lab** (a toy: no score to beat, no coins): the prototype's soft body (40 points, 600 steps a second,
+  the same numbers), tools opening with the Lab's level (Hand and Drop, then Ball, Press, Roller, Squeeze), the
+  prototype's 3D lab, and, as the build plan asks, the **real 3D squishy** from the island: its outline is traced
+  from the model and every point of the model follows the soft body (a small shader in the game's folder), puffing
+  out towards you when squished flat. Materials: the prototype's 16 squishies as listed, otherwise ocean = jelly,
+  pets and sky = rubber, the rest foam. A squish counts past 50% on the squish-o-meter and squishes add up over
+  visits for the Lab's upgrades (a new goal kind, "metric_total"). The physics loop is plain GDScript (about 0.1 s
+  of computer time per second of play here); if a cheap phone struggles, it is the one loop to move to C++. Not yet:
+  level 6 "two squishies at once" and level 8 "trampoline table".
+- The contract grew (still version 1, nothing removed): song and toy kinds, `sound_bus` (a game's own sounds that
+  it must start and stop, like a song), `model(id)` (a squishy's 3D model) and `building_level`.
 - Not yet: the squishy "helper" list on the start card names no effects yet (just "extra good at this game"),
   tilt steering for Sky Bounce, and decor found in sorted letters (Sort-a-Lot page) — later steps.

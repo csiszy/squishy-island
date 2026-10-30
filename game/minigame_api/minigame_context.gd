@@ -19,6 +19,11 @@ var best := 0
 var settings: Dictionary = {}
 ## This game's own little save box (only this game can see it). Change values with store_set().
 var store: Dictionary = {}
+## For a game that plays its own long sounds (a whole song, a held note it must stop early): the audio bus to put
+## its own AudioStreamPlayer nodes on (it follows the player's sound settings). Empty = no sound (tests).
+var sound_bus := &""
+## The level of the game's building (0 = not built yet), for games that grow with it (the Lab's tools).
+var building_level := 0
 
 ## Filled in by the host.
 var play_sound: Callable        # (stream: AudioStream, loudness: float, pitch: float) -> void
@@ -26,6 +31,7 @@ var play_named: Callable        # (id: StringName, pitch: float) -> void
 var vibrate: Callable           # (ms: int) -> void
 var ask_revive: Callable        # () -> bool, may await (the host shows "keep going?" and the ad)
 var get_portrait: Callable      # (id: StringName) -> Texture2D
+var get_model: Callable         # (id: StringName) -> PackedScene
 var get_font: Callable          # (kind: StringName) -> Font  ("display" or "body")
 var translate: Callable         # (key: StringName, args: Dictionary) -> String
 var save_store: Callable        # (store: Dictionary) -> void
@@ -68,6 +74,17 @@ func request_revive() -> bool:
 ## A squishy's picture (or null in the harness).
 func portrait(id: StringName) -> Texture2D:
 	return get_portrait.call(id) if get_portrait.is_valid() else null
+
+
+## A squishy's 3D model, a new copy the game owns (or null in the harness, or if it has none).
+func model(id: StringName) -> Node3D:
+	var scene: Variant = get_model.call(id) if get_model.is_valid() else null
+	var node: Node = (scene as PackedScene).instantiate() if scene is PackedScene else null
+	if node is Node3D:
+		return node
+	if node != null:
+		node.free()
+	return null
 
 
 ## The game's fonts: &"display" (big rounded titles) or &"body" (bold numbers and labels).

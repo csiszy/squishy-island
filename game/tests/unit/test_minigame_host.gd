@@ -210,3 +210,78 @@ func test_beating_a_level() -> void:
 	assert_eq(Economy.coins(), coins_before + 30 + 15 * r.stars)
 	assert_eq(int(Save.section(&"minigames")["bucket_brigade"]["top"]), 2, "level 2 is open")
 	assert_eq(Town.progress(&"fire"), 1, "one level beaten counts for the Fire Station")
+
+
+func test_song_games_pay_per_minute_of_music_times_accuracy() -> void:
+	var r := _result(5000, 90, 82.0)
+	r.won = true
+	r.level = 1
+	var pay := MinigamePayout.song({"from": "song", "per_minute": 40}, r, 80.0)
+	assert_eq(int(pay["total"]), 48, "a 1:20 song at 90% pays about 48 (bandstand.html)")
+
+
+func test_finishing_a_song() -> void:
+	GameData.minigames = MinigameCatalog.by_building()
+	var screen: Control = add_child_autofree((load("res://features/minigame_host/minigame_screen.tscn") as PackedScene).instantiate())
+	screen.set_anchors_and_offsets_preset(Control.PRESET_TOP_LEFT)
+	screen.size = Vector2(720, 1280)
+	screen.call(&"open", {"building": &"bandstand"})
+	var game: Minigame = screen.get(&"game")
+	assert_not_null(game, "Squeak Beat loaded")
+	assert_not_null(screen.find_child("Track_1", true, false), "the start card lists the tracks")
+	var locked: Button = screen.find_child("Track_2", true, false)
+	assert_true(locked.disabled, "track 2 needs 3 stars")
+	game.process_mode = Node.PROCESS_MODE_DISABLED
+	game.ctx.sound_bus = &""   # no speakers here: the song's clock is the test's
+	screen.call(&"_start")
+	var coins_before := Economy.coins()
+	var bot: Object = (load("res://minigames/squeak_beat/bot.gd") as GDScript).new()
+	for i in 4000:
+		if screen.get(&"last_result") != null:
+			break
+		bot.call(&"act", game, 1.0 / 30.0)
+		game.advance(1.0 / 30.0)
+	await wait_frames(3)
+	var r: MinigameResult = screen.get(&"last_result")
+	assert_not_null(r, "the song ended")
+	assert_true(r.won, "the robot finished the song")
+	assert_eq(r.level, 1)
+	assert_gt(r.stars, 0)
+	var track: Dictionary = MinigameCatalog.find(&"squeak_beat").songs()[0]
+	var want := roundi(40.0 * float(track["len"]) / 60.0 * r.metric / 100.0)
+	assert_eq(int(screen.get(&"last_payout")["total"]), want, "40 a minute times accuracy")
+	assert_eq(Economy.coins(), coins_before + want)
+	var rec: Dictionary = Save.section(&"minigames")["squeak_beat"]
+	assert_eq(int(rec["levels"]["1"]), r.stars, "stars saved")
+	assert_eq(int(rec["scores"]["1"]), r.score, "best score saved")
+	assert_eq(Town.progress(&"bandstand"), 1, "one track cleared counts for the Squeak Stage")
+	assert_eq(screen.call(&"_song_open", 2), r.stars >= 3, "track 2 opens at 3 stars")
+
+
+func test_the_lab_is_a_toy_whose_squishes_add_up() -> void:
+	GameData.minigames = MinigameCatalog.by_building()
+	var screen: Control = add_child_autofree((load("res://features/minigame_host/minigame_screen.tscn") as PackedScene).instantiate())
+	screen.set_anchors_and_offsets_preset(Control.PRESET_TOP_LEFT)
+	screen.size = Vector2(720, 1280)
+	screen.call(&"open", {"building": &"testlab"})
+	var game: Minigame = screen.get(&"game")
+	assert_not_null(game, "the Squish Lab loaded")
+	game.process_mode = Node.PROCESS_MODE_DISABLED
+	var coins_before := Economy.coins()
+	for run in 2:
+		screen.call(&"_start")
+		assert_false(game.call(&"tool_open", &"press"), "the press needs the Lab at level 3")
+		# the robot tester pulls and drops it for 20 seconds
+		var bot: Object = (load("res://minigames/squish_lab/bot.gd") as GDScript).new()
+		for f in 600:
+			bot.call(&"act", game, 1.0 / 30.0)
+			game.advance(1.0 / 30.0)
+		game.stop()
+		await wait_frames(2)
+	var r: MinigameResult = screen.get(&"last_result")
+	assert_not_null(r)
+	var total := int(Save.section(&"minigames")["squish_lab"]["total"])
+	assert_gt(r.metric, 0, "the robot squished it")
+	assert_gte(total, r.metric * 2 - 1, "squishes add up over visits")
+	assert_eq(Town.progress(&"testlab"), total, "the Lab counts every squish")
+	assert_eq(Economy.coins(), coins_before, "the Lab never pays coins")
