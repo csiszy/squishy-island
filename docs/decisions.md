@@ -397,4 +397,15 @@ Sort-a-Lot ported from the prototypes. Tap a built fun building on the map → *
   each time it makes a day's quests: the numbers, the quest list, and exact quests or the Gem Challenge game for
   chosen dates (Christmas Eve...). Edit, save, no restart, no app update; a broken file is ignored. A friendlier
   admin page can come with the live server if editing the file is fiddly.
-- Next in Step 4: the weekly visitor, then the Market and trading.
+- **Visitor of the week (4c, second part)**, as in guide.html "Daily visits": each week a squishy the player
+  doesn't own (Common to Epic, never last week's visitor) camps in the beach park near where the game starts (a
+  little tent and picnic blanket, its pin shows "!" until today's hi). Tap it: "Say hi & give a treat", once a day;
+  hi on 4 different days and it moves in for free (one you got meanwhile goes onto the Spare Shelf), with a
+  celebration and a flight to its house. The quest board shows it at the top with its visits as hearts and a
+  "Go and say hi" button. The server picks it and counts the days; the pretend server plays the same rules.
+  One addition, so nobody gets an impossible visitor: one that arrives too late in the week for 4 visits (a new
+  player starting on a Friday) stays until the end of the next week. No countdown is shown, and nothing is lost
+  when a visitor leaves. Live config: `visitorEnabled`, `visitorDays`, and `visitors` (who visits everyone in a
+  chosen week). The book's map marks the park (`visitor: true` in the CITY parks) and the tour flies there.
+  Later: the "The visitor is waiting" notification (settings.html, Step 6).
+- Next in Step 4: the Market and trading.

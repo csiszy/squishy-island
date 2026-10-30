@@ -2,6 +2,8 @@ extends SceneTree
 ## Starts the real game, optionally does a few things, and saves a screenshot (for checking screens by eye).
 ##   xvfb-run godot --path game --rendering-driver opengl3 --resolution 540x960 -s res://tests/visual/shoot.gd -- out.png [steps...]
 ## Steps: tier:medium  slow:0.05  print  coins:N  call:Node:method:args  select:<building>  go:<screen>[:id]  wait:<frames>  tap:x,y  zoom:<factor>
+##        start:Node:method (like call:, without waiting for it: e.g. a pop-up that waits for a tap)
+##        fly:x,z,dist (map camera to a spot, e.g. fly:36,-34,60 = the park with the visitor)
 
 func _init() -> void:
 	var args := OS.get_cmdline_user_args()
@@ -29,6 +31,11 @@ func _init() -> void:
 				var city := root.find_child("CityScreen", true, false)
 				if city:
 					(city.get("view") as CityView).fly_to(0, 0, (city.get("view") as CityView).dist * float(parts[1]), 0.05)
+			"fly":
+				var city := root.find_child("CityScreen", true, false)
+				var at := parts[1].split(",")
+				if city:
+					(city.get("view") as CityView).fly_to(float(at[0]), float(at[1]), float(at[2]), 0.05)
 			"print":
 				var city := root.find_child("CityScreen", true, false)
 				var v := city.get("view") as CityView
@@ -39,6 +46,10 @@ func _init() -> void:
 			"wait":
 				for i in int(parts[1]):
 					await process_frame
+			"start":
+				var started := root.find_child(parts[1], true, false)
+				if started:
+					started.call_deferred(parts[2])
 			"call":
 				# call:NodeName:method[:arg,arg] (numbers become ints, words StringNames)
 				var node := root.find_child(parts[1], true, false)

@@ -165,6 +165,18 @@ function rpcQuestClaim(ctx: nkruntime.Context, logger: nkruntime.Logger, nk: nkr
   });
 }
 
+function rpcVisitor(ctx: nkruntime.Context, logger: nkruntime.Logger, nk: nkruntime.Nakama, payload: string): string {
+  return asPlayer(ctx, payload, function (user, p) {
+    return withState(nk, user, function (s) { loadState(s); return getVisitor(nk, s, user, String(p.day || "")); });
+  });
+}
+
+function rpcVisitorHi(ctx: nkruntime.Context, logger: nkruntime.Logger, nk: nkruntime.Nakama, payload: string): string {
+  return asPlayer(ctx, payload, function (user, p) {
+    return withState(nk, user, function (s) { loadState(s); return visitorHi(nk, s, user, String(p.day || "")); });
+  });
+}
+
 function rpcDeleteRequest(ctx: nkruntime.Context, logger: nkruntime.Logger, nk: nkruntime.Nakama, payload: string): string {
   return asPlayer(ctx, payload, function (user, p) { return deleteRequest(nk, user); });
 }
@@ -199,6 +211,8 @@ function InitModule(ctx: nkruntime.Context, logger: nkruntime.Logger, nk: nkrunt
   initializer.registerRpc("delete_request", rpcDeleteRequest);
   initializer.registerRpc("quests", rpcQuests);
   initializer.registerRpc("quest_claim", rpcQuestClaim);
+  initializer.registerRpc("visitor", rpcVisitor);
+  initializer.registerRpc("visitor_hi", rpcVisitorHi);
   initializer.registerRpc("purge_deleted", rpcPurgeDeleted);
   logger.info("Squishy Island server ready: %d squishies, %d box kinds", SQUISHIES.length, Object.keys(ECONOMY.boxes).length);
 }

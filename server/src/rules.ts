@@ -23,6 +23,8 @@ interface PlayerState {
   // today's quests (quests.ts) and this week's Gem Challenge days
   daily?: any;
   week?: { week: number; days: string[]; claimed: boolean };
+  // this week's visitor (visitor.ts)
+  visitor?: Visitor;
 }
 interface Answer { ok: boolean; error?: string; [key: string]: any }
 

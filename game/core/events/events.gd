@@ -24,6 +24,9 @@ signal decor_changed(house: StringName)
 ## Another screen wants the map to show a building (fly there and open its card). Sent by e.g. the Games page.
 signal show_building(id: StringName)
 
+## Another screen wants the map to show the Visitor of the week (fly to the park, say hi). Sent by the quest board.
+signal show_visitor
+
 ## A minigame run ended and was paid (quests and the Gem Challenge listen later).
 signal minigame_played(game: StringName, score: int, coins: int)
 

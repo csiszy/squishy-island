@@ -1,21 +1,29 @@
 class_name QuestsService
 extends Node
-## Daily quests and the Gem Challenge (autoload: Quests; guide.html "Daily visits"). The server makes and checks
-## them (Server.api.quests / quest_claim; minigame runs count through submit_run's report); this service keeps the
-## latest quest board, tells the server which games the player has built, and pays out what is collected (coins
-## onto the phone, Gems from the server's answer).
+## Daily quests, the Gem Challenge and the Visitor of the week (autoload: Quests; guide.html "Daily visits"). The
+## server makes and checks them (Server.api.quests / quest_claim / visitor / visitor_hi; minigame runs count through
+## submit_run's report); this service keeps the latest quest board and visitor, tells the server which games the
+## player has built, and pays out what is collected (coins onto the phone, Gems from the server's answer, the
+## visitor into the collection).
 
 ## The quest board changed (new day, progress, something collected).
 signal changed
 
+## This week's visitor changed (someone new, said hi, moved in).
+signal visitor_changed
+
 ## The last quests() answer ({} until known).
 var board: Dictionary = {}
+## The last visitor() answer ({} until known; "squishy" &"" = nobody visits this week).
+var visitor: Dictionary = {}
 
 
 func _ready() -> void:
 	(get_node("/root/Server") as ServerService).switched.connect(func() -> void:
 		board = {}
-		refresh())
+		visitor = {}
+		refresh()
+		refresh_visitor())
 
 
 ## The phone's date ("2026-10-30"): quests change at the phone's own midnight.
@@ -70,3 +78,27 @@ func has_reward() -> bool:
 		return true
 	var s: Dictionary = board.get("streak", {})
 	return int(s.get("days", 0)) >= int(s.get("needed", 5)) and not s.get("claimed", false)
+
+
+func refresh_visitor() -> Dictionary:
+	var answer: Dictionary = await Server.api.visitor(today())
+	if answer.get("ok", false):
+		visitor = answer
+		visitor_changed.emit()
+	return answer
+
+
+## Say hi to the visitor and give it a treat (once a day). When it moves in, it joins the collection.
+func say_hi() -> Dictionary:
+	var answer: Dictionary = await Server.api.visitor_hi(today())
+	if answer.get("ok", false):
+		visitor = answer
+		if answer.get("moved_in", false) and answer.has("entry"):
+			Collection.received(StringName(answer["squishy"]), answer["entry"], answer.get("is_new", false))
+		visitor_changed.emit()
+	return answer
+
+
+## The visitor is in the park and hasn't had today's hi yet (the map shows its bubble).
+func visitor_waiting() -> bool:
+	return String(visitor.get("squishy", "")) != "" and not visitor.get("moved_in", false) and not visitor.get("today_done", false)

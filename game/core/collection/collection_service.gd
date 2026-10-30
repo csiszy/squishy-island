@@ -161,6 +161,14 @@ func open_box(kind: StringName, family: StringName, factory_level: int, first_bo
 	return answer
 
 
+## A squishy the server gave some other way (the Visitor of the week moving in): the phone's copy follows.
+func received(id: StringName, entry: Dictionary, is_new: bool) -> void:
+	_owned()[String(id)] = entry
+	_saved()
+	if is_new:
+		Events.squishy_moved_in.emit(id)
+
+
 func level_up(id: StringName) -> Dictionary:
 	var answer: Dictionary = await server.level_up(id)
 	if answer.get("ok", false):

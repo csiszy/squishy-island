@@ -53,7 +53,8 @@ bending the real 3D squishy). **Step 4 (the server) is under way**: `server/` ho
 with our rules in TypeScript (boxes, spares, Stars, coin check; `server/README.md`); the owner runs it on their
 laptop for testing (DEV → More… → Server… on the phone); the game's `NakamaGameServer` talks to it. Done: accounts and
 cloud save (4b: `Account`, "Your town" screen, grown-up gate), daily quests and the Gem Challenge (`Quests`, quest
-board; live changes in `server/live/live-config.json`). Next: the weekly visitor, then the Market and trading.
+board; live changes in `server/live/live-config.json`), the Visitor of the week (camps in the beach park on the map,
+`ParkVisitor`; also on the quest board). Next: the Market and trading.
 Open decisions for the owner: end of `docs/decisions.md` §14, §15 and §17.
 
 How the game is laid out: `game/core/` services are autoloads (`Events`, `Save`, `Settings`, `Text`, `Audio`,

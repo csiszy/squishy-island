@@ -2,7 +2,8 @@ extends Control
 ## The home screen: the island seen from above (index.html, art/city3d.js). Drag to move, pinch or scroll to
 ## zoom, tap a building or its bubble to see its card. Buildings show their level, houses their squishies.
 ## Top left: help, settings, music, save my town, Gem store, collection book; top right: the wallet;
-## bottom right: zoom buttons. Layout: data/city.json (the CITY block in the book's index.html).
+## bottom right: zoom buttons. The Visitor of the week camps in the first park (tap it to say hi).
+## Layout: data/city.json (the CITY block in the book's index.html).
 
 const TAP_MOVE := 14.0
 const TAP_TIME := 0.45
@@ -23,6 +24,8 @@ var _games_button: GamesButton
 var _card: BuildingCard
 var _music_button: Button
 var _pending_fly: StringName = &""
+var _visitor: ParkVisitor
+var _visitor_pin: VisitorPin
 
 # gestures
 var _touches: Dictionary[int, Vector2] = {}
@@ -47,6 +50,15 @@ func _ready() -> void:
 	Events.squishy_moved_in.connect(_on_moved_in)
 	Events.building_upgraded.connect(_on_upgraded)
 	Events.show_building.connect(func(id: StringName) -> void: select(id))
+	Quests.visitor_changed.connect(_show_visitor)
+	Events.show_visitor.connect(func() -> void:
+		if _visitor != null and _visitor.visible:
+			view.fly_to(_visitor.position.x, _visitor.position.z + 6.0, 60.0)
+			Audio.play(&"whoosh", 1.0, 0.5)
+			await get_tree().create_timer(0.8).timeout
+			visit())
+	_show_visitor()
+	Quests.refresh_visitor()
 	resized.connect(_on_resized)
 	_on_resized.call_deferred()
 	refresh()
@@ -64,6 +76,7 @@ func screen_shown() -> void:
 	Audio.music(&"city")
 	refresh()
 	Quests.refresh()
+	Quests.refresh_visitor()
 	_games_button.hop()
 	if _pending_fly != &"":
 		select(_pending_fly, false)
@@ -139,6 +152,10 @@ func _build_world() -> void:
 		var slot := BuildingSlot.make(entry, _city)
 		world.add_child(slot)
 		_slots[id] = slot
+	var parks: Array = _city.get("parks", []).filter(func(p: Dictionary) -> bool: return p.get("visitor", false))
+	if not parks.is_empty():
+		_visitor = ParkVisitor.make(parks[0], _city)
+		world.add_child(_visitor)
 	_camera = Camera3D.new()
 	_camera.fov = 30.0
 	_camera.near = 1.0
@@ -158,6 +175,12 @@ func _build_world() -> void:
 		b.pressed.connect(func() -> void: select(id))
 		_bubble_layer.add_child(b)
 		_bubbles[id] = b
+	if _visitor != null:
+		_visitor_pin = VisitorPin.make_for(&"")
+		_visitor_pin.name = "VisitorPin"
+		_visitor_pin.visible = false
+		_visitor_pin.pressed.connect(visit)
+		_bubble_layer.add_child(_visitor_pin)
 
 
 func _process(delta: float) -> void:
@@ -197,11 +220,17 @@ func _place_bubbles() -> void:
 		if b.visible:
 			b.place(screen, k, names)
 			order.append([_camera.global_position.distance_to(p), b])
+	if _visitor != null:
+		var vp := _visitor.bubble_point()
+		_visitor_pin.visible = _visitor.visible and not _camera.is_position_behind(vp) and area.has_point(_to_screen(vp))
+		if _visitor_pin.visible:
+			_visitor_pin.place(_to_screen(vp), k, names)
+			order.append([_camera.global_position.distance_to(vp), _visitor_pin])
 	# nearer pins on top of further ones, by their order in the pin layer (not z_index, which would also lift them
 	# above the buttons and the building card)
 	order.sort_custom(func(a: Array, c: Array) -> bool: return a[0] > c[0])
 	for i in order.size():
-		var pin: MapBubble = order[i][1]
+		var pin: Control = order[i][1]
 		if pin.get_index() != i:
 			_bubble_layer.move_child(pin, i)
 
@@ -352,6 +381,11 @@ func _tap(pos: Vector2) -> void:
 		if hit != null and from.distance_to(hit) < best_d:
 			best_d = from.distance_to(hit)
 			best = id
+	if _visitor != null and _visitor.visible:
+		var hit: Variant = _visitor.world_bounds().intersects_ray(from, dir)
+		if hit != null and from.distance_to(hit) < best_d:
+			visit()
+			return
 	if best != &"":
 		select(best)
 	else:
@@ -498,3 +532,75 @@ func _add_dot(btn: Button, dot_name: String, col: Color, changed: Signal, show: 
 		if changed.is_connected(update):
 			changed.disconnect(update))
 	update.call()
+
+
+# ---------------------------------------------------------------- the Visitor of the week (guide.html "Daily visits")
+
+func _show_visitor() -> void:
+	if _visitor == null:
+		return
+	var v := Quests.visitor
+	var id := StringName(v.get("squishy", ""))
+	var here: bool = id != &"" and not v.get("moved_in", false)
+	_visitor.show_visitor(id if here else &"")
+	_visitor_pin.show_visitor(id if here else &"", Quests.visitor_waiting())
+
+
+## Tapped the visitor: who it is and how many visits so far; say hi (once a day). The last visit: it moves in.
+func visit() -> void:
+	var v := Quests.visitor
+	var id := StringName(v.get("squishy", ""))
+	if id == &"" or v.get("moved_in", false):
+		return
+	_card.close()
+	var words := {"name": Text.t(StringName(GameData.squishy(id).get("name", ""))), "days": int(v["days"]), "needed": int(v["needed"])}
+	if v.get("today_done", false):
+		await UiPopup.ask(Text.t(&"visitor.title", words), Text.t(&"visitor.done_today", words) + "\n" + Text.t(&"visitor.visits", words),
+			Text.t(&"ui.ok"), "", _visitor_art(id, int(v["days"]), int(v["needed"])))
+		return
+	if not await UiPopup.ask(Text.t(&"visitor.title", words), Text.t(&"visitor.body", words) + "\n" + Text.t(&"visitor.visits", words),
+			Text.t(&"visitor.say_hi"), Text.t(&"ui.not_now"), _visitor_art(id, int(v["days"]), int(v["needed"]))):
+		return
+	var answer: Dictionary = await Quests.say_hi()
+	if not answer.get("ok", false):
+		UiToast.show_text(Text.t(&"ui.offline") if answer.get("error") == &"offline" else Text.t(&"visitor.done_today", words))
+		return
+	Audio.play(&"jar")
+	Haptics.play(&"light")
+	words["days"] = int(answer["days"])
+	if not answer.get("moved_in", false):
+		await UiPopup.ask(Text.t(&"visitor.thanks_title", words), Text.t(&"visitor.thanks_body", words), Text.t(&"ui.ok"), "",
+			_visitor_art(id, int(answer["days"]), int(answer["needed"])))
+		return
+	# moved in: a celebration in the park, then off to its new home
+	Audio.play(&"tada")
+	Haptics.play(&"medium")
+	Celebration.burst(_fx_layer, _to_screen(_visitor.bubble_point()), 1.2, func() -> Vector2: return _to_screen(_visitor.bubble_point()))
+	var house := StringName(GameData.squishy(id).get("family", ""))
+	words["house"] = Text.t(StringName(GameData.building(house).get("name", "")))
+	var body := Text.t(&"visitor.moved_body", words)
+	if not answer.get("is_new", true):
+		body = Text.t(&"visitor.spare_body", words)
+	await UiPopup.ask(Text.t(&"visitor.moved_title", words), body, Text.t(&"ui.ok"), "", _visitor_art(id, int(answer["days"]), int(answer["needed"])))
+	_pending_fly = &""
+	select(house, false)
+
+
+## The visitor's picture and a row of hearts: one filled in for each day you said hi.
+func _visitor_art(id: StringName, days: int, needed: int) -> Control:
+	var col := VBoxContainer.new()
+	col.alignment = BoxContainer.ALIGNMENT_CENTER
+	col.add_theme_constant_override("separation", 8)
+	var pic := Ui.texture(ArtLibrary.portrait(id), Vector2(220, 220))
+	pic.size_flags_horizontal = SIZE_SHRINK_CENTER
+	col.add_child(pic)
+	var row := HBoxContainer.new()
+	row.name = "Hearts"
+	row.alignment = BoxContainer.ALIGNMENT_CENTER
+	row.add_theme_constant_override("separation", 10)
+	col.add_child(row)
+	for i in needed:
+		var heart := Ui.texture(Ui.icon("heart"), Vector2(48, 48))
+		heart.modulate = Color.WHITE if i < days else Color(1, 1, 1, 0.25)
+		row.add_child(heart)
+	return col

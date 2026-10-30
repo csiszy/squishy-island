@@ -294,3 +294,19 @@ func quest_claim(day: String, id: String) -> Dictionary:
 	var answer := FakeQuests.claim(state, day, id)
 	_changed()
 	return answer
+
+
+func visitor(day: String) -> Dictionary:
+	if offline:
+		return _fail(&"offline")
+	var answer := FakeVisitor.answer(state, day)
+	_changed()
+	return answer
+
+
+func visitor_hi(day: String) -> Dictionary:
+	if offline:
+		return _fail(&"offline")
+	var answer := FakeVisitor.hi(state, day, _give)
+	_changed()
+	return answer

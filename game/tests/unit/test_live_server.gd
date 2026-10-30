@@ -98,3 +98,18 @@ func test_daily_quests_on_the_real_server() -> void:
 	assert_true("challenge" in run["quests_done"])
 	var got: Dictionary = await api.quest_claim(day, "challenge")
 	assert_eq(got["gems"], 3)
+
+
+func test_the_visitor_on_the_real_server() -> void:
+	if address == "":
+		pass_test("no server to talk to (set SQUISHY_SERVER)")
+		return
+	var api := _api(_device())
+	await api.load_state()
+	var v: Dictionary = await api.visitor(QuestsService.today())
+	assert_true(v.get("ok", false), str(v))
+	assert_true(v["squishy"] is StringName and v["squishy"] != &"", "a squishy id, like the pretend server's")
+	assert_false(GameData.squishy(v["squishy"]).is_empty(), "one of the game's squishies")
+	var hi: Dictionary = await api.visitor_hi(QuestsService.today())
+	assert_eq([hi["ok"], hi["days"], hi["today_done"]], [true, 1, true])
+	assert_eq((await api.visitor_hi(QuestsService.today()))["error"], &"already_today")

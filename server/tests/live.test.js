@@ -95,3 +95,14 @@ test('daily quests and a run that counts for them', async () => {
   assert.ok(run.quests_done.includes('challenge'), 'a new player\'s first challenge is small');
   assert.equal((await rpc(t, 'quest_claim', { day, id: 'challenge' })).gems, 3);
 });
+
+test('the visitor of the week: say hi once a day', async () => {
+  const token = await login('test-' + crypto.randomUUID());
+  const day = new Date().toISOString().slice(0, 10);
+  const v = await rpc(token, 'visitor', { day });
+  assert.equal(v.ok, true);
+  assert.ok(v.squishy && v.needed >= 1, JSON.stringify(v));
+  const hi = await rpc(token, 'visitor_hi', { day });
+  assert.deepEqual([hi.ok, hi.days, hi.today_done], [true, 1, true]);
+  assert.equal((await rpc(token, 'visitor_hi', { day })).error, 'already_today');
+});

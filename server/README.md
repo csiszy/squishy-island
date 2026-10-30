@@ -55,6 +55,12 @@ Keys starting with `_` are notes and examples, which the server ignores: to use 
   `text`. Write the text in plain English with `{n}` for the target and `{game}` for the game's name; for example
   `"Play {game} {n} times"`. (The book's own quests use word keys like `quest.play_any`, for translations later.)
 
+- **The Visitor of the week**: `visitorEnabled` (false = nobody visits), `visitorDays` (how many different days of
+  hi it takes to move in, 4), and `visitors`: the Monday of a week and who visits everyone that week, for example
+  `"visitors": { "2026-12-21": "shortcake" }` (a squishy id, from `game/data/squishies.json`). Without it, each
+  player gets a squishy they don't own yet. A visitor already chosen for this week stays; changes count from the
+  next week's.
+
 Game ids: `sky_bounce`, `bistro_rush`, `sort_a_lot`, `grow_grow_garden`, `style_studio`, `bucket_brigade`,
 `squish_breaker`, `lost_and_found`, `squeak_beat`, `squish_lab`. A quest only appears for players who have built
 its game. If the file has a mistake (a missing comma), the server ignores it and keeps the book's numbers, so a
@@ -70,6 +76,8 @@ that address; nobody types anything. This is set up when going live.
 ## For programmers
 
 - `src/rules.ts`: the rules (the same as the game's pretend server, `game/core/server/fake_game_server.gd`).
+- `src/quests.ts`, `src/visitor.ts`: daily quests, the Gem Challenge and the Visitor of the week (the same as the
+  game's `fake_quests.gd` and `fake_visitor.gd`), and the live config.
 - `src/main.ts`: the RPCs the game calls (`game/core/server/nakama_game_server.gd`) and the saved state.
 - `tools/make_data.js`: copies the game's numbers from `game/data` (made from the design book).
 - `build/index.js`: what Nakama runs, compiled by `npm run build` and kept in the repository so the server

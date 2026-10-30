@@ -109,3 +109,18 @@ func quests(_day: String, _games: Array) -> Dictionary:
 ## {"gems", "total_gems", "stars"}). Errors: not_done, claimed, not_today, no_quest.
 func quest_claim(_day: String, _id: String) -> Dictionary:
 	return {"ok": false, "error": &"offline"}
+
+
+# ---------------------------------------------------------------- the Visitor of the week (Step 4c)
+
+## This week's visitor in the park (chosen on the week's first ask, then the same all week). day: the phone's date.
+## Answer: {"ok", "squishy" (&"" = nobody visits this week), "rarity", "days" (said hi on), "needed", "today_done",
+## "moved_in", "until" (the Sunday it leaves, "YYYY-MM-DD")}.
+func visitor(_day: String) -> Dictionary:
+	return {"ok": false, "error": &"offline"}
+
+
+## Say hi and give a treat (once a day). Same answer as visitor(); when it moves in, also "entry" and "is_new".
+## Errors: already_today, moved_in, no_visitor.
+func visitor_hi(_day: String) -> Dictionary:
+	return {"ok": false, "error": &"offline"}

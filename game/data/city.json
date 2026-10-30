@@ -987,7 +987,8 @@
    "x": -20,
    "z": 116,
    "r": 10,
-   "benches": 2
+   "benches": 2,
+   "visitor": true
   }
  ],
  "ponds": [

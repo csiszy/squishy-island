@@ -1050,3 +1050,17 @@ ui.stars,Stars
 ui.yes,Yes
 ui.zoom_in,Zoom in
 ui.zoom_out,Zoom out
+visitor.body,"{name} is camping in the park. Say hi and give {name} a treat on {needed} different days, and {name} moves into your island for free!"
+visitor.done_today,You already said hi today. {name} is happy to see you again on another day!
+visitor.go,Go and say hi
+visitor.heading,Visitor of the week
+visitor.moved_body,{name} now lives at the {house}. Thank you for all the visits!
+visitor.moved_title,{name} moved in!
+visitor.pin,Visitor: {name}
+visitor.say_hi,Say hi & give a treat
+visitor.see_you,You said hi today. See {name} again another day!
+visitor.spare_body,"You already had {name}, so the extra one went onto the Spare Shelf."
+visitor.thanks_body,Say hi again on another day. Visits: {days} of {needed}
+visitor.thanks_title,{name} loved the treat!
+visitor.title,{name} is visiting!
+visitor.visits,Visits: {days} of {needed}

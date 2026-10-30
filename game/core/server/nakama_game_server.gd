@@ -64,6 +64,14 @@ func quest_claim(day: String, id: String) -> Dictionary:
 	return await _rpc(&"quest_claim", {"day": day, "id": id})
 
 
+func visitor(day: String) -> Dictionary:
+	return await _rpc(&"visitor", {"day": day})
+
+
+func visitor_hi(day: String) -> Dictionary:
+	return await _rpc(&"visitor_hi", {"day": day})
+
+
 func is_remote() -> bool:
 	return true
 

@@ -1,7 +1,8 @@
 extends Control
 ## The quest board (guide.html "Daily visits"), from the Quests button on the map: today's 2 coin quests, the Gem
 ## Challenge (+Gems), how many Gem Challenge days this week (5 = a bonus), tomorrow's Gem Challenge game as a
-## teaser, and "your first game today pays double". A quest's Play button opens its game. Nothing here ever scolds
+## teaser, "your first game today pays double", and the Visitor of the week (its visits so far; "Go and say hi" flies
+## the map to the park). A quest's Play button opens its game. Nothing here ever scolds
 ## or counts down: missing a day only means missing that day's quests.
 
 var _list: VBoxContainer
@@ -46,8 +47,10 @@ func _ready() -> void:
 	_list.add_theme_constant_override("separation", 16)
 	scroll.add_child(_list)
 	Quests.changed.connect(_show)
+	Quests.visitor_changed.connect(_show)
 	_show()
 	Quests.refresh()
+	Quests.refresh_visitor()
 
 
 func open(_args: Dictionary) -> void:
@@ -56,6 +59,7 @@ func open(_args: Dictionary) -> void:
 
 func screen_shown() -> void:
 	Quests.refresh()
+	Quests.refresh_visitor()
 
 
 ## A game's name from its id ("Sky Bounce").
@@ -104,6 +108,10 @@ func _show() -> void:
 	if b.is_empty():
 		_list.add_child(Ui.label(Text.t(&"quests.offline"), "", HORIZONTAL_ALIGNMENT_LEFT, true))
 		return
+	var visitor := _visitor_card()
+	if visitor != null:
+		_list.add_child(Ui.label(Text.t(&"visitor.heading"), "Heading"))
+		_list.add_child(visitor)
 	if b.get("first_run_left", false):
 		_list.add_child(Ui.label(Text.t(&"quests.first_run"), "Heading", HORIZONTAL_ALIGNMENT_LEFT, true))
 	var quests: Array = b.get("quests", [])
@@ -174,4 +182,49 @@ func _card(words: String, progress: int, target: int, reward: String, icon: Stri
 		play.name = "Play"
 		play.pressed.connect(func() -> void: Nav.go(&"minigame", {"game": StringName(game)}))
 		col.add_child(play)
+	return card
+
+
+## The Visitor of the week: its picture, visits so far as hearts, and a button to go and say hi (none once it has
+## moved in, or when nobody visits).
+func _visitor_card() -> Control:
+	var v := Quests.visitor
+	var id := StringName(v.get("squishy", ""))
+	if id == &"":
+		return null
+	var words := {"name": Text.t(StringName(GameData.squishy(id).get("name", ""))), "days": int(v.get("days", 0)), "needed": int(v.get("needed", 4))}
+	var card := PanelContainer.new()
+	card.name = "Visitor"
+	card.theme_type_variation = "Card"
+	card.self_modulate = Color("#FFEEF5")
+	var row := HBoxContainer.new()
+	row.add_theme_constant_override("separation", 14)
+	card.add_child(row)
+	var pic := Ui.texture(ArtLibrary.portrait(id), Vector2(110, 110))
+	pic.size_flags_vertical = SIZE_SHRINK_CENTER
+	row.add_child(pic)
+	var col := VBoxContainer.new()
+	col.size_flags_horizontal = SIZE_EXPAND_FILL
+	col.add_theme_constant_override("separation", 8)
+	row.add_child(col)
+	if v.get("moved_in", false):
+		col.add_child(Ui.label(Text.t(&"visitor.moved_title", words), "", HORIZONTAL_ALIGNMENT_LEFT, true))
+		return card
+	col.add_child(Ui.label(Text.t(&"visitor.title", words), "", HORIZONTAL_ALIGNMENT_LEFT, true))
+	var hearts := HBoxContainer.new()
+	hearts.add_theme_constant_override("separation", 8)
+	for i in int(words["needed"]):
+		var heart := Ui.texture(Ui.icon("heart"), Vector2(36, 36))
+		heart.modulate = Color.WHITE if i < int(words["days"]) else Color(1, 1, 1, 0.25)
+		hearts.add_child(heart)
+	col.add_child(hearts)
+	if v.get("today_done", false):
+		col.add_child(Ui.label(Text.t(&"visitor.see_you", words), "Small", HORIZONTAL_ALIGNMENT_LEFT, true))
+	else:
+		var go := Ui.button(Text.t(&"visitor.go"), "PillButton", "heart")
+		go.name = "GoSayHi"
+		go.pressed.connect(func() -> void:
+			Nav.back()
+			Events.show_visitor.emit())
+		col.add_child(go)
 	return card
