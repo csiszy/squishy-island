@@ -212,9 +212,9 @@ func _key(keycode: Key, pressed: bool) -> bool:
 
 func _draw_game() -> void:
 	var bags := bags_now()
-	draw_rect(Rect2(0, 0, W, H), Color("#FFF7D6"))
+	rect(0, 0, W, H, Color("#FFF7D6"))
 	for i in 8:
-		draw_rect(Rect2(0, 52 + i * 60, W, 60), Color("#FFF2C2") if i % 2 else Color("#FFF7D6"))
+		rect(0, 52 + i * 60, W, 60, Color("#FFF2C2") if i % 2 else Color("#FFF7D6"))
 	rr(70, 76, 220, 56, 14, Color.WHITE)
 	text(ctx.t(&"sort_a_lot.help.1"), 180, 94, 13, Color("#3BA7A0"), &"center", &"body")
 	text(ctx.t(&"sort_a_lot.help.2"), 180, 114, 13, Color("#3BA7A0"), &"center", &"body")
@@ -222,7 +222,7 @@ func _draw_game() -> void:
 	rr(-10, BELT_Y - 4, W + 20, 30, 8, Color("#5A5170"))
 	for i in range(-1, 14):
 		circle(i * 30 + belt, BELT_Y + 11, 7, Color("#9A8FAA"), INK, 2)
-	draw_rect(Rect2(W - 24, BELT_Y - 60, 24, 90), Color(0.898, 0.282, 0.302, 0.18))
+	rect(W - 24, BELT_Y - 60, 24, 90, Color(0.898, 0.282, 0.302, 0.18))
 	text("!", W - 12, BELT_Y - 40, 16, Color("#E5484D"), &"center", &"display")
 	# bags
 	for b in bags:
@@ -252,7 +252,7 @@ func _draw_game() -> void:
 		var held := not drag.is_empty() and is_same(drag["l"], l)
 		_letter(l["x"], l["y"], Color(l["col"]), l["pat"], l["r"] + (sin(t * 20.0) * 0.05 if held else 0.0), 1.25 if held else 1.0)
 	if not drag.is_empty():
-		draw_dashed_line(Vector2(drag["x"], drag["y"] + 20), Vector2(drag["x"], 460), Color(INK, 0.35), 2.0, 6.0)
+		dashed(Vector2(drag["x"], drag["y"] + 20), Vector2(drag["x"], 460), Color(INK, 0.35), 2.0, 6.0)
 	# top bar
 	hud(Color("#3BA7A0"), "★ " + fmt(score), 116)
 	hearts(W - 66, 26, hearts_left)

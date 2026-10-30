@@ -27,7 +27,8 @@ app "conflicts with an existing package", uninstall the old one first (this dele
 
 ## What to try (Step 2: the minigames)
 
-- Tap **Bounce Park**, **Squish Bistro** or the **Post Office** on the map, then **Play**.
+- Tap **Bounce Park**, **Squish Bistro** or the **Post Office** on the map, then **Play**, or use the pink
+  **Games** button (bottom left of the map) to see every game in one place.
 - The start card: how to play, how coins work, your best score, and which squishy plays (**Change** once you own
   more than one).
 - During a game: the pause button at the top (or the phone's back button): sound / music switches, keep playing,

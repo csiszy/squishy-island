@@ -9,6 +9,7 @@ const SCREENS: Dictionary[StringName, String] = {
 	&"factory": "res://features/factory/factory_screen.tscn",
 	&"collection": "res://features/collection/collection_screen.tscn",
 	&"minigame": "res://features/minigame_host/minigame_screen.tscn",
+	&"games": "res://features/games/games_screen.tscn",
 }
 const FIRST_SCREEN := &"city"
 
@@ -21,9 +22,12 @@ var _stack: Array[Dictionary] = []
 func _ready() -> void:
 	theme = UiTheme.get_theme()
 	set_anchors_preset(PRESET_FULL_RECT)
+	# the shell itself never catches taps: what is not used by a screen's buttons reaches the screen's game
+	mouse_filter = MOUSE_FILTER_IGNORE
 	_host = Control.new()
 	_host.name = "Screens"
 	_host.set_anchors_preset(PRESET_FULL_RECT)
+	_host.mouse_filter = MOUSE_FILTER_IGNORE
 	add_child(_host)
 	_overlay = Control.new()
 	_overlay.name = "Overlay"
@@ -33,6 +37,7 @@ func _ready() -> void:
 	add_child(_overlay)
 	# which minigames exist (the host reads every manifest), so the map knows where "Play" leads
 	GameData.minigames = MinigameCatalog.by_building()
+	MinigameCatalog.load_all_words()
 	if Ads.provider is FakeAdProvider:
 		(Ads.provider as FakeAdProvider).presenter = PretendAd.play
 	Nav.go_requested.connect(open_screen)

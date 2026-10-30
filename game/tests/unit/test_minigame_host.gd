@@ -123,3 +123,51 @@ func test_the_map_card_plays_only_games_that_exist() -> void:
 	card = BuildingCardModel.for_building(&"playground", Town, Collection, Economy)
 	play = (card["actions"] as Array).filter(func(a: Dictionary) -> bool: return a["id"] == &"play")[0]
 	assert_true(play["enabled"])
+
+
+## A real tap, sent through the whole app (shell, screen, cards) the way the phone sends it, reaches the game.
+func test_a_real_tap_reaches_the_game() -> void:
+	GameData.minigames = MinigameCatalog.by_building()
+	var vp := SubViewport.new()
+	vp.size = Vector2i(720, 1280)
+	vp.handle_input_locally = true
+	add_child_autofree(vp)
+	var app: Control = (load("res://app/main.tscn") as PackedScene).instantiate()
+	vp.add_child(app)
+	await wait_frames(2)
+	Nav.go(&"minigame", {"building": &"playground"})
+	await wait_frames(2)
+	var screen := app.find_child("MinigameScreen", true, false)
+	assert_not_null(screen, "the game screen opened")
+	screen.call(&"_start")
+	await wait_frames(2)
+	var game: Minigame = screen.get(&"game")
+	var touch := InputEventScreenTouch.new()
+	touch.index = 0
+	touch.pressed = true
+	touch.position = Vector2(100, 900)
+	vp.push_input(touch)
+	await wait_frames(1)
+	var target: float = game.get(&"target")
+	assert_almost_eq(target, 50.0, 1.0, "the tap at x=100 steers to 50 in the game's own 360-wide space")
+	touch = touch.duplicate() as InputEventScreenTouch
+	touch.pressed = false
+	vp.push_input(touch)
+	await wait_frames(1)
+	assert_eq(game.get(&"target"), -1.0, "letting go stops steering")
+
+
+## The pretend ad covers the whole screen with its card in the middle (it was stuck in the top-left corner).
+func test_the_pretend_ad_is_in_the_middle() -> void:
+	var overlay := Control.new()
+	overlay.size = Vector2(720, 1280)
+	overlay.add_to_group(&"ui_overlay")
+	add_child_autofree(overlay)
+	PretendAd.play(1, 1)
+	await wait_frames(3)
+	var ad: Control = overlay.get_child(0)
+	assert_eq(ad.size, Vector2(720, 1280), "fills the screen")
+	var card := ad.find_children("*", "PanelContainer", true, false)[0] as Control
+	assert_almost_eq(card.get_global_rect().get_center().x, 360.0, 2.0, "centred across")
+	assert_almost_eq(card.get_global_rect().get_center().y, 640.0, 2.0, "centred down")
+	await wait_seconds(1.2)

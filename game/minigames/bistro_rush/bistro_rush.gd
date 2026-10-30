@@ -223,16 +223,16 @@ func _serve(ci: int) -> void:
 # ---------------------------------------------------------------- drawing
 
 func _draw_game() -> void:
-	draw_rect(Rect2(0, 0, W, H), Color("#FFF1E0"))
+	rect(0, 0, W, H, Color("#FFF1E0"))
 	# window + street
 	rr(14, 70, W - 28, 112, 14, Color("#BFE6F7"), Color("#C9A97A"), 4)
-	draw_rect(Rect2(17, 150, W - 34, 29), Color("#9ED67E"))
+	rect(17, 150, W - 34, 29, Color("#9ED67E"))
 	line(PackedVector2Array([Vector2(W / 2.0, 70), Vector2(W / 2.0, 182)]), Color("#C9A97A"), 3)
 	# seats + customers
 	for i in 3:
 		var sx: float = SEATS[i]
 		rr(sx - 22, 262, 44, 10, 5, Color("#E5484D"))
-		draw_rect(Rect2(sx - 3, 272, 6, 26), Color("#8A6A4E"))
+		rect(sx - 3, 272, 6, 26, Color("#8A6A4E"))
 		var s: Variant = seats[i]
 		if s == null:
 			continue
@@ -245,29 +245,29 @@ func _draw_game() -> void:
 			_order_bubble(sx, s)
 	# counter
 	rr(-6, 296, W + 12, 22, 4, Color("#C98A55"))
-	draw_rect(Rect2(0, 318, W, 46), Color("#E5484D"))
+	rect(0, 318, W, 46, Color("#E5484D"))
 	for i in 13:
-		draw_rect(Rect2(i * 30, 318, 15, 46), Color(1, 1, 1, 0.28))
+		rect(i * 30, 318, 15, 46, Color(1, 1, 1, 0.28))
 	line(PackedVector2Array([Vector2(0, 364), Vector2(W, 364)]), INK, 2.5)
 	# kitchen
 	for i in 7:
 		for j in 4:
-			draw_rect(Rect2(i * 52, 365 + j * 40, 52, 40), Color("#FFEFE0") if (i + j) % 2 else Color("#FFF8EC"))
-	draw_rect(Rect2(0, 525, W, H - 525), Color("#FFF8EC"))
+			rect(i * 52, 365 + j * 40, 52, 40, Color("#FFEFE0") if (i + j) % 2 else Color("#FFF8EC"))
+	rect(0, 525, W, H - 525, Color("#FFF8EC"))
 	rr(22, 398, 268, 68, 16, Color("#E8E4EF"), Color("#9A8FAA"), 3)
 	text(ctx.t(&"bistro_rush.pans"), 156, 412, 10, Color("#7C7494"), &"center", &"body")
 	for i in 3:
 		var px: float = PANS[i]
 		var py := 442.0
 		circle(px, py, 25, Color("#4A4458"), INK, 2.5)
-		draw_rect(Rect2(px + 22, py - 3, 18, 6), Color("#4A4458"))
+		rect(px + 22, py - 3, 18, 6, Color("#4A4458"))
 		circle(px, py, 19, Color("#5E5672"), null, 0)
 		var p: Variant = pans[i]
 		if p == null:
 			continue
 		if p["t"] < 1.0:
 			_food(p["f"], px, py, 1.0, 0.55)
-			draw_arc(Vector2(px, py), 30, -PI / 2.0, -PI / 2.0 + TAU * p["t"], 32, Color("#FFC94D"), 5, true)
+			arc(px, py, 30, -PI / 2.0, -PI / 2.0 + TAU * p["t"], Color("#FFC94D"), 5)
 			for k in 2:
 				circle(px - 6 + k * 12, py - 30 - fmod(t * 30.0 + k * 12, 18.0), 5, Color(1, 1, 1, 0.5), null, 0)
 		else:
@@ -284,7 +284,7 @@ func _draw_game() -> void:
 	circle(-9, -6, 8, Color.WHITE, Color("#9A8FAA"), 2)
 	circle(0, -10, 9, Color.WHITE, Color("#9A8FAA"), 2)
 	circle(9, -6, 8, Color.WHITE, Color("#9A8FAA"), 2)
-	draw_rect(Rect2(-13, -6, 26, 8), Color.WHITE)
+	rect(-13, -6, 26, 8, Color.WHITE)
 	pop()
 	# tray
 	rr(10, 516, W - 20, 116, 22, Color.WHITE)
@@ -313,7 +313,7 @@ func _order_bubble(sx: float, s: Dictionary) -> void:
 	var by := 92.0
 	rr(bx, by, bw, 50, 14, Color.WHITE)
 	poly(PackedVector2Array([Vector2(sx - 7, by + 49), Vector2(sx, by + 60), Vector2(sx + 7, by + 49)]), Color.WHITE, INK, 2.5)
-	draw_rect(Rect2(sx - 5.5, by + 46, 11, 4), Color.WHITE)
+	rect(sx - 5.5, by + 46, 11, 4, Color.WHITE)
 	for k: int in n:
 		var fx := bx + 30.0 + k * 44.0
 		var got: bool = s["got"][k]
@@ -330,7 +330,7 @@ func _order_bubble(sx: float, s: Dictionary) -> void:
 			var pts := rounded_rect(sx - 50, 186, 100, 78, 18)
 			pts.append(pts[0])
 			for j: int in range(0, pts.size() - 1, 2):
-				draw_line(pts[j], pts[j + 1], Color("#FFC94D"), 3, true)
+				line(PackedVector2Array([pts[j], pts[j + 1]]), Color("#FFC94D"), 3)
 
 
 ## The five foods, drawn around (x, y) at size s (like the prototype's FOODS[f].draw).

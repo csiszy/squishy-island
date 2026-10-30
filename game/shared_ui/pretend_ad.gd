@@ -28,7 +28,8 @@ static func play(seconds: int, closable_after: int) -> bool:
 
 
 func _ready() -> void:
-	set_anchors_preset(PRESET_FULL_RECT)
+	# anchors AND offsets, or it stays 0 x 0 in the corner
+	set_anchors_and_offsets_preset(PRESET_FULL_RECT)
 	mouse_filter = MOUSE_FILTER_STOP
 	var dim := ColorRect.new()
 	dim.color = Color(UiTheme.INK, 0.85)

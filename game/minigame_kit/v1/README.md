@@ -6,5 +6,6 @@ Games may use this folder and `minigame_api/`, nothing else.
 | File | What it gives a game |
 |---|---|
 | `kit_game.gd` | `KitGame`: the prototypes' shared engine in Godot (run state, "keep going?" once, touch/mouse/keys in the game's own 360 x 640 space, floating text, bursts, shake, and the drawing helpers `rr`, `circle`, `text`, `sprite`, `heart`, `hearts`, `coin`, `bar`, `star`, ...) |
+| | Draw only through its helpers (they draw at the phone's real pixel size, so words and edges stay sharp). |
 | `kit_tone.gd` | `KitTone`: the prototypes' synthesised blips and noise bursts as sounds |
 | `harness.gd` | Play a game alone with a pretend host (each game's `harness.tscn`) |

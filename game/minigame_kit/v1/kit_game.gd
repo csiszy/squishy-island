@@ -15,6 +15,10 @@ extends Minigame
 ##   G.float / G.burst / G.shake    float_text / burst / shake
 ##   G.sfx / G.noise / G.buzz       tone / noise / ctx.buzz
 ##   D.rr / D.circle / D.text ...   rr / circle / text ... (same arguments, same plum outline)
+##   c.fillRect / arc / setLineDash rect / arc / dashed;  save/translate/rotate/scale/restore = push / pop
+##
+## Draw ONLY through these helpers, never Godot's draw_ functions: the helpers draw at the phone's real pixel size
+## (sharp words and edges, like the book's canvas); the contract test checks this.
 ##
 ## Override _make_result() to fill MinigameResult.metric (and level/stars/won for level games).
 
@@ -33,7 +37,6 @@ var revived := false
 var _paused := false
 var _fx: Array[Dictionary] = []
 var _shake := 0.0
-var _base := Transform2D.IDENTITY
 var _sprites: Dictionary = {}
 var _touches: Dictionary = {}
 
@@ -251,47 +254,107 @@ func _to_game(screen: Vector2) -> Vector2:
 
 
 # ---------------------------------------------------------------- drawing (the prototypes' D helpers)
+# Games give every position and size in their own 360 x 640 space; the helpers turn them into the phone's real
+# pixels before drawing (like the book's canvas, which draws at the screen's pixel ratio). Godot would otherwise
+# draw small and scale the picture up: blurry words, soft edges. So games draw only through these helpers.
+
+## Pixels on the screen per game unit, and the current game -> pixel mapping (with shake and push()).
+var _px := 1.0
+var _m := Transform2D.IDENTITY
+var _root_m := Transform2D.IDENTITY
+var _to_local := Transform2D.IDENTITY
+
 
 func _draw() -> void:
-	_base = Transform2D.IDENTITY
+	_px = 1.0
+	if is_inside_tree():
+		_px = maxf(0.01, get_screen_transform().get_scale().x)
+	# draw in screen pixels (relative to this node), then map game units onto them
+	_to_local = Transform2D.IDENTITY.scaled(Vector2(1.0 / _px, 1.0 / _px))
+	draw_set_transform_matrix(_to_local)
+	var shake_by := Vector2.ZERO
 	if _shake > 0.0:
-		_base = Transform2D(0.0, Vector2(randf() - 0.5, randf() - 0.5) * 32.0 * _shake)
-	draw_set_transform_matrix(_base)
+		shake_by = Vector2(randf() - 0.5, randf() - 0.5) * 32.0 * _shake
+	_root_m = Transform2D(0.0, Vector2(_px, _px), 0.0, shake_by * _px)
+	_m = _root_m
 	_draw_game()
+	_m = _root_m
 	for f in _fx:
 		var a := clampf(float(f["life"]) * 1.6, 0.0, 1.0)
 		if f["k"] == "dot":
-			draw_circle(f["p"], f["r"], Color(f["col"], a), true, -1.0, true)
+			circle(f["p"].x, f["p"].y, f["r"], Color(f["col"], a), null, 0.0)
 		else:
-			text(f["t"], f["p"].x, f["p"].y, f["size"], Color(f["col"], a), &"center", &"display", INK, 4.0)
-	draw_set_transform_matrix(Transform2D.IDENTITY)
+			text(f["t"], f["p"].x, f["p"].y, f["size"], Color(f["col"], a), &"center", &"display", Color(INK, a), 4.0)
 
 
-## Rounded rectangle with the plum outline (fill or stroke may be transparent / lw 0).
+## Draw with an extra move/turn/scale, like canvas save/translate/rotate/scale/restore. Call pop() after.
+func push(at: Vector2, rot := 0.0, scale_by := Vector2.ONE) -> void:
+	_m = _root_m * Transform2D(rot, scale_by, 0.0, at)
+
+
+func pop() -> void:
+	_m = _root_m
+
+
+func _k() -> float:
+	return _m.get_scale().x
+
+
+func _pts(pts: PackedVector2Array) -> PackedVector2Array:
+	var out := PackedVector2Array()
+	out.resize(pts.size())
+	for i in pts.size():
+		out[i] = _m * pts[i]
+	return out
+
+
+## A filled rectangle (no outline).
+func rect(x: float, y: float, w: float, h: float, col: Color) -> void:
+	_shape_px(_pts(PackedVector2Array([Vector2(x, y), Vector2(x + w, y), Vector2(x + w, y + h), Vector2(x, y + h)])), col, null, 0.0)
+
+
+## Rounded rectangle with the plum outline (fill or stroke may be null / lw 0).
 func rr(x: float, y: float, w: float, h: float, r: float, fill: Variant = null, stroke: Variant = INK, lw := 2.5) -> void:
-	var pts := rounded_rect(x, y, w, h, r)
-	_shape(pts, fill, stroke, lw)
+	_shape_px(_pts(rounded_rect(x, y, w, h, r)), fill, stroke, lw * _k())
 
 
 func circle(x: float, y: float, r: float, fill: Variant = null, stroke: Variant = INK, lw := 2.5) -> void:
-	r = maxf(0.1, r)
+	var c := _m * Vector2(x, y)
+	var rad := maxf(0.1, r) * _k()
 	if fill is Color:
-		draw_circle(Vector2(x, y), r, fill, true, -1.0, true)
+		draw_circle(c, rad, fill, true, -1.0, true)
 	if stroke is Color and lw > 0.0:
-		draw_arc(Vector2(x, y), r, 0.0, TAU, maxi(16, int(r * 1.5)), stroke, lw, true)
+		draw_arc(c, rad, 0.0, TAU, clampi(int(rad), 24, 128), stroke, lw * _k(), true)
 
 
 func ellipse(x: float, y: float, rx: float, ry: float, fill: Variant = null, stroke: Variant = INK, lw := 2.5, rot := 0.0) -> void:
 	var pts := PackedVector2Array()
-	var n := maxi(20, int((rx + ry) * 0.8))
+	var n := clampi(int((rx + ry) * _k() * 0.5), 24, 96)
 	for i in n:
 		var a := i * TAU / n
 		pts.append(Vector2(x, y) + Vector2(cos(a) * rx, sin(a) * ry).rotated(rot))
-	_shape(pts, fill, stroke, lw)
+	_shape_px(_pts(pts), fill, stroke, lw * _k())
 
 
-## A closed shape: filled, then outlined (smoothed edges).
-func _shape(pts: PackedVector2Array, fill: Variant, stroke: Variant, lw: float) -> void:
+## Part of a circle's outline (angles in radians, 0 = right, clockwise).
+func arc(x: float, y: float, r: float, from: float, to: float, col: Color, lw := 2.0) -> void:
+	draw_arc(_m * Vector2(x, y), r * _k(), from + _m.get_rotation(), to + _m.get_rotation(), clampi(int(r * _k() * 0.5), 16, 96), col, lw * _k(), true)
+
+
+func poly(pts: PackedVector2Array, fill: Variant = null, stroke: Variant = INK, lw := 2.5) -> void:
+	_shape_px(_pts(pts), fill, stroke, lw * _k())
+
+
+func line(pts: PackedVector2Array, col: Color, lw := 2.0) -> void:
+	draw_polyline(_pts(pts), col, lw * _k(), true)
+
+
+func dashed(a: Vector2, b: Vector2, col: Color, lw := 2.0, dash := 8.0) -> void:
+	draw_dashed_line(_m * a, _m * b, col, lw * _k(), dash * _k(), true, true)
+
+
+## A closed shape already in screen pixels: filled, then outlined (smoothed edges).
+func _shape_px(pts: PackedVector2Array, fill: Variant, stroke: Variant, lw: float) -> void:
 	if pts.size() < 3:
 		return
 	if fill is Color:
@@ -306,19 +369,11 @@ func _shape(pts: PackedVector2Array, fill: Variant, stroke: Variant, lw: float) 
 		draw_polyline(ring2, stroke, lw, true)
 
 
-func poly(pts: PackedVector2Array, fill: Variant = null, stroke: Variant = INK, lw := 2.5) -> void:
-	_shape(pts, fill, stroke, lw)
-
-
-func line(pts: PackedVector2Array, col: Color, lw := 2.0) -> void:
-	draw_polyline(pts, col, lw, true)
-
-
 static func rounded_rect(x: float, y: float, w: float, h: float, r: float) -> PackedVector2Array:
 	r = clampf(r, 0.0, minf(w, h) / 2.0)
 	var pts := PackedVector2Array()
 	var corners := [Vector2(x + w - r, y + r), Vector2(x + w - r, y + h - r), Vector2(x + r, y + h - r), Vector2(x + r, y + r)]
-	var steps := maxi(3, int(r / 2.0))
+	var steps := clampi(int(r), 3, 12)
 	for c in 4:
 		var start := -PI / 2.0 + c * PI / 2.0
 		for i in steps + 1:
@@ -349,14 +404,17 @@ static func cubic(p0: Vector2, c1: Vector2, c2: Vector2, p1: Vector2, n := 12) -
 
 
 ## Words, centred on y like the prototypes (align: left | center | right; kind: display | body).
+## Drawn at the screen's real size, so they stay sharp.
 func text(words: String, x: float, y: float, size := 16.0, fill := INK, align := &"center", kind := &"display", stroke: Variant = null, sw := 4.0) -> void:
 	var f := ctx.font(kind)
-	var px := int(size)
+	var k := _k()
+	var px := maxi(1, roundi(size * k))
 	var w := f.get_string_size(words, HORIZONTAL_ALIGNMENT_LEFT, -1, px).x
-	var x0 := x - w / 2.0 if align == &"center" else (x - w if align == &"right" else x)
-	var base := y + (f.get_ascent(px) - f.get_descent(px)) / 2.0
+	var at := _m * Vector2(x, y)
+	var x0 := at.x - w / 2.0 if align == &"center" else (at.x - w if align == &"right" else at.x)
+	var base := at.y + (f.get_ascent(px) - f.get_descent(px)) / 2.0
 	if stroke is Color:
-		draw_string_outline(f, Vector2(x0, base), words, HORIZONTAL_ALIGNMENT_LEFT, -1, px, int(sw), stroke)
+		draw_string_outline(f, Vector2(x0, base), words, HORIZONTAL_ALIGNMENT_LEFT, -1, px, maxi(1, roundi(sw * k)), stroke)
 	draw_string(f, Vector2(x0, base), words, HORIZONTAL_ALIGNMENT_LEFT, -1, px, fill)
 
 
@@ -371,19 +429,10 @@ func sprite(id: StringName, x: float, y: float, size: float, opt: Dictionary = {
 		return
 	var sx: float = float(opt.get("sx", 1.0)) * (-1.0 if opt.get("flip", false) else 1.0)
 	var sy: float = opt.get("sy", 1.0)
-	draw_set_transform_matrix(_base * Transform2D(float(opt.get("rot", 0.0)), Vector2(sx, sy), 0.0, Vector2(x, y)))
+	draw_set_transform_matrix(_to_local * _m * Transform2D(float(opt.get("rot", 0.0)), Vector2(sx, sy), 0.0, Vector2(x, y)))
 	var anchor: float = opt.get("anchor", 0.92)
 	draw_texture_rect(tex, Rect2(-size / 2.0, -size * anchor, size, size), false, Color(1, 1, 1, float(opt.get("alpha", 1.0))))
-	draw_set_transform_matrix(_base)
-
-
-## Draw with an extra move/turn/scale, like canvas save/translate/rotate/scale/restore.
-func push(at: Vector2, rot := 0.0, scale_by := Vector2.ONE) -> void:
-	draw_set_transform_matrix(_base * Transform2D(rot, scale_by, 0.0, at))
-
-
-func pop() -> void:
-	draw_set_transform_matrix(_base)
+	draw_set_transform_matrix(_to_local)
 
 
 func shadow(x: float, y: float, rx: float, a := 0.14) -> void:
@@ -396,7 +445,7 @@ func heart(x: float, y: float, s: float, fill := Color("#FF6F7D")) -> void:
 	pts.append_array(cubic(Vector2(0, -6), Vector2(9, -12), Vector2(12, -2), Vector2(0, 7)))
 	for i in pts.size():
 		pts[i] = Vector2(x, y) + pts[i] * k
-	_shape(pts, fill, INK, 2.2 * k)
+	poly(pts, fill, INK, 2.2 * k)
 
 
 func star(x: float, y: float, r_out: float, r_in: float, fill := Color("#FFD54A"), stroke: Variant = INK, lw := 2.0) -> void:
@@ -405,7 +454,7 @@ func star(x: float, y: float, r_out: float, r_in: float, fill := Color("#FFD54A"
 		var a := -PI / 2.0 + i * PI / 5.0
 		var rr_ := r_in if i % 2 else r_out
 		pts.append(Vector2(x + rr_ * cos(a), y + rr_ * sin(a)))
-	_shape(pts, fill, stroke, lw)
+	poly(pts, fill, stroke, lw)
 
 
 func coin(x: float, y: float, r: float) -> void:
@@ -414,7 +463,7 @@ func coin(x: float, y: float, r: float) -> void:
 
 
 func hud(col: Color, left_text := "", left_w := 112.0) -> void:
-	draw_rect(Rect2(0, 0, W, 52), col)
+	rect(0, 0, W, 52, col)
 	if left_text != "":
 		rr(10, 12, left_w, 28, 14, Color.WHITE)
 		text(left_text, 10 + left_w / 2.0, 27, 14, INK, &"center", &"body")
@@ -433,8 +482,8 @@ func bar(x: float, y: float, w: float, h: float, amount: float, col: Variant = n
 		rr(x + 2, y + 2, maxf(h - 4, (w - 4) * minf(1.0, amount)), h - 4, (h - 4) / 2.0, c, null, 0.0)
 
 
-func vgradient(rect: Rect2, top: Color, bottom: Color) -> void:
-	draw_polygon(PackedVector2Array([rect.position, Vector2(rect.end.x, rect.position.y), rect.end, Vector2(rect.position.x, rect.end.y)]),
+func vgradient(r: Rect2, top: Color, bottom: Color) -> void:
+	draw_polygon(_pts(PackedVector2Array([r.position, Vector2(r.end.x, r.position.y), r.end, Vector2(r.position.x, r.end.y)])),
 		PackedColorArray([top, top, bottom, bottom]))
 
 

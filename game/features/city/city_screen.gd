@@ -19,6 +19,7 @@ var _slots: Dictionary[StringName, BuildingSlot] = {}
 var _bubbles: Dictionary[StringName, MapBubble] = {}
 var _bubble_layer: Control
 var _fx_layer: Control
+var _games_button: GamesButton
 var _card: BuildingCard
 var _music_button: Button
 var _pending_fly: StringName = &""
@@ -45,11 +46,13 @@ func _ready() -> void:
 	Collection.changed.connect(refresh)
 	Events.squishy_moved_in.connect(_on_moved_in)
 	Events.building_upgraded.connect(_on_upgraded)
+	Events.show_building.connect(func(id: StringName) -> void: select(id))
 	resized.connect(_on_resized)
 	_on_resized.call_deferred()
 	refresh()
 	_aim()
 	Audio.music(&"city")
+	_games_button.hop.call_deferred()
 
 
 func open(_args: Dictionary) -> void:
@@ -60,6 +63,7 @@ func open(_args: Dictionary) -> void:
 func screen_shown() -> void:
 	Audio.music(&"city")
 	refresh()
+	_games_button.hop()
 	if _pending_fly != &"":
 		select(_pending_fly, false)
 		_pending_fly = &""
@@ -382,6 +386,11 @@ func _build_hud() -> void:
 	wallet.size_flags_horizontal = SIZE_SHRINK_END
 	wallet.size_flags_vertical = SIZE_SHRINK_BEGIN
 	hud.add_child(wallet)
+	_games_button = GamesButton.new()
+	_games_button.size_flags_horizontal = SIZE_SHRINK_BEGIN
+	_games_button.size_flags_vertical = SIZE_SHRINK_END
+	_games_button.pressed.connect(func() -> void: Nav.go(&"games"))
+	hud.add_child(_games_button)
 	var zoom := VBoxContainer.new()
 	zoom.size_flags_horizontal = SIZE_SHRINK_END
 	zoom.size_flags_vertical = SIZE_SHRINK_END

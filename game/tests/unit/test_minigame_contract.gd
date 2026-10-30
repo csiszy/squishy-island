@@ -29,6 +29,19 @@ func test_every_manifest_is_complete() -> void:
 			assert_true(key.begins_with(String(m.id()) + "."), "%s: key %s starts with the game id" % [m.id(), key])
 
 
+## Games draw through the kit's helpers (rect, rr, circle, text, ...), which draw at the phone's real pixel size.
+## Godot's own draw_ functions would draw small and get scaled up: blurry words and soft edges.
+func test_games_draw_only_through_the_kit() -> void:
+	var direct := RegEx.create_from_string("(?<![\\w.])draw_[a-z_]+\\(")
+	for m: MinigameManifest in _games() + [MinigameManifest.from_file("res://minigames/_template/manifest.json")]:
+		for f in DirAccess.get_files_at(m.folder):
+			if not f.ends_with(".gd"):
+				continue
+			var code := FileAccess.get_file_as_string(m.folder.path_join(f))
+			var hit := direct.search(code)
+			assert_null(hit, "%s/%s draws with %s; use the kit's helper instead" % [m.id(), f, hit.get_string() if hit else ""])
+
+
 func test_every_game_plays_two_minutes_with_its_bot() -> void:
 	for m in _games():
 		await _play(m)

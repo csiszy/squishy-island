@@ -24,13 +24,32 @@ static func scan(dir := DIR) -> Array[MinigameManifest]:
 	return out
 
 
-## building id -> the enabled game for it: {"id", "folder"} (what GameData.minigame_for() answers).
+## building id -> the enabled game for it: {"id", "folder", "title", "where", "score_name"} (word keys; what
+## GameData.minigame_for() and the Games page read).
 static func by_building(dir := DIR) -> Dictionary:
 	var out := {}
 	for m in scan(dir):
 		if m.enabled():
-			out[m.building()] = {"id": m.id(), "folder": m.folder}
+			out[m.building()] = {"id": m.id(), "folder": m.folder, "title": String(m.data.get("title", "")),
+				"where": String(m.data.get("where", "")), "score_name": String(m.data.get("score_name", ""))}
 	return out
+
+
+static var _words_loaded: Dictionary = {}
+
+
+## Make a game's own words (its strings_en.csv) available to Text.t(). Safe to call more than once.
+static func load_words(folder: String) -> void:
+	var path := folder.path_join("strings_en.en.translation")
+	if _words_loaded.has(path) or not ResourceLoader.exists(path):
+		return
+	_words_loaded[path] = true
+	TranslationServer.add_translation(load(path) as Translation)
+
+
+static func load_all_words(dir := DIR) -> void:
+	for m in scan(dir):
+		load_words(m.folder)
 
 
 static func find(game_id: StringName, dir := DIR) -> MinigameManifest:

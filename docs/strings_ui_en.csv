@@ -161,3 +161,11 @@ ad.title,Your ad plays here
 ad.body,"In the real app: a short, kid-safe video ad. Here it is just a wait ({n})."
 ad.close_after,You can close it after {n} seconds
 ad.close_no_reward,Close (no reward)
+games.button,Games
+games.open,All the games
+games.title,Games
+games.play,Play
+games.best,Best: {n} {what}
+games.build_first,Build it on the map first.
+games.show_me,Show me
+games.more_soon,More games on the way

@@ -266,5 +266,13 @@ Sort-a-Lot ported from the prototypes. Tap a built fun building on the map → *
   what is actually built (a level 1 Bounce Park is only a sandbox in one corner of its plot), 3 units over its top;
   the book's minimum of 12 left small things with a far-floating pin once the plot squares were gone. Tapping a
   building also centres the camera on what is built.
+- **Second phone test, fixed**: taps never reached the games (the app's frame and the game screen are interface
+  panels that kept every tap for themselves; a new test now taps through the whole app); words and the food
+  pictures looked blurry (the games drew at their small 360 × 640 size and Godot scaled the picture up; the kit now
+  draws every shape and word at the phone's real pixel size like the book's canvas, and a test keeps games from
+  drawing any other way); the pretend ad sat in the top-left corner (it was never given the screen's size).
+- **Games button and Games page (owner's request)** → `guide.html#games`: a round pink button in the map's
+  bottom-left corner (easy to notice, but it stays still apart from one hop when the map appears) opens a page with
+  every minigame: building, best score and Play; games still being made are listed greyed as "on the way".
 - Not yet: the squishy "helper" list on the start card names no effects yet (just "extra good at this game"),
   tilt steering for Sky Bounce, and decor found in sorted letters (Sort-a-Lot page) — later steps.

@@ -199,14 +199,14 @@ func _draw_game() -> void:
 			var sx := float((i * 97) % int(W))
 			var sy := fposmod(i * 173 - cam_y * 0.2, H)
 			var a := minf(1.0, (h - 8000.0) / 3000.0) * (0.4 + 0.6 * absf(sin(t * 2.0 + i)))
-			draw_rect(Rect2(sx, sy, 2.5, 2.5), Color("#FFF3B0", a))
+			rect(sx, sy, 2.5, 2.5, Color("#FFF3B0", a))
 	# far clouds (parallax)
 	for i in 6:
 		var fy := fposmod(i * 140 - cam_y * 0.3, H + 120.0) - 60.0
 		_cloud(float((i * 131) % int(W)), fy, 34.0, Color(1, 1, 1, 0.5), -1)
 	var oy := -cam_y
 	if cam_y > -H:
-		draw_rect(Rect2(0, oy + 10.0, W, 400.0), Color("#9ED67E"))
+		rect(0, oy + 10.0, W, 400.0, Color("#9ED67E"))
 	for p in plats:
 		var py: float = p["y"] + oy
 		if py < -30.0 or py > H + 30.0:
@@ -255,7 +255,7 @@ func _draw_game() -> void:
 	if ctx.best > 0 and top / 10.0 < ctx.best:
 		var by := -ctx.best * 10.0 + oy
 		if by > 50.0 and by < H:
-			draw_dashed_line(Vector2(0, by), Vector2(W, by), Color("#FF6FA3"), 2.0, 8.0)
+			dashed(Vector2(0, by), Vector2(W, by), Color("#FF6FA3"), 2.0, 8.0)
 			text(ctx.t(&"sky_bounce.your_best"), W - 50, by - 10, 11, Color("#FF6FA3"), &"center", &"body")
 
 
@@ -263,12 +263,12 @@ func _draw_game() -> void:
 func _cloud(cx: float, cy: float, r: float, col: Color, outline: int, alpha := 1.0) -> void:
 	if outline >= 0:
 		for p: Array in CLOUD_PUFFS:
-			draw_circle(Vector2(cx + p[0] * r, cy + p[1] * r * 0.6), p[2] * r * 0.6 + 1.2, Color(INK, alpha), true, -1.0, true)
+			circle(cx + p[0] * r, cy + p[1] * r * 0.6, p[2] * r * 0.6 + 1.2, Color(INK, alpha), null, 0)
 		for p: Array in CLOUD_PUFFS:
-			draw_circle(Vector2(cx + p[0] * r, cy + p[1] * r * 0.6), p[2] * r * 0.6 - 1.4, col, true, -1.0, true)
+			circle(cx + p[0] * r, cy + p[1] * r * 0.6, p[2] * r * 0.6 - 1.4, col, null, 0)
 	else:
 		for p: Array in CLOUD_PUFFS:
-			draw_circle(Vector2(cx + p[0] * r, cy + p[1] * r * 0.6), p[2] * r * 0.6, col, true, -1.0, true)
+			circle(cx + p[0] * r, cy + p[1] * r * 0.6, p[2] * r * 0.6, col, null, 0)
 	if outline == 1:
 		var c := Color("#9A8FAA", alpha)
 		line(PackedVector2Array([Vector2(cx - 6, cy - 8), Vector2(cx, cy), Vector2(cx - 4, cy + 6)]), c, 2.0)

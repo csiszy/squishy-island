@@ -32,6 +32,8 @@ var _skip := false
 
 func _ready() -> void:
 	set_anchors_preset(PRESET_FULL_RECT)
+	# taps must fall through to the game (it reads them in _unhandled_input); only cards and buttons catch them
+	mouse_filter = MOUSE_FILTER_IGNORE
 	resized.connect(_fit)
 	Events.app_paused.connect(_on_app_paused)
 
@@ -45,9 +47,7 @@ func open(args: Dictionary) -> void:
 		return
 	if building == &"":
 		building = manifest.building()
-	var tr_path := manifest.folder.path_join("strings_en.en.translation")
-	if ResourceLoader.exists(tr_path):
-		TranslationServer.add_translation(load(tr_path) as Translation)
+	MinigameCatalog.load_words(manifest.folder)
 	var scene := load(manifest.scene_path()) as PackedScene
 	var node: Node = scene.instantiate() if scene != null else null
 	if not node is Minigame:

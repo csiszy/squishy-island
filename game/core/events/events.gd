@@ -21,6 +21,9 @@ signal buildings_unlocked(ids: Array[StringName])
 ## A house's decor changed (bought or switched design). Sent by Town.
 signal decor_changed(house: StringName)
 
+## Another screen wants the map to show a building (fly there and open its card). Sent by e.g. the Games page.
+signal show_building(id: StringName)
+
 ## A minigame run ended and was paid (quests and the Gem Challenge listen later).
 signal minigame_played(game: StringName, score: int, coins: int)
 
