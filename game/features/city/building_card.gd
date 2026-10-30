@@ -11,7 +11,7 @@ var _kind: Label
 var _title: Label
 var _level: Label
 var _note: Label
-var _buttons: HBoxContainer
+var _buttons: HFlowContainer
 
 
 func _ready() -> void:
@@ -46,7 +46,10 @@ func _ready() -> void:
 	top.add_child(close)
 	_note = Ui.label("", "Hand", HORIZONTAL_ALIGNMENT_LEFT, true)
 	col.add_child(_note)
-	_buttons = HBoxContainer.new()
+	# buttons sit side by side when they fit, otherwise the next one goes on a new line (never off the screen)
+	_buttons = HFlowContainer.new()
+	_buttons.add_theme_constant_override("h_separation", 16)
+	_buttons.add_theme_constant_override("v_separation", 14)
 	col.add_child(_buttons)
 	visible = false
 
@@ -77,6 +80,7 @@ func refresh() -> void:
 	for a: Dictionary in m["actions"]:
 		var b := Ui.button(a["text"], "BigButton" if first else "")
 		b.disabled = not a["enabled"]
+		b.size_flags_horizontal = SIZE_EXPAND_FILL
 		var what: StringName = a["id"]
 		b.pressed.connect(func() -> void: action.emit(building, what))
 		_buttons.add_child(b)

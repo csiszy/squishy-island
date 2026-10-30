@@ -50,7 +50,8 @@ func check() -> PackedStringArray:
 		problems.append("kind must be one of %s" % [KINDS])
 	if folder != "" and String(data.get("id", "")) != folder.get_file():
 		problems.append("id must be the folder name (%s)" % folder.get_file())
-	if folder != "" and not FileAccess.file_exists(scene_path()):
+	# ResourceLoader, not FileAccess: in a phone build a scene is stored converted (".tscn.remap"), not as itself
+	if folder != "" and not ResourceLoader.exists(scene_path()):
 		problems.append("scene %s not found" % data.get("scene"))
 	var coins: Variant = data.get("coins")
 	if coins is Dictionary and not String((coins as Dictionary).get("from", "")) in ["score", "metric"]:

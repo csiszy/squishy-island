@@ -168,6 +168,13 @@ jobs:
           $G --headless --path game --export-$EXPORT_MODE "Android APK" build/squishy-island.apk 2>&1 | tee -a export.log
           test -s game/build/squishy-island.apk || { echo "No .apk was produced"; exit 1; }
           ls -la game/build
+      - name: Check the phone build's game files
+        # files are stored differently in a phone build (scenes converted, only listed extras included);
+        # this opens the same game files the phone gets and checks every screen and minigame is there
+        run: |
+          G=~/godot/Godot_v${GODOT_VERSION}-stable_linux.x86_64
+          $G --headless --path game --export-pack "Android APK" build/check.pck
+          $G --headless --main-pack game/build/check.pck -s "$PWD/game/tests/export/check_pack.gd"
       - name: Keep the app bundle
         uses: actions/upload-artifact@v5
         with:

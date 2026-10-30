@@ -11,6 +11,8 @@ var id: StringName
 var level := -1
 var owned: Array[StringName] = []
 var _model: Node3D
+var _pin := Vector3.ZERO
+var _pin_dirty := true
 
 
 static func make(entry: Dictionary, city: Dictionary) -> BuildingSlot:
@@ -31,6 +33,7 @@ func show_state(new_level: int, family_owned: Array[StringName]) -> void:
 		return
 	level = shown
 	owned = family_owned.duplicate()
+	_pin_dirty = true
 	if _model != null:
 		_model.queue_free()
 		remove_child(_model)
@@ -41,10 +44,18 @@ func show_state(new_level: int, family_owned: Array[StringName]) -> void:
 		_add_life(sq)
 
 
-## Where the bubble floats: just above the building (the book: between 12 and 30 units, +3).
+## Where the bubble floats: just above the building (3 above its top, at most 33 high).
 func bubble_point() -> Vector3:
-	var top := clampf(_bounds().end.y, 12.0, 30.0) + 3.0
-	return global_transform * Vector3(0, top, 0)
+	# above the middle of what is actually built (a level 1 playground is just a sandbox in one corner of its
+	# plot), 3 above its top (at most 30 high). art/city3d.js puts pins at least 12 high, which left small things
+	# like the sandbox with a pin floating far above them once the plot square was gone.
+	# worked out once per look (cheap every frame, and pins don't wobble while squishies walk about)
+	if _pin_dirty and _model != null and _model.is_inside_tree():
+		var b := world_bounds()
+		var c := b.get_center()
+		_pin = Vector3(c.x, minf(b.end.y, 30.0) + 3.0, c.z)
+		_pin_dirty = false
+	return _pin if not _pin_dirty else global_position + Vector3(0, 15, 0)
 
 
 ## The building's box in world space (for tapping it).

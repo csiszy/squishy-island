@@ -83,7 +83,8 @@ func select(id: StringName, with_card := true) -> void:
 	var slot: BuildingSlot = _slots.get(id)
 	if slot == null:
 		return
-	view.fly_to(slot.position.x, slot.position.z + 4.0, minf(view.dist, 90.0))
+	var middle := slot.bubble_point()   # the middle of what is built there, not the middle of its plot
+	view.fly_to(middle.x, middle.z + 4.0, minf(view.dist, 90.0))
 	Audio.play(&"whoosh", 1.0, 0.5)
 	if with_card:
 		_card.show_building(id)

@@ -259,5 +259,12 @@ Sort-a-Lot ported from the prototypes. Tap a built fun building on the map → *
 - **Robot balance check (2 minutes each, 3 tries)**: Sort-a-Lot 30–33 coins/min, Bistro Rush 54–56, Sky Bounce 26–32 (the
   robots are not children; the real check is the owner's phone test). Not changed yet: the book's numbers stay
   until real play says otherwise.
+- **Fixed after the owner's phone test**: on the phone every game said "Game coming soon", because a phone build
+  stores scenes converted (`.tscn.remap`) and the manifest check looked for the plain file. CI now also opens the
+  phone build's own game files and checks every screen and minigame is there (`game/tests/export/check_pack.gd`).
+  The map card's buttons wrap onto a second line instead of running off the screen. Map pins now sit just above
+  what is actually built (a level 1 Bounce Park is only a sandbox in one corner of its plot), 3 units over its top;
+  the book's minimum of 12 left small things with a far-floating pin once the plot squares were gone. Tapping a
+  building also centres the camera on what is built.
 - Not yet: the squishy "helper" list on the start card names no effects yet (just "extra good at this game"),
   tilt steering for Sky Bounce, and decor found in sorted letters (Sort-a-Lot page) — later steps.
