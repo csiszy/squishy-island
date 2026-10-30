@@ -1,7 +1,7 @@
 extends SceneTree
 ## Starts the real game, optionally does a few things, and saves a screenshot (for checking screens by eye).
 ##   xvfb-run godot --path game --rendering-driver opengl3 --resolution 540x960 -s res://tests/visual/shoot.gd -- out.png [steps...]
-## Steps: tier:medium  print  coins:N  call:Node:method:args  select:<building>  go:<screen>[:id]  wait:<frames>  tap:x,y  zoom:<factor>
+## Steps: tier:medium  slow:0.05  print  coins:N  call:Node:method:args  select:<building>  go:<screen>[:id]  wait:<frames>  tap:x,y  zoom:<factor>
 
 func _init() -> void:
 	var args := OS.get_cmdline_user_args()
@@ -33,6 +33,9 @@ func _init() -> void:
 				var city := root.find_child("CityScreen", true, false)
 				var v := city.get("view") as CityView
 				print("view x=%.1f z=%.1f dist=%.1f dmax=%.1f size=%s" % [v.x, v.z, v.dist, v.dmax, (city as Control).size])
+			"slow":
+				# slow:<factor> slows time down, to catch a short animation (slow:0.05 = 20 times slower)
+				Engine.time_scale = float(parts[1])
 			"wait":
 				for i in int(parts[1]):
 					await process_frame

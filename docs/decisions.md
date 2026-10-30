@@ -202,6 +202,11 @@ Small choices made while building (each follows the book; say if one is wrong):
   (the book's own map hides them under the island's grass). Visual checks now run on the phone's own renderer
   (Vulkan "Mobile") with a software driver, not only the desktop fallback.
 
+- **Upgrade celebration (owner's request):** building or upgrading anything (map card or "Fix it up!" in the house)
+  plays about a second of confetti and three small fireworks around it, on top of the ta-da sound, so the player
+  feels the achievement. Shared widget `game/shared_ui/celebration.gd`; amount follows the tier's particle
+  setting (25/60/100%); reduced motion = a few twinkling stars. → `guide.html#upgrade-celebration`
+
 ## 16. An open island (owner's decision, October 2026)  → `guide.html#progression`
 
 - **Nothing is locked.** All 8 houses are on the map from day one (broken, fixed up with coins); a squishy from any

@@ -18,6 +18,7 @@ var _env: Environment
 var _slots: Dictionary[StringName, BuildingSlot] = {}
 var _bubbles: Dictionary[StringName, MapBubble] = {}
 var _bubble_layer: Control
+var _fx_layer: Control
 var _card: BuildingCard
 var _music_button: Button
 var _pending_fly: StringName = &""
@@ -141,6 +142,11 @@ func _build_world() -> void:
 	_bubble_layer.set_anchors_preset(PRESET_FULL_RECT)
 	_bubble_layer.mouse_filter = MOUSE_FILTER_IGNORE
 	add_child(_bubble_layer)
+	# celebrations go over the pins but under the buttons
+	_fx_layer = Control.new()
+	_fx_layer.set_anchors_preset(PRESET_FULL_RECT)
+	_fx_layer.mouse_filter = MOUSE_FILTER_IGNORE
+	add_child(_fx_layer)
 	for id: StringName in _slots:
 		var b := MapBubble.make(id)
 		b.pressed.connect(func() -> void: select(id))
@@ -180,7 +186,7 @@ func _place_bubbles() -> void:
 		if _camera.is_position_behind(p):
 			b.visible = false
 			continue
-		var screen := _camera.unproject_position(p) * (size / Vector2(_viewport.size))
+		var screen := _to_screen(p)
 		b.visible = area.has_point(screen)
 		if b.visible:
 			b.place(screen, k, names)
@@ -421,12 +427,26 @@ func _on_card_action(id: StringName, action: StringName) -> void:
 				await get_tree().create_timer(0.7).timeout
 				Audio.play(&"tada")
 				Haptics.play(&"medium")
+				_celebrate(id)
 				var name_text := Text.t(StringName(GameData.building(id).get("name", "")))
 				UiToast.show_text(Text.t(&"map.built", {"name": name_text}) if r["next"] == 1 else Text.t(&"map.upgraded", {"name": name_text, "n": r["next"]}))
 			else:
 				Audio.play(&"nope")
 		_:
 			_soon()
+
+
+## Confetti and little fireworks around a building that was just built or upgraded (it follows the map's movement).
+func _celebrate(id: StringName) -> void:
+	var slot := _slots[id]
+	var middle := func() -> Vector2:
+		var b := slot.world_bounds()
+		return _to_screen(b.get_center())
+	Celebration.burst(_fx_layer, middle.call(), clampf(150.0 / view.dist + 0.35, 0.62, 1.0) * 1.2, middle)
+
+
+func _to_screen(world: Vector3) -> Vector2:
+	return _camera.unproject_position(world) * (size / Vector2(_viewport.size))
 
 
 func _on_moved_in(squishy: StringName) -> void:

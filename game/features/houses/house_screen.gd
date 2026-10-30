@@ -185,6 +185,7 @@ func _fix_up() -> void:
 	await get_tree().create_timer(0.7).timeout
 	Audio.play(&"tada")
 	Haptics.play(&"medium")
+	Celebration.burst(self, _viewer.get_global_rect().get_center() - get_global_rect().position + Vector2(0, 80))
 	UiToast.show_text(Text.t(&"house.fixed", {"n": r["next"]}))
 
 

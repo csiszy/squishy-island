@@ -138,6 +138,11 @@ func frame_rate() -> int:
 	return 30 if graphics_tier() == GraphicsTier.LOW else 60
 
 
+## How many particles (confetti, sparkles, steam) to show: Settings page tier table, Low 25%, Medium 60%, High 100%.
+func particle_amount() -> float:
+	return {GraphicsTier.LOW: 0.25, GraphicsTier.MEDIUM: 0.6}.get(graphics_tier(), 1.0)
+
+
 func reduced_motion() -> bool:
 	match get_value(&"motion"):
 		&"full":
