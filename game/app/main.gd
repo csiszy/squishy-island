@@ -101,6 +101,7 @@ func _set_visible(node: Node, on: bool) -> void:
 
 func _apply_settings() -> void:
 	Engine.max_fps = Settings.frame_rate()
+	BookLights.apply_shadow_quality(Settings.graphics_tier())
 
 
 ## Every button: a soft "pop" and, on phones, a 10 ms tick (Sound page). Set meta "silent" to skip.

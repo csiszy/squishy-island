@@ -1,12 +1,16 @@
 extends SceneTree
 ## Starts the real game, optionally does a few things, and saves a screenshot (for checking screens by eye).
 ##   xvfb-run godot --path game --rendering-driver opengl3 --resolution 540x960 -s res://tests/visual/shoot.gd -- out.png [steps...]
-## Steps: print  coins:N  call:Node:method:args  select:<building>  go:<screen>[:id]  wait:<frames>  tap:x,y  zoom:<factor>
+## Steps: tier:medium  print  coins:N  call:Node:method:args  select:<building>  go:<screen>[:id]  wait:<frames>  tap:x,y  zoom:<factor>
 
 func _init() -> void:
 	var args := OS.get_cmdline_user_args()
 	var out := args[0] if args.size() > 0 else "user://shot.png"
 	await process_frame
+	# tier:<low|medium|high> before the game starts (graphics quality as a phone would get it)
+	for step: String in args.slice(1):
+		if step.begins_with("tier:"):
+			(root.get_node("Settings") as SettingsService).set_value(&"graphics", StringName(step.split(":")[1]))
 	change_scene_to_file("res://app/main.tscn")
 	for i in 30:
 		await process_frame

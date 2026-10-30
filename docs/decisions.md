@@ -195,6 +195,12 @@ Small choices made while building (each follows the book; say if one is wrong):
   Google Play allows 200 MB, the plan aims for under 150 MB.
 - **Testing on a phone:** every push builds an installable `.apk`; the newest one is always on the repository's
   Releases page as "Test build (newest)". How to install: `docs/testing-on-a-phone.md`.
+- **Picture quality (after the owner's phone test):** the 3D is drawn at the phone's real pixel count; Medium now
+  gets the same smooth edges (4×) and soft shadows as High, because hard shadows showed stair-steps (settings.html
+  tier table updated); the cartoon outline is pushed out exactly as in the book (`D.outlineMat`), about 1.8 book
+  pixels wide; the map pins are drawn with smoothed edges; the buildings' square grass slabs are left out on the map
+  (the book's own map hides them under the island's grass). Visual checks now run on the phone's own renderer
+  (Vulkan "Mobile") with a software driver, not only the desktop fallback.
 
 ## 16. An open island (owner's decision, October 2026)  → `guide.html#progression`
 

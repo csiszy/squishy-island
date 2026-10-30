@@ -99,8 +99,15 @@ func _build_world() -> void:
 	_viewport = _view.viewport
 	_viewport.transparent_bg = false
 	var tier := Settings.graphics_tier()
-	_view.msaa = {GraphicsTier.LOW: Viewport.MSAA_DISABLED, GraphicsTier.MEDIUM: Viewport.MSAA_2X, GraphicsTier.HIGH: Viewport.MSAA_4X}.get(tier, Viewport.MSAA_2X)
-	_viewport.scaling_3d_scale = {GraphicsTier.LOW: 0.7, GraphicsTier.MEDIUM: 0.85, GraphicsTier.HIGH: 1.0}.get(tier, 1.0)
+	# Settings page tier table: smooth edges (4x) on Medium and High; full resolution except on Low (70%) and on a
+	# Medium phone with a very sharp screen (80%); a smaller picture is enlarged with FSR, sharper than stretching
+	_view.msaa = Viewport.MSAA_DISABLED if tier == GraphicsTier.LOW else Viewport.MSAA_4X
+	var scale := 0.7 if tier == GraphicsTier.LOW else 1.0
+	if tier == GraphicsTier.MEDIUM and DisplayServer.window_get_size().x > 1200:
+		scale = 0.8
+	if scale < 1.0:
+		_viewport.scaling_3d_mode = Viewport.SCALING_3D_MODE_FSR
+		_viewport.scaling_3d_scale = scale
 	var world := Node3D.new()
 	world.name = "World"
 	_viewport.add_child(world)
@@ -166,6 +173,7 @@ func _place_bubbles() -> void:
 	var k := clampf(150.0 / view.dist + 0.35, 0.62, 1.0)
 	var names := view.dist < NAMES_BELOW
 	var area := Rect2(Vector2(-60, -60), size + Vector2(120, 160))
+	var order: Array = []
 	for id: StringName in _slots:
 		var p := _slots[id].bubble_point()
 		var b := _bubbles[id]
@@ -176,7 +184,14 @@ func _place_bubbles() -> void:
 		b.visible = area.has_point(screen)
 		if b.visible:
 			b.place(screen, k, names)
-			b.z_index = clampi(int(1000.0 - _camera.global_position.distance_to(p)), 0, 1000)
+			order.append([_camera.global_position.distance_to(p), b])
+	# nearer pins on top of further ones, by their order in the pin layer (not z_index, which would also lift them
+	# above the buttons and the building card)
+	order.sort_custom(func(a: Array, c: Array) -> bool: return a[0] > c[0])
+	for i in order.size():
+		var pin: MapBubble = order[i][1]
+		if pin.get_index() != i:
+			_bubble_layer.move_child(pin, i)
 
 
 var _sized_once := false

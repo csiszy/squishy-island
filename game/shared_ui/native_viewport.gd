@@ -52,4 +52,6 @@ func from_viewport(pos: Vector2) -> Vector2:
 
 func _fit() -> void:
 	var k := pixel_scale()
+	# the cartoon outline is as many screen pixels wide as the layout says (art/shaders/outline.gdshader)
+	RenderingServer.global_shader_parameter_set(&"outline_scale", k)
 	viewport.size = Vector2i(maxi(2, roundi(size.x * k)), maxi(2, roundi(size.y * k)))

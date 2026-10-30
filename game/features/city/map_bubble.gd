@@ -129,19 +129,27 @@ func _draw() -> void:
 	var r := SIZE / 2.0 - 6.0
 	var fill := Color("#EEEAF5") if _locked else (Color("#FFF7C2") if is_hovered() else Color.WHITE)
 	var tail := PackedVector2Array([c + Vector2(-16, r - 8), c + Vector2(16, r - 8), Vector2(c.x, SIZE + TAIL - 4)])
-	# shadow
-	draw_circle(c + Vector2(6, 8), r + 5, Color(0.169, 0.129, 0.255, 0.35))
+	# shadow (every edge is drawn smoothed, or the pin's outline looks jagged on a phone)
+	draw_circle(c + Vector2(6, 8), r + 5, Color(0.169, 0.129, 0.255, 0.35), true, -1.0, true)
 	# plum outline, then the colour ring, then the white face
-	draw_colored_polygon(PackedVector2Array([tail[0] + Vector2(-5, 0), tail[1] + Vector2(5, 0), tail[2] + Vector2(0, 6)]), UiTheme.INK)
-	draw_circle(c, r + 5, UiTheme.INK)
-	draw_colored_polygon(tail, _colour)
-	draw_circle(c, r, _colour if not _empty else fill)
+	_shape(PackedVector2Array([tail[0] + Vector2(-5, 0), tail[1] + Vector2(5, 0), tail[2] + Vector2(0, 6)]), UiTheme.INK)
+	draw_circle(c, r + 5, UiTheme.INK, true, -1.0, true)
+	_shape(tail, _colour)
+	draw_circle(c, r, _colour if not _empty else fill, true, -1.0, true)
 	if _empty:
 		for i in 16:
 			var a := i * TAU / 16.0
 			draw_arc(c, r - 3.0, a, a + TAU / 32.0, 6, _colour, 6.0, true)
-	draw_circle(c, r - 6.0, fill)
-	draw_colored_polygon(PackedVector2Array([tail[0] + Vector2(6, -6), tail[1] + Vector2(-6, -6), tail[2] + Vector2(0, -9)]), fill)
+	draw_circle(c, r - 6.0, fill, true, -1.0, true)
+	_shape(PackedVector2Array([tail[0] + Vector2(6, -6), tail[1] + Vector2(-6, -6), tail[2] + Vector2(0, -9)]), fill)
+
+
+## A filled shape with a smoothed edge.
+func _shape(points: PackedVector2Array, colour: Color) -> void:
+	draw_colored_polygon(points, colour)
+	var ring := points.duplicate()
+	ring.append(points[0])
+	draw_polyline(ring, colour, 1.0, true)
 
 
 func _fill(c: Control) -> Control:

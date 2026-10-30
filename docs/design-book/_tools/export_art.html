@@ -99,7 +99,9 @@ SQ.boot(async function () {
     function building(id, L) {
       const keep = D.SIZE; D.SIZE = SQSIZE;
       try {
-        const d = SQ.B[id], root = D.building(id, L, { life: d.type !== 'house' });
+        // no plot slabs: on the book's map the island's grass is drawn over them (art/city3d.js), so the game
+        // leaves them out instead of showing a plain green square
+        const d = SQ.B[id], root = D.building(id, L, { life: d.type !== 'house', noPlot: true });
         const breathe = root.children[1], body = breathe && breathe.children[0];
         if (body && breathe.userData.anim && breathe.userData.anim.type === 'squish') body.name = 'Body';
         return root;

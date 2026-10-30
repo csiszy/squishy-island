@@ -21,6 +21,17 @@ func test_the_map_shows_every_building() -> void:
 	assert_eq((slots[&"dumpling"] as BuildingSlot).owned, [&"bao"] as Array[StringName], "Bao lives at the Steamhouse")
 
 
+func test_pins_stay_under_the_buttons() -> void:
+	var city: Control = add_child_autofree((load("res://features/city/city_screen.tscn") as PackedScene).instantiate())
+	await wait_frames(3)
+	var layer: Control = city.get("_bubble_layer")
+	for pin in layer.get_children():
+		assert_eq((pin as CanvasItem).z_index, 0, "pins are sorted by order, not lifted with z_index")
+	var hud := city.get_children().filter(func(n: Node) -> bool: return n is MarginContainer)
+	assert_false(hud.is_empty())
+	assert_gt((hud[0] as Node).get_index(), layer.get_index(), "the buttons are drawn after (over) the pins")
+
+
 func test_fixing_up_from_the_map_card() -> void:
 	var city: Control = add_child_autofree((load("res://features/city/city_screen.tscn") as PackedScene).instantiate())
 	await wait_frames(2)

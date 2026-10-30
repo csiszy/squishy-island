@@ -20,6 +20,15 @@ static func make_sun() -> DirectionalLight3D:
 	return sun
 
 
+## Shadow edges for the graphics tier: soft like the book's (PCFSoftShadowMap) on Medium and High, so they do not
+## show stair-steps; Low has no shadows at all (city3d.js).
+static func apply_shadow_quality(tier: StringName) -> void:
+	var soft := {GraphicsTier.MEDIUM: RenderingServer.SHADOW_QUALITY_SOFT_LOW, GraphicsTier.HIGH: RenderingServer.SHADOW_QUALITY_SOFT_MEDIUM}
+	var quality: RenderingServer.ShadowQuality = soft.get(tier, RenderingServer.SHADOW_QUALITY_HARD)
+	RenderingServer.directional_soft_shadow_filter_set_quality(quality)
+	RenderingServer.directional_shadow_atlas_set_size(4096 if tier == GraphicsTier.HIGH else 2048, true)
+
+
 ## An environment with no ambient light of its own (the toon shader adds the book's) and the book's paper background.
 static func make_environment(background := Color("#FFF6E8")) -> Environment:
 	var env := Environment.new()
