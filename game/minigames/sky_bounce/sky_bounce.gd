@@ -5,7 +5,9 @@ extends KitGame
 
 const SKY := [[0.0, "#DFF3FF", "#8CCBFF"], [2500.0, "#FFE3EE", "#FFB3CE"], [6000.0, "#FFD9A8", "#B9A6FF"], [11000.0, "#5B4BA8", "#2E2452"]]
 ## A normal bounce rises about 192; the next cloud is never higher than this, leaving room to steer sideways.
-const MAX_GAP := 150.0
+const MAX_GAP := 140.0
+## How far a moving leaf drifts either side of where it was made (so it never wanders out of reach).
+const LEAF_RANGE := 70.0
 const CLOUD_PUFFS := [[-0.6, 0.1, 0.55], [-0.2, -0.25, 0.7], [0.3, -0.2, 0.65], [0.68, 0.1, 0.5], [0.0, 0.2, 0.6]]
 
 var rng := RandomNumberGenerator.new()
@@ -27,6 +29,7 @@ var squash := 0.0
 var face := 1.0
 var _last_x := W / 2.0
 var _last_y := 0.0
+var _last_moving := false
 
 
 func _init_run(_level: int) -> void:
@@ -50,6 +53,7 @@ func _init_run(_level: int) -> void:
 	plats.append({"x": W / 2.0, "y": 0.0, "w": 120.0, "type": "cloud", "vx": 0.0, "dead": 0.0, "spring": false})
 	_last_x = W / 2.0
 	_last_y = 0.0
+	_last_moving = false
 	var py := 0.0
 	while py > -H * 1.6:
 		py -= _next_gap(-py)
@@ -65,10 +69,11 @@ func _next_gap(h: float) -> float:
 	return minf(MAX_GAP, _gap_at(h) * (0.7 + rng.randf() * 0.5))
 
 
-## How far sideways a squishy can steer while bouncing up `gap` and landing (a little less, to be fair).
+## How far sideways (straight across, not round the screen edge) a squishy can comfortably steer while bouncing
+## up `gap` and landing: its whole flight time less a moment to react, and a margin, so it's never a near miss.
 static func reach_x(gap: float) -> float:
 	var t_land := (760.0 + sqrt(maxf(0.0, 760.0 * 760.0 - 3000.0 * gap))) / 1500.0
-	return 330.0 * t_land * 0.75
+	return 330.0 * maxf(0.0, t_land - 0.2) * 0.8
 
 
 func _add_plat(py: float) -> void:
@@ -84,16 +89,22 @@ func _add_plat(py: float) -> void:
 	var vx := 0.0
 	if kind == "leaf" and h > 1200:
 		vx = (-1.0 if rng.randf() < 0.5 else 1.0) * (40.0 + diff * 90.0)
+		if _last_moving:
+			vx = 0.0   # never two drifting leaves in a row
 	var px := 30.0 + rng.randf() * (W - 60.0)
-	# never further sideways than a bounce can steer (the screen wraps, so measure both ways round)
+	# never further sideways than a bounce can steer, measured straight across (most players don't go round the
+	# screen edge)
 	var gap := absf(py - _last_y)
-	var reach := maxf(40.0, reach_x(gap) - w / 2.0)
-	var dx := wrapf(px - _last_x, -(W + 40.0) / 2.0, (W + 40.0) / 2.0)
+	# a drifting leaf (this one or the one below) may be up to LEAF_RANGE further away when you jump
+	var slack := LEAF_RANGE if vx != 0.0 or _last_moving else 0.0
+	var reach := maxf(40.0, reach_x(gap) - slack)
+	var dx := px - _last_x
 	if absf(dx) > reach:
 		px = clampf(_last_x + signf(dx) * reach * rng.randf_range(0.5, 1.0), 30.0, W - 30.0)
 	_last_x = px
 	_last_y = py
-	var p := {"x": px, "y": py, "w": w, "type": kind, "vx": vx, "dead": 0.0, "spring": false}
+	_last_moving = vx != 0.0
+	var p := {"x": px, "x0": px, "y": py, "w": w, "type": kind, "vx": vx, "dead": 0.0, "spring": false}
 	if kind != "crumble" and rng.randf() < 0.08:
 		p["spring"] = true
 	plats.append(p)
@@ -163,8 +174,16 @@ func _update(dt: float) -> void:
 	for p in plats:
 		if p["vx"] != 0.0:
 			p["x"] += p["vx"] * dt
-			if p["x"] < p["w"] / 2.0 or p["x"] > W - p["w"] / 2.0:
-				p["vx"] *= -1.0
+			# turn back at the screen edge or the end of its little range, and always away from it (a leaf made
+			# right by the edge used to flip every frame and shake in place)
+			var lo := maxf(p["w"] / 2.0, p["x0"] - LEAF_RANGE)
+			var hi := minf(W - p["w"] / 2.0, p["x0"] + LEAF_RANGE)
+			if p["x"] < lo:
+				p["x"] = lo
+				p["vx"] = absf(p["vx"])
+			elif p["x"] > hi:
+				p["x"] = hi
+				p["vx"] = -absf(p["vx"])
 		if p["dead"] > 0.0:
 			p["dead"] += dt
 	# items

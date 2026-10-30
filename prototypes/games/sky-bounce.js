@@ -11,14 +11,16 @@ function skyAt(h) { for (let i = SKY.length - 1; i >= 0; i--) if (h >= SKY[i][0]
 function addPlat(y) {
   const h = -y, diff = Math.min(1, h / 12000);
   const r = Math.random(), w = 70 - diff * 18;
-  // never further sideways than a bounce can steer (the screen wraps, so measure both ways round)
-  const reach = Math.max(40, reachX(Math.abs(y - S.lastY)) - w / 2); let px = 30 + Math.random() * (W - 60), dx = px - S.lastX;
-  dx -= Math.round(dx / (W + 40)) * (W + 40); if (Math.abs(dx) > reach) px = Math.max(30, Math.min(W - 30, S.lastX + Math.sign(dx) * reach * (.5 + Math.random() * .5)));
-  S.lastX = px; S.lastY = y;
   let type = 'cloud';
   if (h > 600 && r < .12 + diff * .2) type = 'crumble';
   else if (h > 300 && r < .32 + diff * .3) type = 'leaf';
-  const p = { x: px, y, w, type, vx: type === 'leaf' ? (Math.random() < .5 ? -1 : 1) * (40 + diff * 90) * (h > 1200 ? 1 : 0) : 0, dead: 0, spring: false };
+  // never further sideways than a bounce can steer, measured straight across (most players don't go round the edge)
+  let vx = type === 'leaf' && h > 1200 && !S.lastMoving ? (Math.random() < .5 ? -1 : 1) * (40 + diff * 90) : 0;   // never two drifting leaves in a row
+  // a drifting leaf (this one or the one below) may be up to LEAF_RANGE further away when you jump
+  const reach = Math.max(40, reachX(Math.abs(y - S.lastY)) - (vx || S.lastMoving ? LEAF_RANGE : 0)); let px = 30 + Math.random() * (W - 60), dx = px - S.lastX;
+  if (Math.abs(dx) > reach) px = Math.max(30, Math.min(W - 30, S.lastX + Math.sign(dx) * reach * (.5 + Math.random() * .5)));
+  S.lastX = px; S.lastY = y; S.lastMoving = !!vx;
+  const p = { x: px, x0: px, y, w, type, vx, dead: 0, spring: false };
   if (type !== 'crumble' && Math.random() < .08) p.spring = true;
   S.plats.push(p);
   if (Math.random() < .55) S.items.push({ k: 'coin', x: p.x + (Math.random() - .5) * 40, y: y - 40 - Math.random() * 30 });
@@ -26,8 +28,9 @@ function addPlat(y) {
 }
 function gapAt(h) { return 62 + Math.min(95, h / 110); }
 // the next cloud up: bigger gaps higher up, but never more than a normal bounce (rises about 192) comfortably reaches
-const MAX_GAP = 150, nextGap = h => Math.min(MAX_GAP, gapAt(h) * (.7 + Math.random() * .5));
-const reachX = gap => 330 * (760 + Math.sqrt(Math.max(0, 760 * 760 - 3000 * gap))) / 1500 * .75;
+const MAX_GAP = 140, LEAF_RANGE = 70, nextGap = h => Math.min(MAX_GAP, gapAt(h) * (.7 + Math.random() * .5));
+// how far sideways a bounce comfortably steers: the flight time less a moment to react, with a margin
+const reachX = gap => 330 * Math.max(0, (760 + Math.sqrt(Math.max(0, 760 * 760 - 3000 * gap))) / 1500 - .2) * .8;
 
 const game = {
   id: 'sky-bounce', title: 'Sky Bounce', where: 'at Bounce Park',
@@ -38,7 +41,7 @@ const game = {
   revive(G) { S.x = W / 2; S.y = S.camY + H - 140; S.vy = -900; S.float = 1.8; G.float(W / 2, H / 2, 'Up you go!', '#FFD54A', 26); },
   reviveGift: 'and float back up with a balloon',
   init(G) {
-    S = { x: W / 2, y: -40, vy: -700, plats: [], items: [], camY: -H + 120, top: 0, coins: 0, steer: 0, target: null, keys: { l: false, r: false }, float: 0, squash: 0, face: 1, lastX: W / 2, lastY: 0 };
+    S = { x: W / 2, y: -40, vy: -700, plats: [], items: [], camY: -H + 120, top: 0, coins: 0, steer: 0, target: null, keys: { l: false, r: false }, float: 0, squash: 0, face: 1, lastX: W / 2, lastY: 0, lastMoving: false };
     S.plats.push({ x: W / 2, y: 0, w: 120, type: 'cloud', vx: 0, dead: 0, spring: false });
     let y = 0; while (y > -H * 1.6) { y -= nextGap(-y); addPlat(y); }
   },
@@ -61,7 +64,7 @@ const game = {
         break;
       }
     }
-    S.plats.forEach(p => { if (p.vx) { p.x += p.vx * dt; if (p.x < p.w / 2 || p.x > W - p.w / 2) p.vx *= -1; } if (p.dead) p.dead += dt; });
+    S.plats.forEach(p => { if (p.vx) { p.x += p.vx * dt; const lo = Math.max(p.w / 2, p.x0 - LEAF_RANGE), hi = Math.min(W - p.w / 2, p.x0 + LEAF_RANGE); if (p.x < lo) { p.x = lo; p.vx = Math.abs(p.vx); } else if (p.x > hi) { p.x = hi; p.vx = -Math.abs(p.vx); } } if (p.dead) p.dead += dt; });
     // items
     S.items.forEach(it => { if (it.got) return; if (Math.hypot(it.x - S.x, it.y - (S.y - 26)) < 30) { it.got = true; if (it.k === 'coin') { S.coins++; G.sfx(1400, .07, 'square', .05, 1.4); G.float(it.x, it.y - S.camY - 10, '+1', '#FFD54A', 15); } else { S.float = 2.4; G.sfx(700, .4, 'sine', .1, 2); } } });
     // camera + score

@@ -59,13 +59,19 @@ const GEAR_Y := -1000.0
 const GEAR_R := 64.0
 const RUN_YIELD := 0.05          # how much a squishy gives in to the run's squeezes, per physics step
 const RUN_SPRING_BACK := 400.0   # how fast a jelly or rubber squishy gets its shape back after the run (px/s)
-const GEAR_GAP := 64.0
+const GEAR_GAP := 40.0       # between the two discs; the teeth reach into it
+const TOOTH := 16.0          # how far a tooth sticks out
+const TEETH := 12
 const GEAR_SPEED := 260.0    # how fast the gears' edges move (px/s)
 const BOX_L := 40.0          # the paddle box on the trapdoor
 const BOX_R := 320.0
 const BOX_TOP := -860.0
 const TRAP_Y := -640.0
 const PADDLE_GAP := 72.0
+const PADDLE_SPEED := 450.0  # px/s, at most
+## The run's pieces are deeper than the lab's (3D units), so a puffed-up 3D squishy is visibly inside them.
+const RUN_DEPTH := 4.4
+const RUN_STEP_LIMIT := 1.5  # px per physics step the skin can pull a point in the run
 const BUMPERS := [Vector3(180, -540, 24), Vector3(180, -380, 24)]
 const FUNNEL_TOP := -260.0
 const FUNNEL_END := -80.0
@@ -128,6 +134,11 @@ var cam_dy := 0.0
 var gear_rot := 0.0
 var trap_open := 0.0
 var paddle_in := 0.0
+## How far the paddles really are in (px). It follows paddle_in smoothly inside the physics steps: a paddle that
+## jumped a long way in one go (a slow frame on a phone) could tear a stiff squishy apart.
+var paddle_reach := 0.0
+## How many times the safety net had to put the squishy back together (tests check it stays 0).
+var rescues := 0
 var _trap_state := &"closed"
 var _trap_t := 0.0
 var _best_y := -INF
@@ -136,6 +147,7 @@ var _ghost := 0.0
 var _bump_cd := 0.0
 var _kick := Vector2.ZERO
 var _bent := false
+var _in_box := false
 var _bumped := -1
 var _run_segs: Array = []
 var _run_circles: Array = []
@@ -371,6 +383,7 @@ func _update(dt: float) -> void:
 		_acc -= HSTEP
 		n += 1
 	_run_update(dt)
+	_keep_whole()
 	_tip = maxf(0.0, _tip - dt)
 	# squish-o-meter: how far the squishy is from its relaxed shape
 	var size := _extent(x)
@@ -499,9 +512,14 @@ func step(h: float) -> void:
 		var r := qm[i]
 		var goal := c + Vector2(ca * r.x - sa * r.y, sa * r.x + ca * r.y)
 		var d := rx[i] + (goal - x[i]) * k
+		# in the run's squeezes the skin may only pull so far per step (like the prototype's `rise`), so a hard
+		# squeeze can't wind the body up until it flies apart
+		if run == Run.DOWN and d.length() > RUN_STEP_LIMIT:
+			d = d.normalized() * RUN_STEP_LIMIT
 		x[i] += d
 		rx[i] = d
 	_mu = M["mu"]
+	paddle_reach = move_toward(paddle_reach, (BOX_R - BOX_L - PADDLE_GAP) / 2.0 * paddle_in, PADDLE_SPEED * h)
 	_pick_run_shapes()
 	_roll_on = roller["on"]
 	_roll = Vector2(roller["x"], roller["y"])
@@ -744,12 +762,33 @@ func _balls_step(h: float) -> void:
 		b["spin"] += b["vx"] * h / r
 
 
+## A safety net: if the soft body ever went wild (points flung far apart, or not a number), it gets its own shape
+## back on the spot, where its middle is. Squishies never break.
+func _keep_whole() -> void:
+	var size := _extent(x)
+	var c := centroid(x)
+	if size.x < (w0 + h0) * 2.5 and size.y < (w0 + h0) * 2.5 and not is_nan(c.x) and not is_nan(c.y):
+		return
+	rescues += 1
+	if is_nan(c.x) or is_nan(c.y):
+		c = Vector2(W / 2.0, FLOOR - h0)
+	for i in N:
+		x[i] = c + q[i]
+		o[i] = x[i]
+		v[i] = Vector2.ZERO
+	qm = q.duplicate()
+	Lm = L.duplicate()
+	L2m = L2.duplicate()
+	Am = A0
+
+
 # ---------------------------------------------------------------- the Squish Run
 
 func _reset_run() -> void:
 	run = Run.OFF
 	trap_open = 0.0
 	paddle_in = 0.0
+	paddle_reach = 0.0
 	_trap_state = &"closed"
 	_trap_t = 0.0
 	_stuck_t = 0.0
@@ -858,6 +897,7 @@ func _run_trap(dt: float, c: Vector2, vy: float) -> void:
 func _pick_run_shapes() -> void:
 	_run_segs.clear()
 	_run_circles.clear()
+	_in_box = false
 	if run != Run.DOWN or _ghost > 0.0:
 		return
 	var lo := INF
@@ -867,14 +907,20 @@ func _pick_run_shapes() -> void:
 		hi = maxf(hi, p.y)
 	lo -= 40.0
 	hi += 40.0
-	for sg: Array in run_walls():
+	var walls := run_walls()
+	for k in walls.size():
+		if k == 6 or k == 7:
+			continue   # the paddles push one way only (see _collide_run)
+		var sg: Array = walls[k]
 		var a: Vector2 = sg[0]
 		var b: Vector2 = sg[1]
 		if maxf(a.y, b.y) >= lo and minf(a.y, b.y) <= hi:
 			_run_segs.append(sg)
+	var mid := centroid(x)
+	_in_box = mid.y > BOX_TOP - 20.0 and mid.y < TRAP_Y and _trap_state != &"open"
 	for i in 2:
-		if GEAR_Y + GEAR_R + 10 >= lo and GEAR_Y - GEAR_R - 10 <= hi:
-			_run_circles.append([gear_centre(i), GEAR_R + 4.0, 1.0 if i == 0 else -1.0, -1])
+		if GEAR_Y + GEAR_R + TOOTH + 10 >= lo and GEAR_Y - GEAR_R - TOOTH - 10 <= hi:
+			_run_circles.append([gear_centre(i), GEAR_R, 1.0 if i == 0 else -1.0, -1, i])
 	for k in BUMPERS.size():
 		var b: Vector3 = BUMPERS[k]
 		if b.y + b.z >= lo and b.y - b.z <= hi:
@@ -889,7 +935,7 @@ static func gear_centre(i: int) -> Vector2:
 func run_walls() -> Array:
 	var cl := W / 2.0 - CHUTE / 2.0
 	var cr := W / 2.0 + CHUTE / 2.0
-	var reach := (BOX_R - BOX_L - PADDLE_GAP) / 2.0 * paddle_in
+	var reach := paddle_reach
 	var flap := (BOX_R - BOX_L) / 2.0 * (1.0 - trap_open)
 	return [
 		# the funnel into the chute, and the chute
@@ -897,16 +943,38 @@ func run_walls() -> Array:
 		[Vector2(cl, CHUTE_TOP), Vector2(cl, CHUTE_END), 6.0], [Vector2(cr, CHUTE_TOP), Vector2(cr, CHUTE_END), 6.0],
 		# the paddle box: its sides, the two paddles and the trapdoor's two flaps
 		[Vector2(BOX_L, BOX_TOP), Vector2(BOX_L, TRAP_Y), 6.0], [Vector2(BOX_R, BOX_TOP), Vector2(BOX_R, TRAP_Y), 6.0],
-		[Vector2(BOX_L + reach, BOX_TOP + 40), Vector2(BOX_L + reach, TRAP_Y - 12), 8.0],
-		[Vector2(BOX_R - reach, BOX_TOP + 40), Vector2(BOX_R - reach, TRAP_Y - 12), 8.0],
+		[Vector2(BOX_L + reach, BOX_TOP - 30), Vector2(BOX_L + reach, TRAP_Y - 8), 8.0],
+		[Vector2(BOX_R - reach, BOX_TOP - 30), Vector2(BOX_R - reach, TRAP_Y - 8), 8.0],
 		[Vector2(BOX_L, TRAP_Y), Vector2(BOX_L + flap, TRAP_Y), 6.0], [Vector2(BOX_R - flap, TRAP_Y), Vector2(BOX_R, TRAP_Y), 6.0],
 		# the funnel back down to the table
 		[Vector2(6, FUNNEL_TOP), Vector2(95, FUNNEL_END), 6.0], [Vector2(W - 6, FUNNEL_TOP), Vector2(W - 95, FUNNEL_END), 6.0],
 	]
 
 
+## Where gear i's teeth point now (physics angle of tooth 0). The two gears' teeth interleave like real gears.
+func tooth_angle(i: int) -> float:
+	return gear_rot + PI / TEETH if i == 0 else -gear_rot
+
+
+## How far gear i's edge reaches in direction ang: a tooth sticks out TOOTH further.
+func gear_reach(i: int, ang: float) -> float:
+	var pitch := TAU / TEETH
+	var off := absf(wrapf(ang - tooth_angle(i), -pitch / 2.0, pitch / 2.0))
+	return GEAR_R + (TOOTH if off < pitch * 0.28 else 1.0)
+
+
 ## Keep point i out of the run's walls (no grip: it slides), gears (they turn it downwards) and bumpers (boing!).
+## The paddles push one way only, like the press: the squishy always stays between them, however hard they squeeze.
 func _collide_run(i: int) -> void:
+	if _in_box:
+		# the whole squishy is held between the paddles while it is in the box (so no part of it can slip past)
+		var reach := paddle_reach
+		var held := clampf(x[i].x, BOX_L + reach + 8.0 + PR, BOX_R - reach - 8.0 - PR)
+		if held != x[i].x:
+			# moved, not flung: the shove doesn't turn into speed (that made it jitter)
+			o[i].x += held - x[i].x
+			x[i].x = held
+			touch[i] = 4
 	for sg: Array in _run_segs:
 		var a: Vector2 = sg[0]
 		var b: Vector2 = sg[1]
@@ -926,9 +994,11 @@ func _collide_run(i: int) -> void:
 			touch[i] = 4
 	for ci: Array in _run_circles:
 		var c: Vector2 = ci[0]
-		var r: float = float(ci[1]) + PR
 		var d := x[i] - c
 		var dl := d.length()
+		var r: float = float(ci[1]) + PR
+		if ci.size() > 4:
+			r = gear_reach(ci[4], d.angle()) + PR
 		if dl >= r or dl < 1e-4:
 			continue
 		var n := d / dl
@@ -1384,14 +1454,14 @@ func _build_lab() -> void:
 
 
 ## A straight piece of the Squish Run between two physics points (a box along the line).
-func _beam(a: Vector2, b: Vector2, r: float, mat: Material, parent: Node3D, depth := 2.4) -> MeshInstance3D:
+func _beam(a: Vector2, b: Vector2, r: float, mat: Material, parent: Node3D, depth := RUN_DEPTH) -> MeshInstance3D:
 	# no shadows: the run is high above the lab and would throw stripes over it
 	var mi := _part(_box(Vector3(1, 1, 1)), mat, Vector3.ZERO, parent, false)
 	_place_beam(mi, a, b, r, depth)
 	return mi
 
 
-static func _place_beam(mi: Node3D, a: Vector2, b: Vector2, r: float, depth := 2.4) -> void:
+static func _place_beam(mi: Node3D, a: Vector2, b: Vector2, r: float, depth := RUN_DEPTH) -> void:
 	var d := b - a
 	mi.position = Vector3(wx((a.x + b.x) / 2.0), wy((a.y + b.y) / 2.0), 0)
 	mi.rotation = Vector3(0, 0, atan2(-d.y, d.x))
@@ -1416,7 +1486,7 @@ func _build_run(world: Node3D) -> void:
 	var yellow := _material(Color("#FFC93C"))
 	var moving: Array[MeshInstance3D] = []
 	for k in 4:
-		moving.append(_beam(walls[6 + k][0], walls[6 + k][1], walls[6 + k][2], yellow if k < 2 else _material(Color("#FF8FB8")), world, 2.2))
+		moving.append(_beam(walls[6 + k][0], walls[6 + k][1], walls[6 + k][2], yellow if k < 2 else _material(Color("#FF8FB8")), world))
 	# two gears (a disc and twelve teeth), turning
 	var gear_mat := _material(Color("#FFB347"))
 	var gears: Array[Node3D] = []
@@ -1425,12 +1495,13 @@ func _build_run(world: Node3D) -> void:
 		var c := gear_centre(i)
 		g.position = Vector3(wx(c.x), wy(c.y), 0)
 		world.add_child(g)
-		var disc := _part(_cyl(GEAR_R / U, 1.4, 28), gear_mat, Vector3.ZERO, g, false)
+		var disc := _part(_cyl(GEAR_R / U, 3.2, 28), gear_mat, Vector3.ZERO, g, false)
 		disc.rotation.x = PI / 2.0
-		_part(_cyl(0.35, 1.6, 12), _material(Color("#D6DEE9")), Vector3.ZERO, g, false).rotation.x = PI / 2.0
-		for t_i in 12:
-			var a := t_i / 12.0 * TAU
-			var tooth := _part(_box(Vector3(0.36, 0.4, 1.4)), gear_mat, Vector3(cos(a), sin(a), 0) * (GEAR_R + 4.0) / U, g, false)
+		_part(_cyl(0.35, 3.4, 12), _material(Color("#D6DEE9")), Vector3.ZERO, g, false).rotation.x = PI / 2.0
+		for t_i in TEETH:
+			# tooth k sits at physics angle tooth_angle + k * pitch; 3D angles turn the other way (y up)
+			var a := -float(t_i) / TEETH * TAU
+			var tooth := _part(_box(Vector3((TOOTH + 10.0) / U, 0.62, 3.2)), gear_mat, Vector3(cos(a), sin(a), 0) * (GEAR_R + TOOTH / 2.0 - 4.0) / U, g, false)
 			tooth.rotation.z = a
 		gears.append(g)
 	# pinball bumpers
@@ -1439,8 +1510,8 @@ func _build_run(world: Node3D) -> void:
 		var g := Node3D.new()
 		g.position = Vector3(wx(b.x), wy(b.y), 0)
 		world.add_child(g)
-		_part(_cyl(b.z / U, 1.2, 24), _material(Color("#FF6FA3")), Vector3.ZERO, g, false).rotation.x = PI / 2.0
-		_part(_cyl(b.z * 0.6 / U, 1.3, 20), _material(Color.WHITE), Vector3.ZERO, g, false).rotation.x = PI / 2.0
+		_part(_cyl(b.z / U, 3.0, 24), _material(Color("#FF6FA3")), Vector3.ZERO, g, false).rotation.x = PI / 2.0
+		_part(_cyl(b.z * 0.6 / U, 3.1, 20), _material(Color.WHITE), Vector3.ZERO, g, false).rotation.x = PI / 2.0
 		bumpers.append(g)
 	# the sign at the top
 	var sign := Label3D.new()
@@ -1754,10 +1825,10 @@ func _sync_run() -> void:
 		var d: Vector2 = sg[1] - sg[0]
 		var mi: MeshInstance3D = moving[k]
 		mi.visible = d.length() > 1.0
-		_place_beam(mi, sg[0], sg[1], sg[2], 2.2)
+		_place_beam(mi, sg[0], sg[1], sg[2])
 	var gears: Array = _art["gears"]
-	(gears[0] as Node3D).rotation.z = -gear_rot
-	(gears[1] as Node3D).rotation.z = gear_rot
+	(gears[0] as Node3D).rotation.z = -tooth_angle(0)
+	(gears[1] as Node3D).rotation.z = -tooth_angle(1)
 	var flash: Array = _art["bump_flash"]
 	if _bumped >= 0:
 		flash[_bumped] = 1.0

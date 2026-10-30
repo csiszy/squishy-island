@@ -5,9 +5,11 @@ extends GutTest
 const HARNESS := preload("res://minigame_kit/v1/harness.gd")
 
 
-func _lab(id: StringName) -> Node:
+func _lab(id: StringName, real_model := false) -> Node:
 	var m := MinigameManifest.from_file("res://minigames/squish_lab/manifest.json")
 	var ctx := HARNESS.fake_context(m, HARNESS.read_words(m.strings_path()))
+	if real_model:
+		ctx.get_model = func(sid: StringName) -> PackedScene: return ArtLibrary.squishy(sid)
 	ctx.squad.assign([id])
 	var game: Node = (load(m.scene_path()) as PackedScene).instantiate()
 	game.process_mode = Node.PROCESS_MODE_DISABLED
@@ -71,3 +73,22 @@ func test_nobody_can_grab_it_in_the_run() -> void:
 		game.advance(1.0 / 30.0)
 	game.call(&"_down", Vector2(180, 300), 0)
 	assert_eq((game.get(&"grabs") as Array).size(), 0)
+
+
+## A phone's frames don't all take the same time. Ride with uneven frames, real 3D models included (the stiff rubber
+## kitty once got torn apart by the paddles that way): the squishy never needs putting back together.
+func test_uneven_frames_never_tear_a_squishy_apart() -> void:
+	var rng := RandomNumberGenerator.new()
+	rng.seed = 4
+	for id: StringName in [&"kitty", &"puppy", &"jelly", &"bao", &"octopus"]:
+		var game := _lab(id, true)
+		game.call(&"launch")
+		var seconds := 0.0
+		while seconds < 30.0:
+			var dt := rng.randf_range(0.01, 0.05)
+			game.advance(dt)
+			seconds += dt
+			if seconds > 3.0 and game.get(&"run") == 0:
+				break
+		assert_eq(game.get(&"run"), 0, "%s came back" % id)
+		assert_eq(game.get(&"rescues"), 0, "%s stayed in one piece" % id)

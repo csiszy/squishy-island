@@ -328,12 +328,21 @@ Sort-a-Lot ported from the prototypes. Tap a built fun building on the map → *
   finger-friendly scroller (`TouchScroll`) that also scrolls when the finger lands on a button (the button then
   doesn't click) and glides after a flick; the house page scrolls as a whole (room, family, decor) and the
   "who plays" picker no longer sits in a small box.
-- **The Squish Run** (owner's idea): throw the squishy up out of the Lab and the camera follows it up a wind tunnel
+- **Fifth phone test fixes**: Sky Bounce still had jumps that were only just possible when the next cloud was
+  across the screen: reach is now measured straight across (not round the screen edge), allows a moment to react
+  and keeps a margin; the highest gap is 140; a drifting leaf only drifts 70 either side of where it was made (it
+  used to wander, and one made by the edge flipped every frame and shook), it counts as up to 70 further away,
+  and two drifting leaves never come in a row. Squish Run: the gears sit closer with bigger teeth that mesh; the
+  paddles hold the whole squishy between them (it could slip past them before), glide within the physics steps
+  (a slow frame used to make them jump and tear a stiff squishy apart) and the run's pieces are deeper so a
+  puffed-up squishy is visibly inside them; a safety net puts a squishy back together if the physics ever went
+  wild (tests ride all 48 squishies with uneven frames: it is never needed).
+- **The Squish Run** (owner's idea; owner: it stays open from the start): throw the squishy up out of the Lab and the camera follows it up a wind tunnel
   to a marble run above: a narrow chute, two gears, a paddle box on a trapdoor, pinball bumpers and a funnel back to
   the table. Nobody can touch it there and nothing can hold it (no grip on the run's walls, gears turn downwards,
   the trapdoor always opens, a squishy that stops going down is let through); inside the run every squishy gives in
-  to the squeezes like foam, and rubber and jelly spring back once out. Squishes on the way count. Open: whether
-  the run should open with a Lab level (it is there from the start for now).
+  to the squeezes like foam, and rubber and jelly spring back once out. Squishes on the way count. It is there
+  from the start (owner's decision).
 - The contract grew (still version 1, nothing removed): song and toy kinds, `sound_bus` (a game's own sounds that
   it must start and stop, like a song), `model(id)` (a squishy's 3D model) and `building_level`.
 - Not yet: the squishy "helper" list on the start card names no effects yet (just "extra good at this game"),
