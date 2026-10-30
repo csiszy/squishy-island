@@ -7,7 +7,10 @@
 // (addons/squishy_art_import). Change the look here and every building and squishy follows.
 
 uniform vec4 albedo : source_color = vec4(1.0);
-uniform sampler2D albedo_texture : source_color, filter_linear_mipmap, hint_default_white;
+uniform sampler2D albedo_texture : source_color, filter_linear_mipmap, repeat_enable, hint_default_white;
+// texture tiling (the book repeats its grass and water textures across the island) and drift (water)
+uniform vec2 uv_scale = vec2(1.0);
+uniform vec2 uv_offset = vec2(0.0);
 uniform bool use_texture = false;
 uniform vec4 emission : source_color = vec4(0.0, 0.0, 0.0, 1.0);
 uniform float emission_energy = 0.0;
@@ -47,7 +50,7 @@ void fragment() {
 	}
 	vec4 c = albedo * vec4(tint, 1.0);
 	if (use_texture) {
-		c *= texture(albedo_texture, UV);
+		c *= texture(albedo_texture, UV * uv_scale + uv_offset);
 	}
 	ALBEDO = c.rgb;
 #ifdef SEE_THROUGH

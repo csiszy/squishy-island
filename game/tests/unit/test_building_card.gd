@@ -34,37 +34,30 @@ func test_a_house_that_needs_more_family() -> void:
 	assert_eq(_card(&"dumpling")["note"], "Needs 2 family squishies living here (you have 1)")
 
 
-func test_a_locked_house_says_what_unlocks_it() -> void:
+func test_every_house_is_open_from_day_one() -> void:
 	var c := _card(&"kitchen")
-	assert_eq(c["level_text"], "Locked")
-	assert_eq(c["note"], "Unlocks when the Dumpling Steamhouse reaches level 4")
-	assert_eq(_action_ids(c), [])
-
-
-func test_the_market_unlocks_with_squishies() -> void:
-	assert_eq(_card(&"market")["note"], "Unlocks when you have 8 squishies")
+	assert_eq(c["level_text"], "Level 1")
+	assert_eq(_action_ids(c), [&"open_house", &"upgrade"])
 
 
 func test_an_empty_plot_can_be_built() -> void:
 	w.economy.earn(100000, &"test")
-	await w.give([&"gyoza"])
-	w.town.upgrade(&"dumpling")
-	w.town.upgrade(&"dumpling")
-	var c := _card(&"restaurant")
+	var c := _card(&"salon")
 	assert_eq(c["level_text"], "Empty plot")
-	assert_eq(c["actions"][0]["text"], "Build it! (360 coins)")
+	assert_eq(c["actions"][0]["text"], "Build it! (420 coins)")
 	assert_true(c["actions"][0]["enabled"])
 
 
 func test_not_enough_coins_is_said_kindly() -> void:
 	w.economy.earn(100, &"test")
-	await w.give([&"gyoza"])
-	w.town.upgrade(&"dumpling")
-	w.economy.earn(200, &"test")
-	w.town.upgrade(&"dumpling")
-	var c := _card(&"restaurant")
+	var c := _card(&"salon")
 	assert_false(c["actions"][0]["enabled"])
-	assert_eq(c["note"], "You need 360 more coins")
+	assert_eq(c["note"], "You need 320 more coins")
+
+
+func test_three_games_are_ready_to_play() -> void:
+	for id: StringName in [&"playground", &"restaurant", &"post"]:
+		assert_has(_action_ids(_card(id)), &"play", String(id))
 
 
 func test_the_factory_opens_and_says_its_next_goal() -> void:

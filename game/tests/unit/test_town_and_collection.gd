@@ -12,14 +12,17 @@ func before_each() -> void:
 func test_day_one_matches_the_book() -> void:
 	assert_eq(w.collection.owned_ids(), [&"bao"] as Array[StringName], "a free Bao Bun")
 	assert_eq(w.town.level(&"dumpling"), 1, "the Steamhouse starts broken")
-	assert_eq(w.town.level(&"factory"), 1, "the Factory is built")
-	assert_eq(w.town.level(&"playground"), 1, "Bounce Park is built")
-	assert_eq(w.town.level(&"restaurant"), 0, "other fun buildings are empty plots")
-	assert_eq(w.town.level(&"kitchen"), 1, "locked houses still show, broken")
-	assert_true(w.town.is_unlocked(&"dumpling"))
-	assert_false(w.town.is_unlocked(&"kitchen"))
-	assert_false(w.town.is_unlocked(&"restaurant"))
+	assert_eq(w.town.level(&"kitchen"), 1, "every house is there, broken")
+	for built: StringName in [&"playground", &"restaurant", &"post", &"factory"]:
+		assert_eq(w.town.level(built), 1, "%s is built on day one" % built)
+	assert_eq(w.town.level(&"salon"), 0, "other fun buildings are empty plots")
+	assert_eq(w.town.level(&"market"), 0)
 	assert_eq(w.economy.coins(), 0)
+
+
+func test_the_whole_island_is_open_from_day_one() -> void:
+	for b: Dictionary in GameData.buildings():
+		assert_true(w.town.is_unlocked(StringName(b["id"])), "%s is open" % b["id"])
 
 
 func test_opening_a_box_costs_coins_and_counts_for_the_factory() -> void:
@@ -92,26 +95,16 @@ func test_some_house_levels_need_family_squishies() -> void:
 	assert_true(w.town.upgrade_check(&"dumpling")["can"])
 
 
-func test_unlock_order_follows_the_guide() -> void:
-	w.economy.earn(100000, &"test")
-	await w.give([&"gyoza", &"xlb", &"hargow", &"peachbun"])
-	watch_signals(Events)
-	for i in 2:
-		w.town.upgrade(&"dumpling")
-	assert_eq(w.town.level(&"dumpling"), 3)
-	assert_true(w.town.is_unlocked(&"restaurant"), "Squish Bistro at Steamhouse level 3")
-	assert_false(w.town.is_unlocked(&"kitchen"))
-	w.town.upgrade(&"dumpling")
-	assert_true(w.town.is_unlocked(&"kitchen"), "Teapot Kitchen at Steamhouse level 4")
-	assert_signal_emitted(Events, "buildings_unlocked")
-	assert_false(w.town.is_unlocked(&"market"))
-	await w.give([&"toast", &"egg", &"banana"])
-	assert_true(w.town.is_unlocked(&"market"), "the Market at 8 squishies owned")
+func test_a_squishy_moves_into_a_house_nobody_has_fixed_yet() -> void:
+	await w.give([&"toast"])
+	assert_eq(w.collection.family_count(&"kitchen"), 1)
+	assert_true(w.town.is_unlocked(&"kitchen"))
 
 
 func test_unlocks_are_announced_once() -> void:
 	var first := w.town.check_unlocks()
 	assert_has(first, &"dumpling")
+	assert_has(first, &"forest", "everything is open, so everything is announced on day one")
 	assert_eq(w.town.check_unlocks(), [] as Array[StringName])
 
 
@@ -127,14 +120,11 @@ func test_fun_buildings_need_their_goal_then_coins() -> void:
 
 func test_building_an_empty_plot_only_costs_coins() -> void:
 	w.economy.earn(100000, &"test")
-	await w.give([&"gyoza"])
-	w.town.upgrade(&"dumpling")
-	w.town.upgrade(&"dumpling")
-	var c := w.town.upgrade_check(&"restaurant")
+	var c := w.town.upgrade_check(&"salon")
 	assert_true(c["can"])
-	assert_eq(c["coins"], 360, "300 × the Bistro's 1.2")
-	w.town.upgrade(&"restaurant")
-	assert_eq(w.town.level(&"restaurant"), 1)
+	assert_eq(c["coins"], 420, "300 × the Salon's 1.4")
+	w.town.upgrade(&"salon")
+	assert_eq(w.town.level(&"salon"), 1)
 
 
 func test_best_scores_only_go_up() -> void:
@@ -164,9 +154,9 @@ func test_cozy_bonus_is_five_percent_per_five_points() -> void:
 	assert_almost_eq(w.town.cozy_bonus(&"dumpling"), 0.05, 0.0001)
 
 
-func test_decor_in_a_locked_house_cannot_be_bought() -> void:
+func test_decor_can_be_bought_in_any_house() -> void:
 	w.economy.earn(1000, &"test")
-	assert_eq(w.town.buy_decor(&"kitchen", 1, &"classic")["reason"], &"locked")
+	assert_true(w.town.buy_decor(&"kitchen", 1, &"classic")["ok"])
 
 
 func test_spares_level_up_and_swap_for_stars() -> void:

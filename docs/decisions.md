@@ -35,6 +35,7 @@ minigames in its fun buildings to earn coins. The home screen is a cartoon 3D ma
   over time (seasonal) to reach 70+.
 - Houses: levels 1–10 (100 coins at L2 … 2,500 at L10, more for later houses); some levels need family squishies.
   Fun buildings: levels 0–10, upgrades need a best score (or levels beaten), then coins.
+- **Nothing is locked** (§16): every house and every plot is open from day one; three minigames start built.
 
 ## 3. Currencies
 
@@ -183,7 +184,6 @@ Small choices made while building (each follows the book; say if one is wrong):
   switch at once. The room shows only decor you own (the book's drawing shows everything).
 - **A Sparkly pull of a squishy you already have** makes yours Sparkly *and* still adds a spare (as in
   `tools/collection_sim.py`).
-- A squishy from a box whose house is **still locked** moves in anyway and waits at that house on the map.
 - Swapping a spare for Stars asks first (it can't be undone); levelling up doesn't.
 - Not yet: the free ad box and the Gem Shop (Step 5), the Market and trading (Step 4), the Star Shop, the help,
   settings and save-my-town buttons on the map (they say "Coming soon!"). Fun buildings can be built and upgraded,
@@ -195,3 +195,15 @@ Small choices made while building (each follows the book; say if one is wrong):
   Google Play allows 200 MB, the plan aims for under 150 MB.
 - **Testing on a phone:** every push builds an installable `.apk`; the newest one is always on the repository's
   Releases page as "Test build (newest)". How to install: `docs/testing-on-a-phone.md`.
+
+## 16. An open island (owner's decision, October 2026)  → `guide.html#progression`
+
+- **Nothing is locked.** All 8 houses are on the map from day one (broken, fixed up with coins); a squishy from any
+  family moves straight into its own house. **Three minigames are built from the start**: Bounce Park (Sky Bounce),
+  Squish Bistro (Bistro Rush) and the Post Office (Sort-a-Lot), plus the Factory and the Gem Mine. Every other fun
+  building, the Market and the Testing Facility are empty plots built with coins whenever the player likes.
+- Why: the old chain ("Bistro at Steamhouse level 3, Kitchen at level 4, …") was confusing for 5–11 year olds and
+  felt restrictive, and a single starting minigame was risky (a child who doesn't like it may stop before the next one
+  opens). Progress stays plentiful: 8 houses × 10 levels, fun-building upgrades, decor, 48 squishies.
+- The natural order remains (later houses cost more; the tutorial and quests suggest what to try next) but is never
+  forced. The data format (`art/economy.js`, `unlocks`) can still hold a later unlock if one is ever wanted.

@@ -99,6 +99,11 @@ func apply(t: float) -> void:
 			elif u >= 0.78 and u < 0.95:
 				v = 1.0 - (u - 0.78) / 0.17
 			o.position.y = _pos.y - (1.0 - v) * depth
+		&"water":
+			# the book slides the water texture slowly (art/kit3d.js: map.offset); the material is shared, as there
+			var wm := o as MeshInstance3D
+			if wm != null and wm.mesh != null and wm.mesh.get_surface_count() > 0 and wm.mesh.surface_get_material(0) is ShaderMaterial:
+				(wm.mesh.surface_get_material(0) as ShaderMaterial).set_shader_parameter(&"uv_offset", Vector2(fmod(t * 0.03, 1.0), fmod(t * 0.02, 1.0)))
 		&"glow":
 			var mi := o as MeshInstance3D
 			if mi != null and mi.material_override is ShaderMaterial:

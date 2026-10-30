@@ -7,7 +7,8 @@ extends Node
 ##     Town.upgrade_check(&"dumpling")      -> {"can": true, "next": 2, "coins": 100, ...} or why not
 ##     Town.upgrade(&"dumpling")            -> the same, after paying and fixing it up
 ##     Town.buy_decor(&"dumpling", 6, &"classic")
-## Rules: guide.html (#progression, house and fun-building rules) and data/economy.json (unlocks, cozy).
+## Rules: guide.html (#progression: the open island, house and fun-building rules) and data/economy.json
+## (unlocks: everything is open from day one; "built" says which fun buildings start at level 1; cozy).
 
 signal changed
 
@@ -231,10 +232,11 @@ func _met(when: Variant) -> bool:
 	return false
 
 
+## Fun buildings that stand ready (level 1) on day one; every other plot starts empty (level 0).
 func _start_buildings() -> Array[StringName]:
 	for u: Dictionary in GameData.economy().get("unlocks", []):
 		if u.get("when") is String and u["when"] == "start":
-			return _ids(u.get("buildings", []))
+			return _ids(u.get("built", u.get("buildings", [])))
 	return []
 
 

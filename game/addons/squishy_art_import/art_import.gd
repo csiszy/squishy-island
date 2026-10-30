@@ -16,6 +16,7 @@ const TOON := preload("res://art/shaders/toon.gdshader")
 const TOON_SEE_THROUGH := preload("res://art/shaders/toon_see_through.gdshader")
 const OUTLINE := preload("res://art/shaders/outline.gdshader")
 const IDLE := preload("res://art/runtime/idle_motion.gd")
+const INSTANCE_SET := preload("res://art/runtime/instance_set.gd")
 
 var _materials: Dictionary = {}
 ## Meshes already restyled (one mesh can be used by many parts; restyle it once).
@@ -81,7 +82,7 @@ func _material(src: BaseMaterial3D, look: String, _glow: float, outline: bool, s
 		keep.albedo_color = colour
 		return keep
 	var glow := src.emission.srgb_to_linear() * src.emission_energy_multiplier if src.emission_enabled else Color.BLACK
-	var key := "%s|%s|%s|%s|%s|%s" % [colour.to_html(), look, glow.to_html(), outline, see_through, src.albedo_texture.get_instance_id() if src.albedo_texture else 0]
+	var key := "%s|%s|%s|%s|%s|%s|%s" % [colour.to_html(), look, glow.to_html(), outline, see_through, src.albedo_texture.get_instance_id() if src.albedo_texture else 0, src.uv1_scale]
 	if _materials.has(key):
 		return _materials[key]
 	var m := ShaderMaterial.new()
@@ -90,6 +91,8 @@ func _material(src: BaseMaterial3D, look: String, _glow: float, outline: bool, s
 	if src.albedo_texture != null:
 		m.set_shader_parameter(&"albedo_texture", src.albedo_texture)
 		m.set_shader_parameter(&"use_texture", true)
+		m.set_shader_parameter(&"uv_scale", Vector2(src.uv1_scale.x, src.uv1_scale.y))
+		m.set_shader_parameter(&"uv_offset", Vector2(src.uv1_offset.x, src.uv1_offset.y))
 	if src.emission_enabled:
 		m.set_shader_parameter(&"emission", Color(glow.r, glow.g, glow.b))
 		m.set_shader_parameter(&"emission_energy", 1.0)
@@ -121,36 +124,27 @@ func _smoothed_normals(arrays: Array) -> PackedColorArray:
 	return out
 
 
-## Swap an instanced part for a MultiMeshInstance3D with one copy per listed transform.
+## Swap an instanced part for an InstanceSet (art/runtime/instance_set.gd): one mesh drawn at every listed
+## transform. The transforms are kept as plain numbers and the MultiMesh is built when the game runs, because a
+## MultiMesh made during a headless import (CI) loses its transforms when it is saved.
 func _to_multimesh(mi: ImporterMeshInstance3D, extras: Dictionary) -> Node:
-	var mats: Array = extras["instances"]
-	var cols: Array = extras.get("instance_colors", [])
-	var mm := MultiMesh.new()
-	mm.transform_format = MultiMesh.TRANSFORM_3D
-	mm.use_custom_data = true
-	mm.mesh = mi.mesh.get_mesh()
-	mm.instance_count = mats.size() / 16
-	for i in mm.instance_count:
-		var e: Array = mats.slice(i * 16, i * 16 + 16)
-		# three.js matrices are column-major: x axis, y axis, z axis, position
-		var t := Transform3D(Basis(Vector3(e[0], e[1], e[2]), Vector3(e[4], e[5], e[6]), Vector3(e[8], e[9], e[10])), Vector3(e[12], e[13], e[14]))
-		mm.set_instance_transform(i, t)
-		# like every book colour, these are sRGB values; the shader multiplies in linear light (alpha 1 = "use me")
-		if cols.size() >= (i + 1) * 3:
-			var c := Color(cols[i * 3], cols[i * 3 + 1], cols[i * 3 + 2]).srgb_to_linear()
-			mm.set_instance_custom_data(i, Color(c.r, c.g, c.b, 1.0))
-		else:
-			mm.set_instance_custom_data(i, Color(1, 1, 1, 0))
-	var mmi := MultiMeshInstance3D.new()
-	mmi.name = mi.name
-	mmi.multimesh = mm
-	mmi.transform = mi.transform
+	var set := INSTANCE_SET.new() as MultiMeshInstance3D
+	set.name = mi.name
+	set.transform = mi.transform
+	set.set(&"mesh", mi.mesh.get_mesh())
+	set.set(&"transforms", PackedFloat32Array(extras["instances"]))
+	# like every book colour, these are sRGB values; the shader multiplies in linear light
+	var cols := PackedColorArray()
+	var raw: Array = extras.get("instance_colors", [])
+	for i in raw.size() / 3:
+		cols.append(Color(raw[i * 3], raw[i * 3 + 1], raw[i * 3 + 2]).srgb_to_linear())
+	set.set(&"colors", cols)
 	extras.erase("instances")
 	extras.erase("instance_colors")
-	mmi.set_meta(&"extras", extras)
-	mi.replace_by(mmi)
+	set.set_meta(&"extras", extras)
+	mi.replace_by(set)
 	mi.free()
-	return mmi
+	return set
 
 
 func _add_idle(node: Node3D, anim: Dictionary, root: Node) -> void:

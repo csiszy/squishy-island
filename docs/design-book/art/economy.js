@@ -49,24 +49,14 @@ SQ.ECONOMY = {
   },
   /* Ads: rewarded only, always opted into. */
   ads: { closableAfterSeconds: 5, keepGoingPerRun: 1, freeBoxesPerDay: 3 },
-  /* What unlocks when (guide.html#progression). when: start | { house, level } | { owned } */
+  /* The open island (guide.html#progression): everything is open from day one. "built" starts at level 1
+     (three minigames, the Factory and the Gem Mine); every other fun building is an empty plot built with coins;
+     houses start broken and are fixed up with coins. The list format can still hold later unlocks if ever needed:
+     when: start | { house, level } | { owned } */
   unlocks: [
-    { when: 'start', houses: ['dumpling'], buildings: ['playground', 'factory', 'gemmine'], gift: 'bao' },
-    { when: { house: 'dumpling', level: 3 }, buildings: ['restaurant'] },
-    { when: { house: 'dumpling', level: 4 }, houses: ['kitchen'] },
-    { when: { owned: 8 }, buildings: ['market'] },
-    { when: { house: 'kitchen', level: 3 }, buildings: ['salon'] },
-    { when: { house: 'kitchen', level: 4 }, houses: ['pets'] },
-    { when: { house: 'pets', level: 3 }, buildings: ['post', 'testlab'] },
-    { when: { house: 'pets', level: 4 }, houses: ['sweets'] },
-    { when: { house: 'sweets', level: 3 }, buildings: ['police'] },
-    { when: { house: 'sweets', level: 4 }, houses: ['fruit'], buildings: ['arcade'] },
-    { when: { house: 'fruit', level: 3 }, buildings: ['fire'] },
-    { when: { house: 'fruit', level: 4 }, houses: ['ocean'] },
-    { when: { house: 'ocean', level: 3 }, buildings: ['bandstand'] },
-    { when: { house: 'ocean', level: 4 }, houses: ['sky'] },
-    { when: { house: 'sky', level: 3 }, buildings: ['greenhouse'] },
-    { when: { house: 'sky', level: 4 }, houses: ['forest'] }
+    { when: 'start', houses: ['dumpling', 'kitchen', 'pets', 'sweets', 'fruit', 'ocean', 'sky', 'forest'],
+      buildings: ['playground', 'restaurant', 'post', 'factory', 'gemmine', 'market', 'salon', 'police', 'fire', 'testlab', 'arcade', 'bandstand', 'greenhouse'],
+      built: ['playground', 'restaurant', 'post', 'factory', 'gemmine'], gift: 'bao' }
   ]
 };
 })();
