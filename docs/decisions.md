@@ -190,3 +190,8 @@ Small choices made while building (each follows the book; say if one is wrong):
   but "Play" waits for Step 2.
 - **To check on a real phone:** the map draws about 150,000 triangles for the island plus the buildings. It runs well
   on a computer; the Step 1 plan asks for a test on a cheap Android before going further (internal testing track).
+- **Download size:** imported models no longer keep a separate "shadow mesh" copy, and only map models (buildings,
+  island, squishies around houses) get far-away LODs. The game's data went from 146 MB to 95 MB. Keep an eye on it:
+  Google Play allows 200 MB, the plan aims for under 150 MB.
+- **Testing on a phone:** every push builds an installable `.apk`; the newest one is always on the repository's
+  Releases page as "Test build (newest)". How to install: `docs/testing-on-a-phone.md`.

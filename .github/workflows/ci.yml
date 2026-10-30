@@ -83,6 +83,8 @@ jobs:
     name: Android build (.aab + .apk)
     needs: [checks, tests]
     runs-on: ubuntu-latest
+    permissions:
+      contents: write   # to put the newest test .apk on the "Test build" release page
     timeout-minutes: 40
     steps:
       - uses: actions/checkout@v5
@@ -178,3 +180,13 @@ jobs:
           name: squishy-island-apk
           path: game/build/squishy-island.apk
           retention-days: 14
+      - name: Put the newest test app on the "Test build" release page
+        # One fixed page (Releases -> "Test build") with a plain .apk: easy to download on a phone.
+        if: github.event_name == 'push'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release delete test-build --yes --cleanup-tag --repo "$GITHUB_REPOSITORY" || true
+          gh release create test-build game/build/squishy-island.apk --repo "$GITHUB_REPOSITORY" --prerelease \
+            --target "$GITHUB_SHA" --title "Test build (newest)" \
+            --notes "The newest test version of Squishy Island for Android phones, built from ${GITHUB_REF_NAME} at ${GITHUB_SHA::7}. Download squishy-island.apk on the phone and open it. How to install: docs/testing-on-a-phone.md. Test builds have a DEV button for coins."

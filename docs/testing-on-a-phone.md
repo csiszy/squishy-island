@@ -12,8 +12,10 @@ They are kept for 14 days.
 
 ## Install the .apk (about 2 minutes)
 
-1. On the phone, open the `.apk` file (from the GitHub download, an email to yourself, Google Drive, or a USB cable).
-   GitHub downloads arrive as a `.zip`: tap it in the **Files** app and choose **Extract** first.
+1. On the phone, sign in to GitHub in the browser and open the repository's **Releases** → **Test build (newest)**
+   (always the latest build), then tap **squishy-island.apk**. It downloads as a plain `.apk`.
+   (Also possible: the `squishy-island-apk` download on a CI run page, which arrives as a `.zip`: tap it in the
+   **Files** app and choose **Extract** first; or copy the file over by email, Google Drive or a USB cable.)
 2. Android asks for permission to install apps from that place (Chrome, Files, Drive…): allow it. This is normal for
    test builds that don't come from the Play Store. You can switch the permission off again afterwards.
 3. Tap **Install**. If Play Protect warns that it doesn't know the app, choose **Install anyway**: it is our own test
