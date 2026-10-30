@@ -25,6 +25,14 @@ They are kept for 14 days.
 Later test builds install **over** the old one and keep your town (they share one test key). If Android ever says the
 app "conflicts with an existing package", uninstall the old one first (this deletes the test town).
 
+## Playing with the real server on your laptop (Step 4)
+
+Test builds start with a pretend server inside the phone. To try the real one, start it on your laptop (one
+script, needs Docker Desktop: see `server/README.md`), then on the phone tap **DEV → More… → Server…**, type the
+address the script shows (like `192.168.1.20`) and tap **Connect**. Phone and laptop must be on the same Wi-Fi.
+Your squishies, Stars and boxes then live on the laptop's server; coins stay on the phone. **Use the pretend one**
+switches back.
+
 ## What to try (Step 3: all ten minigames)
 
 - Every building's game now works: open them from the map or the pink **Games** button. New since last time:

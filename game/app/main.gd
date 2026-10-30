@@ -148,6 +148,31 @@ func _button_feedback(button: BaseButton) -> void:
 	Haptics.play(&"light")
 
 
+func _server_name() -> String:
+	var service := get_node("/root/Server") as ServerService
+	return "the pretend server on this phone" if service.address() == "" else service.address()
+
+
+## Test builds: point the game at a real server (yours on your laptop: server/README.md), or back to the pretend one.
+func _debug_server() -> void:
+	var service := get_node("/root/Server") as ServerService
+	var field := LineEdit.new()
+	field.text = service.address().trim_prefix("http://") if service.address() != "" else "192.168.1."
+	field.placeholder_text = "192.168.1.20"
+	field.custom_minimum_size = Vector2(440, 72)
+	field.add_theme_font_size_override("font_size", 30)
+	var body := "Now: %s\nType your laptop's address (it is shown when you start the server) and connect. The phone must be on the same Wi-Fi." % _server_name()
+	if await UiPopup.ask("Server", body, "Connect", "Use the pretend one", field):
+		var answer: Dictionary = await service.use(field.text)
+		if answer.get("ok", false):
+			await UiPopup.ask("Connected!", "This phone now plays with the server at %s. Your squishies, Stars and boxes live there now (coins stay on the phone)." % service.address(), "OK")
+		else:
+			await UiPopup.ask("Not found", "No Squishy Island server answered at %s.\nIs the laptop on the same Wi-Fi, is the server running (docker compose up), and is the address right?" % field.text, "OK")
+	elif service.address() != "":
+		await service.use("")
+		await UiPopup.ask("Pretend server", "This phone plays with the pretend server again.", "OK")
+
+
 ## Debug builds only (never in a store build): quick coins and a fresh town, for trying things out.
 func _add_debug_menu() -> void:
 	var b := Button.new()
@@ -166,13 +191,16 @@ func _debug_menu() -> void:
 	if await UiPopup.ask("Developer", info, "+1,000 coins", "More…"):
 		Economy.earn(1000, &"debug")
 		return
+	if await UiPopup.ask("Developer", "Server now: %s" % _server_name(), "Server…", "More…"):
+		_debug_server()
+		return
 	if await UiPopup.ask("Developer", "", "+20,000 coins", "Start a fresh town"):
 		Economy.earn(20000, &"debug")
 		return
 	if await UiPopup.ask("Start a fresh town?", "Everything goes back to day one.", "Yes, start over", "No"):
 		Save.wipe()
 		Save.load_game()
-		(get_node("/root/Server") as ServerService).api = FakeGameServer.new(Save.section(&"pretend_server"), Save.mark_dirty)
+		(get_node("/root/Server") as ServerService).reset_pretend()
 		Collection.server = Server.api
 		await Collection.sync()
 		Town.reload()

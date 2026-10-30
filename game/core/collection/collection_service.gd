@@ -23,8 +23,14 @@ func _ready() -> void:
 		save = get_node("/root/Save") as SaveService
 	if economy == null:
 		economy = get_node("/root/Economy") as EconomyService
-	if server == null:
-		server = (get_node("/root/Server") as ServerService).api
+	var service := get_node_or_null("/root/Server") as ServerService
+	if server == null and service != null:
+		server = service.api
+	if service != null:
+		# switched servers (DEV menu): the collection comes from the new one
+		service.switched.connect(func() -> void:
+			server = service.api
+			sync())
 	reload()
 	save.loaded.connect(reload)
 	sync()

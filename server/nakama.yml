@@ -1,0 +1,18 @@
+# Nakama's settings (https://heroiclabs.com/docs/nakama/getting-started/configuration/).
+# These are for testing on your own computer. The live server gets its own secret keys (see README.md).
+name: squishy-island
+logger:
+  level: INFO
+runtime:
+  js_entrypoint: index.js
+session:
+  # a login lasts a week; the game logs in again by itself
+  token_expiry_sec: 604800
+  refresh_token_expiry_sec: 2592000
+socket:
+  # the key the game sends to log in (not a secret: it is inside the app). Change it for the live server.
+  server_key: squishy-island-dev
+console:
+  # the web page for looking at accounts and saves: http://localhost:7351
+  username: admin
+  password: squishy-local

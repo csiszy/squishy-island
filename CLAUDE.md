@@ -49,7 +49,10 @@ collection book and the Spare Shelf; the minigames (Step 2): the contract (`game
 (`game/minigame_kit/v1/`), the host (start card, pause, keep going with a pretend ad, results, payout checked by the
 pretend server), the template and Sky Bounce, Bistro Rush and Sort-a-Lot; all ten minigames (Step 3), including level
 games, Squeak Beat (song games: `tools/render_squeak_beat.js` renders its songs) and the Squish Lab (a toy: soft body
-bending the real 3D squishy). **Next: Step 4** (the server: Nakama on an EU server).
+bending the real 3D squishy). **Step 4 (the server) is under way**: `server/` holds Nakama + PostgreSQL in Docker
+with our rules in TypeScript (boxes, spares, Stars, coin check; `server/README.md`); the owner runs it on their
+laptop for testing (DEV → More… → Server… on the phone); the game's `NakamaGameServer` talks to it. Next: cloud save
+and codes (4b), then quests, Gem Challenge, weekly visitor, Market and trading (4c).
 Open decisions for the owner: end of `docs/decisions.md` §14, §15 and §17.
 
 How the game is laid out: `game/core/` services are autoloads (`Events`, `Save`, `Settings`, `Text`, `Audio`,
@@ -88,6 +91,12 @@ node tools/export_data/export_data.js  # numbers + words -> game/data (CI runs i
 node tools/export_audio/export_audio.js
 node tools/export_art/export_art.js    # glTF models + portraits -> game/art
 node tools/render_squeak_beat.js       # Squeak Beat songs, notes and charts -> game/minigames/squeak_beat (ffmpeg)
+
+# the game server (needs Docker; details in server/README.md)
+cd server && npm ci && npm test        # the server's rules (also rebuilds build/index.js: commit it)
+cd server && docker compose up -d      # the real server on this computer (port 7350, console on 7351)
+cd server && npm run test:live         # talk to it over the network
+SQUISHY_SERVER=http://127.0.0.1:7350 game/run_tests.sh -gselect=test_live_server
 
 # checks / tools (need: pip install playwright && playwright install chromium)
 python3 tools/fuzz_prototypes.py       # random-input smoke test of every prototype

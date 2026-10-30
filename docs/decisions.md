@@ -347,3 +347,24 @@ Sort-a-Lot ported from the prototypes. Tap a built fun building on the map → *
   it must start and stop, like a song), `model(id)` (a squishy's 3D model) and `building_level`.
 - Not yet: the squishy "helper" list on the start card names no effects yet (just "extra good at this game"),
   tilt steering for Sky Bounce, and decor found in sorted letters (Sort-a-Lot page) — later steps.
+
+## 18. Step 4: the server (started, October 2026)  → `server/README.md`, `build.html`
+
+- **Testing runs on the owner's own laptop** (owner's decision): the same Docker setup that will run on the paid
+  EU server (Nakama + PostgreSQL) starts with one script (`server/start-server.bat` / `.sh`). A test build switches
+  to it in the DEV menu (DEV → More… → Server…, type the laptop's address, same Wi-Fi). The paid server is only
+  needed when the game goes live; until then it costs nothing.
+- **Foundation (4a)**: the server's rules (`server/src/rules.ts`, TypeScript as planned) are the pretend server's
+  rules: box odds, the Rare guarantee, Sparkly chance, the Spare Shelf, levelling up, Stars, the coins-per-minute
+  check. They read the same numbers as the game (copied from `game/data`). Each player is a guest account made
+  from a random id the game creates (not the phone's hardware id: no personal data); the player's state is kept in
+  Nakama's storage and only the server can change it (two taps at once can't lose or double anything).
+  The game talks to it with Nakama's plain web API (no extra plugin). If the server can't be reached the game says
+  so (boxes need it; minigames still pay out).
+- The compiled server file (`server/build/index.js`) is kept in the repository so a computer running the server
+  needs only Docker; CI checks it matches the source and the game's numbers, runs the rules' tests, starts the real
+  server in Docker and runs the game's own code against it.
+- Coins stay on the phone (as designed); squishies, Stars and boxes live on the server. A test phone switched back
+  to the pretend server gets its pretend collection back.
+- Next in Step 4: cloud save of the town, "save my town" and transfer codes, account deletion (4b); then quests,
+  the Gem Challenge, the weekly visitor, the Market and trading (4c).

@@ -1,5 +1,6 @@
 # Every push and pull request: check the walls between modules, check game/data and game/audio match the design
-# book, run every Godot test headless, start the game once, then build an Android App Bundle (.aab).
+# book, run every Godot test headless, start the game once, test the game server (its rules, then the real server
+# in Docker, talked to over the network), then build an Android App Bundle (.aab).
 # Later (Step 7 prep): upload the signed bundle to Google Play's internal testing track.
 name: CI
 
@@ -78,6 +79,54 @@ jobs:
           name: test-results
           path: game/tests/results.xml
           if-no-files-found: ignore
+
+  server:
+    name: Game server (Nakama)
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with:
+          node-version: "22"
+          cache: npm
+          cache-dependency-path: server/package-lock.json
+      - name: The server's rules (no Nakama needed)
+        working-directory: server
+        run: |
+          npm ci
+          npm test
+      - name: server/build/index.js is up to date with src/ and game/data
+        run: git diff --exit-code server/build/index.js || (echo "Run: cd server && npm run build, and commit build/index.js"; exit 1)
+      - name: Start the server (Nakama + PostgreSQL)
+        working-directory: server
+        run: |
+          docker compose up -d --build
+          for i in $(seq 1 60); do docker compose ps nakama | grep -q healthy && break; sleep 2; done
+          docker compose logs nakama | grep "Squishy Island server ready"
+      - name: Talk to it over the network
+        working-directory: server
+        run: npm run test:live
+      - name: Cache Godot
+        id: cache-godot
+        uses: actions/cache@v4
+        with:
+          path: ~/godot
+          key: godot-${{ env.GODOT_VERSION }}
+      - name: Download Godot
+        if: steps.cache-godot.outputs.cache-hit != 'true'
+        run: |
+          mkdir -p ~/godot && cd ~/godot
+          curl -sSL -o godot.zip "$GODOT_URL/Godot_v${GODOT_VERSION}-stable_linux.x86_64.zip"
+          unzip -q godot.zip && rm godot.zip
+      - name: The game's own code against the real server
+        run: |
+          ~/godot/Godot_v${GODOT_VERSION}-stable_linux.x86_64 --headless --path game --import
+          SQUISHY_SERVER=http://127.0.0.1:7350 GODOT=~/godot/Godot_v${GODOT_VERSION}-stable_linux.x86_64 game/run_tests.sh -gselect=test_live_server
+      - name: Server log
+        if: failure()
+        working-directory: server
+        run: docker compose logs nakama | tail -100
 
   android:
     name: Android build (.aab + .apk)

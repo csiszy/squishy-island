@@ -1,0 +1,40 @@
+# Squishy Island's server on your own computer: `docker compose up` in this folder (see README.md).
+# Nakama (the game server) on port 7350, its web console on 7351, and its PostgreSQL database.
+services:
+  postgres:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_DB: nakama
+      POSTGRES_PASSWORD: localdb
+    volumes:
+      - island-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD", "pg_isready", "-U", "postgres", "-d", "nakama"]
+      interval: 3s
+      timeout: 3s
+      retries: 20
+    restart: unless-stopped
+
+  nakama:
+    build: .
+    entrypoint:
+      - "/bin/sh"
+      - "-ec"
+      - >
+        /nakama/nakama migrate up --database.address postgres:localdb@postgres:5432/nakama &&
+        exec /nakama/nakama --config /nakama/data/nakama.yml --database.address postgres:localdb@postgres:5432/nakama
+    depends_on:
+      postgres:
+        condition: service_healthy
+    ports:
+      - "7350:7350"
+      - "7351:7351"
+    healthcheck:
+      test: ["CMD", "/nakama/nakama", "healthcheck"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+    restart: unless-stopped
+
+volumes:
+  island-data:
