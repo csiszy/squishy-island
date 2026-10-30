@@ -1,0 +1,60 @@
+keys,en
+squeak_beat.title,Squeak Beat
+squeak_beat.where,on the Squeak Stage
+squeak_beat.how.1,"Your squishies slide down four columns. Tap the lowest one (or anywhere in its column) any time, as soon as it is its turn: no other squishy below it."
+squeak_beat.how.2,"You have 3 hearts. A squishy sliding off the bottom, a tap on the wrong column, or letting go of a long squishy too early each cost one. Tapping right on the line scores a PERFECT bonus."
+squeak_beat.how.3,Long squishies trail a stripe: tap and keep holding until the stripe is gone.
+squeak_beat.how.4,"Every tap plays the next note of the song, so you play the tune! Sound on."
+squeak_beat.how.5,Stars open new tracks: track N needs (N−1) × 3 stars in total.
+squeak_beat.score_name,points
+squeak_beat.metric_line,{n}% accuracy
+squeak_beat.coins_rule,"about 40 coins per minute of music, times your accuracy (squishies tapped ÷ all squishies). Replays pay too. Stars: finish = ★, 85% = ★★, 95% = ★★★"
+squeak_beat.revive_gift,and finish the song with 1 heart
+squeak_beat.perfect,PERFECT
+squeak_beat.nice,NICE
+squeak_beat.hold,HOLD!
+squeak_beat.miss,miss
+squeak_beat.oops,oops
+squeak_beat.let_go,let go!
+squeak_beat.combo,{n} combo
+squeak_beat.song,song
+squeak_beat.go,Go!
+squeak_beat.note,Perfect {perfect} · Nice {nice} · Missed {miss} · best combo {combo}
+squeak_beat.diff.easy,Easy
+squeak_beat.diff.medium,Medium
+squeak_beat.diff.hard,Hard
+squeak_beat.diff.expert,Expert
+squeak_beat.band.rubber,Dumpling Gang
+squeak_beat.band.bell,Sugar Squad
+squeak_beat.band.flute,Sea Squish
+squeak_beat.band.chip,Pet Pals
+squeak_beat.track.1,Bao Bounce
+squeak_beat.track.2,Marshmallow Dreams
+squeak_beat.track.3,Jelly Jam
+squeak_beat.track.4,Puppy Parade
+squeak_beat.track.5,Donut Disco
+squeak_beat.track.6,Bubble Tea Boogie
+squeak_beat.track.7,Moonlight Mochi
+squeak_beat.track.8,Sunny Side Up
+squeak_beat.track.9,Octopus Groove
+squeak_beat.track.10,Cupcake Cha-Cha
+squeak_beat.track.11,Kitty Conga
+squeak_beat.track.12,Rainbow Rush
+squeak_beat.track.13,Sprout Swing
+squeak_beat.track.14,Gyoza Get-Down
+squeak_beat.track.15,Whale Song Wiggle
+squeak_beat.track.16,Sugar Rush
+squeak_beat.track.17,Pancake Polka
+squeak_beat.track.18,Starry Squeeze
+squeak_beat.track.19,Bunny Hop Hop
+squeak_beat.track.20,Peach Fuzz Funk
+squeak_beat.track.21,Coral Calypso
+squeak_beat.track.22,Thunder Fluff
+squeak_beat.track.23,Golden Dumpling
+squeak_beat.track.24,Midnight Macaron
+squeak_beat.track.25,Hamster Hustle
+squeak_beat.track.26,Axolotl Anthem
+squeak_beat.track.27,Puffer Panic
+squeak_beat.track.28,Mossdragon March
+squeak_beat.track.29,Lucky Cat Shuffle
+squeak_beat.track.30,Grand Squishy Finale

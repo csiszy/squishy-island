@@ -964,7 +964,18 @@ const game = {
   up(x, y, id) { const lane = S.ptr[id]; if (lane == null) return; delete S.ptr[id]; release(lane); },
   key(code, down, e) { const lane = LANE_KEYS.findIndex(k => k.includes(code)); if (lane < 0) return false; if (e.repeat) return; if (down) press(lane); else release(lane); }
 };
-SQV.G = SQV.run(game); SQV.state = () => S; SQV.api = { track, press, release, game, NT };
+/* ---------- export for the real game (tools/render_squeak_beat.js): this exact band, rendered offline ---------- */
+async function offline(seconds, fill, rate = 44100) {
+  const keep = [ac, FX, S], keepOut = SQS.out, off = new OfflineAudioContext(2, Math.ceil(seconds * rate), rate);
+  ac = off; FX = null; SQS.out = c => c.destination;
+  try { fill(); } finally { [ac, FX, S] = keep; SQS.out = keepOut; }   // everything is scheduled now: the live game gets its state back while it renders
+  return off.startRendering();
+}
+// track i's backing band (everything but the melody); song time 0 is `lead` seconds into the file
+const renderBacking = (i, lead = .4) => { const K = track(i); return offline(K.len + lead + 2.5, () => { S = { trk: K, key: K.key, t0: lead }; S.m = newMix(); for (let b = 0; b < K.bars.length; b++) scheduleBar(b); }); };
+// one melody note: a band voice at an absolute pitch (semitones from C4), short or held (stopped by the game)
+const renderNote = (tone, semi, hold = 0) => offline(hold ? hold + 1.6 : 1.4, () => { S = { key: 0, t0: .01 }; S.m = newMix(); voice(0, semi, tone, hold); });
+SQV.G = SQV.run(game); SQV.state = () => S; SQV.api = { track, press, release, game, NT, renderBacking, renderNote };
 })();
 
 </script>

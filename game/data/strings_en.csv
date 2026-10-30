@@ -610,6 +610,7 @@ family.pets.name,Pet Pals
 family.sky.name,Sky Puffs
 family.sweets.name,Sugar Squad
 game.all_levels,All levels
+game.all_tracks,All tracks
 game.back_to_town,Back to town
 game.best,Best: {n}
 game.bonus_at,Bonus {adds} at {ats} {unit}
@@ -639,9 +640,12 @@ game.music_off,Music: off
 game.music_on,Music: on
 game.napping,"This game is taking a nap, try another!"
 game.new_best,New best score!
+game.new_best_stars,New best stars!
+game.new_track_open,New track open: {name}!
 game.next_bonus,Next bonus: +{n} at {at} {unit}
 game.next_goal,Next for {name} (level {level}):
 game.next_level,Next level
+game.next_track,Next track
 game.no_thanks,No thanks
 game.oh_no,Oh no!
 game.once_per_game,{gift} · once per game
@@ -651,6 +655,7 @@ game.paused,Paused
 game.play,Play
 game.play_again,Play again
 game.play_level,Play level {n}
+game.play_track,Play: {name}
 game.playing_as,Playing: {name}
 game.points,points
 game.replay,Replay
@@ -658,9 +663,17 @@ game.revive_gift,and carry on
 game.sfx_off,Sounds: off
 game.sfx_on,Sounds: on
 game.so_far,You have {n} {what} so far.
+game.song_clear,Encore!
+game.song_pay,{time} song × {n}% accuracy
+game.song_stopped,Show stopped
 game.stars_collected,Stars collected: {n}
 game.time_played,in {time} of play
 game.top_bonus,Top bonus reached!
+game.track_line,{tags} · {bpm} BPM · {time}
+game.track_locked,needs {n}★ (you have {have}★)
+game.track_n,Track {n} · {name}
+game.track_needs,{name} needs {n}★ (you have {have}★)
+game.tracks_open,Stars: {stars} / {all} · tracks open: {open} / {count}
 game.try_again,Try again
 game.watch_ad,Watch an ad
 game.who_plays,Who plays?

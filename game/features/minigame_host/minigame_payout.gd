@@ -8,6 +8,8 @@ extends RefCounted
 ## "metric"). Helpers (Cozy points of the player's squishy's family,
 ## a rarer squishy in games that say so) add a percentage of the base coins.
 ## Level games: first clear 30 + 15 per star (every 10th level ×2); a replay 10 + 15 per new star; a lost level 0.
+## Song games: about 40 per minute of the song × accuracy (bandstand.html "Rewards"); replays and stopped songs
+## pay the same way (a stopped song has a low accuracy, so it pays little).
 
 
 ## {"base", "bonus", "tier", "next_at", "next_add", "helper", "total", "value"}
@@ -50,6 +52,13 @@ static func level(result: MinigameResult, prev_stars: int) -> Dictionary:
 	else:
 		total = int(rules.get("levelReplay", 10)) + per_star * new_stars
 	return {"total": total, "first": first, "big": big, "new_stars": new_stars}
+
+
+## {"total", "seconds", "accuracy"}. seconds: the whole song's length; Result.metric = accuracy in %.
+static func song(rule: Dictionary, result: MinigameResult, seconds: float) -> Dictionary:
+	var accuracy := clampf(result.metric / 100.0, 0.0, 1.0)
+	var total := roundi(float(rule.get("per_minute", 40)) * seconds / 60.0 * accuracy)
+	return {"total": total, "seconds": seconds, "accuracy": accuracy}
 
 
 ## Extra share of base coins from the squishy who played: its family's Cozy bonus plus the game's rarity bonus.

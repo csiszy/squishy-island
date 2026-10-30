@@ -177,3 +177,16 @@ game.replay,Replay
 game.all_levels,All levels
 game.play_level,Play level {n}
 game.stars_collected,Stars collected: {n}
+game.track_n,Track {n} · {name}
+game.song_clear,Encore!
+game.song_stopped,Show stopped
+game.next_track,Next track
+game.all_tracks,All tracks
+game.play_track,Play: {name}
+game.tracks_open,Stars: {stars} / {all} · tracks open: {open} / {count}
+game.track_line,{tags} · {bpm} BPM · {time}
+game.track_locked,needs {n}★ (you have {have}★)
+game.track_needs,{name} needs {n}★ (you have {have}★)
+game.new_track_open,New track open: {name}!
+game.new_best_stars,New best stars!
+game.song_pay,{time} song × {n}% accuracy

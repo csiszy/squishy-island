@@ -25,6 +25,10 @@ func test_every_manifest_is_complete() -> void:
 		var words := HARNESS.read_words(m.strings_path())
 		for key in _word_keys(m.data):
 			assert_true(words.has(key), "%s: words for %s" % [m.id(), key])
+		for track: Dictionary in m.songs():
+			for key: String in [track.get("title", "")] + track.get("tags", []):
+				assert_true(words.has(key), "%s: words for track %s" % [m.id(), key])
+			assert_gt(float(track.get("len", 0.0)), 0.0, "%s: every track has a length" % m.id())
 		for key: String in words:
 			assert_true(key.begins_with(String(m.id()) + "."), "%s: key %s starts with the game id" % [m.id(), key])
 
@@ -132,7 +136,7 @@ func _play(m: MinigameManifest) -> void:
 		runs += 1
 		var before := results.size()
 		last_score[0] = 0
-		game.start(1 if m.data.get("kind") == "levels" else 0)
+		game.start(1 if m.data.get("kind") in ["levels", "songs"] else 0)
 		while results.size() == before and played < PLAY_SECONDS:
 			bot.call(&"act", game, STEP)
 			game.advance(STEP)
@@ -163,7 +167,7 @@ func _word_keys(v: Variant) -> Array[String]:
 	var out: Array[String] = []
 	if v is Dictionary:
 		for k: String in v:
-			if k in ["id", "scene", "building", "kind", "music", "backdrop", "version", "goal", "from", "milestones_on"]:
+			if k in ["id", "scene", "building", "kind", "music", "backdrop", "version", "goal", "from", "milestones_on", "list"]:
 				continue
 			out.append_array(_word_keys(v[k]))
 	elif v is Array:

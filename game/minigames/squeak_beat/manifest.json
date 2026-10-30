@@ -1,0 +1,24 @@
+{
+  "id": "squeak_beat",
+  "api": 1,
+  "version": "1.0.0",
+  "title": "squeak_beat.title",
+  "where": "squeak_beat.where",
+  "building": "bandstand",
+  "kind": "songs",
+  "scene": "squeak_beat.tscn",
+  "music": "",
+  "size": [360, 640],
+  "backdrop": "#2E2452",
+  "how_to": ["squeak_beat.how.1", "squeak_beat.how.2", "squeak_beat.how.3", "squeak_beat.how.4", "squeak_beat.how.5"],
+  "score_name": "squeak_beat.score_name",
+  "metric_line": "squeak_beat.metric_line",
+  "songs": { "list": "charts.json", "stars_each": 3 },
+  "coins": { "from": "song", "per_minute": 40, "rule": "squeak_beat.coins_rule" },
+  "goal": "songs",
+  "revive": { "allowed": true, "gift": "squeak_beat.revive_gift" },
+  "perks": [
+    { "family": "ocean", "effect": "wider_window", "amount": 0.03 }
+  ],
+  "enabled": true
+}
