@@ -311,7 +311,8 @@ func _on_finished(result: MinigameResult) -> void:
 
 func _show_results(r: MinigameResult, pay: Dictionary, new_best: bool, old_best: int, jar_before: int) -> void:
 	var level_game: bool = manifest.data.get("kind") == "levels"
-	var title := Text.t(&"game.over") if not level_game else Text.t(&"game.level_n", {"n": r.level})
+	var over_key := StringName(manifest.data.get("over_title", "game.over"))
+	var title := Text.t(over_key) if not level_game else Text.t(&"game.level_n", {"n": r.level})
 	var col := _card(Text.t(&"game.level_clear") if level_game and r.won else Ui.number(r.score), title)
 	var counters: Array = []
 	if not level_game:

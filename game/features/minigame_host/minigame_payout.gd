@@ -4,7 +4,8 @@ extends RefCounted
 ## data/economy.json "minigames" and the game's manifest). The game itself never knows about coins.
 ##
 ## Endless games: base = the manifest's number (score or metric) ÷ "divide", rounded down, plus a milestone bonus
-## (+10 / +25 / +50, only the highest milestone reached). Helpers (Cozy points of the player's squishy's family,
+## (+10 / +25 / +50, only the highest milestone reached; milestones count the score unless "milestones_on" says
+## "metric"). Helpers (Cozy points of the player's squishy's family,
 ## a rarer squishy in games that say so) add a percentage of the base coins.
 ## Level games: first clear 30 + 15 per star (every 10th level ×2); a replay 10 + 15 per new star; a lost level 0.
 
@@ -17,9 +18,11 @@ static func endless(rule: Dictionary, result: MinigameResult, helper_boost := 0.
 	var divide := maxf(1.0, float(rule.get("divide", 1)))
 	var base := floori(value / divide)
 	var milestones: Array = rule.get("milestones", [])
+	# milestones count the score, or the metric when the rule says "milestones_on": "metric" (flowers harvested)
+	var reached := result.metric if rule.get("milestones_on", "score") == "metric" else result.score
 	var tier := -1
 	for i in milestones.size():
-		if result.score >= int(milestones[i]):
+		if reached >= int(milestones[i]):
 			tier = i
 	var bonus: int = int(table[tier]) if tier >= 0 and tier < table.size() else 0
 	var next_at := -1

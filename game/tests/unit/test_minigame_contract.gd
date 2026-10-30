@@ -13,7 +13,7 @@ func _games() -> Array[MinigameManifest]:
 
 
 func test_there_are_games() -> void:
-	assert_gte(_games().size(), 3, "Sky Bounce, Bistro Rush and Sort-a-Lot")
+	assert_gte(_games().size(), 4, "Sky Bounce, Bistro Rush, Sort-a-Lot, Grow Grow Garden, ...")
 
 
 func test_every_manifest_is_complete() -> void:
@@ -163,7 +163,7 @@ func _word_keys(v: Variant) -> Array[String]:
 	var out: Array[String] = []
 	if v is Dictionary:
 		for k: String in v:
-			if k in ["id", "scene", "building", "kind", "music", "backdrop", "version", "goal", "from"]:
+			if k in ["id", "scene", "building", "kind", "music", "backdrop", "version", "goal", "from", "milestones_on"]:
 				continue
 			out.append_array(_word_keys(v[k]))
 	elif v is Array:

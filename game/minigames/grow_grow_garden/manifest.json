@@ -1,0 +1,26 @@
+{
+  "id": "grow_grow_garden",
+  "api": 1,
+  "version": "1.0.0",
+  "title": "grow_grow_garden.title",
+  "where": "grow_grow_garden.where",
+  "building": "greenhouse",
+  "kind": "endless",
+  "scene": "grow_grow_garden.tscn",
+  "music": "garden",
+  "size": [360, 640],
+  "backdrop": "#E9FFF6",
+  "how_to": ["grow_grow_garden.how.1", "grow_grow_garden.how.2", "grow_grow_garden.how.3", "grow_grow_garden.how.4", "grow_grow_garden.how.5"],
+  "score_name": "grow_grow_garden.score_name",
+  "metric_line": "grow_grow_garden.metric_line",
+  "over_title": "grow_grow_garden.over_title",
+  "coins": { "from": "score", "divide": 200, "milestones": [20, 40, 70], "milestones_on": "metric",
+             "unit": "grow_grow_garden.unit", "rule": "grow_grow_garden.coin_rule" },
+  "goal": "metric",
+  "revive": { "allowed": true, "gift": "grow_grow_garden.revive_gift" },
+  "perks": [
+    { "family": "forest", "effect": "grow_skip", "amount": 0.2 },
+    { "family": "fruit", "effect": "gold_twice", "amount": 1 }
+  ],
+  "enabled": true
+}
