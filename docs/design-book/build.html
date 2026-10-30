@@ -236,6 +236,8 @@ func stop() -> void: pass          <span class="c"># player left: end the run no
 func can_revive() -> bool: return false
 func revive() -> void: pass
 func advance(delta: float) -> void: pass  <span class="c"># all game time</span>
+func set_view(rect: Rect2) -> void: pass  <span class="c"># what the phone shows: the "size" plus</span>
+                                          <span class="c"># extra above/below (tall phones): paint it</span>
 
 <span class="c"># MinigameContext: the ONLY things a game can use</span>
 <span class="c">#   squad            squishies the player brought (pictures: portrait(id))</span>

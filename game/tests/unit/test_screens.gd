@@ -85,3 +85,61 @@ func test_the_spare_shelf_levels_up_and_swaps() -> void:
 	await screen.call("_swap", &"bao", 5)
 	assert_eq(Economy.stars(), 5)
 	assert_eq(Collection.spare_ids(), [] as Array[StringName])
+
+
+## A duplicate's "Spare Shelf" button: the message is gone when you come back to the Factory.
+func test_going_to_the_shelf_clears_the_factory_message() -> void:
+	var factory: Control = add_child_autofree((load("res://features/factory/factory_screen.tscn") as PackedScene).instantiate())
+	factory.call("open", {})
+	var asked: Array = []
+	var catch_go := func(screen: StringName, args: Dictionary) -> void: asked.append([screen, args])
+	Nav.go_requested.connect(catch_go)
+	# open boxes until one is a duplicate (the pretend server is seeded, so this is quick)
+	var shelf: Button = null
+	for i in 30:
+		Economy.earn(200, &"test")
+		await factory.call("open_box")
+		var result: Control = factory.get("_result")
+		if result == null:
+			continue
+		for b in result.find_children("*", "Button", true, false):
+			if (b as Button).text == Text.t(&"factory.spare_shelf"):
+				shelf = b
+		if shelf != null:
+			break
+	assert_not_null(shelf, "a duplicate came up")
+	shelf.pressed.emit()
+	Nav.go_requested.disconnect(catch_go)
+	assert_eq(asked, [[&"collection", {"tab": &"shelf"}]])
+	assert_null(factory.get("_result"), "the message is closed")
+
+
+## A squishy not found yet in the book: tapping it goes to the Factory with its family chosen.
+func test_a_missing_squishy_leads_to_the_factory() -> void:
+	var book: Control = add_child_autofree((load("res://features/collection/collection_screen.tscn") as PackedScene).instantiate())
+	book.call("open", {"tab": &"book"})
+	await wait_frames(1)
+	var asked: Array = []
+	var catch_go := func(screen: StringName, args: Dictionary) -> void: asked.append([screen, args])
+	Nav.go_requested.connect(catch_go)
+	var tap := book.find_child("Find_gyoza", true, false) as Button
+	assert_not_null(tap, "Gyoza is not found yet, so its tile can be tapped")
+	tap.pressed.emit()
+	Nav.go_requested.disconnect(catch_go)
+	assert_eq(asked, [[&"factory", {"family": &"dumpling"}]])
+	assert_null(book.find_child("Find_bao", true, false), "Bao is owned: nothing to find")
+
+
+## Book -> Factory -> book goes back to the book already open, instead of piling up screens.
+func test_screens_are_not_opened_twice() -> void:
+	var vp := SubViewport.new()
+	vp.size = Vector2i(720, 1280)
+	add_child_autofree(vp)
+	var app: Control = (load("res://app/main.tscn") as PackedScene).instantiate()
+	vp.add_child(app)
+	await wait_frames(2)
+	Nav.go(&"collection", {"tab": &"book"})
+	Nav.go(&"factory", {"family": &"dumpling"})
+	Nav.go(&"collection", {"tab": &"shelf"})
+	await wait_frames(1)
+	assert_eq(app.call("screen_ids"), [&"city", &"collection"] as Array[StringName])

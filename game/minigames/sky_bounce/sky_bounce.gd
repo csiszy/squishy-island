@@ -164,12 +164,14 @@ func _update(dt: float) -> void:
 	var highest := INF
 	for p in plats:
 		highest = minf(highest, p["y"])
-	while highest > cam_y - 200.0:
+	while highest > cam_y + view_rect.position.y - 200.0:
 		highest -= _gap_at(-highest) * (0.7 + rng.randf() * 0.5)
 		_add_plat(highest)
-	plats = plats.filter(func(p: Dictionary) -> bool: return p["y"] < cam_y + H + 60.0 and p["dead"] < 1.0)
-	items = items.filter(func(i: Dictionary) -> bool: return not i.get("got", false) and i["y"] < cam_y + H + 60.0)
-	if y > cam_y + H + 40.0:
+	# the screen may show more than the 640 high design (tall phones): fall off the bottom of what you see
+	var bottom := cam_y + view_rect.end.y
+	plats = plats.filter(func(p: Dictionary) -> bool: return p["y"] < bottom + 60.0 and p["dead"] < 1.0)
+	items = items.filter(func(i: Dictionary) -> bool: return not i.get("got", false) and i["y"] < bottom + 60.0)
+	if y > bottom + 40.0:
 		end()
 
 
@@ -193,23 +195,23 @@ func _sky_at(h: float) -> Array[Color]:
 func _draw_game() -> void:
 	var h := top
 	var sky := _sky_at(h)
-	vgradient(Rect2(0, 0, W, H), sky[1], sky[0])
+	vgradient(view_rect, sky[1], sky[0])
 	if h > 8000.0:
 		for i in 40:
 			var sx := float((i * 97) % int(W))
-			var sy := fposmod(i * 173 - cam_y * 0.2, H)
+			var sy := view_rect.position.y + fposmod(i * 173 - cam_y * 0.2, view_rect.size.y)
 			var a := minf(1.0, (h - 8000.0) / 3000.0) * (0.4 + 0.6 * absf(sin(t * 2.0 + i)))
 			rect(sx, sy, 2.5, 2.5, Color("#FFF3B0", a))
 	# far clouds (parallax)
 	for i in 6:
-		var fy := fposmod(i * 140 - cam_y * 0.3, H + 120.0) - 60.0
+		var fy := view_rect.position.y + fposmod(i * 140 - cam_y * 0.3, view_rect.size.y + 120.0) - 60.0
 		_cloud(float((i * 131) % int(W)), fy, 34.0, Color(1, 1, 1, 0.5), -1)
 	var oy := -cam_y
-	if cam_y > -H:
-		rect(0, oy + 10.0, W, 400.0, Color("#9ED67E"))
+	if cam_y > -view_rect.end.y:
+		rect(view_rect.position.x, oy + 10.0, view_rect.size.x, maxf(400.0, view_rect.end.y - oy), Color("#9ED67E"))
 	for p in plats:
 		var py: float = p["y"] + oy
-		if py < -30.0 or py > H + 30.0:
+		if py < view_rect.position.y - 30.0 or py > view_rect.end.y + 30.0:
 			continue
 		var alpha := 1.0
 		var drop := 0.0
@@ -254,8 +256,8 @@ func _draw_game() -> void:
 	# the dashed line at your best height
 	if ctx.best > 0 and top / 10.0 < ctx.best:
 		var by := -ctx.best * 10.0 + oy
-		if by > 50.0 and by < H:
-			dashed(Vector2(0, by), Vector2(W, by), Color("#FF6FA3"), 2.0, 8.0)
+		if by > 50.0 and by < view_rect.end.y:
+			dashed(Vector2(view_rect.position.x, by), Vector2(view_rect.end.x, by), Color("#FF6FA3"), 2.0, 8.0)
 			text(ctx.t(&"sky_bounce.your_best"), W - 50, by - 10, 11, Color("#FF6FA3"), &"center", &"body")
 
 

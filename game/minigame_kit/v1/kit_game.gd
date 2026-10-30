@@ -41,6 +41,10 @@ var _sprites: Dictionary = {}
 var _touches: Dictionary = {}
 
 
+func _init() -> void:
+	view_rect = Rect2(0, 0, W, H)
+
+
 func setup(context: MinigameContext) -> void:
 	super(context)
 	# a still first frame under the start card, like the prototypes
@@ -462,8 +466,9 @@ func coin(x: float, y: float, r: float) -> void:
 	circle(x - r * 0.3, y - r * 0.3, r * 0.3, Color("#FFF3B0"), null, 0.0)
 
 
+## The coloured bar at the top; it reaches up to the top of the screen on tall phones.
 func hud(col: Color, left_text := "", left_w := 112.0) -> void:
-	rect(0, 0, W, 52, col)
+	rect(view_rect.position.x, view_rect.position.y, view_rect.size.x, 52.0 - view_rect.position.y, col)
 	if left_text != "":
 		rr(10, 12, left_w, 28, 14, Color.WHITE)
 		text(left_text, 10 + left_w / 2.0, 27, 14, INK, &"center", &"body")
@@ -480,6 +485,11 @@ func bar(x: float, y: float, w: float, h: float, amount: float, col: Variant = n
 	if amount > 0.0:
 		var c: Color = col if col is Color else (Color("#4FCFA0") if amount > 0.5 else (Color("#FFC94D") if amount > 0.25 else Color("#FF6F7D")))
 		rr(x + 2, y + 2, maxf(h - 4, (w - 4) * minf(1.0, amount)), h - 4, (h - 4) / 2.0, c, null, 0.0)
+
+
+## Fill everything the player can see (backgrounds).
+func fill_view(col: Color) -> void:
+	rect(view_rect.position.x, view_rect.position.y, view_rect.size.x, view_rect.size.y, col)
 
 
 func vgradient(r: Rect2, top: Color, bottom: Color) -> void:

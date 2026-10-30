@@ -212,15 +212,17 @@ func _key(keycode: Key, pressed: bool) -> bool:
 
 func _draw_game() -> void:
 	var bags := bags_now()
-	rect(0, 0, W, H, Color("#FFF7D6"))
-	for i in 8:
-		rect(0, 52 + i * 60, W, 60, Color("#FFF2C2") if i % 2 else Color("#FFF7D6"))
+	# what the player sees: at least the 360 x 640 design, more on tall phones / tablets
+	var v := view_rect
+	fill_view(Color("#FFF7D6"))
+	for i in ceili((v.end.y - 52.0) / 60.0):
+		rect(v.position.x, 52 + i * 60, v.size.x, 60, Color("#FFF2C2") if i % 2 else Color("#FFF7D6"))
 	rr(70, 76, 220, 56, 14, Color.WHITE)
 	text(ctx.t(&"sort_a_lot.help.1"), 180, 94, 13, Color("#3BA7A0"), &"center", &"body")
 	text(ctx.t(&"sort_a_lot.help.2"), 180, 114, 13, Color("#3BA7A0"), &"center", &"body")
 	# belt
-	rr(-10, BELT_Y - 4, W + 20, 30, 8, Color("#5A5170"))
-	for i in range(-1, 14):
+	rr(v.position.x - 10, BELT_Y - 4, v.size.x + 20, 30, 8, Color("#5A5170"))
+	for i in range(floori(v.position.x / 30.0) - 1, ceili(v.end.x / 30.0) + 1):
 		circle(i * 30 + belt, BELT_Y + 11, 7, Color("#9A8FAA"), INK, 2)
 	rect(W - 24, BELT_Y - 60, 24, 90, Color(0.898, 0.282, 0.302, 0.18))
 	text("!", W - 12, BELT_Y - 40, 16, Color("#E5484D"), &"center", &"display")

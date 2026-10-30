@@ -274,5 +274,12 @@ Sort-a-Lot ported from the prototypes. Tap a built fun building on the map → *
 - **Games button and Games page (owner's request)** → `guide.html#games`: a round pink button in the map's
   bottom-left corner (easy to notice, but it stays still apart from one hop when the map appears) opens a page with
   every minigame: building, best score and Play; games still being made are listed greyed as "on the way".
+- **Third phone test, fixed**: games now fill the whole screen. The host tells a game how much of its world the
+  phone shows (`set_view` / `view_rect`: the 360 × 640 design area plus the extra above and below on tall phones,
+  or at the sides on tablets); games paint their backgrounds there and Sky Bounce shows more sky. Buttons and
+  gameplay stay inside the design area, so every phone plays the same. Also: a squishy not found yet in the
+  collection book opens the Factory with its family chosen (guide.html, Spare Shelf section); the Factory's
+  duplicate message closes when you go to the Spare Shelf; screens are never opened twice (book → Factory → book
+  goes back to the book).
 - Not yet: the squishy "helper" list on the start card names no effects yet (just "extra good at this game"),
   tilt steering for Sky Bounce, and decor found in sorted letters (Sort-a-Lot page) — later steps.

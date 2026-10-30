@@ -12,6 +12,8 @@ const SCREENS: Dictionary[StringName, String] = {
 	&"games": "res://features/games/games_screen.tscn",
 }
 const FIRST_SCREEN := &"city"
+## Screens that are never open twice (opening one again goes back to it).
+const SINGLE: Array[StringName] = [&"city", &"factory", &"collection", &"games"]
 
 var _host: Control
 var _overlay: Control
@@ -68,6 +70,22 @@ func open_screen(id: StringName, args: Dictionary) -> void:
 		push_warning("Nav: no screen called %s yet" % id)
 		UiToast.show_text(Text.t(&"ui.coming_soon"))
 		return
+	# screens there is only one of: if it is already open further down, go back to it instead of opening a
+	# second copy (book -> Factory -> book -> Factory ... would otherwise pile up)
+	if id in SINGLE:
+		for i in range(_stack.size() - 1, -1, -1):
+			if _stack[i]["id"] == id:
+				while _stack.size() > i + 1:
+					var top: Dictionary = _stack.pop_back()
+					(top["node"] as Node).queue_free()
+				var again: Node = _stack[-1]["node"]
+				_set_visible(again, true)
+				Nav.current = id
+				if again.has_method(&"open"):
+					again.call(&"open", args)
+				if again.has_method(&"screen_shown"):
+					again.call(&"screen_shown")
+				return
 	if not _stack.is_empty():
 		_set_visible(_stack[-1]["node"], false)
 	var node: Node = (load(path) as PackedScene).instantiate()

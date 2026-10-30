@@ -22,10 +22,21 @@ signal score_changed(score: int)
 ## Everything the game may use (sounds, buzz, its own save box, ...). Set by setup().
 var ctx: MinigameContext
 
+## The part of the game's space the player can see: always the whole manifest "size", plus whatever extra the
+## phone shows above and below it (tall phones) or at the sides (tablets). Paint backgrounds over all of it, so
+## there are never empty stripes; keep buttons and important things inside the "size". Set by set_view().
+var view_rect := Rect2()
+
 
 ## Called once, before the first start(). Keep a reference to ctx; show a still first frame if you like.
 func setup(context: MinigameContext) -> void:
 	ctx = context
+
+
+## The visible part of the game's space changed (screen size). Read it as view_rect.
+func set_view(rect: Rect2) -> void:
+	view_rect = rect
+	queue_redraw()
 
 
 ## Begin a run. level: the level to play for "levels" games, 0 for endless ones.

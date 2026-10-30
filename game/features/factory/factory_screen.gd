@@ -140,7 +140,11 @@ func _ready() -> void:
 	Collection.changed.connect(_refresh)
 
 
-func open(_args: Dictionary) -> void:
+## args: {"family": house id} preselects that family for a Family Box (from a missing squishy in the book).
+func open(args: Dictionary) -> void:
+	if args.has("family"):
+		_family = StringName(args["family"])
+	_close_result()
 	Audio.music(&"shop")
 	_show_box()
 	_refresh()
@@ -352,7 +356,11 @@ func _show_result(answer: Dictionary) -> void:
 		row.add_child(see)
 	else:
 		var shelf := Ui.button(Text.t(&"factory.spare_shelf"), "BigButton", "shelf")
-		shelf.pressed.connect(func() -> void: Nav.go(&"collection", {"tab": &"shelf"}))
+		shelf.pressed.connect(func() -> void:
+			# the result is done with: coming back shows the box again, not the old message
+			_close_result()
+			_show_box()
+			Nav.go(&"collection", {"tab": &"shelf"}))
 		row.add_child(shelf)
 	var again := Ui.button(Text.t(&"factory.another"))
 	again.pressed.connect(func() -> void:

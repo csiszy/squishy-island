@@ -108,18 +108,22 @@ func _build() -> void:
 	_fit()
 
 
-## The game keeps its own shape (360 x 640 for the prototypes), as big as fits, centred; the bands around it
-## show the game's backdrop colour. The pause button sits in the top band when there is room.
+## The game keeps its own shape (360 x 640 for the prototypes), as big as fits, centred; the rest of the screen
+## (above and below on tall phones, at the sides on tablets) shows more of the game: it is told what it can see
+## and paints its backgrounds there. The pause button sits in the top part when there is room.
 func _fit() -> void:
 	if _stage == null or manifest == null:
 		return
 	var s := manifest.size()
 	var k := minf(size.x / s.x, size.y / s.y)
-	_stage.size = s * k
-	_stage.position = ((size - s * k) / 2.0).floor()
+	_stage.position = Vector2.ZERO
+	_stage.size = size
+	var at := ((size - s * k) / 2.0).floor()
+	game.position = at
 	game.scale = Vector2(k, k)
+	game.set_view(Rect2(-at / k, size / k))
+	var band := at.y
 	var inset := SafeArea.insets(get_viewport()) if is_inside_tree() else Vector4.ZERO
-	var band := _stage.position.y
 	if band >= 92.0 + inset.y:
 		# in the band above the game, on the left
 		_pause_button.position = Vector2(inset.x, band - 86.0)

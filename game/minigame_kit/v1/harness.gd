@@ -51,6 +51,7 @@ func _fit() -> void:
 	var k := minf(size.x / s.x, size.y / s.y)
 	game.scale = Vector2(k, k)
 	game.position = (size - s * k) / 2.0
+	game.set_view(Rect2(-game.position / k, size / k))
 
 
 func _start() -> void:

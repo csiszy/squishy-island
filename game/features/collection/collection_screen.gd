@@ -131,6 +131,20 @@ func _tile(id: StringName, sparkly_page: bool) -> Control:
 	var name_label := Ui.label(Text.t(StringName(info.get("name", ""))) if have else Text.t(&"collection.not_found"), "", HORIZONTAL_ALIGNMENT_CENTER, true)
 	name_label.add_theme_font_size_override("font_size", 22)
 	col.add_child(name_label)
+	if not have:
+		# a squishy not found yet: tapping it shows where squishies come from (the Factory, its family chosen)
+		var hint := Ui.label(Text.t(&"collection.find_in_factory"), "Small", HORIZONTAL_ALIGNMENT_CENTER, true)
+		hint.add_theme_font_size_override("font_size", 18)
+		col.add_child(hint)
+		var tap := Button.new()
+		tap.flat = true
+		tap.focus_mode = FOCUS_NONE
+		tap.tooltip_text = Text.t(&"collection.find_in_factory")
+		tap.set_anchors_and_offsets_preset(PRESET_FULL_RECT)
+		tap.name = "Find_%s" % id
+		var family := StringName(info.get("family", ""))
+		tap.pressed.connect(func() -> void: Nav.go(&"factory", {"family": family}))
+		card.add_child(tap)
 	if have:
 		var line := Text.t(StringName("rarity.%s.name" % rarity)) + " · " + Text.t(&"collection.level", {"n": int(e.get("level", 1))})
 		var sub := Ui.label(line, "Small", HORIZONTAL_ALIGNMENT_CENTER)

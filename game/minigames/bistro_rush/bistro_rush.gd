@@ -223,7 +223,10 @@ func _serve(ci: int) -> void:
 # ---------------------------------------------------------------- drawing
 
 func _draw_game() -> void:
-	rect(0, 0, W, H, Color("#FFF1E0"))
+	# what the player sees: at least the 360 x 640 design, more on tall phones / tablets
+	var v := view_rect
+	var x0 := floorf(v.position.x / 52.0) * 52.0
+	fill_view(Color("#FFF1E0"))
 	# window + street
 	rr(14, 70, W - 28, 112, 14, Color("#BFE6F7"), Color("#C9A97A"), 4)
 	rect(17, 150, W - 34, 29, Color("#9ED67E"))
@@ -244,16 +247,19 @@ func _draw_game() -> void:
 		if s["leave"] == 0.0 and s["in"] >= 1.0:
 			_order_bubble(sx, s)
 	# counter
-	rr(-6, 296, W + 12, 22, 4, Color("#C98A55"))
-	rect(0, 318, W, 46, Color("#E5484D"))
-	for i in 13:
+	rr(v.position.x - 6, 296, v.size.x + 12, 22, 4, Color("#C98A55"))
+	rect(v.position.x, 318, v.size.x, 46, Color("#E5484D"))
+	for i in range(floori(v.position.x / 30.0), ceili(v.end.x / 30.0)):
 		rect(i * 30, 318, 15, 46, Color(1, 1, 1, 0.28))
-	line(PackedVector2Array([Vector2(0, 364), Vector2(W, 364)]), INK, 2.5)
-	# kitchen
-	for i in 7:
-		for j in 4:
-			rect(i * 52, 365 + j * 40, 52, 40, Color("#FFEFE0") if (i + j) % 2 else Color("#FFF8EC"))
-	rect(0, 525, W, H - 525, Color("#FFF8EC"))
+	line(PackedVector2Array([Vector2(v.position.x, 364), Vector2(v.end.x, 364)]), INK, 2.5)
+	# kitchen: the floor tiles go on to the bottom of the screen
+	var rows := ceili((v.end.y - 365.0) / 40.0)
+	var x := x0
+	while x < v.end.x:
+		for j in rows:
+			var col := int(x / 52.0)
+			rect(x, 365 + j * 40, 52, 40, Color("#FFEFE0") if absi(col + j) % 2 else Color("#FFF8EC"))
+		x += 52.0
 	rr(22, 398, 268, 68, 16, Color("#E8E4EF"), Color("#9A8FAA"), 3)
 	text(ctx.t(&"bistro_rush.pans"), 156, 412, 10, Color("#7C7494"), &"center", &"body")
 	for i in 3:
@@ -300,10 +306,10 @@ func _draw_game() -> void:
 	hearts(W - 66, 26, hearts_left)
 	if combo >= 5:
 		text(ctx.t(&"bistro_rush.combo", {"n": mini(5, 1 + combo / 5)}), W / 2.0, 27, 15, Color("#FFF3B0"), &"center", &"display", INK, 3)
-	for i in 14:
+	for i in range(floori(view_rect.position.x / 26.0), ceili(view_rect.end.x / 26.0)):
 		var pts := PackedVector2Array([Vector2(i * 26, 52), Vector2(i * 26 + 26, 52), Vector2(i * 26 + 26, 62)])
 		pts.append_array(quad(Vector2(i * 26 + 26, 62), Vector2(i * 26 + 13, 70), Vector2(i * 26, 62), 6))
-		poly(pts, Color.WHITE if i % 2 else Color("#E5484D"), Color("#B83238"), 1.5)
+		poly(pts, Color.WHITE if absi(i) % 2 else Color("#E5484D"), Color("#B83238"), 1.5)
 
 
 func _order_bubble(sx: float, s: Dictionary) -> void:

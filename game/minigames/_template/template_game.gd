@@ -59,7 +59,7 @@ func _make_result() -> MinigameResult:
 
 
 func _draw_game() -> void:
-	vgradient(Rect2(0, 0, W, H), Color("#DFF3FF"), Color("#8CCBFF"))
+	vgradient(view_rect, Color("#DFF3FF"), Color("#8CCBFF"))   # everything the player sees
 	for b in bubbles:
 		circle(b["x"], b["y"], b["r"], Color(1, 1, 1, 0.55))
 		circle(b["x"] - b["r"] * 0.35, b["y"] - b["r"] * 0.35, b["r"] * 0.2, Color.WHITE, null, 0)

@@ -461,6 +461,7 @@ building.testlab.level.8.title,Lit sign & garden
 building.testlab.level.9.caption,A giant press squishes a giant marshmallow on the roof.
 building.testlab.level.9.title,Giant press
 building.testlab.name,Squishy Testing Facility
+collection.find_in_factory,Find it in the Factory
 collection.level,Lv {n}
 collection.level_up,Level up (uses {n})
 collection.level_up_need,Level up needs {n} spares
