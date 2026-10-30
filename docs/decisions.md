@@ -384,4 +384,17 @@ Sort-a-Lot ported from the prototypes. Tap a built fun building on the map → *
 - Not yet (later steps): Sign in with Google/Apple (needs store accounts), Bao's "Keep your town safe!" card at
   the right moments and the Safety Cloud weathervane gift (Step 6 polish), a deletion web page (Step 7, with the
   live server).
-- Next in Step 4: quests, the Gem Challenge, the weekly visitor, the Market and trading (4c).
+- **Quests and the Gem Challenge (4c, first part)**, as in guide.html "Daily visits" and "Gems": 2 coin quests
+  (+40) a day from a quest list in the book (`art/economy.js` questPool, only with games the player has built) and
+  the Gem Challenge (+3 Gems: one game a day, never the same two days running, a goal from the player's own best:
+  90% of their best score, ★★★ on a track or ★★ on the newest, a new level with ★★★ or two levels raised to ★★★);
+  5 Gem Challenge days in a week = +15 Gems; the day's first game pays double. The server makes and checks them
+  (the phone says which games are built and reports each run's score, count and stars); the pretend server plays
+  the same rules. Quest board from a new button on the map (a dot when something is ready to collect); results
+  say "First game today: double coins!" and "Quest done!". Days follow the phone's own date (it may be at most a
+  day away from the server's).
+- **Changing things live** (owner's question): `server/live/live-config.json`, a plain text file the server reads
+  each time it makes a day's quests: the numbers, the quest list, and exact quests or the Gem Challenge game for
+  chosen dates (Christmas Eve...). Edit, save, no restart, no app update; a broken file is ignored. A friendlier
+  admin page can come with the live server if editing the file is fiddly.
+- Next in Step 4: the weekly visitor, then the Market and trading.

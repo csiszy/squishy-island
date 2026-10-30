@@ -1,6 +1,6 @@
 "use strict";
 // Made by tools/make_data.js from game/data (do not edit by hand).
-var ECONOMY = { "boxes": { "mystery": { "price": 200, "odds": { "C": 55, "U": 25, "R": 13, "E": 6, "L": 1 }, "factoryLevel": 1 }, "family": { "price": 500, "odds": { "C": 55, "U": 25, "R": 13, "E": 6, "L": 1 }, "factoryLevel": 3, "pickFamily": true }, "golden": { "price": 1000, "odds": { "C": 0, "U": 50, "R": 30, "E": 16, "L": 4 }, "factoryLevel": 6 }, "ad": { "price": 0, "odds": { "C": 55, "U": 25, "R": 13, "E": 6, "L": 1 }, "factoryLevel": 1, "perDay": 3 } }, "rareGuaranteeAfter": 9, "sparklyChance": 0.02, "firstBox": "gyoza", "spareLevels": { "C": [1, 2, 3, 4], "U": [1, 2, 3, 4], "R": [1, 1, 2, 2], "E": [1, 1, 2, 2], "L": [1, 1, 1, 1] }, "maxSquishyLevel": 5, "starsPerSpare": { "C": 5, "U": 15, "R": 40, "E": 100, "L": 300 }, "gemShop": { "legendary": 300, "exclusive": 500 }, "gemsEarned": { "dailyChallenge": 3, "weeklyStreak": 15, "weeklyStreakDays": 5, "achievementMin": 10, "achievementMax": 25 }, "gemPacks": [{ "id": "gems_100", "gems": 100 }, { "id": "gems_300", "gems": 300 }, { "id": "gems_500", "gems": 500 }, { "id": "gems_1000", "gems": 1000 }], "gemPricePer100Eur": 0.99, "cozy": { "pointsPerStep": 5, "coinBonusPerStep": 0.05 }, "daily": { "coinQuests": 2, "coinQuestReward": 40, "firstRunMultiplier": 2, "challengeOfBest": 0.9, "visitorDays": 4 }, "minigames": { "coinsPerMinuteTarget": 35, "milestoneBonus": [10, 25, 50], "levelFirstClear": 30, "levelReplay": 10, "perStar": 15, "everyTenthLevelMultiplier": 2, "serverMaxCoinsPerMinute": 60 }, "ads": { "closableAfterSeconds": 5, "keepGoingPerRun": 1, "freeBoxesPerDay": 3 }, "unlocks": [{ "when": "start", "houses": ["dumpling", "kitchen", "pets", "sweets", "fruit", "ocean", "sky", "forest"], "buildings": ["playground", "restaurant", "post", "factory", "gemmine", "market", "salon", "police", "fire", "testlab", "arcade", "bandstand", "greenhouse"], "built": ["playground", "restaurant", "post", "factory", "gemmine"], "gift": "bao" }] };
+var ECONOMY = { "boxes": { "mystery": { "price": 200, "odds": { "C": 55, "U": 25, "R": 13, "E": 6, "L": 1 }, "factoryLevel": 1 }, "family": { "price": 500, "odds": { "C": 55, "U": 25, "R": 13, "E": 6, "L": 1 }, "factoryLevel": 3, "pickFamily": true }, "golden": { "price": 1000, "odds": { "C": 0, "U": 50, "R": 30, "E": 16, "L": 4 }, "factoryLevel": 6 }, "ad": { "price": 0, "odds": { "C": 55, "U": 25, "R": 13, "E": 6, "L": 1 }, "factoryLevel": 1, "perDay": 3 } }, "rareGuaranteeAfter": 9, "sparklyChance": 0.02, "firstBox": "gyoza", "spareLevels": { "C": [1, 2, 3, 4], "U": [1, 2, 3, 4], "R": [1, 1, 2, 2], "E": [1, 1, 2, 2], "L": [1, 1, 1, 1] }, "maxSquishyLevel": 5, "starsPerSpare": { "C": 5, "U": 15, "R": 40, "E": 100, "L": 300 }, "gemShop": { "legendary": 300, "exclusive": 500 }, "gemsEarned": { "dailyChallenge": 3, "weeklyStreak": 15, "weeklyStreakDays": 5, "achievementMin": 10, "achievementMax": 25 }, "gemPacks": [{ "id": "gems_100", "gems": 100 }, { "id": "gems_300", "gems": 300 }, { "id": "gems_500", "gems": 500 }, { "id": "gems_1000", "gems": 1000 }], "gemPricePer100Eur": 0.99, "cozy": { "pointsPerStep": 5, "coinBonusPerStep": 0.05 }, "daily": { "coinQuests": 2, "coinQuestReward": 40, "firstRunMultiplier": 2, "challengeOfBest": 0.9, "visitorDays": 4 }, "questPool": [{ "id": "play_any", "kind": "runs", "game": "any", "target": 3, "weight": 3, "text": "quest.play_any" }, { "id": "play_game", "kind": "runs", "game": "pick", "target": 2, "weight": 4, "text": "quest.play_game" }, { "id": "flowers", "kind": "metric", "game": "grow_grow_garden", "target": 30, "weight": 2, "text": "quest.flowers" }, { "id": "orders", "kind": "metric", "game": "bistro_rush", "target": 15, "weight": 2, "text": "quest.orders" }, { "id": "letters", "kind": "metric", "game": "sort_a_lot", "target": 30, "weight": 2, "text": "quest.letters" }, { "id": "sky_coins", "kind": "metric", "game": "sky_bounce", "target": 20, "weight": 2, "text": "quest.sky_coins" }, { "id": "guests", "kind": "metric", "game": "style_studio", "target": 5, "weight": 2, "text": "quest.guests" }, { "id": "squishes", "kind": "metric", "game": "squish_lab", "target": 10, "weight": 1, "text": "quest.squishes" }, { "id": "box", "kind": "boxes", "target": 1, "weight": 2, "text": "quest.box" }], "minigames": { "coinsPerMinuteTarget": 35, "milestoneBonus": [10, 25, 50], "levelFirstClear": 30, "levelReplay": 10, "perStar": 15, "everyTenthLevelMultiplier": 2, "serverMaxCoinsPerMinute": 60 }, "ads": { "closableAfterSeconds": 5, "keepGoingPerRun": 1, "freeBoxesPerDay": 3 }, "unlocks": [{ "when": "start", "houses": ["dumpling", "kitchen", "pets", "sweets", "fruit", "ocean", "sky", "forest"], "buildings": ["playground", "restaurant", "post", "factory", "gemmine", "market", "salon", "police", "fire", "testlab", "arcade", "bandstand", "greenhouse"], "built": ["playground", "restaurant", "post", "factory", "gemmine"], "gift": "bao" }] };
 var SQUISHIES = [{ "id": "bao", "family": "dumpling", "rarity": "C" }, { "id": "gyoza", "family": "dumpling", "rarity": "C" }, { "id": "xlb", "family": "dumpling", "rarity": "U" }, { "id": "hargow", "family": "dumpling", "rarity": "R" }, { "id": "peachbun", "family": "dumpling", "rarity": "E" }, { "id": "goldumpling", "family": "dumpling", "rarity": "L" }, { "id": "toast", "family": "kitchen", "rarity": "C" }, { "id": "egg", "family": "kitchen", "rarity": "C" }, { "id": "banana", "family": "kitchen", "rarity": "U" }, { "id": "butter", "family": "kitchen", "rarity": "R" }, { "id": "croissant", "family": "kitchen", "rarity": "E" }, { "id": "pancake", "family": "kitchen", "rarity": "L" }, { "id": "kitty", "family": "pets", "rarity": "C" }, { "id": "puppy", "family": "pets", "rarity": "C" }, { "id": "bunny", "family": "pets", "rarity": "U" }, { "id": "hamster", "family": "pets", "rarity": "R" }, { "id": "corgi", "family": "pets", "rarity": "E" }, { "id": "luckycat", "family": "pets", "rarity": "L" }, { "id": "marshmallow", "family": "sweets", "rarity": "C" }, { "id": "macaron", "family": "sweets", "rarity": "C" }, { "id": "donut", "family": "sweets", "rarity": "U" }, { "id": "icecream", "family": "sweets", "rarity": "R" }, { "id": "shortcake", "family": "sweets", "rarity": "E" }, { "id": "gummy", "family": "sweets", "rarity": "L" }, { "id": "strawberry", "family": "fruit", "rarity": "C" }, { "id": "peach", "family": "fruit", "rarity": "C" }, { "id": "avocado", "family": "fruit", "rarity": "U" }, { "id": "watermelon", "family": "fruit", "rarity": "R" }, { "id": "dragonfruit", "family": "fruit", "rarity": "E" }, { "id": "goldapple", "family": "fruit", "rarity": "L" }, { "id": "jelly", "family": "ocean", "rarity": "C" }, { "id": "puffer", "family": "ocean", "rarity": "C" }, { "id": "axolotl", "family": "ocean", "rarity": "U" }, { "id": "octopus", "family": "ocean", "rarity": "R" }, { "id": "whale", "family": "ocean", "rarity": "E" }, { "id": "turtle", "family": "ocean", "rarity": "L" }, { "id": "puff", "family": "sky", "rarity": "C" }, { "id": "raindrop", "family": "sky", "rarity": "C" }, { "id": "sunny", "family": "sky", "rarity": "U" }, { "id": "star", "family": "sky", "rarity": "R" }, { "id": "moon", "family": "sky", "rarity": "E" }, { "id": "rainbow", "family": "sky", "rarity": "L" }, { "id": "sprout", "family": "forest", "rarity": "C" }, { "id": "acorn", "family": "forest", "rarity": "C" }, { "id": "mossball", "family": "forest", "rarity": "U" }, { "id": "shroomy", "family": "forest", "rarity": "R" }, { "id": "fluffle", "family": "forest", "rarity": "E" }, { "id": "mossdragon", "family": "forest", "rarity": "L" }];
 // What the server decides (build.html "What lives where"): box rolls, the Spare Shelf, Squish Stars and the coins
 // check. The same rules as the game's pretend server (game/core/server/fake_game_server.gd), which the game uses
@@ -112,6 +112,7 @@ function openBox(state, kind, family, firstBox, random) {
     var sparkly = random() < (ECONOMY.sparklyChance || 0.02);
     var isNew = give(state, id, sparkly);
     state.boxes_opened = (state.boxes_opened || 0) + 1;
+    questsAfterBox(state);
     return { ok: true, squishy: id, rarity: rarity, sparkly: sparkly, is_new: isNew, entry: copyEntry(state.collection[id]), pity: state.pity || 0, boxes_opened: state.boxes_opened };
 }
 // Spares needed to go from `level` to level + 1 (0 past the top).
@@ -154,8 +155,9 @@ function swapSpare(state, id) {
     return { ok: true, entry: copyEntry(entry), stars: state.stars };
 }
 // Coins per minute are capped (economy.minigames.serverMaxCoinsPerMinute); a run counts as at least one minute, so
-// a short run that reaches a milestone bonus is still paid in full.
-function submitRun(state, game, seconds, coins, kind) {
+// a short run that reaches a milestone bonus is still paid in full. With a report (score, stars...) the run also
+// moves today's quests on, and the day's first run pays double (firstRunMultiplier): "coins" is what may be paid.
+function submitRun(state, game, seconds, coins, kind, report, multiplier) {
     if (!game || !(seconds >= 0) || !(coins >= 0)) {
         return fail("bad_run");
     }
@@ -168,7 +170,22 @@ function submitRun(state, game, seconds, coins, kind) {
     }
     state.runs = state.runs || {};
     state.runs[game] = (state.runs[game] || 0) + 1;
-    return { ok: true, coins: Math.min(coins, most), capped: coins > most };
+    var paid = Math.min(coins, most);
+    var answer = { ok: true, coins: paid, capped: coins > most, first_today: false, quests_done: [] };
+    if (report) {
+        if (kind === "endless") {
+            state.bests = state.bests || {};
+            state.bests[game] = Math.max(state.bests[game] || 0, Math.floor(report.score || 0));
+        }
+        var d = state.daily;
+        if (d && !d.first_run && paid > 0) {
+            d.first_run = true;
+            answer.first_today = true;
+            answer.coins = paid * Math.max(1, multiplier || 1);
+        }
+        answer.quests_done = questsAfterRun(state, report);
+    }
+    return answer;
 }
 // Accounts (account.html "Accounts & saving"): every phone starts as a guest; the town is saved to the server;
 // a grown-up can "save my town" with an email (a 6-digit code, no password) or move it to a new phone with a
@@ -504,6 +521,353 @@ function purgeDeleted(nk, logger) {
     logger.info("purge: %d accounts deleted", gone);
     return { ok: true, deleted: gone };
 }
+// Daily quests and the Gem Challenge (guide.html "Daily visits" and "Gems"):
+// - 3 a day: 2 easy coin quests (+40 coins each) from the quest pool (data: economy.questPool), only with games the
+//   player has built, and the Gem Challenge (+3 Gems): one game a day (never the same two days running), the goal
+//   set from the player's own best (endless games: 90% of their best score; Squeak Beat: ★★★ on any track or ★★ on
+//   the newest; level games: win the next new level with ★★★ or raise any two levels to ★★★). Unlimited tries.
+// - The first minigame run of each day pays double coins.
+// - Gem streak: the Gem Challenge done on 5 days of the same week (any 5) gives +15 Gems once that week.
+// - Missing a day only means missing that day's quests: nothing is ever taken away.
+//
+// Everything can be changed without an app update: the server reads server/live-config.json (README.md, "Changing
+// things live") every time it makes a day's quests; it can replace the quest pool, the numbers, and set the exact
+// quests or Gem Challenge game for a given date.
+// ---------------------------------------------------------------- dates (days are "YYYY-MM-DD", the phone's own date)
+function dayNumber(day) {
+    var p = day.split("-");
+    return Math.floor(Date.UTC(Number(p[0]), Number(p[1]) - 1, Number(p[2])) / 86400000);
+}
+function dayText(n) {
+    var d = new Date(n * 86400000);
+    var pad = function (x) { return x < 10 ? "0" + x : String(x); };
+    return d.getUTCFullYear() + "-" + pad(d.getUTCMonth() + 1) + "-" + pad(d.getUTCDate());
+}
+// The phone says which day it is (its own time zone); it may not be more than a day away from the server's.
+function checkDay(day) {
+    var today = Math.floor(clock.now() / 86400000);
+    if (!/^\d{4}-\d{2}-\d{2}$/.test(day || "") || Math.abs(dayNumber(day) - today) > 1) {
+        return dayText(today);
+    }
+    return day;
+}
+// Monday-based week number (days since the epoch's Monday / 7): the same for every day of one week.
+function weekOf(day) {
+    return Math.floor((dayNumber(day) - 4) / 7); // 1970-01-01 was a Thursday; 1970-01-05 a Monday
+}
+// ---------------------------------------------------------------- random numbers from a text (the same every time)
+function seededRandom(text) {
+    var h = 2166136261;
+    for (var i = 0; i < text.length; i++) {
+        h ^= text.charCodeAt(i);
+        h = Math.imul(h, 16777619) >>> 0;
+    }
+    var a = h || 1;
+    return function () {
+        a = (a + 0x6D2B79F5) | 0;
+        var t = Math.imul(a ^ (a >>> 15), 1 | a);
+        t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
+        return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+    };
+}
+// server/live-config.json (next to this module in the container). Missing or broken: nothing is changed (a broken
+// file is reported in the server's log, so a typo never stops the game).
+function readLiveFile(nk) {
+    if (!nk) {
+        return {};
+    }
+    var text = "";
+    try {
+        text = nk.fileRead(LIVE_FILE);
+    }
+    catch (e) {
+        return {};
+    }
+    try {
+        var v = JSON.parse(text);
+        return v && typeof v === "object" ? v : {};
+    }
+    catch (e) {
+        liveConfigProblem = "live-config.json is not valid JSON: " + String(e);
+        return {};
+    }
+}
+var LIVE_FILE = "live/live-config.json";
+var liveConfigProblem = "";
+function liveConfig(nk) {
+    var daily = ECONOMY.daily || {};
+    var gems = ECONOMY.gemsEarned || {};
+    var c = {
+        coinQuests: daily.coinQuests || 2,
+        coinQuestReward: daily.coinQuestReward || 40,
+        firstRunMultiplier: daily.firstRunMultiplier || 2,
+        challengeOfBest: daily.challengeOfBest || 0.9,
+        challengeGems: gems.dailyChallenge || 3,
+        streakDays: gems.weeklyStreakDays || 5,
+        streakGems: gems.weeklyStreak || 15,
+        challengeEnabled: true,
+        questPool: ECONOMY.questPool || [],
+        schedule: {}
+    };
+    var live = readLiveFile(nk);
+    for (var k in live) {
+        if (live.hasOwnProperty(k) && c.hasOwnProperty(k) && live[k] !== null && live[k] !== undefined) {
+            c[k] = live[k];
+        }
+    }
+    return c;
+}
+// ---------------------------------------------------------------- making a day's quests
+function playable(games) {
+    var out = [];
+    for (var i = 0; i < games.length; i++) {
+        if (games[i] && games[i].id && games[i].kind !== "toy") {
+            out.push(games[i]);
+        }
+    }
+    return out;
+}
+function hasGame(games, id) {
+    for (var i = 0; i < games.length; i++) {
+        if (games[i].id === id) {
+            return true;
+        }
+    }
+    return false;
+}
+// The Gem Challenge's game for a day: one of the player's games (not toys), never `avoid` (the day before's game).
+function challengeGame(userId, day, games, cfg, avoid) {
+    var fixed = cfg.schedule[day] && cfg.schedule[day].challenge;
+    if (fixed && hasGame(games, fixed)) {
+        return fixed;
+    }
+    var list = playable(games);
+    if (list.length === 0) {
+        return "";
+    }
+    var i = Math.floor(seededRandom(userId + "/challenge/" + day)() * list.length) % list.length;
+    if (list.length > 1 && list[i].id === avoid) {
+        i = (i + 1) % list.length;
+    }
+    return list[i].id;
+}
+function challengeFor(state, game, games, cfg) {
+    if (!game || !cfg.challengeEnabled) {
+        return null;
+    }
+    var kind = "endless";
+    for (var i = 0; i < games.length; i++) {
+        if (games[i].id === game) {
+            kind = games[i].kind;
+        }
+    }
+    var bests = state.bests || {};
+    if (kind === "levels") {
+        return { game: game, goal: "levels3", target: 2, progress: 0, done: false, claimed: false };
+    }
+    if (kind === "songs") {
+        return { game: game, goal: "song3", target: 1, progress: 0, done: false, claimed: false };
+    }
+    // a new player's goal is small (just play), an expert's is big: always a stretch, never impossible
+    return { game: game, goal: "score", target: Math.max(1, Math.floor((bests[game] || 0) * cfg.challengeOfBest)), progress: 0, done: false, claimed: false };
+}
+function questFrom(entry, games, random, reward) {
+    if (!entry || !entry.id) {
+        return null;
+    }
+    var game = String(entry.game || "any");
+    if (entry.kind === "boxes") {
+        game = "";
+    }
+    else if (game === "pick") {
+        var list = playable(games);
+        if (list.length === 0) {
+            return null;
+        }
+        game = list[Math.floor(random() * list.length) % list.length].id;
+    }
+    else if (game !== "any" && !hasGame(games, game)) {
+        return null; // a game the player hasn't built yet
+    }
+    return {
+        id: String(entry.id), kind: String(entry.kind || "runs"), game: game, target: Math.max(1, Math.floor(Number(entry.target) || 1)),
+        text: String(entry.text || ""), reward: Math.max(0, Math.floor(Number(entry.reward !== undefined ? entry.reward : reward))),
+        progress: 0, claimed: false
+    };
+}
+function makeDay(state, userId, day, games, cfg) {
+    var random = seededRandom(userId + "/quests/" + day);
+    var quests = [];
+    var scheduled = cfg.schedule[day] && cfg.schedule[day].quests;
+    if (scheduled && scheduled.length) {
+        for (var i = 0; i < scheduled.length; i++) {
+            var q = questFrom(scheduled[i], games, random, cfg.coinQuestReward);
+            if (q) {
+                quests.push(q);
+            }
+        }
+    }
+    else {
+        // weighted picks from the pool, no quest twice
+        var pool = [];
+        for (var j = 0; j < cfg.questPool.length; j++) {
+            pool.push(cfg.questPool[j]);
+        }
+        while (quests.length < cfg.coinQuests && pool.length > 0) {
+            var total = 0;
+            for (var k = 0; k < pool.length; k++) {
+                total += Math.max(0, Number(pool[k].weight) || 1);
+            }
+            var x = random() * total;
+            var at = 0;
+            for (var m = 0; m < pool.length; m++) {
+                x -= Math.max(0, Number(pool[m].weight) || 1);
+                if (x < 0) {
+                    at = m;
+                    break;
+                }
+            }
+            var picked = questFrom(pool[at], games, random, cfg.coinQuestReward);
+            pool.splice(at, 1);
+            if (picked) {
+                quests.push(picked);
+            }
+        }
+    }
+    var before = state.daily;
+    var yesterday = before && before.day === dayText(dayNumber(day) - 1) && before.challenge ? before.challenge.game : "";
+    return { day: day, quests: quests, challenge: challengeFor(state, challengeGame(userId, day, games, cfg, yesterday), games, cfg), first_run: false };
+}
+function todays(state, userId, day, games, cfg) {
+    var d = state.daily;
+    if (!d || d.day !== day) {
+        d = makeDay(state, userId, day, games, cfg);
+        state.daily = d;
+    }
+    return d;
+}
+function questsAnswer(state, userId, d, games, cfg) {
+    var week = state.week || { week: -1, days: [], claimed: false };
+    var thisWeek = week.week === weekOf(d.day);
+    return {
+        ok: true, day: d.day, quests: d.quests, challenge: d.challenge, first_run_left: !d.first_run,
+        tomorrow: challengeGame(userId, dayText(dayNumber(d.day) + 1), games, cfg, d.challenge ? d.challenge.game : ""),
+        streak: { days: thisWeek ? week.days.length : 0, needed: cfg.streakDays, gems: cfg.streakGems, claimed: thisWeek && week.claimed },
+        rewards: { quest: cfg.coinQuestReward, challenge: cfg.challengeGems }
+    };
+}
+// The day's quests (made the first time they are asked for that day).
+function getQuests(nk, state, userId, dayAsked, games) {
+    var cfg = liveConfig(nk);
+    var day = checkDay(dayAsked);
+    var d = todays(state, userId, day, games || [], cfg);
+    return questsAnswer(state, userId, d, games || [], cfg);
+}
+// A finished run moves today's quests on. Returns the ids of quests (and "challenge") that just got done.
+function questsAfterRun(state, run) {
+    var d = state.daily;
+    var done = [];
+    if (!d) {
+        return done;
+    }
+    for (var i = 0; i < d.quests.length; i++) {
+        var q = d.quests[i];
+        var was = q.progress >= q.target;
+        if (q.kind === "runs" && (q.game === "any" || q.game === run.game)) {
+            q.progress = Math.min(q.target, q.progress + 1);
+        }
+        else if (q.kind === "metric" && q.game === run.game) {
+            q.progress = Math.min(q.target, q.progress + Math.max(0, Math.floor(run.metric || 0)));
+        }
+        if (!was && q.progress >= q.target) {
+            done.push(q.id);
+        }
+    }
+    var c = d.challenge;
+    if (c && !c.done && c.game === run.game) {
+        if (c.goal === "score") {
+            c.progress = Math.max(c.progress, Math.floor(run.score || 0));
+            c.done = c.progress >= c.target;
+        }
+        else if (c.goal === "levels3" && run.won && run.stars >= 3 && run.prev_stars < 3) {
+            // a new level won with ★★★ does it at once; otherwise two levels raised to ★★★
+            c.progress = run.prev_stars === 0 ? c.target : c.progress + 1;
+            c.done = c.progress >= c.target;
+        }
+        else if (c.goal === "song3" && run.won && (run.stars >= 3 || (run.stars >= 2 && run.newest))) {
+            c.progress = 1;
+            c.done = true;
+        }
+        if (c.done) {
+            done.push("challenge");
+        }
+    }
+    return done;
+}
+function questsAfterBox(state) {
+    var d = state.daily;
+    if (!d) {
+        return;
+    }
+    for (var i = 0; i < d.quests.length; i++) {
+        if (d.quests[i].kind === "boxes") {
+            d.quests[i].progress = Math.min(d.quests[i].target, d.quests[i].progress + 1);
+        }
+    }
+}
+// ---------------------------------------------------------------- collecting rewards
+// id: a quest's id (coins: the phone adds them), "challenge" (Gems) or "streak" (Gems).
+function claimQuest(nk, state, dayAsked, id) {
+    var cfg = liveConfig(nk);
+    var d = state.daily;
+    var day = checkDay(dayAsked);
+    if (!d || d.day !== day) {
+        return fail("not_today");
+    }
+    if (id === "challenge") {
+        var c = d.challenge;
+        if (!c || !c.done) {
+            return fail("not_done");
+        }
+        if (c.claimed) {
+            return fail("claimed");
+        }
+        c.claimed = true;
+        state.gems = (state.gems || 0) + cfg.challengeGems;
+        var week = state.week && state.week.week === weekOf(day) ? state.week : { week: weekOf(day), days: [], claimed: false };
+        if (week.days.indexOf(day) < 0) {
+            week.days.push(day);
+        }
+        state.week = week;
+        return { ok: true, gems: cfg.challengeGems, total_gems: state.gems, stars: state.stars, streak_days: week.days.length };
+    }
+    if (id === "streak") {
+        var w = state.week;
+        if (!w || w.week !== weekOf(day) || w.days.length < cfg.streakDays) {
+            return fail("not_done");
+        }
+        if (w.claimed) {
+            return fail("claimed");
+        }
+        w.claimed = true;
+        state.gems = (state.gems || 0) + cfg.streakGems;
+        return { ok: true, gems: cfg.streakGems, total_gems: state.gems, stars: state.stars };
+    }
+    for (var i = 0; i < d.quests.length; i++) {
+        var q = d.quests[i];
+        if (q.id === id) {
+            if (q.progress < q.target) {
+                return fail("not_done");
+            }
+            if (q.claimed) {
+                return fail("claimed");
+            }
+            q.claimed = true;
+            return { ok: true, coins: q.reward };
+        }
+    }
+    return fail("no_quest");
+}
 // Squishy Island's server module for Nakama. Nakama runs this file and calls InitModule once at start; the game
 // calls the RPCs below over the internet (game/core/server/nakama_game_server.gd). Each player's state lives in
 // Nakama's storage (collection "island", key "state"), only the server may write it.
@@ -595,7 +959,19 @@ function rpcSubmitRun(ctx, logger, nk, payload) {
     }
     var p = parse(payload);
     return JSON.stringify(withState(nk, user, function (s) {
-        return submitRun(s, String(p.game || ""), Number(p.seconds), Math.floor(Number(p.coins)), String(p.kind || "endless"));
+        var report = undefined;
+        var multiplier = 1;
+        if (p.day) {
+            // the day's quests count this run (they are made now if the quest board wasn't opened yet today)
+            var cfg = liveConfig(nk);
+            todays(s, user, checkDay(String(p.day)), (p.games || []), cfg);
+            multiplier = cfg.firstRunMultiplier;
+            report = {
+                game: String(p.game || ""), score: Number(p.score) || 0, metric: Number(p.metric) || 0, won: p.won === true,
+                level: Number(p.level) || 0, stars: Number(p.stars) || 0, prev_stars: Number(p.prev_stars) || 0, newest: p.newest === true
+            };
+        }
+        return submitRun(s, String(p.game || ""), Number(p.seconds), Math.floor(Number(p.coins)), String(p.kind || "endless"), report, multiplier);
     }));
 }
 function isDev(ctx) {
@@ -630,6 +1006,16 @@ function rpcEmailStart(ctx, logger, nk, payload) {
 function rpcEmailConfirm(ctx, logger, nk, payload) {
     return asPlayer(ctx, payload, function (user, p) { return emailConfirm(nk, user, String(p.device_id || ""), String(p.code || ""), p.confirm === true); });
 }
+function rpcQuests(ctx, logger, nk, payload) {
+    return asPlayer(ctx, payload, function (user, p) {
+        return withState(nk, user, function (s) { return getQuests(nk, s, user, String(p.day || ""), (p.games || [])); });
+    });
+}
+function rpcQuestClaim(ctx, logger, nk, payload) {
+    return asPlayer(ctx, payload, function (user, p) {
+        return withState(nk, user, function (s) { return claimQuest(nk, s, String(p.day || ""), String(p.id || "")); });
+    });
+}
 function rpcDeleteRequest(ctx, logger, nk, payload) {
     return asPlayer(ctx, payload, function (user, p) { return deleteRequest(nk, user); });
 }
@@ -659,6 +1045,8 @@ function InitModule(ctx, logger, nk, initializer) {
     initializer.registerRpc("email_start", rpcEmailStart);
     initializer.registerRpc("email_confirm", rpcEmailConfirm);
     initializer.registerRpc("delete_request", rpcDeleteRequest);
+    initializer.registerRpc("quests", rpcQuests);
+    initializer.registerRpc("quest_claim", rpcQuestClaim);
     initializer.registerRpc("purge_deleted", rpcPurgeDeleted);
     logger.info("Squishy Island server ready: %d squishies, %d box kinds", SQUISHIES.length, Object.keys(ECONOMY.boxes).length);
 }

@@ -9,8 +9,10 @@ function fakeNakama() {
   const store = {};
   const accounts = {};   // userId -> {devices: Set, custom: Set}
   let n = 0;
+  const files = {};      // the module folder's files (live-config.json)
   const nk = {
-    store, accounts,
+    store, accounts, files,
+    fileRead(p) { if (!(p in files)) throw new Error('no such file'); return files[p]; },
     storageRead(keys) {
       return keys.map(k => store[`${k.userId}/${k.collection}/${k.key}`]).filter(Boolean).map(o => JSON.parse(JSON.stringify(o)));
     },

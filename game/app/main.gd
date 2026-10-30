@@ -11,10 +11,11 @@ const SCREENS: Dictionary[StringName, String] = {
 	&"minigame": "res://features/minigame_host/minigame_screen.tscn",
 	&"games": "res://features/games/games_screen.tscn",
 	&"account": "res://features/account/account_screen.tscn",
+	&"quests": "res://features/quests/quests_screen.tscn",
 }
 const FIRST_SCREEN := &"city"
 ## Screens that are never open twice (opening one again goes back to it).
-const SINGLE: Array[StringName] = [&"city", &"factory", &"collection", &"games", &"account"]
+const SINGLE: Array[StringName] = [&"city", &"factory", &"collection", &"games", &"account", &"quests"]
 
 var _host: Control
 var _overlay: Control

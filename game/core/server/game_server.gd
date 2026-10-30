@@ -36,8 +36,10 @@ func swap_spare(_id: StringName) -> Dictionary:
 ## Report a finished minigame run and the coins the phone worked out for it. The server keeps an impossible amount
 ## from being paid (more than about 60 coins per minute of play, build.html "What lives where"; a level game's
 ## fixed reward for one level is always allowed). kind: the manifest's kind (endless, levels, ...).
-## Answer: {"ok", "coins" (what may be paid), "capped" (bool)}.
-func submit_run(_game: StringName, _seconds: float, _coins: int, _kind: StringName = &"endless") -> Dictionary:
+## report (optional; quests and the Gem Challenge need it): {"day", "games", "score", "metric", "won", "level",
+## "stars", "prev_stars", "newest"}. With a report the day's first run pays double (firstRunMultiplier).
+## Answer: {"ok", "coins" (what may be paid), "capped" (bool), "first_today" (bool), "quests_done": [ids]}.
+func submit_run(_game: StringName, _seconds: float, _coins: int, _kind: StringName = &"endless", _report: Dictionary = {}) -> Dictionary:
 	return {"ok": false, "error": &"offline"}
 
 
@@ -89,4 +91,21 @@ func email_confirm(_code: String, _confirm: bool) -> Dictionary:
 
 ## Delete this account (in 30 days; logging back in before then cancels it). Answer: {"ok", "after"}.
 func delete_request() -> Dictionary:
+	return {"ok": false, "error": &"offline"}
+
+
+# ---------------------------------------------------------------- daily quests and the Gem Challenge (Step 4c)
+
+## Today's quests (made the first time they are asked for that day). day: the phone's date "YYYY-MM-DD"; games: the
+## minigames the player has built [{"id", "kind"}]. Answer: {"ok", "day", "quests": [{"id", "kind", "game",
+## "target", "text", "reward", "progress", "claimed"}], "challenge": {"game", "goal" (score | levels3 | song3),
+## "target", "progress", "done", "claimed"} or null, "first_run_left", "tomorrow" (a game id), "streak": {"days",
+## "needed", "gems", "claimed"}, "rewards": {"quest", "challenge"}}.
+func quests(_day: String, _games: Array) -> Dictionary:
+	return {"ok": false, "error": &"offline"}
+
+
+## Collect a reward. id: a quest's id (answer {"coins"}: the phone adds them), "challenge" or "streak" (answer
+## {"gems", "total_gems", "stars"}). Errors: not_done, claimed, not_today, no_quest.
+func quest_claim(_day: String, _id: String) -> Dictionary:
 	return {"ok": false, "error": &"offline"}

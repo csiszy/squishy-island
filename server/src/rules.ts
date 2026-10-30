@@ -18,6 +18,11 @@ interface PlayerState {
   boxes_opened: number;
   first_box_given?: boolean;
   runs?: { [game: string]: number };
+  // best score per endless game (for the Gem Challenge's goal)
+  bests?: { [game: string]: number };
+  // today's quests (quests.ts) and this week's Gem Challenge days
+  daily?: any;
+  week?: { week: number; days: string[]; claimed: boolean };
 }
 interface Answer { ok: boolean; error?: string; [key: string]: any }
 
@@ -128,6 +133,7 @@ function openBox(state: PlayerState, kind: string, family: string, firstBox: boo
   var sparkly = random() < (ECONOMY.sparklyChance || 0.02);
   var isNew = give(state, id, sparkly);
   state.boxes_opened = (state.boxes_opened || 0) + 1;
+  questsAfterBox(state);
   return { ok: true, squishy: id, rarity: rarity, sparkly: sparkly, is_new: isNew, entry: copyEntry(state.collection[id]), pity: state.pity || 0, boxes_opened: state.boxes_opened };
 }
 
@@ -174,8 +180,9 @@ function swapSpare(state: PlayerState, id: string): Answer {
 }
 
 // Coins per minute are capped (economy.minigames.serverMaxCoinsPerMinute); a run counts as at least one minute, so
-// a short run that reaches a milestone bonus is still paid in full.
-function submitRun(state: PlayerState, game: string, seconds: number, coins: number, kind: string): Answer {
+// a short run that reaches a milestone bonus is still paid in full. With a report (score, stars...) the run also
+// moves today's quests on, and the day's first run pays double (firstRunMultiplier): "coins" is what may be paid.
+function submitRun(state: PlayerState, game: string, seconds: number, coins: number, kind: string, report?: RunReport, multiplier?: number): Answer {
   if (!game || !(seconds >= 0) || !(coins >= 0)) {
     return fail("bad_run");
   }
@@ -188,5 +195,20 @@ function submitRun(state: PlayerState, game: string, seconds: number, coins: num
   }
   state.runs = state.runs || {};
   state.runs[game] = (state.runs[game] || 0) + 1;
-  return { ok: true, coins: Math.min(coins, most), capped: coins > most };
+  var paid = Math.min(coins, most);
+  var answer: Answer = { ok: true, coins: paid, capped: coins > most, first_today: false, quests_done: [] };
+  if (report) {
+    if (kind === "endless") {
+      state.bests = state.bests || {};
+      state.bests[game] = Math.max(state.bests[game] || 0, Math.floor(report.score || 0));
+    }
+    var d = state.daily;
+    if (d && !d.first_run && paid > 0) {
+      d.first_run = true;
+      answer.first_today = true;
+      answer.coins = paid * Math.max(1, multiplier || 1);
+    }
+    answer.quests_done = questsAfterRun(state, report);
+  }
+  return answer;
 }

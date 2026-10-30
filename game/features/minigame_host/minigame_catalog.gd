@@ -31,7 +31,8 @@ static func by_building(dir := DIR) -> Dictionary:
 	for m in scan(dir):
 		if m.enabled():
 			out[m.building()] = {"id": m.id(), "folder": m.folder, "title": String(m.data.get("title", "")),
-				"where": String(m.data.get("where", "")), "score_name": String(m.data.get("score_name", ""))}
+				"where": String(m.data.get("where", "")), "score_name": String(m.data.get("score_name", "")),
+				"kind": String(m.data.get("kind", "endless"))}
 	return out
 
 

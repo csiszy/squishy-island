@@ -26,6 +26,9 @@ services:
     depends_on:
       postgres:
         condition: service_healthy
+    volumes:
+      # the things you can change without an app update (README.md, "Changing things live")
+      - ./live:/nakama/data/modules/live:ro
     ports:
       - "7350:7350"
       - "7351:7351"

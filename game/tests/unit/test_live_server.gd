@@ -77,3 +77,24 @@ func test_moving_a_town_to_a_new_phone() -> void:
 	var back: Dictionary = await new_phone.load_town()
 	assert_eq(back["town"], town, "the new phone now has the saved town")
 	assert_true((await new_phone.load_state())["collection"].has("gyoza"))
+
+
+func test_daily_quests_on_the_real_server() -> void:
+	if address == "":
+		pass_test("no server to talk to (set SQUISHY_SERVER)")
+		return
+	var api := _api(_device())
+	await api.load_state()
+	var games := [{"id": "sky_bounce", "kind": "endless"}, {"id": "squish_breaker", "kind": "levels"}]
+	var day := QuestsService.today()
+	var board: Dictionary = await api.quests(day, games)
+	assert_true(board["ok"], str(board))
+	assert_eq((board["quests"] as Array).size(), 2)
+	var game := StringName(board["challenge"]["game"])
+	var report := {"day": day, "games": games, "score": 10, "metric": 1, "won": true, "level": 1, "stars": 3, "prev_stars": 0, "newest": false}
+	var run: Dictionary = await api.submit_run(game, 60.0, 15, &"levels" if game == &"squish_breaker" else &"endless", report)
+	assert_true(run["first_today"])
+	assert_eq(run["coins"], 30, "double for the first game today")
+	assert_true("challenge" in run["quests_done"])
+	var got: Dictionary = await api.quest_claim(day, "challenge")
+	assert_eq(got["gems"], 3)

@@ -96,7 +96,19 @@ function rpcSubmitRun(ctx: nkruntime.Context, logger: nkruntime.Logger, nk: nkru
   }
   var p = parse(payload);
   return JSON.stringify(withState(nk, user, function (s) {
-    return submitRun(s, String(p.game || ""), Number(p.seconds), Math.floor(Number(p.coins)), String(p.kind || "endless"));
+    var report: RunReport | undefined = undefined;
+    var multiplier = 1;
+    if (p.day) {
+      // the day's quests count this run (they are made now if the quest board wasn't opened yet today)
+      var cfg = liveConfig(nk);
+      todays(s, user as string, checkDay(String(p.day)), (p.games || []) as GameInfo[], cfg);
+      multiplier = cfg.firstRunMultiplier;
+      report = {
+        game: String(p.game || ""), score: Number(p.score) || 0, metric: Number(p.metric) || 0, won: p.won === true,
+        level: Number(p.level) || 0, stars: Number(p.stars) || 0, prev_stars: Number(p.prev_stars) || 0, newest: p.newest === true
+      };
+    }
+    return submitRun(s, String(p.game || ""), Number(p.seconds), Math.floor(Number(p.coins)), String(p.kind || "endless"), report, multiplier);
   }));
 }
 
@@ -141,6 +153,18 @@ function rpcEmailConfirm(ctx: nkruntime.Context, logger: nkruntime.Logger, nk: n
   return asPlayer(ctx, payload, function (user, p) { return emailConfirm(nk, user, String(p.device_id || ""), String(p.code || ""), p.confirm === true); });
 }
 
+function rpcQuests(ctx: nkruntime.Context, logger: nkruntime.Logger, nk: nkruntime.Nakama, payload: string): string {
+  return asPlayer(ctx, payload, function (user, p) {
+    return withState(nk, user, function (s) { return getQuests(nk, s, user, String(p.day || ""), (p.games || []) as GameInfo[]); });
+  });
+}
+
+function rpcQuestClaim(ctx: nkruntime.Context, logger: nkruntime.Logger, nk: nkruntime.Nakama, payload: string): string {
+  return asPlayer(ctx, payload, function (user, p) {
+    return withState(nk, user, function (s) { return claimQuest(nk, s, String(p.day || ""), String(p.id || "")); });
+  });
+}
+
 function rpcDeleteRequest(ctx: nkruntime.Context, logger: nkruntime.Logger, nk: nkruntime.Nakama, payload: string): string {
   return asPlayer(ctx, payload, function (user, p) { return deleteRequest(nk, user); });
 }
@@ -173,6 +197,8 @@ function InitModule(ctx: nkruntime.Context, logger: nkruntime.Logger, nk: nkrunt
   initializer.registerRpc("email_start", rpcEmailStart);
   initializer.registerRpc("email_confirm", rpcEmailConfirm);
   initializer.registerRpc("delete_request", rpcDeleteRequest);
+  initializer.registerRpc("quests", rpcQuests);
+  initializer.registerRpc("quest_claim", rpcQuestClaim);
   initializer.registerRpc("purge_deleted", rpcPurgeDeleted);
   logger.info("Squishy Island server ready: %d squishies, %d box kinds", SQUISHIES.length, Object.keys(ECONOMY.boxes).length);
 }

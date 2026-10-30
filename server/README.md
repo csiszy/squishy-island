@@ -36,6 +36,30 @@ account and its saved state (Storage → collection `island`).
 The phone keeps its coins and town on the phone; squishies, Stars and boxes live on the server. Switching back to
 the pretend server (DEV → More… → Server… → Use the pretend one) brings back the phone's own pretend collection.
 
+## Changing things live (quests, rewards, special days)
+
+Open `server/live/live-config.json` in any text editor (Notepad is fine), change it, save. The server reads it
+every time it makes a day's quests, so changes apply from the next day's quests (today's are already made), with
+no restart and no app update. Only what you write in the file changes; everything else follows the design book.
+Keys starting with `_` are notes and examples, which the server ignores: to use an example, copy it without the `_`.
+
+- **Numbers**: `coinQuestReward` (coins per quest, 40), `coinQuests` (how many a day, 2), `firstRunMultiplier`
+  (the day's first game, 2 = double), `challengeEnabled` (true/false), `challengeGems` (3), `challengeOfBest`
+  (0.9 = 90% of the player's best), `streakDays` (5) and `streakGems` (15).
+- **A special day**: under `"schedule"`, a date (`"2026-12-24"`) with its own `"quests"` (they replace that day's
+  coin quests) and/or `"challenge"` (that day's Gem Challenge game, if the player has built it).
+- **The quest list** (`questPool`): the quests the server picks from each day. Each one has an `id` (any short
+  name), a `kind` (`runs` = play a game n times, `metric` = reach a total of a game's own count such as flowers or
+  letters, `boxes` = open n boxes), a `game` (a game's id like `sky_bounce`, `any`, or `pick` = one the server picks
+  from the player's games), a `target` (n), a `weight` (how often it comes up), a `reward` (optional: coins) and a
+  `text`. Write the text in plain English with `{n}` for the target and `{game}` for the game's name; for example
+  `"Play {game} {n} times"`. (The book's own quests use word keys like `quest.play_any`, for translations later.)
+
+Game ids: `sky_bounce`, `bistro_rush`, `sort_a_lot`, `grow_grow_garden`, `style_studio`, `bucket_brigade`,
+`squish_breaker`, `lost_and_found`, `squeak_beat`, `squish_lab`. A quest only appears for players who have built
+its game. If the file has a mistake (a missing comma), the server ignores it and keeps the book's numbers, so a
+typo never stops the game; the server log then says what is wrong.
+
 ## The live server (later, when the game goes out)
 
 The same Docker setup runs on a small EU server (about €5–10 a month, e.g. Hetzner in Germany or Finland), with

@@ -131,6 +131,79 @@
   "challengeOfBest": 0.9,
   "visitorDays": 4
  },
+ "questPool": [
+  {
+   "id": "play_any",
+   "kind": "runs",
+   "game": "any",
+   "target": 3,
+   "weight": 3,
+   "text": "quest.play_any"
+  },
+  {
+   "id": "play_game",
+   "kind": "runs",
+   "game": "pick",
+   "target": 2,
+   "weight": 4,
+   "text": "quest.play_game"
+  },
+  {
+   "id": "flowers",
+   "kind": "metric",
+   "game": "grow_grow_garden",
+   "target": 30,
+   "weight": 2,
+   "text": "quest.flowers"
+  },
+  {
+   "id": "orders",
+   "kind": "metric",
+   "game": "bistro_rush",
+   "target": 15,
+   "weight": 2,
+   "text": "quest.orders"
+  },
+  {
+   "id": "letters",
+   "kind": "metric",
+   "game": "sort_a_lot",
+   "target": 30,
+   "weight": 2,
+   "text": "quest.letters"
+  },
+  {
+   "id": "sky_coins",
+   "kind": "metric",
+   "game": "sky_bounce",
+   "target": 20,
+   "weight": 2,
+   "text": "quest.sky_coins"
+  },
+  {
+   "id": "guests",
+   "kind": "metric",
+   "game": "style_studio",
+   "target": 5,
+   "weight": 2,
+   "text": "quest.guests"
+  },
+  {
+   "id": "squishes",
+   "kind": "metric",
+   "game": "squish_lab",
+   "target": 10,
+   "weight": 1,
+   "text": "quest.squishes"
+  },
+  {
+   "id": "box",
+   "kind": "boxes",
+   "target": 1,
+   "weight": 2,
+   "text": "quest.box"
+  }
+ ],
  "minigames": {
   "coinsPerMinuteTarget": 35,
   "milestoneBonus": [

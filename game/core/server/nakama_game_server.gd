@@ -50,8 +50,18 @@ func swap_spare(id: StringName) -> Dictionary:
 	return await _rpc(&"swap_spare", {"id": id})
 
 
-func submit_run(game: StringName, seconds: float, coins: int, kind: StringName = &"endless") -> Dictionary:
-	return await _rpc(&"submit_run", {"game": game, "seconds": seconds, "coins": coins, "kind": kind})
+func submit_run(game: StringName, seconds: float, coins: int, kind: StringName = &"endless", report: Dictionary = {}) -> Dictionary:
+	var payload := report.duplicate()
+	payload.merge({"game": game, "seconds": seconds, "coins": coins, "kind": kind}, true)
+	return await _rpc(&"submit_run", payload)
+
+
+func quests(day: String, games: Array) -> Dictionary:
+	return await _rpc(&"quests", {"day": day, "games": games})
+
+
+func quest_claim(day: String, id: String) -> Dictionary:
+	return await _rpc(&"quest_claim", {"day": day, "id": id})
 
 
 func is_remote() -> bool:

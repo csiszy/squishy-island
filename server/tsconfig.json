@@ -9,5 +9,5 @@
     "removeComments": false,
     "typeRoots": []
   },
-  "files": ["src/nakama.d.ts", "src/data.generated.ts", "src/rules.ts", "src/account.ts", "src/main.ts"]
+  "files": ["src/nakama.d.ts", "src/data.generated.ts", "src/rules.ts", "src/account.ts", "src/quests.ts", "src/main.ts"]
 }

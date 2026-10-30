@@ -19,6 +19,7 @@ declare namespace nkruntime {
     unlinkDevice(userId: string, deviceId: string): void;
     linkCustom(userId: string, customId: string): void;
     sha256Hash(input: string): string;
+    fileRead(relPath: string): string;
   }
   type RpcFunction = (ctx: Context, logger: Logger, nk: Nakama, payload: string) => string | void;
   interface Initializer { registerRpc(id: string, fn: RpcFunction): void }

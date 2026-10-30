@@ -41,6 +41,21 @@ SQ.ECONOMY = {
   cozy: { pointsPerStep: 5, coinBonusPerStep: 0.05 },
   /* Daily visits */
   daily: { coinQuests: 2, coinQuestReward: 40, firstRunMultiplier: 2, challengeOfBest: 0.9, visitorDays: 4 },
+  /* The coin quests the server picks from each day (2 a day, only with games the player has built). kind: runs =
+     play a game n times ("any" = any game, "pick" = one the server picks), metric = reach a total of a game's own
+     count (flowers, letters...), boxes = open n boxes. weight: how often it is picked. text: a words key (docs/strings_ui_en.csv; {n} =
+     the target, {game} = the game's name); a quest added live may use plain English words instead. The live server can replace this list (server/README.md, "Changing things live"). */
+  questPool: [
+    { id: 'play_any', kind: 'runs', game: 'any', target: 3, weight: 3, text: 'quest.play_any' },
+    { id: 'play_game', kind: 'runs', game: 'pick', target: 2, weight: 4, text: 'quest.play_game' },
+    { id: 'flowers', kind: 'metric', game: 'grow_grow_garden', target: 30, weight: 2, text: 'quest.flowers' },
+    { id: 'orders', kind: 'metric', game: 'bistro_rush', target: 15, weight: 2, text: 'quest.orders' },
+    { id: 'letters', kind: 'metric', game: 'sort_a_lot', target: 30, weight: 2, text: 'quest.letters' },
+    { id: 'sky_coins', kind: 'metric', game: 'sky_bounce', target: 20, weight: 2, text: 'quest.sky_coins' },
+    { id: 'guests', kind: 'metric', game: 'style_studio', target: 5, weight: 2, text: 'quest.guests' },
+    { id: 'squishes', kind: 'metric', game: 'squish_lab', target: 10, weight: 1, text: 'quest.squishes' },
+    { id: 'box', kind: 'boxes', target: 1, weight: 2, text: 'quest.box' }
+  ],
   /* Minigame payout rules shared by every game (each game's own coin rule lives with the game). */
   minigames: {
     coinsPerMinuteTarget: 35, milestoneBonus: [10, 25, 50],

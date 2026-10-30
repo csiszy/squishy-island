@@ -207,7 +207,8 @@ func test_beating_a_level() -> void:
 	assert_true(r.won)
 	assert_eq(r.level, 1)
 	assert_eq(int(screen.get(&"last_payout")["total"]), 30 + 15 * r.stars, "first clear")
-	assert_eq(Economy.coins(), coins_before + 30 + 15 * r.stars)
+	assert_true(screen.get(&"last_payout")["first_today"], "the first game of the day")
+	assert_eq(Economy.coins(), coins_before + (30 + 15 * r.stars) * 2, "pays double (guide.html Daily visits)")
 	assert_eq(int(Save.section(&"minigames")["bucket_brigade"]["top"]), 2, "level 2 is open")
 	assert_eq(Town.progress(&"fire"), 1, "one level beaten counts for the Fire Station")
 
@@ -250,7 +251,7 @@ func test_finishing_a_song() -> void:
 	var track: Dictionary = MinigameCatalog.find(&"squeak_beat").songs()[0]
 	var want := roundi(40.0 * float(track["len"]) / 60.0 * r.metric / 100.0)
 	assert_eq(int(screen.get(&"last_payout")["total"]), want, "40 a minute times accuracy")
-	assert_eq(Economy.coins(), coins_before + want)
+	assert_eq(Economy.coins(), coins_before + want * 2, "the first game of the day pays double")
 	var rec: Dictionary = Save.section(&"minigames")["squeak_beat"]
 	assert_eq(int(rec["levels"]["1"]), r.stars, "stars saved")
 	assert_eq(int(rec["scores"]["1"]), r.score, "best score saved")

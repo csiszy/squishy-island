@@ -681,6 +681,7 @@ game.bonus_at,Bonus {adds} at {ats} {unit}
 game.bonus_line,+{n} bonus ({at} {unit})
 game.building_ready,You can upgrade {name} now!
 game.capped,The rest is saved for a longer game.
+game.challenge_done,Gem Challenge done! Collect your Gems on the quest board.
 game.change,Change
 game.coin_jar,Coin jar:
 game.coins_from,{n} from {rule}
@@ -688,6 +689,7 @@ game.coins_levels,"Coins: beat a level for 30 + 15 per star (every 10th level pa
 game.coins_rule,Coins: {rule}
 game.coins_word,coins
 game.eyebrow,Squishy Island minigame
+game.first_today,First game today: double coins!
 game.has_helpers,This squishy is extra good at this game!
 game.helper_line,+{n} from {name}'s Cozy home and helpers
 game.keep_going,Keep going?
@@ -722,6 +724,7 @@ game.play_level,Play level {n}
 game.play_track,Play: {name}
 game.playing_as,Playing: {name}
 game.points,points
+game.quest_done,Quest done! Collect it on the quest board.
 game.replay,Replay
 game.revive_gift,and carry on
 game.sfx_off,Sounds: off
@@ -815,6 +818,7 @@ map.need_goal,Next level needs: {goal}
 map.open,Open
 map.open_house,Go inside
 map.play,Play
+map.quests,Quests
 map.unlock_house_level,Unlocks when the {house} reaches level {n}
 map.unlock_owned,Unlocks when you have {n} squishies
 map.upgrade,Upgrade ({coins} coins)
@@ -834,6 +838,34 @@ music.salon.name,Fluff & Puff
 music.shop.name,Factory Bounce
 music.sky.name,Up Up and Away
 music.story.name,Once Upon a Squish
+quest.box,Open a Mystery Box
+quest.flowers,Harvest {n} flowers
+quest.guests,Style {n} guests at the Salon
+quest.letters,Sort {n} letters
+quest.orders,Serve {n} orders at the Bistro
+quest.play_any,Play any minigame {n} times
+quest.play_game,Play {game} {n} times
+quest.sky_coins,Collect {n} coins in Sky Bounce
+quest.squishes,Squish {n} times in the Lab
+quests.challenge,Gem Challenge
+quests.coin_quests,Quests
+quests.collect,Collect
+quests.collected,Collected
+quests.first_run,Your first game today pays double coins!
+quests.goal_first,{game}: play one game
+quests.goal_levels3,"{game}: win your next new level with ★★★, or raise any two levels to ★★★"
+quests.goal_score,{game}: reach {n} {unit}
+quests.goal_song3,"{game}: ★★★ on any track, or ★★ on your newest one"
+quests.no_games,Build a minigame building to get quests!
+quests.no_rush,No rush: missing a day never takes anything away.
+quests.offline,"The quests are on the island server, which we can't reach just now."
+quests.play,Play
+quests.reward_coins,+{n} coins
+quests.reward_gems,+{n} Gems
+quests.streak,Gem Challenge days this week: {days} of {needed}
+quests.streak_reward,Do it on {needed} days this week for +{gems} Gems
+quests.title,Today's quests
+quests.tomorrow,Tomorrow's Gem Challenge: {game}
 rarity.C.name,Common
 rarity.E.name,Epic
 rarity.L.name,Legendary

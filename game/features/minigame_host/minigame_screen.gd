@@ -300,6 +300,7 @@ func _on_finished(result: MinigameResult) -> void:
 		var levels: Dictionary = rec.get("levels", {})
 		var prev := int(levels.get(str(result.level), 0))
 		pay = MinigamePayout.level(result, prev)
+		pay["prev_stars"] = prev
 		if result.won:
 			levels[str(result.level)] = maxi(prev, result.stars)
 			rec["levels"] = levels
@@ -308,10 +309,18 @@ func _on_finished(result: MinigameResult) -> void:
 		var info := GameData.squishy(player_squishy)
 		var boost := MinigamePayout.helper_boost(manifest.coins(), String(info.get("rarity", "")), Town.cozy_bonus(StringName(info.get("family", ""))))
 		pay = MinigamePayout.endless(manifest.coins(), result, boost)
-	var answer: Dictionary = {"ok": true, "coins": 0} if int(pay["total"]) <= 0 and manifest.data.get("kind") == "toy" else await Server.api.submit_run(manifest.id(), result.seconds_played, int(pay["total"]), StringName(manifest.data.get("kind", "endless")))
+	# the server checks the coins and counts the run for today's quests (toys too: "squish 10 times in the Lab");
+	# the day's first run pays double (first_today)
+	var report := Quests.run_report(result.score, result.metric, result.won, result.level, result.stars,
+		int(pay.get("prev_stars", 0)), song_game and result.level >= int(pay.get("open_before", 0)))
+	var answer: Dictionary = await Server.api.submit_run(manifest.id(), result.seconds_played, int(pay["total"]), StringName(manifest.data.get("kind", "endless")), report)
 	# offline: minigames still pay (the server checks later); otherwise the server's amount
 	var paid: int = int(answer.get("coins", pay["total"])) if answer.get("ok", false) else int(pay["total"])
 	pay["paid"] = paid
+	pay["first_today"] = answer.get("first_today", false)
+	pay["quests_done"] = answer.get("quests_done", [])
+	if not (pay["quests_done"] as Array).is_empty():
+		Quests.refresh()
 	last_payout = pay
 	var jar_before := Economy.coins()
 	Economy.earn(paid, &"minigame")
@@ -492,6 +501,8 @@ func _show_song_results(r: MinigameResult, pay: Dictionary, new_best: bool, jar_
 func _show_toy_results(r: MinigameResult) -> void:
 	var col := _card(Text.t(StringName(manifest.data.get("metric_line", "game.points")), {"n": Ui.number(r.metric)}), Text.t(StringName(manifest.data.get("title", ""))))
 	col.add_child(Ui.label(Text.t(StringName(manifest.data.get("coins", {}).get("rule", "game.points"))), "Small", HORIZONTAL_ALIGNMENT_CENTER, true))
+	for words in _quest_lines(last_payout):
+		col.add_child(Ui.label(words, "", HORIZONTAL_ALIGNMENT_CENTER, true))
 	var goal := _goal_line()
 	if goal != "":
 		col.add_child(Ui.label(goal, "Small", HORIZONTAL_ALIGNMENT_CENTER, true))
@@ -624,7 +635,29 @@ func _level_grid() -> Control:
 	return grid
 
 
+## How the coins were worked out, plus the day's news: double coins for the first game today, a quest done.
 func _pay_lines(r: MinigameResult, pay: Dictionary) -> PackedStringArray:
+	var out := PackedStringArray()
+	if pay.get("first_today", false):
+		out.append(Text.t(&"game.first_today"))
+	out.append_array(_coin_lines(r, pay))
+	out.append_array(_quest_lines(pay))
+	return out
+
+
+func _quest_lines(pay: Dictionary) -> PackedStringArray:
+	var out := PackedStringArray()
+	var done: Array = pay.get("quests_done", [])
+	if "challenge" in done:
+		out.append(Text.t(&"game.challenge_done"))
+	elif not done.is_empty():
+		out.append(Text.t(&"game.quest_done"))
+	if not done.is_empty():
+		Audio.play(&"quest")
+	return out
+
+
+func _coin_lines(r: MinigameResult, pay: Dictionary) -> PackedStringArray:
 	var out := PackedStringArray()
 	if manifest.data.get("kind") == "songs":
 		var secs := roundi(float(pay["seconds"]))

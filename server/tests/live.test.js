@@ -81,3 +81,17 @@ test('an email code on a test server', async () => {
   assert.match(start.dev_code, /^\d{6}$/, 'the laptop server shows the code (SQUISHY_DEV)');
   assert.equal((await rpc(t, 'email_confirm', { code: start.dev_code })).linked, true);
 });
+
+test('daily quests and a run that counts for them', async () => {
+  const t = await login('test-' + crypto.randomUUID());
+  await rpc(t, 'load_state');
+  const day = new Date().toISOString().slice(0, 10);
+  const games = [{ id: 'sky_bounce', kind: 'endless' }];
+  const q = await rpc(t, 'quests', { day, games });
+  assert.equal(q.ok, true, JSON.stringify(q));
+  assert.equal(q.challenge.game, 'sky_bounce');
+  const run = await rpc(t, 'submit_run', { game: 'sky_bounce', seconds: 60, coins: 20, kind: 'endless', day, games, score: 50 });
+  assert.deepEqual([run.coins, run.first_today], [40, true]);
+  assert.ok(run.quests_done.includes('challenge'), 'a new player\'s first challenge is small');
+  assert.equal((await rpc(t, 'quest_claim', { day, id: 'challenge' })).gems, 3);
+});

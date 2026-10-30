@@ -74,6 +74,7 @@ func open_box(kind: StringName, family: StringName = &"", first_box := false) ->
 	var sparkly := rng.randf() < float(econ.get("sparklyChance", 0.02))
 	var is_new := _give(id, sparkly)
 	state["boxes_opened"] = int(state.get("boxes_opened", 0)) + 1
+	FakeQuests.after_box(state)
 	_changed()
 	return {"ok": true, "squishy": id, "rarity": rarity, "sparkly": sparkly, "is_new": is_new,
 		"entry": (_collection()[String(id)] as Dictionary).duplicate(), "pity": int(state.get("pity", 0)),
@@ -256,7 +257,7 @@ static func _mask(email: String) -> String:
 
 ## Coins per minute are capped (economy "serverMaxCoinsPerMinute"); a run counts as at least one minute, so a
 ## short run that reaches a milestone bonus is still paid in full.
-func submit_run(game: StringName, seconds: float, coins: int, kind: StringName = &"endless") -> Dictionary:
+func submit_run(game: StringName, seconds: float, coins: int, kind: StringName = &"endless", report: Dictionary = {}) -> Dictionary:
 	if offline:
 		return _fail(&"offline")
 	if game == &"" or seconds < 0.0 or coins < 0:
@@ -270,5 +271,26 @@ func submit_run(game: StringName, seconds: float, coins: int, kind: StringName =
 	var runs: Dictionary = state.get("runs", {})
 	runs[String(game)] = int(runs.get(String(game), 0)) + 1
 	state["runs"] = runs
+	var answer := {"ok": true, "coins": mini(coins, most), "capped": coins > most, "first_today": false, "quests_done": []}
+	if report.has("day"):
+		var full := report.duplicate()
+		full["game"] = String(game)
+		FakeQuests.after_run(state, kind, full, answer)
 	_changed()
-	return {"ok": true, "coins": mini(coins, most), "capped": coins > most}
+	return answer
+
+
+func quests(day: String, games: Array) -> Dictionary:
+	if offline:
+		return _fail(&"offline")
+	var answer := FakeQuests.answer(state, day, games)
+	_changed()
+	return answer
+
+
+func quest_claim(day: String, id: String) -> Dictionary:
+	if offline:
+		return _fail(&"offline")
+	var answer := FakeQuests.claim(state, day, id)
+	_changed()
+	return answer
