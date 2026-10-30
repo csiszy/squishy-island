@@ -1,0 +1,25 @@
+{
+  "id": "lost_and_found",
+  "api": 1,
+  "version": "1.0.0",
+  "title": "lost_and_found.title",
+  "where": "lost_and_found.where",
+  "building": "police",
+  "kind": "levels",
+  "scene": "lost_and_found.tscn",
+  "music": "detective",
+  "size": [360, 640],
+  "backdrop": "#E3EDFF",
+  "how_to": ["lost_and_found.how.1", "lost_and_found.how.2", "lost_and_found.how.3", "lost_and_found.how.4"],
+  "score_name": "lost_and_found.score_name",
+  "coins": { "from": "score", "divide": 1, "milestones": [], "unit": "lost_and_found.score_name", "rule": "lost_and_found.score_name" },
+  "goal": "levels",
+  "revive": { "allowed": true, "gift": "lost_and_found.revive_gift" },
+  "perks": [
+    { "family": "pets", "effect": "start_siren", "amount": 1 },
+    { "rarity": ["R"], "effect": "extra_moves", "amount": 1 },
+    { "rarity": ["E"], "effect": "extra_moves", "amount": 2 },
+    { "rarity": ["L"], "effect": "extra_moves", "amount": 3 }
+  ],
+  "enabled": true
+}

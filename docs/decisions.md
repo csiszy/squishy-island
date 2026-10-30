@@ -294,5 +294,9 @@ Sort-a-Lot ported from the prototypes. Tap a built fun building on the map → *
   so its levels differ between browsers; the game follows the recipe and random numbers exactly and shuffles the
   way Node's JavaScript does, so every player gets the same levels. A manifest can ask for the whole collection
   as its squad (`"squad": "all"`), and the context now says each squishy's rarity, level and family.
+- **Lost & Found** (match-3 with Sirens, Bubble Bombs, Gold Badges, mega combos, paw prints and bubble wrap):
+  the same boards as the prototype, tile for tile. Pet Pals detectives start with a Siren; rarer detectives get
+  +1/+2/+3 moves. One small change: the prototype picks the paw-print cells with the browser's sort (which differs
+  between browsers); the game does the same "lower rows first, a little mixed" with its own fixed rule.
 - Not yet: the squishy "helper" list on the start card names no effects yet (just "extra good at this game"),
   tilt steering for Sky Bounce, and decor found in sorted letters (Sort-a-Lot page) — later steps.

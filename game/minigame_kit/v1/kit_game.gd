@@ -267,6 +267,7 @@ var _px := 1.0
 var _m := Transform2D.IDENTITY
 var _root_m := Transform2D.IDENTITY
 var _to_local := Transform2D.IDENTITY
+var _saved: Array[Transform2D] = []
 
 
 func _draw() -> void:
@@ -281,6 +282,7 @@ func _draw() -> void:
 		shake_by = Vector2(randf() - 0.5, randf() - 0.5) * 32.0 * _shake
 	_root_m = Transform2D(0.0, Vector2(_px, _px), 0.0, shake_by * _px)
 	_m = _root_m
+	_saved.clear()
 	_draw_game()
 	_m = _root_m
 	for f in _fx:
@@ -292,17 +294,19 @@ func _draw() -> void:
 
 
 ## Draw with an extra move/turn/scale, like canvas save/translate/rotate/scale/restore. Call pop() after.
+## Pushes stack up (a push inside a push adds to it).
 func push(at: Vector2, rot := 0.0, scale_by := Vector2.ONE) -> void:
-	_m = _root_m * Transform2D(rot, scale_by, 0.0, at)
+	push_m(Transform2D(rot, scale_by, 0.0, at))
 
 
 ## Like push(), with any move/turn/scale combination (e.g. turn around a corner, then shift back).
 func push_m(tr: Transform2D) -> void:
-	_m = _root_m * tr
+	_saved.append(_m)
+	_m = _m * tr
 
 
 func pop() -> void:
-	_m = _root_m
+	_m = _saved.pop_back() if not _saved.is_empty() else _root_m
 
 
 func _k() -> float:
