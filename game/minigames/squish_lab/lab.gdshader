@@ -1,6 +1,7 @@
 // The Lab's look: the Squishy Island toon light (like the island's, with the prototype lab's lights: a hemisphere
 // light and one sun) and, for the squishy, the soft-body bend. The squishy's mesh is stored in its relaxed shape
-// with the ring sector of every point in UV2.x; each frame the game sends one 2x2 matrix per sector (rest -> now),
+// with the ring slice of every point in UV2.x (and how far round it is in UV2.y); each frame the game sends one 2x2
+// matrix per ring point (rest -> now) and every point blends the two of its slice,
 // so every point follows the soft body left-right and up-down and puffs out front-to-back when squished.
 shader_type spatial;
 render_mode specular_disabled, ambient_light_disabled;
@@ -17,7 +18,10 @@ uniform float softness = 1.0;
 
 uniform bool deform = false;
 uniform vec4 aff[40];
-uniform vec4 nrm[40];
+// the ring's points relaxed (set once) and now (around the middle), and the squishy's overall squish
+uniform vec2 rest[40];
+uniform vec2 ring[40];
+uniform vec4 whole = vec4(1.0, 0.0, 0.0, 1.0);
 uniform vec2 centre = vec2(0.0);
 uniform float puff = 1.0;
 
@@ -38,10 +42,19 @@ vec3 to_linear(vec3 c) {
 void vertex() {
 	if (deform) {
 		int i = int(UV2.x + 0.5);
-		vec4 a = aff[i];
-		vec4 n = nrm[i];
-		VERTEX = vec3(centre + mat2(a.xy, a.zw) * VERTEX.xy, VERTEX.z * puff);
-		NORMAL = normalize(vec3(mat2(n.xy, n.zw) * NORMAL.xy, NORMAL.z / puff));
+		int j = (i + 1) % 40;
+		vec4 a = mix(aff[i], aff[j], UV2.y);
+		mat2 m = mat2(a.xy, a.zw);
+		vec2 edge = mix(rest[i], rest[j], UV2.y);
+		if (dot(VERTEX.xy, VERTEX.xy) > dot(edge, edge)) {
+			// outside the ring (ears, tentacles): hang from the edge point and follow the overall squish only
+			mat2 g = mat2(whole.xy, whole.zw);
+			VERTEX = vec3(centre + mix(ring[i], ring[j], UV2.y) + g * (VERTEX.xy - edge), VERTEX.z * puff);
+			NORMAL = normalize(vec3(transpose(inverse(g)) * NORMAL.xy, NORMAL.z / puff));
+		} else {
+			VERTEX = vec3(centre + m * VERTEX.xy, VERTEX.z * puff);
+			NORMAL = normalize(vec3(transpose(inverse(m)) * NORMAL.xy, NORMAL.z / puff));
+		}
 	}
 }
 

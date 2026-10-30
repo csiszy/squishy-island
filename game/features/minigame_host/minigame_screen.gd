@@ -823,16 +823,13 @@ func _squishy_row() -> Control:
 
 
 func _pick_squishy() -> void:
+	# the whole card scrolls (no small box inside it)
 	var col := _card(Text.t(&"game.who_plays"), "")
-	var scroll := ScrollContainer.new()
-	scroll.custom_minimum_size = Vector2(560, 520)
-	scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
 	var grid := GridContainer.new()
 	grid.columns = 4
 	grid.add_theme_constant_override("h_separation", 12)
 	grid.add_theme_constant_override("v_separation", 12)
-	scroll.add_child(grid)
-	col.add_child(scroll)
+	col.add_child(grid)
 	for id in Collection.owned_ids():
 		var b := Button.new()
 		b.icon = ArtLibrary.portrait(id)
@@ -880,7 +877,7 @@ func _card(title: String, eyebrow: String) -> VBoxContainer:
 	dim.mouse_filter = MOUSE_FILTER_STOP
 	dim.gui_input.connect(_on_dim_input)
 	_card_host.add_child(dim)
-	var scroll := ScrollContainer.new()
+	var scroll := TouchScroll.new()
 	scroll.set_anchors_preset(PRESET_FULL_RECT)
 	scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
 	_card_host.add_child(scroll)

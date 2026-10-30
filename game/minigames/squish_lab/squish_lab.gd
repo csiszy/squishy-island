@@ -12,6 +12,13 @@ extends KitGame
 ## real 3D squishy"): its outline is traced from the model, and every point of the model follows the soft body
 ## (lab.gdshader), puffing out towards you when it is squished flat.
 ##
+## The Squish Run (owner's idea, October 2026): throw the squishy up out of the picture and the camera follows it
+## up a wind tunnel to a marble run above the lab. On the way down it squeezes through a narrow chute, between two
+## turning gears, gets squeezed by two automatic paddles on a trapdoor, and bounces off pinball bumpers, then lands
+## back on the table. Nobody can touch it in there, so nothing in the run can ever hold it: there is no grip on the
+## run's walls, the gears turn it downwards, the trapdoor always opens, and a squishy that stops making its way
+## down is let through.
+##
 ## A squish counts when the squish-o-meter goes past 50%. Result: metric = squishes (they add up for the Lab's
 ## next level), score = the best squish in % (just for fun).
 
@@ -39,6 +46,29 @@ const TOOLS: Array[StringName] = [&"hand", &"press", &"roller", &"squeeze", &"ba
 ## The Lab's building level that opens each tool.
 const TOOL_LEVEL := {&"hand": 1, &"drop": 1, &"ball": 2, &"press": 3, &"roller": 4, &"squeeze": 5}
 const TY := 586.0
+## The press never goes lower than this share of the squishy's height (the prototype's foam went to 16%, too flat
+## for a 3D squishy to stay readable).
+const MIN_PRESS := 0.3
+# the Squish Run, from the top down (physics units: y grows downwards, the table top is FLOOR)
+const RUN_TOP := -1640.0
+const RUN_START := -1420.0   # the top of the funnel: the wind lets go once the squishy is all above it
+const CHUTE := 84.0          # the narrow chute's width
+const CHUTE_TOP := -1250.0
+const CHUTE_END := -1130.0
+const GEAR_Y := -1000.0
+const GEAR_R := 64.0
+const RUN_YIELD := 0.05          # how much a squishy gives in to the run's squeezes, per physics step
+const RUN_SPRING_BACK := 400.0   # how fast a jelly or rubber squishy gets its shape back after the run (px/s)
+const GEAR_GAP := 64.0
+const GEAR_SPEED := 260.0    # how fast the gears' edges move (px/s)
+const BOX_L := 40.0          # the paddle box on the trapdoor
+const BOX_R := 320.0
+const BOX_TOP := -860.0
+const TRAP_Y := -640.0
+const PADDLE_GAP := 72.0
+const BUMPERS := [Vector3(180, -540, 24), Vector3(180, -380, 24)]
+const FUNNEL_TOP := -260.0
+const FUNNEL_END := -80.0
 
 # ---- the soft body
 var body_id := &""
@@ -90,6 +120,25 @@ var _last_sq := 0.0
 var _hiss := 0.0
 var _rest_pts := PackedVector2Array()   # the outline the model was bound to (physics units, around 0)
 var _art := {}                           # the 3D scene's parts
+# ---- the Squish Run
+enum Run { OFF, UP, DOWN }
+var run := Run.OFF
+## How far up the camera looks (physics units; negative = higher).
+var cam_dy := 0.0
+var gear_rot := 0.0
+var trap_open := 0.0
+var paddle_in := 0.0
+var _trap_state := &"closed"
+var _trap_t := 0.0
+var _best_y := -INF
+var _stuck_t := 0.0
+var _ghost := 0.0
+var _bump_cd := 0.0
+var _kick := Vector2.ZERO
+var _bent := false
+var _bumped := -1
+var _run_segs: Array = []
+var _run_circles: Array = []
 # per-step copies of the tools' numbers (Dictionary lookups are slow inside the 600-a-second loop)
 var _mu := 1.0
 var _roll_on := false
@@ -124,6 +173,7 @@ func _init_run(_level: int) -> void:
 	_ptrs.clear()
 	_tip = 4.0
 	_tip_text = &"squish_lab.tip.hand"
+	_reset_run()
 	var first: StringName = ctx.squad[0] if not ctx.squad.is_empty() else &"bao"
 	if body_id != first or x.is_empty():
 		load_squishy(first)
@@ -188,6 +238,7 @@ func load_squishy(id: StringName) -> void:
 	grabs.clear()
 	balls.clear()
 	_rest_pts = q.duplicate()
+	_reset_run()
 	if model != null:
 		_bind_model(model, rc, sc)
 	else:
@@ -218,7 +269,7 @@ func _blob_points() -> PackedVector2Array:
 
 
 ## The prototype's shapeOf(): the squishy's outline as 40 points at even angles around its middle, spikes
-## softened (ears, stems), left-right symmetric (never smaller than the picture) and with a flat bottom so it
+## softened (ears, stems) and deep notches filled, left-right symmetric (never smaller than the picture) and with a flat bottom so it
 ## stands steady. {"pts", "centre" (the ring's true middle), "w", "h"}
 static func outline_of(points: PackedVector2Array) -> Dictionary:
 	var lo := Vector2(INF, INF)
@@ -244,6 +295,10 @@ static func outline_of(points: PackedVector2Array) -> Dictionary:
 		var a := rad[(i + N - 1) % N] + margin
 		var b := rad[(i + 1) % N] + margin
 		sm[i] = minf(r, minf(maxf(a, b) * 1.35, (a + b) / 2.0 * 1.6))
+	# fill deep notches too (the gap between a jelly's tentacles): a ring that dips far in folds over when squished
+	for pass_i in 3:
+		for i in N:
+			sm[i] = maxf(sm[i], minf(sm[(i + N - 1) % N], sm[(i + 1) % N]) * 0.85)
 	var pts := PackedVector2Array()
 	pts.resize(N)
 	for i in N:
@@ -315,6 +370,7 @@ func _update(dt: float) -> void:
 		step(HSTEP)
 		_acc -= HSTEP
 		n += 1
+	_run_update(dt)
 	_tip = maxf(0.0, _tip - dt)
 	# squish-o-meter: how far the squishy is from its relaxed shape
 	var size := _extent(x)
@@ -369,8 +425,19 @@ func step(h: float) -> void:
 			if Vector2(g["x"], g["y"]).distance_to(Vector2(g["sx"], g["sy"])) > w0 * 0.85:
 				g["free"] = true
 				_sfx.append([&"pop", 1.0])
+	var wind := Vector2.ZERO
+	if run == Run.UP:
+		# the wind tunnel: up it goes, towards the middle
+		var mid := centroid(x)
+		wind = Vector2((W / 2.0 - mid.x) * 3.0, -1500.0)
+	elif run == Run.DOWN:
+		# a down-draught in the run that grows while the squishy is held up, so it squeezes through anything
+		wind = Vector2(0, GRAV * 7.0 * minf(1.0, _stuck_t / 1.2))
 	for i in N:
-		v[i].y += GRAV * h
+		if run == Run.UP:
+			v[i] = v[i].lerp(wind, 0.02)
+		else:
+			v[i].y += (GRAV + wind.y) * h
 		o[i] = x[i]
 		x[i] += v[i] * h
 		touch[i] = 0
@@ -435,6 +502,7 @@ func step(h: float) -> void:
 		x[i] += d
 		rx[i] = d
 	_mu = M["mu"]
+	_pick_run_shapes()
 	_roll_on = roller["on"]
 	_roll = Vector2(roller["x"], roller["y"])
 	_roll_r = float(roller["r"]) + PR
@@ -480,8 +548,18 @@ func step(h: float) -> void:
 			v[i].x *= fr
 		elif touch[i] == 2:
 			v[i].y *= fr
-	if M["memory"]:
+	if _kick != Vector2.ZERO:
+		for i in N:
+			v[i] += _kick
+		_kick = Vector2.ZERO
+	if run == Run.DOWN:
+		_memory(h, RUN_YIELD, 0.0)
+		_bent = true
+	elif M["memory"]:
 		_memory(h)
+	elif _bent:
+		_memory(h, 0.0, RUN_SPRING_BACK)
+		_bent = qm != q
 	# bounce: the whole squishy bounces as one (so it doesn't start spinning), with a short cool-down
 	_bcd = maxf(0.0, _bcd - h)
 	if grounded and _vy_in > 160.0 and _bcd <= 0.0 and grabs.is_empty():
@@ -511,8 +589,10 @@ func _fric(i: int, dn: float) -> void:
 		x[i].x -= signf(d) * _mu * 0.6 * dn
 
 
-## Foam: the relaxed shape gives in to the squeeze and creeps back slowly (the slow rise).
-func _memory(h: float) -> void:
+## Foam: the relaxed shape gives in to the squeeze and creeps back slowly (the slow rise). In the Squish Run every
+## squishy gives in like this (so it can be squeezed through the chute and the gears), and once it is out, a
+## squishy that isn't foam springs straight back to its own shape.
+func _memory(h: float, yld: float = -1.0, recover: float = -1.0) -> void:
 	var c := centroid(x)
 	var sxx := 0.0
 	var sxy := 0.0
@@ -523,8 +603,9 @@ func _memory(h: float) -> void:
 	var an := atan2(sxy, sxx)
 	var ca := cos(an)
 	var sa := sin(an)
-	var st := float(M["recover"]) * h
-	var yld: float = M["yield"]
+	var st := (float(M["recover"]) if recover < 0.0 else recover) * h
+	if yld < 0.0:
+		yld = M["yield"]
 	var mid := Vector2.ZERO
 	for i in N:
 		var p := x[i] - c
@@ -547,6 +628,9 @@ func _memory(h: float) -> void:
 
 func _collide(i: int) -> void:
 	var p := x[i]
+	if not _run_segs.is_empty() or not _run_circles.is_empty():
+		_collide_run(i)
+		p = x[i]
 	if p.y > FLOOR - PR:
 		var dn := p.y - (FLOOR - PR)
 		x[i].y = FLOOR - PR
@@ -562,8 +646,8 @@ func _collide(i: int) -> void:
 	if x[i].x > W - 6 - PR:
 		x[i].x = W - 6 - PR
 		touch[i] = 2
-	if x[i].y < -500:
-		x[i].y = -500
+	if x[i].y < RUN_TOP - 80:
+		x[i].y = RUN_TOP - 80
 	if press_y > -60 and x[i].y < press_y + PR:
 		var dn := press_y + PR - x[i].y
 		x[i].y = press_y + PR
@@ -587,7 +671,7 @@ func _collide(i: int) -> void:
 
 func _tools_move(h: float) -> void:
 	# hydraulic press: comes down while you hold, stops at a kid-safe minimum gap
-	var min_y := FLOOR - h0 * float(M["min_press"])
+	var min_y := FLOOR - h0 * maxf(MIN_PRESS, float(M["min_press"]))
 	var top := INF
 	for p in x:
 		top = minf(top, p.y)
@@ -660,6 +744,212 @@ func _balls_step(h: float) -> void:
 		b["spin"] += b["vx"] * h / r
 
 
+# ---------------------------------------------------------------- the Squish Run
+
+func _reset_run() -> void:
+	run = Run.OFF
+	trap_open = 0.0
+	paddle_in = 0.0
+	_trap_state = &"closed"
+	_trap_t = 0.0
+	_stuck_t = 0.0
+	_ghost = 0.0
+	_kick = Vector2.ZERO
+	_run_segs.clear()
+	_run_circles.clear()
+
+
+## Off it goes up the wind tunnel (a throw out of the top of the picture, or the robot tester).
+func launch() -> void:
+	if run != Run.OFF or x.is_empty():
+		return
+	run = Run.UP
+	grabs.clear()
+	_ptrs.clear()
+	holding = false
+	roller["on"] = false
+	feet.clear()
+	tone(300, 0.6, &"sine", 0.08, 3.0)
+	noise(0.5, 0.05, 900)
+
+
+func _run_update(dt: float) -> void:
+	gear_rot += dt * GEAR_SPEED / GEAR_R
+	_bump_cd = maxf(0.0, _bump_cd - dt)
+	_ghost = maxf(0.0, _ghost - dt)
+	var c := centroid(x)
+	var vy := 0.0
+	for p in v:
+		vy += p.y
+	vy /= N
+	match run:
+		Run.OFF:
+			# thrown out of the top of the picture: into the wind tunnel
+			if grabs.is_empty() and c.y < -20.0 and vy < 0.0:
+				launch()
+		Run.UP:
+			var lowest := -INF
+			for p in x:
+				lowest = maxf(lowest, p.y)
+			if lowest < RUN_START - 20.0:
+				run = Run.DOWN
+				_best_y = c.y
+				_stuck_t = 0.0
+				for i in N:
+					v[i] = Vector2.ZERO
+		Run.DOWN:
+			_run_trap(dt, c, vy)
+			# a squishy that stops making its way down (and isn't waiting on the trapdoor) is let through
+			if c.y > _best_y + 2.0:
+				_best_y = c.y
+				_stuck_t = 0.0
+			elif _trap_state == &"closed" or _trap_state == &"open":
+				_stuck_t += dt
+			if _stuck_t > 3.0:
+				_ghost = 0.25
+				_stuck_t = 0.0
+				for i in N:
+					v[i].y += 300.0
+			if c.y > 40.0:
+				run = Run.OFF
+				trap_open = 0.0
+				_trap_state = &"closed"
+	# the camera follows the squishy up and back down
+	var want := clampf(c.y - 330.0, RUN_TOP - 40.0, 0.0) if run != Run.OFF else 0.0
+	cam_dy += (want - cam_dy) * minf(1.0, dt * (9.0 if run == Run.UP else 5.0))
+	if absf(cam_dy) < 0.5 and run == Run.OFF:
+		cam_dy = 0.0
+
+
+## The paddle box: when the squishy has landed on the trapdoor, the paddles squeeze it twice, then the trapdoor
+## opens (always: it never waits for anything the player does) and closes again once the squishy is through.
+func _run_trap(dt: float, c: Vector2, vy: float) -> void:
+	_trap_t += dt
+	match _trap_state:
+		&"closed":
+			if c.y > BOX_TOP and c.y < TRAP_Y and (absf(vy) < 60.0 or _trap_t > 1.5):
+				if _trap_t > 0.3:
+					_trap_state = &"squeeze"
+					_trap_t = 0.0
+			elif c.y <= BOX_TOP:
+				_trap_t = 0.0
+		&"squeeze":
+			# two squeezes: in, out, in, out (0.35 s each way)
+			paddle_in = absf(sin(_trap_t / 0.7 * PI))
+			if _trap_t >= 1.4:
+				paddle_in = 0.0
+				_trap_state = &"open"
+				_trap_t = 0.0
+				tone(220, 0.15, &"square", 0.05, 0.7)
+		&"open":
+			trap_open = minf(1.0, trap_open + dt * 4.0)
+			if c.y > TRAP_Y + 120.0 or _trap_t > 3.0:
+				_trap_state = &"closing"
+		&"closing":
+			trap_open = maxf(0.0, trap_open - dt * 3.0)
+			if trap_open <= 0.0:
+				_trap_state = &"closed"
+				_trap_t = 0.0
+	if _trap_state != &"squeeze":
+		paddle_in = maxf(0.0, paddle_in - dt * 3.0)
+
+
+## The run's walls and round things near the squishy right now (only while it is coming down the run).
+func _pick_run_shapes() -> void:
+	_run_segs.clear()
+	_run_circles.clear()
+	if run != Run.DOWN or _ghost > 0.0:
+		return
+	var lo := INF
+	var hi := -INF
+	for p in x:
+		lo = minf(lo, p.y)
+		hi = maxf(hi, p.y)
+	lo -= 40.0
+	hi += 40.0
+	for sg: Array in run_walls():
+		var a: Vector2 = sg[0]
+		var b: Vector2 = sg[1]
+		if maxf(a.y, b.y) >= lo and minf(a.y, b.y) <= hi:
+			_run_segs.append(sg)
+	for i in 2:
+		if GEAR_Y + GEAR_R + 10 >= lo and GEAR_Y - GEAR_R - 10 <= hi:
+			_run_circles.append([gear_centre(i), GEAR_R + 4.0, 1.0 if i == 0 else -1.0, -1])
+	for k in BUMPERS.size():
+		var b: Vector3 = BUMPERS[k]
+		if b.y + b.z >= lo and b.y - b.z <= hi:
+			_run_circles.append([Vector2(b.x, b.y), b.z, 0.0, k])
+
+
+static func gear_centre(i: int) -> Vector2:
+	return Vector2(W / 2.0 + (-1.0 if i == 0 else 1.0) * (GEAR_R + GEAR_GAP / 2.0), GEAR_Y)
+
+
+## The run's straight walls right now: [a, b, half thickness]. Paddles and trapdoor flaps move.
+func run_walls() -> Array:
+	var cl := W / 2.0 - CHUTE / 2.0
+	var cr := W / 2.0 + CHUTE / 2.0
+	var reach := (BOX_R - BOX_L - PADDLE_GAP) / 2.0 * paddle_in
+	var flap := (BOX_R - BOX_L) / 2.0 * (1.0 - trap_open)
+	return [
+		# the funnel into the chute, and the chute
+		[Vector2(6, RUN_START), Vector2(cl, CHUTE_TOP), 6.0], [Vector2(W - 6, RUN_START), Vector2(cr, CHUTE_TOP), 6.0],
+		[Vector2(cl, CHUTE_TOP), Vector2(cl, CHUTE_END), 6.0], [Vector2(cr, CHUTE_TOP), Vector2(cr, CHUTE_END), 6.0],
+		# the paddle box: its sides, the two paddles and the trapdoor's two flaps
+		[Vector2(BOX_L, BOX_TOP), Vector2(BOX_L, TRAP_Y), 6.0], [Vector2(BOX_R, BOX_TOP), Vector2(BOX_R, TRAP_Y), 6.0],
+		[Vector2(BOX_L + reach, BOX_TOP + 40), Vector2(BOX_L + reach, TRAP_Y - 12), 8.0],
+		[Vector2(BOX_R - reach, BOX_TOP + 40), Vector2(BOX_R - reach, TRAP_Y - 12), 8.0],
+		[Vector2(BOX_L, TRAP_Y), Vector2(BOX_L + flap, TRAP_Y), 6.0], [Vector2(BOX_R - flap, TRAP_Y), Vector2(BOX_R, TRAP_Y), 6.0],
+		# the funnel back down to the table
+		[Vector2(6, FUNNEL_TOP), Vector2(95, FUNNEL_END), 6.0], [Vector2(W - 6, FUNNEL_TOP), Vector2(W - 95, FUNNEL_END), 6.0],
+	]
+
+
+## Keep point i out of the run's walls (no grip: it slides), gears (they turn it downwards) and bumpers (boing!).
+func _collide_run(i: int) -> void:
+	for sg: Array in _run_segs:
+		var a: Vector2 = sg[0]
+		var b: Vector2 = sg[1]
+		var r: float = float(sg[2]) + PR
+		var ab := b - a
+		var len2 := ab.length_squared()
+		var u := clampf((x[i] - a).dot(ab) / len2, 0.0, 1.0) if len2 > 1e-6 else 0.0
+		var cp := a + ab * u
+		var d := x[i] - cp
+		var dl := d.length()
+		if dl < r:
+			if dl < 1e-4:
+				# right on the line: push it back the way it came
+				d = o[i] - cp
+				dl = maxf(d.length(), 1e-4)
+			x[i] = cp + d / dl * r
+			touch[i] = 4
+	for ci: Array in _run_circles:
+		var c: Vector2 = ci[0]
+		var r: float = float(ci[1]) + PR
+		var d := x[i] - c
+		var dl := d.length()
+		if dl >= r or dl < 1e-4:
+			continue
+		var n := d / dl
+		x[i] = c + n * r
+		touch[i] = 4
+		var turn: float = ci[2]
+		if turn != 0.0:
+			# a gear: its edge carries the squishy along (the two turn inwards, so downwards between them)
+			x[i] += Vector2(-n.y, n.x) * turn * GEAR_SPEED * HSTEP
+		elif _bump_cd <= 0.0:
+			# always a good sideways part too, so a squishy never just bounces on top of a bumper
+			var away := n
+			if absf(away.x) < 0.6:
+				var side := signf(centroid(x).x - c.x)
+				away = Vector2((side if side != 0.0 else 1.0) * 0.6, minf(away.y, -0.3)).normalized()
+			_kick = away * 520.0
+			_bump_cd = 0.25
+			_bumped = ci[3]
+			_sfx.append([&"boing", 0.8])
+
+
 # ---------------------------------------------------------------- sounds (made, like the prototype's)
 
 func _squelch(vol: float, kind: StringName) -> void:
@@ -729,6 +1019,8 @@ func _down(p: Vector2, id: int) -> void:
 		for i in TOOLS.size():
 			if Vector2(_tool_x(i), TY - 6).distance_to(p) < 28:
 				pick_tool(TOOLS[i])
+		return
+	if run != Run.OFF:
 		return
 	var at := to_phys(p)
 	_ptrs[id] = {"x": at.x, "y": at.y, "t": t, "sx": at.x, "sy": at.y}
@@ -882,24 +1174,27 @@ const LOOK := Vector3(0, 4.1, 0)
 const FOV := 38.0
 
 
-static func camera_xf() -> Transform3D:
-	return Transform3D(Basis.looking_at(LOOK - EYE, Vector3.UP), EYE)
+## The camera, raised to follow the squishy up the Squish Run (dy in physics units, negative = up).
+static func camera_xf(dy := 0.0) -> Transform3D:
+	var up := Vector3(0, -dy / U, 0)
+	return Transform3D(Basis.looking_at(LOOK - EYE, Vector3.UP), EYE + up)
 
 
 ## A finger on the screen (game space) -> the point under it on the squishy's plane (physics space).
 func to_phys(p: Vector2) -> Vector2:
 	var th := tan(deg_to_rad(FOV / 2.0))
+	var eye := camera_xf(cam_dy).origin
 	var dir := camera_xf().basis * Vector3((p.x / W * 2.0 - 1.0) * th * W / H, -(p.y / H * 2.0 - 1.0) * th, -1.0)
 	if absf(dir.z) < 1e-6:
 		return p
-	var hit := EYE + dir * (-EYE.z / dir.z)
+	var hit := eye + dir * (-eye.z / dir.z)
 	return Vector2(hit.x * U + W / 2.0, FLOOR - hit.y * U)
 
 
 ## A physics point -> where it shows on the screen (game space).
 func to_screen(px: float, py: float) -> Vector2:
 	var th := tan(deg_to_rad(FOV / 2.0))
-	var c := camera_xf().affine_inverse() * Vector3(wx(px), wy(py), 0.0)
+	var c := camera_xf(cam_dy).affine_inverse() * Vector3(wx(px), wy(py), 0.0)
 	if c.z > -1e-6:
 		return Vector2(px, py)
 	return Vector2((c.x / (-c.z * th * W / H) + 1.0) / 2.0 * W, (1.0 - c.y / (-c.z * th)) / 2.0 * H)
@@ -1005,9 +1300,10 @@ func _build_lab() -> void:
 		for i in range(0, 257, 64):
 			img.fill_rect(Rect2i(clampi(i - 2, 0, 251), 0, 5, 256), Color("#C3D5EC"))
 			img.fill_rect(Rect2i(0, clampi(i - 2, 0, 251), 256, 5), Color("#C3D5EC")))
+	# the tiled wall goes all the way up, behind the Squish Run
 	var wall_mesh := QuadMesh.new()
-	wall_mesh.size = Vector2(44, 30)
-	_part(wall_mesh, _material(Color.WHITE, tile, Vector2(10, 7)), Vector3(0, 11, -5.5), world, false)
+	wall_mesh.size = Vector2(44, 80)
+	_part(wall_mesh, _material(Color.WHITE, tile, Vector2(10, 18.7)), Vector3(0, 36, -5.5), world, false)
 	var floor_mesh := PlaneMesh.new()
 	floor_mesh.size = Vector2(70, 50)
 	_part(floor_mesh, _material(Color("#C2CFE0")), Vector3(0, -3.2, 0), world, false)
@@ -1084,6 +1380,85 @@ func _build_lab() -> void:
 		ball_meshes.append(_part(s, _material(Color.WHITE, ball_tex), Vector3.ZERO, world))
 	_art = {"vp": vp, "view": view, "world": world, "cam": cam, "press": press, "plate": plate, "rods": rods, "pin": pin,
 		"paddles": paddles, "balls": ball_meshes, "body": [], "mats": []}
+	_build_run(world)
+
+
+## A straight piece of the Squish Run between two physics points (a box along the line).
+func _beam(a: Vector2, b: Vector2, r: float, mat: Material, parent: Node3D, depth := 2.4) -> MeshInstance3D:
+	# no shadows: the run is high above the lab and would throw stripes over it
+	var mi := _part(_box(Vector3(1, 1, 1)), mat, Vector3.ZERO, parent, false)
+	_place_beam(mi, a, b, r, depth)
+	return mi
+
+
+static func _place_beam(mi: Node3D, a: Vector2, b: Vector2, r: float, depth := 2.4) -> void:
+	var d := b - a
+	mi.position = Vector3(wx((a.x + b.x) / 2.0), wy((a.y + b.y) / 2.0), 0)
+	mi.rotation = Vector3(0, 0, atan2(-d.y, d.x))
+	mi.scale = Vector3(maxf(0.01, d.length() / U), 2.0 * r / U, depth)
+
+
+## The Squish Run's pieces in 3D: walls and chute, two gears, the paddle box with its trapdoor, the bumpers,
+## the funnel, side rails and a sign. Moving parts are kept in _art to follow the physics.
+func _build_run(world: Node3D) -> void:
+	var wall_mat := _material(Color("#B8C6D8"))
+	var chute_mat := _material(Color("#8FA6C8"))
+	var walls := run_walls()
+	for k in walls.size():
+		if k >= 6 and k <= 9:
+			continue
+		var sg: Array = walls[k]
+		_beam(sg[0], sg[1], sg[2], chute_mat if k < 4 else wall_mat, world)
+	# side rails, from the table to the top
+	for side: float in [3.0, W - 3.0]:
+		_beam(Vector2(side, FLOOR), Vector2(side, RUN_TOP - 120), 3.0, _material(Color("#D6DEE9")), world, 0.6)
+	# the paddles and the trapdoor flaps (they move)
+	var yellow := _material(Color("#FFC93C"))
+	var moving: Array[MeshInstance3D] = []
+	for k in 4:
+		moving.append(_beam(walls[6 + k][0], walls[6 + k][1], walls[6 + k][2], yellow if k < 2 else _material(Color("#FF8FB8")), world, 2.2))
+	# two gears (a disc and twelve teeth), turning
+	var gear_mat := _material(Color("#FFB347"))
+	var gears: Array[Node3D] = []
+	for i in 2:
+		var g := Node3D.new()
+		var c := gear_centre(i)
+		g.position = Vector3(wx(c.x), wy(c.y), 0)
+		world.add_child(g)
+		var disc := _part(_cyl(GEAR_R / U, 1.4, 28), gear_mat, Vector3.ZERO, g, false)
+		disc.rotation.x = PI / 2.0
+		_part(_cyl(0.35, 1.6, 12), _material(Color("#D6DEE9")), Vector3.ZERO, g, false).rotation.x = PI / 2.0
+		for t_i in 12:
+			var a := t_i / 12.0 * TAU
+			var tooth := _part(_box(Vector3(0.36, 0.4, 1.4)), gear_mat, Vector3(cos(a), sin(a), 0) * (GEAR_R + 4.0) / U, g, false)
+			tooth.rotation.z = a
+		gears.append(g)
+	# pinball bumpers
+	var bumpers: Array[Node3D] = []
+	for b: Vector3 in BUMPERS:
+		var g := Node3D.new()
+		g.position = Vector3(wx(b.x), wy(b.y), 0)
+		world.add_child(g)
+		_part(_cyl(b.z / U, 1.2, 24), _material(Color("#FF6FA3")), Vector3.ZERO, g, false).rotation.x = PI / 2.0
+		_part(_cyl(b.z * 0.6 / U, 1.3, 20), _material(Color.WHITE), Vector3.ZERO, g, false).rotation.x = PI / 2.0
+		bumpers.append(g)
+	# the sign at the top
+	var sign := Label3D.new()
+	sign.text = ctx.t(&"squish_lab.run_sign") if ctx != null else "SQUISH RUN"
+	sign.font = ctx.font(&"display") if ctx != null else null
+	sign.font_size = 96
+	sign.pixel_size = 0.012
+	sign.modulate = Color("#4A7BD0")
+	sign.outline_size = 0
+	sign.shaded = false
+	sign.position = Vector3(0, wy(RUN_TOP + 10), -5.3)
+	world.add_child(sign)
+	_art["run_moving"] = moving
+	_art["gears"] = gears
+	_art["bumpers"] = bumpers
+	_art["bump_flash"] = []
+	for b: Vector3 in BUMPERS:
+		(_art["bump_flash"] as Array).append(0.0)
 
 
 ## The model's meshes with their place inside the model: [{"node", "xf"}].
@@ -1146,7 +1521,9 @@ func _bind_model(model: Node3D, rc: Vector2, sc: float) -> void:
 				var w := xf * verts[i]
 				var p := Vector3((w.x - rc.x) * s, (w.y + rc.y) * s, w.z * s)
 				verts[i] = p
-				uv2[i] = Vector2(_sector(rest, turn, Vector2(p.x, p.y)), 0)
+				var k := _sector(rest, turn, Vector2(p.x, p.y))
+				uv2[i] = Vector2(k, _within(rest[k], rest[(k + 1) % N], Vector2(p.x, p.y)))
+
 				if i < normals.size():
 					normals[i] = (xf.basis * normals[i]).normalized()
 				if i < cols.size() and cols[i].a > 0.5:
@@ -1175,6 +1552,9 @@ func _bind_model(model: Node3D, rc: Vector2, sc: float) -> void:
 					mats.append(line)
 			mats.append(m)
 			out.surface_set_material(si, m)
+			for mm: ShaderMaterial in [m, m.next_pass]:
+				if mm != null:
+					mm.set_shader_parameter(&"rest", rest)
 		var copy := MeshInstance3D.new()
 		copy.mesh = out
 		copy.custom_aabb = AABB(Vector3(-30, -20, -20), Vector3(60, 60, 40))
@@ -1201,6 +1581,97 @@ static func _sector(rest: PackedVector2Array, turn: float, p: Vector2) -> int:
 	return best_i
 
 
+## Where the line from the middle through p crosses the slice's edge from a to b (0 at a, 1 at b), so the bend
+## blends smoothly between slices and parts outside the ring know which edge point they hang from.
+static func _within(a: Vector2, b: Vector2, p: Vector2) -> float:
+	var d := b - a
+	var den := p.cross(d)
+	return clampf(a.cross(p) / den, 0.0, 1.0) if absf(den) > 1e-8 else 0.0
+
+
+## The bend for each point of the ring: the matrix that maps the relaxed ring onto the squished one there.
+## Each slice's exact matrix is worked out, then made kind to the 3D model: a slice squashed almost flat or turned
+## inside out follows the squishy's overall squish instead, neighbouring slices are averaged at the ring points
+## (the shader blends between them, so the model bends smoothly), and no direction gets thinner than MIN_SCALE or
+## stretched more than MAX_SCALE. The ring points themselves still land where the physics has them.
+var _whole := Transform2D.IDENTITY
+const MIN_SCALE := 0.26
+const MAX_SCALE := 3.0
+func bend_matrices(c3: Vector2) -> PackedVector4Array:
+	var rest: Array[Vector2] = []
+	var now: Array[Vector2] = []
+	for i in N:
+		rest.append(Vector2(_rest_pts[i].x, -_rest_pts[i].y) / U)
+		now.append(Vector2(wx(x[i].x), wy(x[i].y)) - c3)
+	# the overall squish: the best single matrix for the whole ring (least squares)
+	var pr := Transform2D(Vector2.ZERO, Vector2.ZERO, Vector2.ZERO)
+	var rr := Transform2D(Vector2.ZERO, Vector2.ZERO, Vector2.ZERO)
+	for i in N:
+		pr.x += Vector2(now[i].x * rest[i].x, now[i].y * rest[i].x)
+		pr.y += Vector2(now[i].x * rest[i].y, now[i].y * rest[i].y)
+		rr.x += Vector2(rest[i].x * rest[i].x, rest[i].y * rest[i].x)
+		rr.y += Vector2(rest[i].x * rest[i].y, rest[i].y * rest[i].y)
+	var whole := _clamp_scale(pr * rr.affine_inverse()) if absf(rr.determinant()) > 1e-8 else Transform2D.IDENTITY
+	var slices: Array[Transform2D] = []
+	for i in N:
+		var j := (i + 1) % N
+		var r := Transform2D(rest[i], rest[j], Vector2.ZERO)
+		if absf(r.determinant()) < 1e-8:
+			slices.append(whole)
+			continue
+		var a := Transform2D(now[i], now[j], Vector2.ZERO) * r.affine_inverse()
+		var keep := smoothstep(0.08, 0.4, a.determinant())
+		slices.append(Transform2D(whole.x.lerp(a.x, keep), whole.y.lerp(a.y, keep), Vector2.ZERO))
+	_whole = whole
+	var out := PackedVector4Array()
+	out.resize(N)
+	for i in N:
+		var p := slices[(i + N - 1) % N]
+		var q := slices[i]
+		var m := _clamp_scale(Transform2D((p.x + q.x) / 2.0, (p.y + q.y) / 2.0, Vector2.ZERO))
+		out[i] = Vector4(m.x.x, m.x.y, m.y.x, m.y.y)
+	return out
+
+
+## Keep a 2x2 bend between MIN_SCALE and MAX_SCALE in every direction (and never mirrored).
+static func _clamp_scale(m: Transform2D) -> Transform2D:
+	# the two stretch amounts of m are the square roots of the eigenvalues of m^T m
+	var a := m.x.dot(m.x)
+	var b := m.x.dot(m.y)
+	var d := m.y.dot(m.y)
+	var tr := a + d
+	var disc := sqrt(maxf(0.0, tr * tr / 4.0 - (a * d - b * b)))
+	var s1 := sqrt(maxf(0.0, tr / 2.0 + disc))
+	var s2 := sqrt(maxf(0.0, tr / 2.0 - disc))
+	if m.determinant() > 0.0 and s2 >= MIN_SCALE and s1 <= MAX_SCALE:
+		return m
+	# rebuild it from its rotation and clamped stretches (polar form: m = R * S)
+	var ang := atan2(m.x.y - m.y.x, m.x.x + m.y.y)
+	var rot := Transform2D(ang, Vector2.ZERO)
+	var sym := rot.affine_inverse() * m
+	var e := _eigen(sym)
+	var v1: Vector2 = e[1]
+	var v2 := Vector2(-v1.y, v1.x)
+	var l1 := clampf(e[0].x, MIN_SCALE, MAX_SCALE)
+	var l2 := clampf(e[0].y, MIN_SCALE, MAX_SCALE)
+	var basis := Transform2D(v1, v2, Vector2.ZERO)
+	var sc := basis * Transform2D(Vector2(l1, 0), Vector2(0, l2), Vector2.ZERO) * basis.affine_inverse()
+	return rot * sc
+
+
+## Eigenvalues (as a Vector2) and the first eigenvector of a 2x2 matrix made symmetric.
+static func _eigen(m: Transform2D) -> Array:
+	var a := m.x.x
+	var d := m.y.y
+	var b := (m.y.x + m.x.y) / 2.0
+	var mid := (a + d) / 2.0
+	var disc := sqrt(maxf(0.0, (a - d) * (a - d) / 4.0 + b * b))
+	var l1 := mid + disc
+	var l2 := mid - disc
+	var v := Vector2(b, l1 - a) if absf(b) > 1e-6 else (Vector2(1, 0) if a >= d else Vector2(0, 1))
+	return [Vector2(l1, l2), v.normalized()]
+
+
 ## Every frame: the press, pin, paddles and balls where the physics has them, and the squishy's bend.
 func _sync_3d() -> void:
 	if _art.is_empty():
@@ -1215,6 +1686,8 @@ func _sync_3d() -> void:
 	view.scale = Vector2(view_rect.size.x / want.x, view_rect.size.y / want.y)
 	# the camera sees the 360 x 640 game like the prototype's, and more of the room around it on taller screens
 	var cam: Camera3D = _art["cam"]
+	cam.transform = camera_xf(cam_dy)
+	_sync_run()
 	var k := 2.0 * cam.near * tan(deg_to_rad(FOV / 2.0)) / H
 	cam.size = view_rect.size.y * k
 	var mid := view_rect.get_center()
@@ -1254,31 +1727,45 @@ func _sync_3d() -> void:
 	# the bend: one matrix per ring slice mapping the relaxed slice (centre, i, i+1) onto where it is now
 	var c := centroid(x)
 	var c3 := Vector2(wx(c.x), wy(c.y))
-	var aff := PackedVector4Array()
-	var nrm := PackedVector4Array()
-	aff.resize(N)
-	nrm.resize(N)
-	for i in N:
-		var j := (i + 1) % N
-		var r := Transform2D(Vector2(_rest_pts[i].x, -_rest_pts[i].y) / U, Vector2(_rest_pts[j].x, -_rest_pts[j].y) / U, Vector2.ZERO)
-		var now := Transform2D(Vector2(wx(x[i].x), wy(x[i].y)) - c3, Vector2(wx(x[j].x), wy(x[j].y)) - c3, Vector2.ZERO)
-		var a := now * r.affine_inverse()
-		if absf(r.determinant()) < 1e-8:
-			a = Transform2D.IDENTITY
-		var ni := a.affine_inverse()
-		aff[i] = Vector4(a.x.x, a.x.y, a.y.x, a.y.y)
-		# normals use the inverse transpose
-		nrm[i] = Vector4(ni.x.x, ni.y.x, ni.x.y, ni.y.y)
+	var aff := bend_matrices(c3)
+	var ring := PackedVector2Array()
+	for p in x:
+		ring.append(Vector2(wx(p.x), wy(p.y)) - c3)
 	var size := _extent(x)
 	var squash := sqrt(absf(A0) / maxf(absf(area(x)), 1.0)) * (1.0 + 0.55 * maxf(0.0, 1.0 - size.y / h0))
-	var puff := clampf(squash, 0.8, 2.0)
+	var puff := clampf(squash, 0.85, 1.6)
 	for m: ShaderMaterial in _art["mats"]:
 		m.set_shader_parameter(&"aff", aff)
-		m.set_shader_parameter(&"nrm", nrm)
+		m.set_shader_parameter(&"ring", ring)
+		m.set_shader_parameter(&"whole", Vector4(_whole.x.x, _whole.x.y, _whole.y.x, _whole.y.y))
 		m.set_shader_parameter(&"centre", c3)
 		m.set_shader_parameter(&"puff", puff)
 		if m.shader.resource_path.ends_with("lab_outline.gdshader"):
 			m.set_shader_parameter(&"width_px", 1.6 * px)
+
+
+func _sync_run() -> void:
+	if not _art.has("gears"):
+		return
+	var walls := run_walls()
+	var moving: Array = _art["run_moving"]
+	for k in 4:
+		var sg: Array = walls[6 + k]
+		var d: Vector2 = sg[1] - sg[0]
+		var mi: MeshInstance3D = moving[k]
+		mi.visible = d.length() > 1.0
+		_place_beam(mi, sg[0], sg[1], sg[2], 2.2)
+	var gears: Array = _art["gears"]
+	(gears[0] as Node3D).rotation.z = -gear_rot
+	(gears[1] as Node3D).rotation.z = gear_rot
+	var flash: Array = _art["bump_flash"]
+	if _bumped >= 0:
+		flash[_bumped] = 1.0
+		_bumped = -1
+	var bumpers: Array = _art["bumpers"]
+	for k in bumpers.size():
+		flash[k] = maxf(0.0, float(flash[k]) - 0.08)
+		(bumpers[k] as Node3D).scale = Vector3.ONE * (1.0 + 0.18 * float(flash[k]))
 
 
 # ---------------------------------------------------------------- drawing (the buttons and meters on top)
@@ -1298,6 +1785,16 @@ func _draw_game() -> void:
 		var c := centroid(x)
 		var at := to_screen(c.x, c.y + h0 * 0.3)
 		sprite(body_id, at.x, at.y, 70)
+	# the way up to the Squish Run, and the wind tunnel when it's going up
+	if run == Run.OFF and cam_dy > -2.0 and _tip <= 0.0 and not shelf_open:
+		var bob := sin(t * 3.0) * 4.0
+		text(ctx.t(&"squish_lab.run_hint"), W / 2, 112 + bob, 12, Color("#4A7BD0", 0.75), &"center", &"display")
+		poly(PackedVector2Array([Vector2(W / 2 - 10, 98 + bob), Vector2(W / 2, 86 + bob), Vector2(W / 2 + 10, 98 + bob)]), Color("#4A7BD0", 0.75), null, 0)
+	elif run == Run.UP:
+		for k in 14:
+			var lx := fmod(k * 53.0 + 17.0, W)
+			var ly := fposmod(k * 97.0 - t * 900.0, H)
+			line(PackedVector2Array([Vector2(lx, ly), Vector2(lx, ly + 40)]), Color(1, 1, 1, 0.6), 3)
 	# fingers
 	for g in grabs:
 		var at := to_screen(g["x"], g["y"])

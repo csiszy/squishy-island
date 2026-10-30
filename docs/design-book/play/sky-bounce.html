@@ -600,16 +600,23 @@ function skyAt(h) { for (let i = SKY.length - 1; i >= 0; i--) if (h >= SKY[i][0]
 function addPlat(y) {
   const h = -y, diff = Math.min(1, h / 12000);
   const r = Math.random(), w = 70 - diff * 18;
+  // never further sideways than a bounce can steer (the screen wraps, so measure both ways round)
+  const reach = Math.max(40, reachX(Math.abs(y - S.lastY)) - w / 2); let px = 30 + Math.random() * (W - 60), dx = px - S.lastX;
+  dx -= Math.round(dx / (W + 40)) * (W + 40); if (Math.abs(dx) > reach) px = Math.max(30, Math.min(W - 30, S.lastX + Math.sign(dx) * reach * (.5 + Math.random() * .5)));
+  S.lastX = px; S.lastY = y;
   let type = 'cloud';
   if (h > 600 && r < .12 + diff * .2) type = 'crumble';
   else if (h > 300 && r < .32 + diff * .3) type = 'leaf';
-  const p = { x: 30 + Math.random() * (W - 60), y, w, type, vx: type === 'leaf' ? (Math.random() < .5 ? -1 : 1) * (40 + diff * 90) * (h > 1200 ? 1 : 0) : 0, dead: 0, spring: false };
+  const p = { x: px, y, w, type, vx: type === 'leaf' ? (Math.random() < .5 ? -1 : 1) * (40 + diff * 90) * (h > 1200 ? 1 : 0) : 0, dead: 0, spring: false };
   if (type !== 'crumble' && Math.random() < .08) p.spring = true;
   S.plats.push(p);
   if (Math.random() < .55) S.items.push({ k: 'coin', x: p.x + (Math.random() - .5) * 40, y: y - 40 - Math.random() * 30 });
   else if (h > 800 && Math.random() < .035) S.items.push({ k: 'balloon', x: p.x, y: y - 60 });
 }
 function gapAt(h) { return 62 + Math.min(95, h / 110); }
+// the next cloud up: bigger gaps higher up, but never more than a normal bounce (rises about 192) comfortably reaches
+const MAX_GAP = 150, nextGap = h => Math.min(MAX_GAP, gapAt(h) * (.7 + Math.random() * .5));
+const reachX = gap => 330 * (760 + Math.sqrt(Math.max(0, 760 * 760 - 3000 * gap))) / 1500 * .75;
 
 const game = {
   id: 'sky-bounce', title: 'Sky Bounce', where: 'at Bounce Park',
@@ -620,9 +627,9 @@ const game = {
   revive(G) { S.x = W / 2; S.y = S.camY + H - 140; S.vy = -900; S.float = 1.8; G.float(W / 2, H / 2, 'Up you go!', '#FFD54A', 26); },
   reviveGift: 'and float back up with a balloon',
   init(G) {
-    S = { x: W / 2, y: -40, vy: -700, plats: [], items: [], camY: -H + 120, top: 0, coins: 0, steer: 0, target: null, keys: { l: false, r: false }, float: 0, squash: 0, face: 1 };
+    S = { x: W / 2, y: -40, vy: -700, plats: [], items: [], camY: -H + 120, top: 0, coins: 0, steer: 0, target: null, keys: { l: false, r: false }, float: 0, squash: 0, face: 1, lastX: W / 2, lastY: 0 };
     S.plats.push({ x: W / 2, y: 0, w: 120, type: 'cloud', vx: 0, dead: 0, spring: false });
-    let y = 0; while (y > -H * 1.6) { y -= gapAt(-y) * (.7 + Math.random() * .5); addPlat(y); }
+    let y = 0; while (y > -H * 1.6) { y -= nextGap(-y); addPlat(y); }
   },
   update(dt, G) {
     // steering
@@ -650,7 +657,7 @@ const game = {
     S.top = Math.max(S.top, -S.y); const want = S.y - H * .42; if (want < S.camY) S.camY += (want - S.camY) * Math.min(1, dt * 8);
     G.score = Math.floor(S.top / 10);
     // spawn ahead / clean behind
-    let highest = Math.min(...S.plats.map(p => p.y)); while (highest > S.camY - 200) { highest -= gapAt(-highest) * (.7 + Math.random() * .5); addPlat(highest); }
+    let highest = Math.min(...S.plats.map(p => p.y)); while (highest > S.camY - 200) { highest -= nextGap(-highest); addPlat(highest); }
     S.plats = S.plats.filter(p => p.y < S.camY + H + 60 && p.dead < 1); S.items = S.items.filter(i => !i.got && i.y < S.camY + H + 60);
     if (S.y > S.camY + H + 40) G.end();
   },

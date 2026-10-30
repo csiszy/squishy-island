@@ -4,6 +4,8 @@ extends KitGame
 ## Score = metres high; metric = coins grabbed (the coins you keep).
 
 const SKY := [[0.0, "#DFF3FF", "#8CCBFF"], [2500.0, "#FFE3EE", "#FFB3CE"], [6000.0, "#FFD9A8", "#B9A6FF"], [11000.0, "#5B4BA8", "#2E2452"]]
+## A normal bounce rises about 192; the next cloud is never higher than this, leaving room to steer sideways.
+const MAX_GAP := 150.0
 const CLOUD_PUFFS := [[-0.6, 0.1, 0.55], [-0.2, -0.25, 0.7], [0.3, -0.2, 0.65], [0.68, 0.1, 0.5], [0.0, 0.2, 0.6]]
 
 var rng := RandomNumberGenerator.new()
@@ -23,6 +25,8 @@ var keys := {"l": false, "r": false}
 var floating := 0.0
 var squash := 0.0
 var face := 1.0
+var _last_x := W / 2.0
+var _last_y := 0.0
 
 
 func _init_run(_level: int) -> void:
@@ -44,14 +48,27 @@ func _init_run(_level: int) -> void:
 	squash = 0.0
 	face = 1.0
 	plats.append({"x": W / 2.0, "y": 0.0, "w": 120.0, "type": "cloud", "vx": 0.0, "dead": 0.0, "spring": false})
+	_last_x = W / 2.0
+	_last_y = 0.0
 	var py := 0.0
 	while py > -H * 1.6:
-		py -= _gap_at(-py) * (0.7 + rng.randf() * 0.5)
+		py -= _next_gap(-py)
 		_add_plat(py)
 
 
 func _gap_at(h: float) -> float:
 	return 62.0 + minf(95.0, h / 110.0)
+
+
+## How far up the next cloud is: bigger gaps higher up, but never more than MAX_GAP.
+func _next_gap(h: float) -> float:
+	return minf(MAX_GAP, _gap_at(h) * (0.7 + rng.randf() * 0.5))
+
+
+## How far sideways a squishy can steer while bouncing up `gap` and landing (a little less, to be fair).
+static func reach_x(gap: float) -> float:
+	var t_land := (760.0 + sqrt(maxf(0.0, 760.0 * 760.0 - 3000.0 * gap))) / 1500.0
+	return 330.0 * t_land * 0.75
 
 
 func _add_plat(py: float) -> void:
@@ -67,7 +84,16 @@ func _add_plat(py: float) -> void:
 	var vx := 0.0
 	if kind == "leaf" and h > 1200:
 		vx = (-1.0 if rng.randf() < 0.5 else 1.0) * (40.0 + diff * 90.0)
-	var p := {"x": 30.0 + rng.randf() * (W - 60.0), "y": py, "w": w, "type": kind, "vx": vx, "dead": 0.0, "spring": false}
+	var px := 30.0 + rng.randf() * (W - 60.0)
+	# never further sideways than a bounce can steer (the screen wraps, so measure both ways round)
+	var gap := absf(py - _last_y)
+	var reach := maxf(40.0, reach_x(gap) - w / 2.0)
+	var dx := wrapf(px - _last_x, -(W + 40.0) / 2.0, (W + 40.0) / 2.0)
+	if absf(dx) > reach:
+		px = clampf(_last_x + signf(dx) * reach * rng.randf_range(0.5, 1.0), 30.0, W - 30.0)
+	_last_x = px
+	_last_y = py
+	var p := {"x": px, "y": py, "w": w, "type": kind, "vx": vx, "dead": 0.0, "spring": false}
 	if kind != "crumble" and rng.randf() < 0.08:
 		p["spring"] = true
 	plats.append(p)
@@ -165,7 +191,7 @@ func _update(dt: float) -> void:
 	for p in plats:
 		highest = minf(highest, p["y"])
 	while highest > cam_y + view_rect.position.y - 200.0:
-		highest -= _gap_at(-highest) * (0.7 + rng.randf() * 0.5)
+		highest -= _next_gap(-highest)
 		_add_plat(highest)
 	# the screen may show more than the 640 high design (tall phones): fall off the bottom of what you see
 	var bottom := cam_y + view_rect.end.y

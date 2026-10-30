@@ -318,6 +318,22 @@ Sort-a-Lot ported from the prototypes. Tap a built fun building on the map → *
   visits for the Lab's upgrades (a new goal kind, "metric_total"). The physics loop is plain GDScript (about 0.1 s
   of computer time per second of play here); if a cheap phone struggles, it is the one loop to move to C++. Not yet:
   level 6 "two squishies at once" and level 8 "trampoline table".
+- **Fourth phone test fixes** (owner, October 2026): Sky Bounce could make a cloud too far to reach at great
+  heights (the gap could reach 188 while a bounce rises 192, plus a long way sideways): now the next cloud is
+  never more than 150 up and always within steering reach sideways (book prototype too). Squish Lab: an
+  over-squished 3D squishy looked crumpled; the bend now blends smoothly between the ring's slices, a slice
+  squashed flat or turned inside out follows the overall squish, deep notches in the traced outline are filled
+  (a jelly's tentacles), parts outside the outline (ears, tentacles) hang from the edge, the picture never gets
+  thinner than about a quarter, and the press stops at 30% of the height. Scrolling: every list now uses one
+  finger-friendly scroller (`TouchScroll`) that also scrolls when the finger lands on a button (the button then
+  doesn't click) and glides after a flick; the house page scrolls as a whole (room, family, decor) and the
+  "who plays" picker no longer sits in a small box.
+- **The Squish Run** (owner's idea): throw the squishy up out of the Lab and the camera follows it up a wind tunnel
+  to a marble run above: a narrow chute, two gears, a paddle box on a trapdoor, pinball bumpers and a funnel back to
+  the table. Nobody can touch it there and nothing can hold it (no grip on the run's walls, gears turn downwards,
+  the trapdoor always opens, a squishy that stops going down is let through); inside the run every squishy gives in
+  to the squeezes like foam, and rubber and jelly spring back once out. Squishes on the way count. Open: whether
+  the run should open with a Lab level (it is there from the start for now).
 - The contract grew (still version 1, nothing removed): song and toy kinds, `sound_bus` (a game's own sounds that
   it must start and stop, like a song), `model(id)` (a squishy's 3D model) and `building_level`.
 - Not yet: the squishy "helper" list on the start card names no effects yet (just "extra good at this game"),

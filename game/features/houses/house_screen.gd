@@ -49,6 +49,15 @@ func _ready() -> void:
 	var wallet := WalletBar.new()
 	wallet.size_flags_vertical = SIZE_SHRINK_BEGIN
 	top.add_child(wallet)
+	# everything under the top bar scrolls together (room, family, fix it up, decor), so the list is never a
+	# small strip at the bottom of the screen
+	var scroll := TouchScroll.new()
+	scroll.size_flags_vertical = SIZE_EXPAND_FILL
+	col.add_child(scroll)
+	col = VBoxContainer.new()
+	col.size_flags_horizontal = SIZE_EXPAND_FILL
+	col.add_theme_constant_override("separation", 14)
+	scroll.add_child(col)
 	var words := VBoxContainer.new()
 	words.add_theme_constant_override("separation", 0)
 	col.add_child(words)
@@ -81,14 +90,10 @@ func _ready() -> void:
 	_fix.pressed.connect(_fix_up)
 	fix_row.add_child(_fix)
 	# decor shop
-	var scroll := ScrollContainer.new()
-	scroll.size_flags_vertical = SIZE_EXPAND_FILL
-	scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
-	col.add_child(scroll)
 	_shop = VBoxContainer.new()
 	_shop.size_flags_horizontal = SIZE_EXPAND_FILL
 	_shop.add_theme_constant_override("separation", 14)
-	scroll.add_child(_shop)
+	col.add_child(_shop)
 	Town.changed.connect(_refresh_words)
 	Economy.changed.connect(_refresh_words)
 	Collection.changed.connect(_refresh_family)

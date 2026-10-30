@@ -36,6 +36,10 @@ app "conflicts with an existing package", uninstall the old one first (this dele
   taps; tell us if the first song feels off and later ones better.) Track 2 opens at 3 stars.
 - **Squish Lab**: pull, poke, throw and drop your squishy; more tools open as the Lab building levels up (build it
   with coins first). Is it smooth on your phone, or does it stutter?
+- New: **the Squish Run**. In the Squish Lab, grab the middle of your squishy and fling it up out of the top of the
+  screen. The camera follows it up to a marble run with a chute, gears, squeezing paddles and bumpers.
+- Scrolling: lists (Games page, house decor, collection book, Factory, start cards) should now follow your finger
+  even when you start on a button, and glide after a flick.
 
 ## What to try (Step 2: the minigames)
 

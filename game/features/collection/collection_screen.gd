@@ -51,7 +51,7 @@ func _ready() -> void:
 		b.pressed.connect(show_tab.bind(t))
 		tabs.add_child(b)
 		_tabs[t] = b
-	var scroll := ScrollContainer.new()
+	var scroll := TouchScroll.new()
 	scroll.size_flags_vertical = SIZE_EXPAND_FILL
 	scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
 	col.add_child(scroll)

@@ -27,9 +27,11 @@ squish_lab.tool.roller,Roller
 squish_lab.tool.squeeze,Squeeze
 squish_lab.tool.ball,Ball
 squish_lab.tool.drop,Drop
-squish_lab.tip.hand,Pull an edge to stretch · grab the middle to throw|tap to poke a dent
+squish_lab.tip.hand,Pull an edge to stretch · grab the middle to throw|tap to poke a dent · throw it up high for a ride!
 squish_lab.tip.press,Hold anywhere to press down|let go to lift the press
 squish_lab.tip.roller,Drag the rolling pin over your squishy
 squish_lab.tip.squeeze,Hold anywhere to squeeze from both sides
 squish_lab.tip.ball,Tap to drop a heavy rubber ball
 squish_lab.tip.drop,Up it goes… and SPLAT!
+squish_lab.run_sign,SQUISH RUN
+squish_lab.run_hint,Throw it up here for the Squish Run!

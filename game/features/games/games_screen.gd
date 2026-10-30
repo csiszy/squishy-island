@@ -40,7 +40,7 @@ func _ready() -> void:
 	wallet.size_flags_vertical = SIZE_SHRINK_BEGIN
 	top.add_child(wallet)
 	col.add_child(Ui.label(Text.t(&"games.title"), "Title"))
-	var scroll := ScrollContainer.new()
+	var scroll := TouchScroll.new()
 	scroll.size_flags_vertical = SIZE_EXPAND_FILL
 	scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
 	col.add_child(scroll)
