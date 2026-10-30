@@ -168,3 +168,25 @@ with credit; never "NC" licences or the YouTube Audio Library.
 - Android: App Bundle via Gradle, target API 36, arm64 + armv7, only the VIBRATE and INTERNET permissions.
   **To decide before the first upload:** the package name (placeholder `com.squishyisland.game`; it can never change
   once uploaded) and the upload key (CI signs with it once it is stored as GitHub secrets).
+
+## 15. Step 1: the town (done, October 2026)
+
+What was built: the city map (the island, every building at its level, owned squishies in their spots, bubbles,
+building cards), houses (fixing up, the room with decor in 4 designs, Cozy), the Factory (Mystery / Family / Golden
+boxes through a pretend server), the collection book with its Sparkly page, and the Spare Shelf.
+
+Small choices made while building (each follows the book; say if one is wrong):
+- A new player starts with **0 coins**, Bao Bun, the broken Steamhouse, the Factory and Bounce Park. Coins come from
+  minigames (Step 2); the tutorial's free first box (always Gyoza) is ready in the pretend server for Step 6.
+- **Houses can be fixed up from the map card** (as in the book's tour) and from inside the house.
+- **Decor is tried on before buying**: tapping a design shows it in the room; "Buy" makes it yours. Designs you own
+  switch at once. The room shows only decor you own (the book's drawing shows everything).
+- **A Sparkly pull of a squishy you already have** makes yours Sparkly *and* still adds a spare (as in
+  `tools/collection_sim.py`).
+- A squishy from a box whose house is **still locked** moves in anyway and waits at that house on the map.
+- Swapping a spare for Stars asks first (it can't be undone); levelling up doesn't.
+- Not yet: the free ad box and the Gem Shop (Step 5), the Market and trading (Step 4), the Star Shop, the help,
+  settings and save-my-town buttons on the map (they say "Coming soon!"). Fun buildings can be built and upgraded,
+  but "Play" waits for Step 2.
+- **To check on a real phone:** the map draws about 150,000 triangles for the island plus the buildings. It runs well
+  on a computer; the Step 1 plan asks for a test on a cheap Android before going further (internal testing track).

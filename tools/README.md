@@ -19,12 +19,12 @@ so the exports never need the internet.
 |---|---|---|---|
 | `node tools/export_data/export_data.js` | `art/*.js` (squishies, buildings, level costs), building pages (level captions, decor), `art/economy.js`, the CITY block in `index.html`, `art/sound.js`, `docs/strings_ui_en.csv` | `game/data/*.json`, `game/data/strings_en.csv` | `--check` fails if out of date |
 | `node tools/export_audio/export_audio.js` | `assets/audio/` | `game/audio/` | `--check` fails if out of date |
-| `node tools/export_art/export_art.js [ids…]` | every building's `model()` and every squishy, via `art/kit3d.js` | `game/art/models/**.glb`, `game/art/sprites/squishies/*.png`, `game/art/art_index.json` | – |
+| `node tools/export_art/export_art.js [ids…]` | every building's `model()`, every squishy, the island (`art/city3d.js` + the CITY block), each squishy's spot by its house (`idle3`), rooms and decor (`interior`, all 4 designs), the Factory boxes, fun-building icons | `game/art/models/{buildings,squishies,island,life,rooms,boxes}/`, `game/art/sprites/{squishies,badges}/`, `game/art/life.json`, `game/art/art_index.json` | – |
 
 The data export also checks that the book agrees with itself (box odds add up to 100, decor design prices,
 Gem prices) and stops with a list of problems if it does not.
 
-Art: about 20 seconds for all 313 files. The export is repeatable (same book → same files). In Godot,
+Art: about 30 seconds for all ~580 files. The export is repeatable (same book → same files). In Godot,
 `game/addons/squishy_art_import` gives every model the toon look (`game/art/shaders/`), the outline and its idle
 animations (`game/art/runtime/idle_motion.gd`). Hand-made replacements go in `game/art/overrides/`.
 

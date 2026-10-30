@@ -3,7 +3,7 @@
 A cosy squishy-collecting mobile game for kids aged 5–11: collect squishies, fix up a little island town,
 play minigames. Android (Google Play) first.
 
-**Status:** design complete; Step 0 (Godot project, CI, core services, export tools) done, Step 1 (the town) next. See `docs/decisions.md` for every decision
+**Status:** design complete; Step 0 (foundations) and Step 1 (the town: map, houses, Factory, collection) done; Step 2 (minigames) next. See `docs/decisions.md` for every decision
 and `docs/design-book/` for the full design.
 
 ## Look at the design
