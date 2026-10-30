@@ -12,6 +12,9 @@ const ALL: Array[StringName] = [LOW, MEDIUM, HIGH]
 
 
 static func from_hardware(memory_gb: float, cores: int) -> StringName:
+	# some phones don't say how much memory they have: assume an ordinary phone, not a weak one
+	if memory_gb < 0.5:
+		return MEDIUM if cores < 6 else HIGH
 	# Phones report a bit less than the size on the box (a "6 GB" phone says about 5.5),
 	# so round up before comparing.
 	var gb := ceili(memory_gb - 0.05)

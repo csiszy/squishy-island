@@ -11,7 +11,7 @@ const NAMES_BELOW := 175.0
 var view: CityView
 var _city: Dictionary
 var _viewport: SubViewport
-var _container: SubViewportContainer
+var _view: NativeViewport
 var _camera: Camera3D
 var _sun: DirectionalLight3D
 var _env: Environment
@@ -91,17 +91,16 @@ func select(id: StringName, with_card := true) -> void:
 # ---------------------------------------------------------------- world
 
 func _build_world() -> void:
-	_container = SubViewportContainer.new()
-	_container.stretch = true
-	_container.set_anchors_preset(PRESET_FULL_RECT)
-	_container.mouse_filter = MOUSE_FILTER_STOP
-	_container.gui_input.connect(_on_input)
-	add_child(_container)
-	_viewport = SubViewport.new()
-	_viewport.own_world_3d = true
-	_viewport.msaa_3d = Viewport.MSAA_DISABLED if Settings.graphics_tier() == GraphicsTier.LOW else Viewport.MSAA_2X
-	_viewport.scaling_3d_scale = {GraphicsTier.LOW: 0.7, GraphicsTier.MEDIUM: 0.85, GraphicsTier.HIGH: 1.0}.get(Settings.graphics_tier(), 1.0)
-	_container.add_child(_viewport)
+	# drawn at the phone's real resolution (NativeViewport); the tier sets the render scale and edge smoothing
+	_view = NativeViewport.new()
+	_view.set_anchors_preset(PRESET_FULL_RECT)
+	_view.gui_input.connect(_on_input)
+	add_child(_view)
+	_viewport = _view.viewport
+	_viewport.transparent_bg = false
+	var tier := Settings.graphics_tier()
+	_view.msaa = {GraphicsTier.LOW: Viewport.MSAA_DISABLED, GraphicsTier.MEDIUM: Viewport.MSAA_2X, GraphicsTier.HIGH: Viewport.MSAA_4X}.get(tier, Viewport.MSAA_2X)
+	_viewport.scaling_3d_scale = {GraphicsTier.LOW: 0.7, GraphicsTier.MEDIUM: 0.85, GraphicsTier.HIGH: 1.0}.get(tier, 1.0)
 	var world := Node3D.new()
 	world.name = "World"
 	_viewport.add_child(world)

@@ -17,5 +17,6 @@ func test_few_cores_cap_at_medium() -> void:
 	assert_eq(GraphicsTier.from_hardware(1.9, 4), GraphicsTier.LOW)
 
 
-func test_unknown_memory_is_low() -> void:
-	assert_eq(GraphicsTier.from_hardware(0.0, 8), GraphicsTier.LOW)
+func test_unknown_memory_counts_as_an_ordinary_phone() -> void:
+	assert_eq(GraphicsTier.from_hardware(0.0, 8), GraphicsTier.HIGH)
+	assert_eq(GraphicsTier.from_hardware(-1.0, 4), GraphicsTier.MEDIUM)

@@ -129,7 +129,9 @@ func _add_debug_menu() -> void:
 
 
 func _debug_menu() -> void:
-	if await UiPopup.ask("Developer", "Only in test builds.", "+1,000 coins", "More…"):
+	var dev := DeviceInfo.new()
+	var info := "Only in test builds.\nGraphics: %s (picked: %s) · %.1f GB · %d cores · %d fps\nScreen %s" % [Settings.graphics_tier(), Settings.detected_tier(), dev.memory_gb(), dev.cpu_cores(), Engine.get_frames_per_second(), DisplayServer.window_get_size()]
+	if await UiPopup.ask("Developer", info, "+1,000 coins", "More…"):
 		Economy.earn(1000, &"debug")
 		return
 	if await UiPopup.ask("Developer", "", "+20,000 coins", "Start a fresh town"):

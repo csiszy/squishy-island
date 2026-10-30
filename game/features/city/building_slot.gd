@@ -5,6 +5,7 @@ extends Node3D
 ## "Life around the house"). Call show_state() whenever the level or the family changes.
 
 const SCALE_DEFAULT := 1.2
+const LIFT := 0.15
 
 var id: StringName
 var level := -1
@@ -16,7 +17,8 @@ static func make(entry: Dictionary, city: Dictionary) -> BuildingSlot:
 	var s := BuildingSlot.new()
 	s.id = StringName(entry["id"])
 	s.name = String(s.id)
-	s.position = Vector3(float(entry["x"]), 0.0, float(entry["z"]))
+	# a hair above the ground: the plot's top is exactly at grass height and would flicker against it
+	s.position = Vector3(float(entry["x"]), LIFT, float(entry["z"]))
 	s.rotation.y = float(entry.get("ry", float(city.get("yaw", 0.0)) + float(entry.get("turn", 0.0))))
 	s.scale = Vector3.ONE * float(city.get("buildingScale", SCALE_DEFAULT))
 	return s

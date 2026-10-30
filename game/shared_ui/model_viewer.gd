@@ -1,5 +1,5 @@
 class_name ModelViewer
-extends SubViewportContainer
+extends NativeViewport
 ## A little 3D stage for one model (a room, a squishy, a box), lit like the design book, that you can drag to
 ## turn within limits (the book's Viewer in art/kit3d.js). It has its own world, so it never mixes with the map.
 ##     var v := ModelViewer.new(); add_child(v); v.set_model(node)
@@ -17,7 +17,6 @@ extends SubViewportContainer
 
 var model: Node3D
 var camera: Camera3D
-var _viewport: SubViewport
 var _root: Node3D
 var _yaw0 := 0.0
 var _bounds := AABB(Vector3(-1, 0, -1), Vector3(2, 2, 2))
@@ -25,15 +24,10 @@ var _dragging := false
 
 
 func _init() -> void:
-	stretch = true
-	mouse_filter = MOUSE_FILTER_STOP
-	_viewport = SubViewport.new()
-	_viewport.own_world_3d = true
-	_viewport.transparent_bg = true
-	_viewport.msaa_3d = Viewport.MSAA_2X
-	add_child(_viewport)
+	super()
+	msaa = Viewport.MSAA_4X
 	_root = Node3D.new()
-	_viewport.add_child(_root)
+	viewport.add_child(_root)
 	var env := WorldEnvironment.new()
 	env.environment = BookLights.make_environment(background)
 	if background.a < 1.0:
@@ -46,6 +40,7 @@ func _init() -> void:
 
 
 func _ready() -> void:
+	super()
 	_yaw0 = yaw
 	resized.connect(_aim)
 	gui_input.connect(_on_input)
