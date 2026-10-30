@@ -170,3 +170,10 @@ games.build_first,Build it on the map first.
 games.show_me,Show me
 games.more_soon,More games on the way
 collection.find_in_factory,Find it in the Factory
+game.level_not_yet,Not quite!
+game.next_level,Next level
+game.try_again,Try again
+game.replay,Replay
+game.all_levels,All levels
+game.play_level,Play level {n}
+game.stars_collected,Stars collected: {n}

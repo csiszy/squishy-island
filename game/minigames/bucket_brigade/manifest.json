@@ -1,0 +1,23 @@
+{
+  "id": "bucket_brigade",
+  "api": 1,
+  "version": "1.0.0",
+  "title": "bucket_brigade.title",
+  "where": "bucket_brigade.where",
+  "building": "fire",
+  "kind": "levels",
+  "scene": "bucket_brigade.tscn",
+  "music": "fire",
+  "size": [360, 640],
+  "backdrop": "#FFE6DA",
+  "how_to": ["bucket_brigade.how.1", "bucket_brigade.how.2", "bucket_brigade.how.3", "bucket_brigade.how.4"],
+  "score_name": "bucket_brigade.score_name",
+  "coins": { "from": "score", "divide": 1, "milestones": [], "unit": "bucket_brigade.score_name", "rule": "bucket_brigade.score_name" },
+  "goal": "levels",
+  "revive": { "allowed": false },
+  "perks": [
+    { "family": "ocean", "effect": "extra_buckets", "amount": 2 },
+    { "family": "sky", "effect": "clear_smoke", "amount": 1 }
+  ],
+  "enabled": true
+}

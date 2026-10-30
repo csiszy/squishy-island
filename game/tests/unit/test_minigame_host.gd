@@ -78,6 +78,8 @@ func test_the_server_refuses_impossible_coins() -> void:
 	var too_many := server.submit_run(&"sort_a_lot", 30.0, 500)
 	assert_eq(too_many["coins"], 60, "a run counts as at least a minute; 60 coins per minute at most")
 	assert_true(too_many["capped"])
+	var level := server.submit_run(&"bucket_brigade", 15.0, 75, &"levels")
+	assert_eq(level["coins"], 75, "a quickly beaten level still pays its fixed reward")
 
 
 func test_the_catalog_finds_the_three_games() -> void:
@@ -171,3 +173,40 @@ func test_the_pretend_ad_is_in_the_middle() -> void:
 	assert_almost_eq(card.get_global_rect().get_center().x, 360.0, 2.0, "centred across")
 	assert_almost_eq(card.get_global_rect().get_center().y, 640.0, 2.0, "centred down")
 	await wait_seconds(1.2)
+
+
+## Puzzle levels use the prototypes' random numbers, so level N is the same level as in the design book.
+func test_kit_random_numbers_match_the_prototypes() -> void:
+	var r := KitRng.new(1 * 4099 + 23)
+	assert_almost_eq(r.next(), 0.9249939669, 0.0000000001)
+	assert_almost_eq(r.next(), 0.8234821295, 0.0000000001)
+	var r2 := KitRng.new(37 * 4099 + 23)
+	assert_almost_eq(r2.next(), 0.8092258757, 0.0000000001)
+
+
+## A level game: beating level 1 pays 30 + 15 per star, opens level 2 and counts for the Fire Station.
+func test_beating_a_level() -> void:
+	GameData.minigames = MinigameCatalog.by_building()
+	var screen: Control = add_child_autofree((load("res://features/minigame_host/minigame_screen.tscn") as PackedScene).instantiate())
+	screen.set_anchors_and_offsets_preset(Control.PRESET_TOP_LEFT)
+	screen.size = Vector2(720, 1280)
+	screen.call(&"open", {"building": &"fire"})
+	var game: Minigame = screen.get(&"game")
+	game.process_mode = Node.PROCESS_MODE_DISABLED
+	screen.call(&"_start")
+	var coins_before := Economy.coins()
+	var bot: Object = (load("res://minigames/bucket_brigade/bot.gd") as GDScript).new()
+	for i in 1800:
+		if screen.get(&"last_result") != null:
+			break
+		bot.call(&"act", game, 1.0 / 30.0)
+		game.advance(1.0 / 30.0)
+	await wait_frames(3)
+	var r: MinigameResult = screen.get(&"last_result")
+	assert_not_null(r, "level 1 finished")
+	assert_true(r.won)
+	assert_eq(r.level, 1)
+	assert_eq(int(screen.get(&"last_payout")["total"]), 30 + 15 * r.stars, "first clear")
+	assert_eq(Economy.coins(), coins_before + 30 + 15 * r.stars)
+	assert_eq(int(Save.section(&"minigames")["bucket_brigade"]["top"]), 2, "level 2 is open")
+	assert_eq(Town.progress(&"fire"), 1, "one level beaten counts for the Fire Station")

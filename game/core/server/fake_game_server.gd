@@ -168,13 +168,17 @@ func _fail(error: StringName) -> Dictionary:
 
 ## Coins per minute are capped (economy "serverMaxCoinsPerMinute"); a run counts as at least one minute, so a
 ## short run that reaches a milestone bonus is still paid in full.
-func submit_run(game: StringName, seconds: float, coins: int) -> Dictionary:
+func submit_run(game: StringName, seconds: float, coins: int, kind: StringName = &"endless") -> Dictionary:
 	if offline:
 		return _fail(&"offline")
 	if game == &"" or seconds < 0.0 or coins < 0:
 		return _fail(&"bad_run")
-	var per_minute := int(GameData.economy().get("minigames", {}).get("serverMaxCoinsPerMinute", 60))
+	var rules: Dictionary = GameData.economy().get("minigames", {})
+	var per_minute := int(rules.get("serverMaxCoinsPerMinute", 60))
 	var most := ceili(per_minute * maxf(1.0, seconds / 60.0))
+	if kind == &"levels":
+		# one level never pays more than a first clear with 3 stars on a big level
+		most = maxi(most, (int(rules.get("levelFirstClear", 30)) + 3 * int(rules.get("perStar", 15))) * int(rules.get("everyTenthLevelMultiplier", 2)))
 	var runs: Dictionary = state.get("runs", {})
 	runs[String(game)] = int(runs.get(String(game), 0)) + 1
 	state["runs"] = runs

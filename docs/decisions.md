@@ -281,5 +281,13 @@ Sort-a-Lot ported from the prototypes. Tap a built fun building on the map → *
   collection book opens the Factory with its family chosen (guide.html, Spare Shelf section); the Factory's
   duplicate message closes when you go to the Spare Shelf; screens are never opened twice (book → Factory → book
   goes back to the book).
+- **Step 3 so far**: Grow Grow Garden, Style Studio and Bucket Brigade are ported. Level games now have the
+  prototypes' level picker on the start card (newest 14 levels + the next 2, stars on each), stars and Next level
+  / Try again / Replay / All levels on the results card. Puzzle levels use the prototypes' own random numbers
+  (`KitRng`, checked number for number), so level N is the same puzzle as in the design book (Bucket Brigade's
+  3-star targets match the prototype's exactly). The pretend server always allows a level's fixed reward (a quick
+  first clear of a level pays its 30 + 15 per star even under a minute). A game's result can carry a short note
+  ("12 moves · target 10"). Robot coins per minute: Grow Grow Garden ≈ 24, Style Studio ≈ 59 (perfect streaks add
+  up; worth checking in real play).
 - Not yet: the squishy "helper" list on the start card names no effects yet (just "extra good at this game"),
   tilt steering for Sky Bounce, and decor found in sorted letters (Sort-a-Lot page) — later steps.

@@ -16,8 +16,8 @@ func before_each() -> void:
 
 func test_three_games_to_play_and_seven_on_the_way() -> void:
 	var lists: Array = load("res://features/games/games_screen.gd").call(&"game_buildings")
-	assert_eq((lists[0] as Array).size(), 3, "Sky Bounce, Bistro Rush, Sort-a-Lot")
-	assert_eq((lists[1] as Array).size(), 7, "the other fun buildings (not the Factory, Market or Gem Mine)")
+	assert_gte((lists[0] as Array).size(), 3, "at least Sky Bounce, Bistro Rush, Sort-a-Lot")
+	assert_eq((lists[0] as Array).size() + (lists[1] as Array).size(), 10, "every fun building but the Factory, Market and Gem Mine")
 
 
 func test_play_opens_the_game() -> void:

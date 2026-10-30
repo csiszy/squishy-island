@@ -34,7 +34,8 @@ func swap_spare(_id: StringName) -> Dictionary:
 
 
 ## Report a finished minigame run and the coins the phone worked out for it. The server keeps an impossible amount
-## from being paid (more than about 60 coins per minute of play, build.html "What lives where").
+## from being paid (more than about 60 coins per minute of play, build.html "What lives where"; a level game's
+## fixed reward for one level is always allowed). kind: the manifest's kind (endless, levels, ...).
 ## Answer: {"ok", "coins" (what may be paid), "capped" (bool)}.
-func submit_run(_game: StringName, _seconds: float, _coins: int) -> Dictionary:
+func submit_run(_game: StringName, _seconds: float, _coins: int, _kind: StringName = &"endless") -> Dictionary:
 	return {"ok": false, "error": &"offline"}

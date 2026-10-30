@@ -159,16 +159,18 @@ func _make_context() -> MinigameContext:
 
 # ---------------------------------------------------------------- running
 
-func _start() -> void:
+## Start a run. level: for level games, which level (0 = the next one to beat).
+func _start(level := 0) -> void:
 	_close_card()
 	_revives = 0
 	_run_open = true
 	_playing = true
 	_pause_button.visible = true
 	Audio.unduck()
-	var level := 0
 	if manifest.data.get("kind") == "levels":
-		level = int(_record().get("top", 1))
+		level = clampi(level if level > 0 else _top_level(), 1, _top_level())
+	else:
+		level = 0
 	game.ctx.squad = [player_squishy] as Array[StringName]
 	game.ctx.best = int(_record().get("best", 0))
 	game.start(level)
@@ -282,7 +284,7 @@ func _on_finished(result: MinigameResult) -> void:
 		var info := GameData.squishy(player_squishy)
 		var boost := MinigamePayout.helper_boost(manifest.coins(), String(info.get("rarity", "")), Town.cozy_bonus(StringName(info.get("family", ""))))
 		pay = MinigamePayout.endless(manifest.coins(), result, boost)
-	var answer: Dictionary = await Server.api.submit_run(manifest.id(), result.seconds_played, int(pay["total"]))
+	var answer: Dictionary = await Server.api.submit_run(manifest.id(), result.seconds_played, int(pay["total"]), StringName(manifest.data.get("kind", "endless")))
 	# offline: minigames still pay (the server checks later); otherwise the server's amount
 	var paid: int = int(answer.get("coins", pay["total"])) if answer.get("ok", false) else int(pay["total"])
 	pay["paid"] = paid
@@ -313,8 +315,15 @@ func _show_results(r: MinigameResult, pay: Dictionary, new_best: bool, old_best:
 	var level_game: bool = manifest.data.get("kind") == "levels"
 	var over_key := StringName(manifest.data.get("over_title", "game.over"))
 	var title := Text.t(over_key) if not level_game else Text.t(&"game.level_n", {"n": r.level})
-	var col := _card(Text.t(&"game.level_clear") if level_game and r.won else Ui.number(r.score), title)
+	var heading := Ui.number(r.score)
+	if level_game:
+		heading = Text.t(&"game.level_clear") if r.won else Text.t(&"game.level_not_yet")
+	var col := _card(heading, title)
 	var counters: Array = []
+	if level_game and r.won:
+		col.add_child(_stars_row(r.stars, 52))
+	if r.note != "":
+		col.add_child(Ui.label(r.note, "Small", HORIZONTAL_ALIGNMENT_CENTER, true))
 	if not level_game:
 		counters.append({"label": col.get_child(1), "from": 0, "to": r.score, "coins": false})
 		var line := Text.t(StringName(manifest.data.get("score_name", "game.points")))
@@ -357,13 +366,72 @@ func _show_results(r: MinigameResult, pay: Dictionary, new_best: bool, old_best:
 	var goal := _goal_line()
 	if goal != "":
 		col.add_child(Ui.label(goal, "Small", HORIZONTAL_ALIGNMENT_CENTER, true))
-	var again := Ui.button(Text.t(&"game.play_again"), "BigButton", "play")
-	again.pressed.connect(_start)
-	col.add_child(again)
+	if level_game:
+		var row := HBoxContainer.new()
+		row.alignment = BoxContainer.ALIGNMENT_CENTER
+		col.add_child(row)
+		var main := Ui.button(Text.t(&"game.next_level") if r.won else Text.t(&"game.try_again"), "BigButton", "play")
+		var next_level := r.level + 1 if r.won else r.level
+		main.pressed.connect(func() -> void: _start(next_level))
+		col.add_child(main)
+		if r.won:
+			var replay := Ui.button(Text.t(&"game.replay"))
+			replay.pressed.connect(func() -> void: _start(r.level))
+			row.add_child(replay)
+		var all := Ui.button(Text.t(&"game.all_levels"))
+		all.pressed.connect(_show_start)
+		row.add_child(all)
+		col.move_child(row, col.get_child_count() - 1)
+	else:
+		var again := Ui.button(Text.t(&"game.play_again"), "BigButton", "play")
+		again.pressed.connect(func() -> void: _start())
+		col.add_child(again)
 	var town := Ui.button(Text.t(&"game.back_to_town"))
 	town.pressed.connect(Nav.back)
 	col.add_child(town)
 	_count_up(counters, stamp if new_best else null)
+
+
+## Three stars, the earned ones yellow.
+func _stars_row(n: int, size_px: float) -> Control:
+	var row := HBoxContainer.new()
+	row.alignment = BoxContainer.ALIGNMENT_CENTER
+	for i in 3:
+		var star := Ui.texture(Ui.icon("star"), Vector2(size_px, size_px))
+		if i >= n:
+			star.modulate = Color(0.85, 0.83, 0.9, 0.7)
+		row.add_child(star)
+	return row
+
+
+## The next level to beat (1 the first time).
+func _top_level() -> int:
+	return maxi(1, int(_record().get("top", 1)))
+
+
+## The level picker on a level game's start card: the newest 14 levels and the next 2 (locked), each with stars.
+func _level_grid() -> Control:
+	var top := _top_level()
+	var levels: Dictionary = _record().get("levels", {})
+	var grid := GridContainer.new()
+	grid.columns = 4
+	grid.add_theme_constant_override("h_separation", 10)
+	grid.add_theme_constant_override("v_separation", 10)
+	for n in range(maxi(1, top - 13), top + 3):
+		var b := Button.new()
+		b.focus_mode = FOCUS_NONE
+		b.custom_minimum_size = Vector2(128, 96)
+		b.theme_type_variation = "PillButton" if n <= top else ""
+		var stars := int(levels.get(str(n), 0))
+		b.text = "%d\n%s" % [n, "★".repeat(stars) + "☆".repeat(3 - stars)] if n <= top else "%d" % n
+		b.disabled = n > top
+		b.name = "Level_%d" % n
+		if n % 10 == 0:
+			b.add_theme_color_override("font_color", UiTheme.PINK)
+		var level := n
+		b.pressed.connect(func() -> void: _start(level))
+		grid.add_child(b)
+	return grid
 
 
 func _pay_lines(r: MinigameResult, pay: Dictionary) -> PackedStringArray:
@@ -482,8 +550,13 @@ func _show_start() -> void:
 		how.add_child(Ui.label("•  " + Text.t(StringName(key)), "Small", HORIZONTAL_ALIGNMENT_LEFT, true))
 	col.add_child(how)
 	var rule := manifest.coins()
-	if manifest.data.get("kind") == "levels":
+	var level_game: bool = manifest.data.get("kind") == "levels"
+	if level_game:
 		col.add_child(Ui.label(Text.t(&"game.coins_levels"), "Small", HORIZONTAL_ALIGNMENT_CENTER, true))
+		var total := 0
+		for v: Variant in (_record().get("levels", {}) as Dictionary).values():
+			total += int(v)
+		col.add_child(Ui.label(Text.t(&"game.stars_collected", {"n": total}), "", HORIZONTAL_ALIGNMENT_CENTER))
 	else:
 		var words := Text.t(&"game.coins_rule", {"rule": Text.t(StringName(rule.get("rule", "game.points")))})
 		var ms: Array = rule.get("milestones", [])
@@ -500,9 +573,11 @@ func _show_start() -> void:
 	if best > 0:
 		col.add_child(Ui.label(Text.t(&"game.your_best", {"n": Ui.number(best)}), "", HORIZONTAL_ALIGNMENT_CENTER))
 	col.add_child(_squishy_row())
-	var play := Ui.button(Text.t(&"game.play"), "BigButton", "play")
-	play.pressed.connect(_start)
+	var play := Ui.button(Text.t(&"game.play_level", {"n": _top_level()}) if level_game else Text.t(&"game.play"), "BigButton", "play")
+	play.pressed.connect(func() -> void: _start())
 	col.add_child(play)
+	if level_game:
+		col.add_child(_level_grid())
 	var town := Ui.button(Text.t(&"game.back_to_town"))
 	town.pressed.connect(Nav.back)
 	col.add_child(town)

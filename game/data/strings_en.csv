@@ -609,6 +609,7 @@ family.ocean.name,Sea Squish
 family.pets.name,Pet Pals
 family.sky.name,Sky Puffs
 family.sweets.name,Sugar Squad
+game.all_levels,All levels
 game.back_to_town,Back to town
 game.best,Best: {n}
 game.bonus_at,Bonus {adds} at {ats} {unit}
@@ -632,6 +633,7 @@ game.level_first,First clear: 30 + 15 per star
 game.level_first_big,First clear: 30 + 15 per star · big level ×2
 game.level_n,Level {n}
 game.level_no_coins,No coins this time. Beat the level to earn coins!
+game.level_not_yet,Not quite!
 game.level_replay,Replay: 10 + 15 for {n} new stars
 game.music_off,Music: off
 game.music_on,Music: on
@@ -639,6 +641,7 @@ game.napping,"This game is taking a nap, try another!"
 game.new_best,New best score!
 game.next_bonus,Next bonus: +{n} at {at} {unit}
 game.next_goal,Next for {name} (level {level}):
+game.next_level,Next level
 game.no_thanks,No thanks
 game.oh_no,Oh no!
 game.once_per_game,{gift} · once per game
@@ -647,14 +650,18 @@ game.pause,Pause
 game.paused,Paused
 game.play,Play
 game.play_again,Play again
+game.play_level,Play level {n}
 game.playing_as,Playing: {name}
 game.points,points
+game.replay,Replay
 game.revive_gift,and carry on
 game.sfx_off,Sounds: off
 game.sfx_on,Sounds: on
 game.so_far,You have {n} {what} so far.
+game.stars_collected,Stars collected: {n}
 game.time_played,in {time} of play
 game.top_bonus,Top bonus reached!
+game.try_again,Try again
 game.watch_ad,Watch an ad
 game.who_plays,Who plays?
 game.your_best,Your best: {n}

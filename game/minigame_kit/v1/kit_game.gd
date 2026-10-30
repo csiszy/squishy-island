@@ -296,6 +296,11 @@ func push(at: Vector2, rot := 0.0, scale_by := Vector2.ONE) -> void:
 	_m = _root_m * Transform2D(rot, scale_by, 0.0, at)
 
 
+## Like push(), with any move/turn/scale combination (e.g. turn around a corner, then shift back).
+func push_m(tr: Transform2D) -> void:
+	_m = _root_m * tr
+
+
 func pop() -> void:
 	_m = _root_m
 
@@ -359,10 +364,17 @@ func dashed(a: Vector2, b: Vector2, col: Color, lw := 2.0, dash := 8.0) -> void:
 
 ## A closed shape already in screen pixels: filled, then outlined (smoothed edges).
 func _shape_px(pts: PackedVector2Array, fill: Variant, stroke: Variant, lw: float) -> void:
+	pts = _clean(pts)
 	if pts.size() < 3:
 		return
 	if fill is Color:
-		draw_colored_polygon(pts, fill)
+		if Geometry2D.triangulate_polygon(pts).is_empty():
+			# a shape that crosses itself (curvy hair, a moon): split it into simple pieces first
+			for piece in Geometry2D.merge_polygons(pts, PackedVector2Array()):
+				if not Geometry2D.is_polygon_clockwise(piece) and not Geometry2D.triangulate_polygon(piece).is_empty():
+					draw_colored_polygon(piece, fill)
+		else:
+			draw_colored_polygon(pts, fill)
 		if not stroke is Color or lw <= 0.0:
 			var ring := pts.duplicate()
 			ring.append(pts[0])
@@ -371,6 +383,17 @@ func _shape_px(pts: PackedVector2Array, fill: Variant, stroke: Variant, lw: floa
 		var ring2 := pts.duplicate()
 		ring2.append(pts[0])
 		draw_polyline(ring2, stroke, lw, true)
+
+
+## Points without repeats (curves that meet share their end point, which a shape filler cannot take).
+static func _clean(pts: PackedVector2Array) -> PackedVector2Array:
+	var out := PackedVector2Array()
+	for p in pts:
+		if out.is_empty() or out[-1].distance_squared_to(p) > 0.0001:
+			out.append(p)
+	while out.size() > 2 and out[0].distance_squared_to(out[-1]) <= 0.0001:
+		out.remove_at(out.size() - 1)
+	return out
 
 
 static func rounded_rect(x: float, y: float, w: float, h: float, r: float) -> PackedVector2Array:

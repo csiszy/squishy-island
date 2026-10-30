@@ -15,6 +15,8 @@ var level := 0
 var stars := 0
 ## How long the run lasted (the server checks coins per minute against this).
 var seconds_played := 0.0
+## Optional words for the results card, already in the player's language (ctx.t), e.g. "12 moves · target 10".
+var note := ""
 
 
 static func make(score_value: int, metric_value: int, seconds: float) -> MinigameResult:
@@ -31,4 +33,4 @@ func is_valid() -> bool:
 
 
 func to_dict() -> Dictionary:
-	return {"score": score, "metric": metric, "won": won, "level": level, "stars": stars, "seconds_played": seconds_played}
+	return {"score": score, "metric": metric, "won": won, "level": level, "stars": stars, "seconds_played": seconds_played, "note": note}
