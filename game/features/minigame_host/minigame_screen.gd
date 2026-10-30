@@ -137,7 +137,7 @@ func _fit() -> void:
 func _make_context() -> MinigameContext:
 	var c := MinigameContext.new()
 	c.game_id = manifest.id()
-	c.squad = [player_squishy] as Array[StringName]
+	_fill_squad(c)
 	var info := GameData.squishy(player_squishy)
 	c.perks = MinigamePayout.perks_for(manifest.data.get("perks", []), String(info.get("family", "")), String(info.get("rarity", "")))
 	c.best = int(_record().get("best", 0))
@@ -171,7 +171,7 @@ func _start(level := 0) -> void:
 		level = clampi(level if level > 0 else _top_level(), 1, _top_level())
 	else:
 		level = 0
-	game.ctx.squad = [player_squishy] as Array[StringName]
+	_fill_squad(game.ctx)
 	game.ctx.best = int(_record().get("best", 0))
 	game.start(level)
 
@@ -636,6 +636,20 @@ func _default_squishy() -> StringName:
 
 
 # ---------------------------------------------------------------- cards
+
+## The squad: the chosen squishy, or (manifest "squad": "all") every squishy owned with the chosen one first.
+func _fill_squad(c: MinigameContext) -> void:
+	var ids: Array[StringName] = [player_squishy]
+	if manifest.data.get("squad", "one") == "all":
+		for id in Collection.owned_ids():
+			if id != player_squishy:
+				ids.append(id)
+	c.squad = ids
+	c.squad_info = {}
+	for id in ids:
+		var info := GameData.squishy(id)
+		c.squad_info[id] = {"rarity": String(info.get("rarity", "C")), "level": int(Collection.entry(id).get("level", 1)), "family": String(info.get("family", ""))}
+
 
 ## A card over the game: eyebrow, big title, then whatever the caller adds. Returns the column to fill.
 func _card(title: String, eyebrow: String) -> VBoxContainer:

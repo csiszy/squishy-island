@@ -6,8 +6,11 @@ extends RefCounted
 
 ## This game's id (its folder name).
 var game_id := &""
-## Squishies the player brought, first one = the one who plays (ids; pictures through portrait()).
+## Squishies the player brought, first one = the one who plays (ids; pictures through portrait()). A game whose
+## manifest says "squad": "all" gets every squishy the player owns (the chosen one first).
 var squad: Array[StringName] = []
+## For each squishy in the squad: {"rarity": "C".."L"/"X", "level": 1..5, "family": house id}.
+var squad_info: Dictionary = {}
 ## Helper effects the squad switches on (manifest "perks"): effect id -> amount, e.g. {"fall_slower": 0.25}.
 var perks: Dictionary = {}
 ## The player's best score in this game so far (0 if none).

@@ -1,0 +1,23 @@
+{
+  "id": "squish_breaker",
+  "api": 1,
+  "version": "1.0.0",
+  "title": "squish_breaker.title",
+  "where": "squish_breaker.where",
+  "building": "arcade",
+  "kind": "levels",
+  "scene": "squish_breaker.tscn",
+  "music": "arcade",
+  "size": [360, 640],
+  "backdrop": "#2A2350",
+  "squad": "all",
+  "how_to": ["squish_breaker.how.1", "squish_breaker.how.2", "squish_breaker.how.3", "squish_breaker.how.4"],
+  "score_name": "squish_breaker.score_name",
+  "coins": { "from": "score", "divide": 1, "milestones": [], "unit": "squish_breaker.score_name", "rule": "squish_breaker.score_name" },
+  "goal": "levels",
+  "revive": { "allowed": true, "gift": "squish_breaker.revive_gift" },
+  "perks": [
+    { "family": "sky", "effect": "float_longer", "amount": 0.25 }
+  ],
+  "enabled": true
+}

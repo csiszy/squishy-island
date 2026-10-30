@@ -289,5 +289,10 @@ Sort-a-Lot ported from the prototypes. Tap a built fun building on the map → *
   first clear of a level pays its 30 + 15 per star even under a minute). A game's result can carry a short note
   ("12 moves · target 10"). Robot coins per minute: Grow Grow Garden ≈ 24, Style Studio ≈ 59 (perfect streaks add
   up; worth checking in real play).
+- **Squish Breaker** (one ball per squishy you own, drawn as that squishy; Epic hit 2, Legendary 3, +1 per level
+  above 1; Sky Puffs float longer at the top). Its prototype shuffles brick columns with the browser's own sort,
+  so its levels differ between browsers; the game follows the recipe and random numbers exactly and shuffles the
+  way Node's JavaScript does, so every player gets the same levels. A manifest can ask for the whole collection
+  as its squad (`"squad": "all"`), and the context now says each squishy's rarity, level and family.
 - Not yet: the squishy "helper" list on the start card names no effects yet (just "extra good at this game"),
   tilt steering for Sky Bounce, and decor found in sorted letters (Sort-a-Lot page) — later steps.

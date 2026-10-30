@@ -1,0 +1,20 @@
+keys,en
+squish_breaker.title,Squish Breaker
+squish_breaker.where,at the Squish Arcade
+squish_breaker.how.1,Your squishies are the balls: one ball for every squishy you own.
+squish_breaker.how.2,"Drag to aim (a dotted line shows the path), let go to fire them all."
+squish_breaker.how.3,"Every hit takes 1 off a brick (rarer and levelled-up squishies hit harder). When all squishies are back, the bricks move down a row."
+squish_breaker.how.4,"Clear every brick to win. If a brick reaches the floor, try again. Beat a level to open the next one; more squishies make every level easier."
+squish_breaker.score_name,stars
+squish_breaker.revive_gift,and push every brick back up 3 rows
+squish_breaker.level,Level {n}
+squish_breaker.squishies,{n} squishies
+squish_breaker.big,BIG ×2
+squish_breaker.turn,turn {n}
+squish_breaker.bricks,bricks {n}
+squish_breaker.fast,⏩ fast
+squish_breaker.speed,⏩ speed
+squish_breaker.target,★★★ in {n} turns
+squish_breaker.banner,{rows} rows · built for {need} squishies (you have {have})
+squish_breaker.note.win,{n} turns · {balls} squishies
+squish_breaker.note.lose,{n} bricks left. Try a different angle!
