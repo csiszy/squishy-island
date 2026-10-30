@@ -2,47 +2,8 @@
 // functions) next to a pretend Nakama (storage in memory). Run: npm test
 const test = require('node:test');
 const assert = require('node:assert');
-const fs = require('fs');
-const path = require('path');
-const vm = require('vm');
 
-// a pretend Nakama: storage with versions, like the real one (a write with an old version fails)
-function fakeNakama() {
-  const store = {};
-  let n = 0;
-  return {
-    store,
-    storageRead(keys) {
-      return keys.map(k => store[`${k.userId}/${k.collection}/${k.key}`]).filter(Boolean).map(o => JSON.parse(JSON.stringify(o)));
-    },
-    storageWrite(objects) {
-      return objects.map(o => {
-        const id = `${o.userId}/${o.collection}/${o.key}`;
-        const cur = store[id];
-        if (o.version === '*' ? cur : (o.version && (!cur || cur.version !== o.version))) {
-          throw new Error('version check failed');
-        }
-        store[id] = { collection: o.collection, key: o.key, userId: o.userId, value: JSON.parse(JSON.stringify(o.value)), version: String(++n) };
-        return { version: store[id].version };
-      });
-    },
-  };
-}
-
-function load(seed = 1) {
-  const ctx = vm.createContext({ console });
-  vm.runInContext(fs.readFileSync(path.join(__dirname, '..', 'build', 'index.js'), 'utf8'), ctx);
-  // the same random numbers every time
-  let s = seed;
-  ctx.__random = () => { s = (s * 16807) % 2147483647; return (s - 1) / 2147483646; };
-  vm.runInContext('Math.random = __random;', ctx);
-  const rpcs = {};
-  const logger = { info() {}, warn() {}, error() {} };
-  const nk = fakeNakama();
-  ctx.InitModule({}, logger, nk, { registerRpc: (id, fn) => { rpcs[id] = fn; } });
-  const call = (user, id, payload = {}) => JSON.parse(rpcs[id]({ userId: user }, logger, nk, JSON.stringify(payload)));
-  return { ctx, rpcs, nk, call };
-}
+const { load } = require('./helpers');
 
 test('a new player gets the starter squishy, once', () => {
   const { call } = load();

@@ -170,6 +170,40 @@ func migrate(data: Dictionary, from_version: int) -> Dictionary:
 	return out
 
 
+## The town as text for the cloud save (account.html): every section but the pretend server's memory (that one
+## belongs to this phone), with the format version and revision.
+func export_text() -> String:
+	var data := _sections.duplicate(true)
+	data.erase("pretend_server")
+	return JSON.stringify({"version": current_version, "revision": revision, "data": data})
+
+
+## How many times the town in `text` (from export_text) was written; -1 if it isn't a town.
+func revision_of(text: String) -> int:
+	var envelope := _parse(text)
+	return int(envelope.get("revision", -1)) if not envelope.is_empty() else -1
+
+
+## Replace the town with one from the cloud (a new phone, or a newer save from another phone). Older formats are
+## upgraded; a town saved by a newer game version is refused (update the game first). Returns true if loaded.
+func import_text(text: String) -> bool:
+	var envelope := _parse(text)
+	if envelope.is_empty() or int(envelope["version"]) > current_version:
+		return false
+	var data: Dictionary = envelope["data"]
+	if int(envelope["version"]) < current_version:
+		data = migrate(data, int(envelope["version"]))
+		if data.is_empty():
+			return false
+	if _sections.has("pretend_server"):
+		data["pretend_server"] = _sections["pretend_server"]
+	revision = int(envelope.get("revision", 0))
+	_finish_load(data, Status.LOADED)
+	revision -= 1   # save_now() counts one up again: the phone ends at the cloud's revision
+	save_now()
+	return true
+
+
 ## Throw the town away and start fresh (account deletion). Removes every save file.
 func wipe() -> void:
 	for file_name: String in [FILE, BACKUP, TEMP]:

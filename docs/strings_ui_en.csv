@@ -190,3 +190,98 @@ game.track_needs,{name} needs {n}★ (you have {have}★)
 game.new_track_open,New track open: {name}!
 game.new_best_stars,New best stars!
 game.song_pay,{time} song × {n}% accuracy
+ui.cancel,Cancel
+gate.tag,Grown-ups only
+gate.title,Ask a grown-up
+gate.question,Grown-ups: what is
+gate.plus,{a} plus {b}
+gate.minus,{a} minus {b}
+gate.not_quite,"Not quite, try again."
+gate.wait_title,Try again soon
+gate.wait_body,Too many wrong answers. Please wait {n} seconds.
+gate.twenty_plus,twenty-{n}
+gate.n0,zero
+gate.n1,one
+gate.n2,two
+gate.n3,three
+gate.n4,four
+gate.n5,five
+gate.n6,six
+gate.n7,seven
+gate.n8,eight
+gate.n9,nine
+gate.n10,ten
+gate.n11,eleven
+gate.n12,twelve
+gate.n13,thirteen
+gate.n14,fourteen
+gate.n15,fifteen
+gate.n16,sixteen
+gate.n17,seventeen
+gate.n18,eighteen
+gate.n19,nineteen
+gate.n20,twenty
+account.title,Your town
+account.saved,Saved
+account.not_saved,Not saved yet
+account.saved_with,"Saved with {email}. If this phone gets lost, a grown-up can bring the town back."
+account.not_saved_why,"Your town is kept on this phone and on the island server. If the phone gets lost or broken, a grown-up can only bring it back if it was saved with an email."
+account.deleting_on,"This account will be deleted on {date}. Logging back in before then (email or transfer code) keeps it."
+account.pretend_note,Test build: playing with the pretend server inside this phone (DEV → More… → Server… to use a real one).
+account.save_my_town,Save my town
+account.moving,Moving to a new phone?
+account.already,I already have a town
+account.privacy,Grown-ups · Privacy
+account.what_we_keep,"We keep a random player number, the town, settings and purchase receipts. The grown-up's email only if you save the town with it: just for codes, never for marketing. No names, chat, photos, location or advertising ID."
+account.delete,Delete account
+account.oops,Oops
+account.err_offline,"We couldn't reach the island server. Check the internet and try again."
+account.err_bad_email,That doesn't look like an email address. Please check it.
+account.err_email_taken,Another town is already saved with this email.
+account.err_too_many,Too many codes for now. Please try again in an hour.
+account.err_bad_code,That code didn't work. Check it and try again (codes work for 15 minutes).
+account.err_bad_pin,"That PIN didn't match. Check it and try again."
+account.err_same_town,That code is for the town already on this phone.
+account.err_not_this_phone,Something went wrong moving the town. Please try again.
+account.err_busy,The island server is busy. Please try again.
+account.gate_save,Saving the town needs a grown-up's email.
+account.gate_move,This makes a code for moving the town to another phone.
+account.gate_already,This brings a saved town onto this phone.
+account.gate_delete,Deleting the account is for grown-ups.
+account.email_title,Your email
+account.email_body,We only use it to send a 6-digit code and to bring the town back. No ads and no newsletters.
+account.email_login_body,The email the town was saved with. We'll send it a 6-digit code.
+account.send_code,Send code
+account.code_title,Check your email
+account.code_body,We sent a 6-digit code to {email}. Type it here.
+account.code_dev,(Test server: the code is {code}.)
+account.saved_title,Your town is saved!
+account.saved_body,"It's saved with {email}. On a new phone, choose ""I already have a town"" and use this email."
+account.pin,PIN: {pin}
+account.moving_title,Your transfer code
+account.moving_body,"On the new phone, tap the cloud, choose ""I already have a town"" and type this code and PIN. They work once, for 24 hours."
+account.already_title,I already have a town
+account.already_body,How was it saved?
+account.with_code,Transfer code
+account.with_email,Email
+account.code_pin_title,Transfer code
+account.code_pin_body,Type the code and PIN shown on the other phone.
+account.pin_hint,PIN
+account.same_title,All good
+account.same_body,This phone already plays that town.
+account.which_title,Which town?
+account.which_body,This phone has a town too. Which one should it play? (The other one is kept on the server for 30 days.)
+account.on_this_phone,On this phone
+account.saved_town,Saved town
+account.squishies,{n} squishies
+account.steamhouse,Steamhouse level {n}
+account.play_saved,Play the saved town
+account.keep_phone,Keep this one
+account.welcome_back_title,Welcome back!
+account.welcome_back_body,Your saved town is on this phone now.
+account.delete_title,Delete this account?
+account.delete_body,"The town, every squishy, Squish Stars and Gems, and anything bought will be gone. The account is kept for 30 days in case you change your mind (log in with the email or a transfer code to keep it), then it's deleted for good. This phone starts a new town."
+account.delete_yes,Delete
+account.delete_no,Keep it
+account.delete_sure_title,Are you sure?
+account.delete_sure_body,This can't be undone after 30 days.

@@ -166,6 +166,94 @@ func _fail(error: StringName) -> Dictionary:
 	return {"ok": false, "error": error}
 
 
+# ---------------------------------------------------------------- accounts (pretend: everything on this phone)
+
+func save_town(town: String, revision: int) -> Dictionary:
+	if offline:
+		return _fail(&"offline")
+	state["cloud"] = {"town": town, "revision": revision, "saved_at": Time.get_unix_time_from_system() * 1000.0}
+	_changed()
+	return {"ok": true, "saved_at": state["cloud"]["saved_at"]}
+
+
+func load_town() -> Dictionary:
+	if offline:
+		return _fail(&"offline")
+	var c: Dictionary = state.get("cloud", {})
+	return {"ok": true, "town": c.get("town"), "revision": int(c.get("revision", 0)), "saved_at": c.get("saved_at", 0)}
+
+
+func account_status() -> Dictionary:
+	if offline:
+		return _fail(&"offline")
+	var email := String(state.get("email", ""))
+	return {"ok": true, "linked": email != "", "email": _mask(email), "deletion_after": state.get("deletion_after", 0),
+		"town": {"squishies": _collection().size(), "steamhouse": 0, "saved_at": 0}}
+
+
+func transfer_create() -> Dictionary:
+	if offline:
+		return _fail(&"offline")
+	var letters := "23456789ABCDEFGHJKLMNPQRSTUVWXYZ"
+	var code := ""
+	for i in 8:
+		code += letters[rng.randi_range(0, letters.length() - 1)]
+	state["transfer"] = {"code": code, "pin": "%04d" % rng.randi_range(0, 9999)}
+	_changed()
+	return {"ok": true, "code": code.substr(0, 4) + "-" + code.substr(4), "pin": state["transfer"]["pin"],
+		"until": Time.get_unix_time_from_system() * 1000.0 + 86400000.0}
+
+
+func transfer_use(code: String, pin: String, _confirm: bool) -> Dictionary:
+	if offline:
+		return _fail(&"offline")
+	var t: Dictionary = state.get("transfer", {})
+	if t.is_empty() or code.to_upper().replace("-", "").strip_edges() != String(t["code"]):
+		return _fail(&"bad_code")
+	if pin != String(t["pin"]):
+		return _fail(&"bad_pin")
+	return _fail(&"same_town")
+
+
+func email_start(email: String, purpose: StringName) -> Dictionary:
+	if offline:
+		return _fail(&"offline")
+	var clean := email.strip_edges().to_lower()
+	if not RegEx.create_from_string("^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$").search(clean):
+		return _fail(&"bad_email")
+	state["code"] = {"email": clean, "code": "%06d" % rng.randi_range(0, 999999), "purpose": String(purpose)}
+	_changed()
+	return {"ok": true, "email": _mask(clean), "dev_code": state["code"]["code"]}
+
+
+func email_confirm(code: String, _confirm: bool) -> Dictionary:
+	if offline:
+		return _fail(&"offline")
+	var c: Dictionary = state.get("code", {})
+	if c.is_empty() or code.strip_edges() != String(c["code"]):
+		return _fail(&"bad_code")
+	state.erase("code")
+	if c["purpose"] == "link":
+		state["email"] = c["email"]
+		_changed()
+		return {"ok": true, "linked": true, "email": _mask(String(c["email"]))}
+	_changed()
+	return {"ok": true, "same": true} if String(state.get("email", "")) == c["email"] else _fail(&"bad_code")
+
+
+func delete_request() -> Dictionary:
+	if offline:
+		return _fail(&"offline")
+	state["deletion_after"] = Time.get_unix_time_from_system() * 1000.0 + 30.0 * 86400000.0
+	_changed()
+	return {"ok": true, "after": state["deletion_after"]}
+
+
+static func _mask(email: String) -> String:
+	var at := email.find("@")
+	return "" if at <= 0 else email[0] + "•••" + email.substr(at)
+
+
 ## Coins per minute are capped (economy "serverMaxCoinsPerMinute"); a run counts as at least one minute, so a
 ## short run that reaches a milestone bonus is still paid in full.
 func submit_run(game: StringName, seconds: float, coins: int, kind: StringName = &"endless") -> Dictionary:

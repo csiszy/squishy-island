@@ -33,6 +33,11 @@ address the script shows (like `192.168.1.20`) and tap **Connect**. Phone and la
 Your squishies, Stars and boxes then live on the laptop's server; coins stay on the phone. **Use the pretend one**
 switches back.
 
+Then try the **cloud button** on the map ("Your town"): save the town with an email (the laptop server shows
+the 6-digit code on the phone, since it can't send real emails yet), make a transfer code, and on a second phone
+(or after "Start a fresh town" in the DEV menu) use **I already have a town** to bring it back. Delete account
+starts a new town.
+
 ## What to try (Step 3: all ten minigames)
 
 - Every building's game now works: open them from the map or the pink **Games** button. New since last time:

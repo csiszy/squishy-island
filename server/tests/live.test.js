@@ -53,3 +53,31 @@ test('a wrong server key is refused', async () => {
   });
   assert.equal(r.status, 401);
 });
+
+test('moving a town to a new phone with a transfer code', async () => {
+  const oldPhone = 'test-' + crypto.randomUUID();
+  const newPhone = 'test-' + crypto.randomUUID();
+  const a = await login(oldPhone);
+  await rpc(a, 'load_state');
+  await rpc(a, 'open_box', { kind: 'mystery', first_box: true });
+  await rpc(a, 'save_town', { town: JSON.stringify({ town: { levels: { dumpling: 3 } } }), revision: 5 });
+  const made = await rpc(a, 'transfer_create');
+  const b = await login(newPhone);
+  await rpc(b, 'load_state');
+  const look = await rpc(b, 'transfer_use', { code: made.code, pin: made.pin, device_id: newPhone });
+  assert.equal(look.saved.squishies, 2);
+  assert.equal((await rpc(b, 'transfer_use', { code: made.code, pin: made.pin, device_id: newPhone, confirm: true })).ok, true);
+  // the new phone logs in again and finds the saved town
+  const again = await login(newPhone);
+  assert.deepEqual(Object.keys((await rpc(again, 'load_state')).collection).sort(), ['bao', 'gyoza']);
+  assert.equal((await rpc(again, 'load_town')).revision, 5);
+});
+
+test('an email code on a test server', async () => {
+  const phone = 'test-' + crypto.randomUUID();
+  const t = await login(phone);
+  const email = `p${Date.now()}@example.com`;
+  const start = await rpc(t, 'email_start', { email, purpose: 'link' });
+  assert.match(start.dev_code, /^\d{6}$/, 'the laptop server shows the code (SQUISHY_DEV)');
+  assert.equal((await rpc(t, 'email_confirm', { code: start.dev_code })).linked, true);
+});

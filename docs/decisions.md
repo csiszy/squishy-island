@@ -366,5 +366,22 @@ Sort-a-Lot ported from the prototypes. Tap a built fun building on the map → *
   server in Docker and runs the game's own code against it.
 - Coins stay on the phone (as designed); squishies, Stars and boxes live on the server. A test phone switched back
   to the pretend server gets its pretend collection back.
-- Next in Step 4: cloud save of the town, "save my town" and transfer codes, account deletion (4b); then quests,
-  the Gem Challenge, the weekly visitor, the Market and trading (4c).
+- **Accounts (4b)**, following account.html: the town is saved to the server a few seconds after it changes (and
+  when the app goes to the background), the phone keeps its own copy for offline play, and a newer save from
+  another phone replaces the phone's on start. The cloud button on the map (orange dot until saved) opens "Your
+  town": **Save my town** (email + 6-digit code, no password), **Moving to a new phone?** (one-time code + PIN,
+  24 hours), **I already have a town** (code + PIN or email; "Which town?" shows both and suggests the bigger
+  one; the phone's own guest town is kept 30 days) and **Delete account** (gone after 30 days; logging back in
+  before then keeps it; the phone starts a new town at once). Everything there starts with the **grown-up gate**
+  (a sum in words on a number pad, art/ui.js; 3 wrong answers = a 30-second pause), built now and used by Step 5.
+  The email is typed by the grown-up behind the gate (the only typing in the game; children never type).
+- Real emails need an email service (a paid account, chosen at launch). Until then the server writes each
+  "email" into its log, and a test server (laptop) also shows the code on the phone, so the whole flow can be
+  tried. Emails are stored only to send codes; the server looks them up by a one-way hash, answers the same
+  whether or not an email has a town, and sends at most 5 codes an hour.
+- Codes: 8 letters/digits without look-alikes (0/O, 1/I), PIN 4 digits, 5 wrong tries and the code is gone.
+  Deleted accounts are removed by a server job (`purge_deleted`, run nightly on the live server).
+- Not yet (later steps): Sign in with Google/Apple (needs store accounts), Bao's "Keep your town safe!" card at
+  the right moments and the Safety Cloud weathervane gift (Step 6 polish), a deletion web page (Step 7, with the
+  live server).
+- Next in Step 4: quests, the Gem Challenge, the weekly visitor, the Market and trading (4c).

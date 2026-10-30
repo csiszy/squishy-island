@@ -54,6 +54,48 @@ func submit_run(game: StringName, seconds: float, coins: int, kind: StringName =
 	return await _rpc(&"submit_run", {"game": game, "seconds": seconds, "coins": coins, "kind": kind})
 
 
+func is_remote() -> bool:
+	return true
+
+
+func save_town(town: String, revision: int) -> Dictionary:
+	return await _rpc(&"save_town", {"town": town, "revision": revision})
+
+
+func load_town() -> Dictionary:
+	return await _rpc(&"load_town", {})
+
+
+func account_status() -> Dictionary:
+	return await _rpc(&"account_status", {})
+
+
+func transfer_create() -> Dictionary:
+	return await _rpc(&"transfer_create", {})
+
+
+func transfer_use(code: String, pin: String, confirm: bool) -> Dictionary:
+	var answer := await _rpc(&"transfer_use", {"code": code, "pin": pin, "device_id": device_id, "confirm": confirm})
+	if confirm and answer.get("ok", false):
+		_token = ""   # this phone now logs in to the saved town
+	return answer
+
+
+func email_start(email: String, purpose: StringName) -> Dictionary:
+	return await _rpc(&"email_start", {"email": email, "purpose": purpose})
+
+
+func email_confirm(code: String, confirm: bool) -> Dictionary:
+	var answer := await _rpc(&"email_confirm", {"code": code, "device_id": device_id, "confirm": confirm})
+	if confirm and answer.get("ok", false) and not answer.get("linked", false):
+		_token = ""
+	return answer
+
+
+func delete_request() -> Dictionary:
+	return await _rpc(&"delete_request", {})
+
+
 func _rpc(id: StringName, payload: Dictionary) -> Dictionary:
 	for attempt in 2:
 		if not await _login():

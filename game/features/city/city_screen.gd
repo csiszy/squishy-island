@@ -375,12 +375,14 @@ func _build_hud() -> void:
 	left.add_theme_constant_override("separation", 14)
 	hud.add_child(left)
 	for b: Array in [["info", &"ui.help", _soon], ["gear", &"ui.settings", _soon], ["music", &"ui.music", _toggle_music],
-			["cloud", &"ui.save_town", _soon], ["gem", &"ui.gem_store", _soon], ["book", &"map.collection", func() -> void: Nav.go(&"collection")]]:
+			["cloud", &"ui.save_town", func() -> void: Nav.go(&"account")], ["gem", &"ui.gem_store", _soon], ["book", &"map.collection", func() -> void: Nav.go(&"collection")]]:
 		var btn := Ui.icon_button(b[0], Text.t(b[1]))
 		btn.pressed.connect(b[2])
 		left.add_child(btn)
 		if b[0] == "music":
 			_music_button = btn
+		if b[0] == "cloud":
+			_add_save_dot(btn)
 	_update_music_icon()
 	var wallet := WalletBar.new()
 	wallet.size_flags_horizontal = SIZE_SHRINK_END
@@ -467,3 +469,23 @@ func _on_moved_in(squishy: StringName) -> void:
 
 func _on_upgraded(_id: StringName, _level: int) -> void:
 	refresh()
+
+
+## The small orange dot on the cloud button until the town is saved with an email (account.html "When Bao asks").
+func _add_save_dot(btn: Button) -> void:
+	var dot := Panel.new()
+	dot.name = "SaveDot"
+	var style := StyleBoxFlat.new()
+	style.bg_color = Color("#FF9F43")
+	style.set_corner_radius_all(14)
+	style.border_color = UiTheme.INK
+	style.set_border_width_all(3)
+	dot.add_theme_stylebox_override("panel", style)
+	dot.custom_minimum_size = Vector2(26, 26)
+	dot.size = Vector2(26, 26)
+	dot.position = Vector2(54, -2)
+	dot.mouse_filter = MOUSE_FILTER_IGNORE
+	btn.add_child(dot)
+	var update := func() -> void: dot.visible = not Account.is_linked()
+	Account.status_changed.connect(update)
+	update.call()

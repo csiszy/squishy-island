@@ -65,6 +65,13 @@ func use(new_address: String, check := true) -> Dictionary:
 	return {"ok": true}
 
 
+## Forget this phone's guest login and make a new one (after deleting the account: the phone starts over).
+func new_guest() -> void:
+	_config.erase("device_id")
+	_save_config()
+	api = _make(address())
+
+
 ## A new pretend server for a fresh town (the old pretend memory is gone with the save).
 func reset_pretend() -> void:
 	if api is FakeGameServer:

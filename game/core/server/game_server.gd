@@ -39,3 +39,54 @@ func swap_spare(_id: StringName) -> Dictionary:
 ## Answer: {"ok", "coins" (what may be paid), "capped" (bool)}.
 func submit_run(_game: StringName, _seconds: float, _coins: int, _kind: StringName = &"endless") -> Dictionary:
 	return {"ok": false, "error": &"offline"}
+
+
+# ---------------------------------------------------------------- accounts (account.html; Step 4b)
+
+## True for a real server (the town is saved to it: cloud save); false for the pretend one inside the phone.
+func is_remote() -> bool:
+	return false
+
+
+## Keep the phone's town (Save.export_text()) on the server. Answer: {"ok", "saved_at"}.
+func save_town(_town: String, _revision: int) -> Dictionary:
+	return {"ok": false, "error": &"offline"}
+
+
+## The town kept on the server. Answer: {"ok", "town" (text or null), "revision", "saved_at"}.
+func load_town() -> Dictionary:
+	return {"ok": false, "error": &"offline"}
+
+
+## Answer: {"ok", "linked" (saved with an email), "email" ("p•••@example.com"), "deletion_after" (unix ms, 0 = no),
+## "town": {"squishies", "steamhouse", "saved_at"}}.
+func account_status() -> Dictionary:
+	return {"ok": false, "error": &"offline"}
+
+
+## A one-time code + PIN to move this town to a new phone, valid 24 hours. Answer: {"ok", "code", "pin", "until"}.
+func transfer_create() -> Dictionary:
+	return {"ok": false, "error": &"offline"}
+
+
+## A code + PIN typed on a new phone. Without confirm: {"ok", "saved": town summary, "phone": this phone's town}
+## (for "Which town?"); with confirm: this phone now plays the saved town (log in again, load everything).
+## Errors: bad_code, bad_pin, same_town.
+func transfer_use(_code: String, _pin: String, _confirm: bool) -> Dictionary:
+	return {"ok": false, "error": &"offline"}
+
+
+## Send a 6-digit code to an email. purpose: &"link" (save this town with it) or &"login" (bring back the town saved
+## with it). Answer: {"ok", "email" (masked), "dev_code" (test servers only)}. Errors: bad_email, email_taken, too_many.
+func email_start(_email: String, _purpose: StringName) -> Dictionary:
+	return {"ok": false, "error": &"offline"}
+
+
+## The code from the email. Linking: {"ok", "linked", "email"}. Login: like transfer_use (preview, then confirm).
+func email_confirm(_code: String, _confirm: bool) -> Dictionary:
+	return {"ok": false, "error": &"offline"}
+
+
+## Delete this account (in 30 days; logging back in before then cancels it). Answer: {"ok", "after"}.
+func delete_request() -> Dictionary:
+	return {"ok": false, "error": &"offline"}

@@ -100,6 +100,59 @@ function rpcSubmitRun(ctx: nkruntime.Context, logger: nkruntime.Logger, nk: nkru
   }));
 }
 
+function isDev(ctx: nkruntime.Context): boolean {
+  return !!ctx.env && ctx.env["SQUISHY_DEV"] === "1";
+}
+
+// Runs fn for the logged-in player (user id and payload), or answers "no_account".
+function asPlayer(ctx: nkruntime.Context, payload: string, fn: (user: string, p: { [key: string]: any }) => Answer): string {
+  if (!ctx.userId) {
+    return JSON.stringify(fail("no_account"));
+  }
+  return JSON.stringify(fn(ctx.userId, parse(payload)));
+}
+
+// (Nakama needs every RPC to be a plain function declared at the top, so each one is written out.)
+function rpcSaveTown(ctx: nkruntime.Context, logger: nkruntime.Logger, nk: nkruntime.Nakama, payload: string): string {
+  return asPlayer(ctx, payload, function (user, p) { return saveTown(nk, user, p.town, Number(p.revision)); });
+}
+
+function rpcLoadTown(ctx: nkruntime.Context, logger: nkruntime.Logger, nk: nkruntime.Nakama, payload: string): string {
+  return asPlayer(ctx, payload, function (user, p) { return loadTown(nk, user); });
+}
+
+function rpcAccountStatus(ctx: nkruntime.Context, logger: nkruntime.Logger, nk: nkruntime.Nakama, payload: string): string {
+  return asPlayer(ctx, payload, function (user, p) { return accountStatus(nk, user); });
+}
+
+function rpcTransferCreate(ctx: nkruntime.Context, logger: nkruntime.Logger, nk: nkruntime.Nakama, payload: string): string {
+  return asPlayer(ctx, payload, function (user, p) { return transferCreate(nk, user, Math.random); });
+}
+
+function rpcTransferUse(ctx: nkruntime.Context, logger: nkruntime.Logger, nk: nkruntime.Nakama, payload: string): string {
+  return asPlayer(ctx, payload, function (user, p) { return transferUse(nk, user, String(p.device_id || ""), String(p.code || ""), String(p.pin || ""), p.confirm === true); });
+}
+
+function rpcEmailStart(ctx: nkruntime.Context, logger: nkruntime.Logger, nk: nkruntime.Nakama, payload: string): string {
+  return asPlayer(ctx, payload, function (user, p) { return emailStart(nk, logger, user, String(p.email || ""), p.purpose === "login" ? "login" : "link", Math.random, isDev(ctx)); });
+}
+
+function rpcEmailConfirm(ctx: nkruntime.Context, logger: nkruntime.Logger, nk: nkruntime.Nakama, payload: string): string {
+  return asPlayer(ctx, payload, function (user, p) { return emailConfirm(nk, user, String(p.device_id || ""), String(p.code || ""), p.confirm === true); });
+}
+
+function rpcDeleteRequest(ctx: nkruntime.Context, logger: nkruntime.Logger, nk: nkruntime.Nakama, payload: string): string {
+  return asPlayer(ctx, payload, function (user, p) { return deleteRequest(nk, user); });
+}
+
+// Server-to-server only (no player: called with the server's http key, e.g. by a nightly job on the live server).
+function rpcPurgeDeleted(ctx: nkruntime.Context, logger: nkruntime.Logger, nk: nkruntime.Nakama, payload: string): string {
+  if (ctx.userId) {
+    return JSON.stringify(fail("not_allowed"));
+  }
+  return JSON.stringify(purgeDeleted(nk, logger));
+}
+
 // The game checks this first, to see it reached the right server (and which version of the rules it runs).
 function rpcHello(ctx: nkruntime.Context, logger: nkruntime.Logger, nk: nkruntime.Nakama, payload: string): string {
   return JSON.stringify({ ok: true, server: "squishy-island", squishies: SQUISHIES.length });
@@ -112,5 +165,14 @@ function InitModule(ctx: nkruntime.Context, logger: nkruntime.Logger, nk: nkrunt
   initializer.registerRpc("level_up", rpcLevelUp);
   initializer.registerRpc("swap_spare", rpcSwapSpare);
   initializer.registerRpc("submit_run", rpcSubmitRun);
+  initializer.registerRpc("save_town", rpcSaveTown);
+  initializer.registerRpc("load_town", rpcLoadTown);
+  initializer.registerRpc("account_status", rpcAccountStatus);
+  initializer.registerRpc("transfer_create", rpcTransferCreate);
+  initializer.registerRpc("transfer_use", rpcTransferUse);
+  initializer.registerRpc("email_start", rpcEmailStart);
+  initializer.registerRpc("email_confirm", rpcEmailConfirm);
+  initializer.registerRpc("delete_request", rpcDeleteRequest);
+  initializer.registerRpc("purge_deleted", rpcPurgeDeleted);
   logger.info("Squishy Island server ready: %d squishies, %d box kinds", SQUISHIES.length, Object.keys(ECONOMY.boxes).length);
 }

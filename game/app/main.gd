@@ -10,10 +10,11 @@ const SCREENS: Dictionary[StringName, String] = {
 	&"collection": "res://features/collection/collection_screen.tscn",
 	&"minigame": "res://features/minigame_host/minigame_screen.tscn",
 	&"games": "res://features/games/games_screen.tscn",
+	&"account": "res://features/account/account_screen.tscn",
 }
 const FIRST_SCREEN := &"city"
 ## Screens that are never open twice (opening one again goes back to it).
-const SINGLE: Array[StringName] = [&"city", &"factory", &"collection", &"games"]
+const SINGLE: Array[StringName] = [&"city", &"factory", &"collection", &"games", &"account"]
 
 var _host: Control
 var _overlay: Control
@@ -42,6 +43,10 @@ func _ready() -> void:
 	MinigameCatalog.load_all_words()
 	if Ads.provider is FakeAdProvider:
 		(Ads.provider as FakeAdProvider).presenter = PretendAd.play
+	# the town was replaced (moved here from another phone, a newer cloud save, a deleted account): start again
+	Account.town_replaced.connect(func() -> void:
+		Town.reload()
+		get_tree().reload_current_scene())
 	Nav.go_requested.connect(open_screen)
 	Nav.back_requested.connect(go_back)
 	get_tree().node_added.connect(_on_node_added)
@@ -200,7 +205,7 @@ func _debug_menu() -> void:
 	if await UiPopup.ask("Start a fresh town?", "Everything goes back to day one.", "Yes, start over", "No"):
 		Save.wipe()
 		Save.load_game()
-		(get_node("/root/Server") as ServerService).reset_pretend()
+		(get_node("/root/Server") as ServerService).new_guest()
 		Collection.server = Server.api
 		await Collection.sync()
 		Town.reload()

@@ -5,6 +5,9 @@ logger:
   level: INFO
 runtime:
   js_entrypoint: index.js
+  env:
+    # a test server: "emails" (login codes) are also shown on the phone. Never set on the live server.
+    - "SQUISHY_DEV=1"
 session:
   # a login lasts a week; the game logs in again by itself
   token_expiry_sec: 604800

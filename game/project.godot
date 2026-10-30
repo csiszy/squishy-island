@@ -26,6 +26,7 @@ Economy="*res://core/economy/economy_service.gd"
 Collection="*res://core/collection/collection_service.gd"
 Town="*res://core/town/town_service.gd"
 Nav="*res://core/nav/nav_service.gd"
+Account="*res://core/account/account_service.gd"
 
 [audio]
 

@@ -4,7 +4,7 @@
   "description": "Squishy Island's game server logic (Nakama TypeScript runtime). See README.md.",
   "scripts": {
     "build": "node tools/make_data.js && tsc",
-    "test": "npm run build && node --test tests/rules.test.js",
+    "test": "npm run build && node --test tests/rules.test.js tests/account.test.js",
     "test:live": "node --test tests/live.test.js"
   },
   "devDependencies": {

@@ -56,3 +56,24 @@ func test_no_server_means_offline_not_a_crash() -> void:
 	var answer: Dictionary = await api.load_state()
 	assert_false(answer["ok"])
 	assert_eq(answer["error"], &"offline")
+
+
+func test_moving_a_town_to_a_new_phone() -> void:
+	if address == "":
+		pass_test("no server to talk to (set SQUISHY_SERVER)")
+		return
+	var old_phone := _api(_device())
+	var new_phone_id := _device()
+	var new_phone := _api(new_phone_id)
+	await old_phone.load_state()
+	await old_phone.open_box(&"mystery", &"", true)
+	var town := JSON.stringify({"version": 1, "revision": 9, "data": {"town": {"levels": {"dumpling": 5}}}})
+	assert_true((await old_phone.save_town(town, 9))["ok"])
+	var made: Dictionary = await old_phone.transfer_create()
+	await new_phone.load_state()
+	var look: Dictionary = await new_phone.transfer_use(made["code"], made["pin"], false)
+	assert_eq(int(look["saved"]["steamhouse"]), 5, "Which town? shows the saved town")
+	assert_true((await new_phone.transfer_use(made["code"], made["pin"], true))["ok"])
+	var back: Dictionary = await new_phone.load_town()
+	assert_eq(back["town"], town, "the new phone now has the saved town")
+	assert_true((await new_phone.load_state())["collection"].has("gyoza"))
